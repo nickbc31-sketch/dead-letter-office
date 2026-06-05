@@ -5,11 +5,13 @@ final class DroneEnemyNode: SKNode {
     private let patrolPoints: [CGPoint]
     private let droneSpeed: CGFloat
     private let pauseDuration: TimeInterval
+    private let isGuard: Bool
 
     private var currentPointIndex: Int = 0
     private var isPausing: Bool = false
     private var pauseTimer: TimeInterval = 0
     private var lastUpdateTime: TimeInterval = 0
+    private var facingRight: Bool = true
 
     private var bodySprite: SKNode!
     private var scanLight: SKShapeNode!
@@ -21,6 +23,7 @@ final class DroneEnemyNode: SKNode {
         self.patrolPoints = patrolPoints
         self.droneSpeed = speed
         self.pauseDuration = pauseDuration
+        self.isGuard = isGuard
         super.init()
         if let first = patrolPoints.first {
             position = first
@@ -146,8 +149,6 @@ final class DroneEnemyNode: SKNode {
         if dist < 4 {
             isPausing = true
             pauseTimer = pauseDuration
-            // Flip scan direction
-            scanLight.xScale *= -1
             return
         }
 
@@ -155,8 +156,31 @@ final class DroneEnemyNode: SKNode {
                            y: diff.y / dist * droneSpeed * CGFloat(delta))
         position = CGPoint(x: position.x + move.x, y: position.y + move.y)
 
-        // Orient body to direction of travel
-        bodySprite.xScale = diff.x < 0 ? -1 : 1
+        // Orient body and scan cone to direction of travel
+        facingRight = diff.x >= 0
+        bodySprite.xScale = facingRight ? 1 : -1
+        scanLight.xScale = facingRight ? 1 : -1
+    }
+
+    // Cone-based line-of-sight check matching the visual scan cone geometry.
+    // Drone: downward triangle 120 deep × ±60 wide (half-angle ≈27°).
+    // Guard: forward triangle 90 wide × ±30 tall from torso (half-angle ≈18°).
+    func canSee(target: CGPoint) -> Bool {
+        if isGuard {
+            // Apex is at torso height (y+32), offset 10pt forward
+            let apexX = position.x + (facingRight ? 10 : -10)
+            let apexY = position.y + 32
+            let forward = facingRight ? (target.x - apexX) : (apexX - target.x)
+            guard forward > 0 && forward <= 90 else { return false }
+            let allowedDY = forward / 3.0   // ±30 at range 90
+            return abs(target.y - apexY) <= allowedDY
+        } else {
+            // Apex at drone center, scans straight down
+            let below = position.y - target.y
+            guard below > 0 && below <= 120 else { return false }
+            let allowedDX = below * 0.5     // ±60 at depth 120
+            return abs(target.x - position.x) <= allowedDX
+        }
     }
 
     func alert() {

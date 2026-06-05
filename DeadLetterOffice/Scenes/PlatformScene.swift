@@ -24,8 +24,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
 
     // Level state
     private var isLevelComplete = false
-    private var deathCount: Int = 0
-    private let maxDeathsBeforeSkipPrompt: Int = 3
+    private var isRestartingAfterCatch = false
     private var overlayNode: SKNode!
 
     private var isInteractionPaused: Bool { activePanel != nil }
@@ -621,12 +620,10 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     private func updateDrones(_ currentTime: TimeInterval) {
         for drone in patrols {
             drone.update(currentTime: currentTime)
-            if !mara.isCrouching && !mara.isHiding {
-                if hypot(drone.position.x - mara.position.x,
-                         drone.position.y - mara.position.y) < 180 {
-                    maraCaught()
-                    return
-                }
+            if !mara.isCrouching && !mara.isHiding,
+               drone.canSee(target: mara.position) {
+                maraCaught()
+                return
             }
         }
     }
@@ -1012,8 +1009,8 @@ upon Director's audit completion.
     // MARK: - Death / Skip / Complete
 
     private func maraCaught() {
-        guard !isLevelComplete else { return }
-        deathCount += 1
+        guard !isLevelComplete, !isRestartingAfterCatch else { return }
+        isRestartingAfterCatch = true
 
         if !GameState.shared.reducedFlashingEnabled {
             let flash = SKSpriteNode(color: DLOColor.danger.withAlphaComponent(0.5), size: size)
@@ -1029,61 +1026,13 @@ upon Director's audit completion.
 
         AudioManager.shared.playDroneAlert(on: self)
 
-        if let data = levelData {
-            mara.alpha = 0
-            run(SKAction.sequence([
-                SKAction.wait(forDuration: 0.6),
-                SKAction.run { [weak self] in
-                    guard let self = self else { return }
-                    self.mara.position = CGPoint(x: data.spawnPoint[0],
-                                                 y: data.spawnPoint[1])
-                    self.mara.physicsBody?.velocity = .zero
-                    self.mara.alpha = 1
-                    if self.deathCount >= self.maxDeathsBeforeSkipPrompt {
-                        self.showSkipOption()
-                    }
-                }
-            ]))
-        }
-    }
-
-    private func showSkipOption() {
-        let panel = SKNode()
-        panel.zPosition = 2000
-
-        let bg = SKSpriteNode(color: .black, size: CGSize(width: 380, height: 100))
-        bg.alpha = 0.88
-        panel.addChild(bg)
-
-        let msg = SKLabelNode(text: "DIFFICULTY? SKIP THIS SECTION?")
-        msg.fontName = "Menlo"
-        msg.fontSize = 10
-        msg.fontColor = DLOColor.terminalAmber
-        msg.horizontalAlignmentMode = .center
-        msg.verticalAlignmentMode = .center
-        msg.position = CGPoint(x: 0, y: 18)
-        panel.addChild(msg)
-
-        let skipBtn = SimpleButtonNode2(label: "[ SKIP ]") { [weak self] in
-            panel.removeFromParent()
-            self?.skipLevel()
-        }
-        skipBtn.position = CGPoint(x: -70, y: -18)
-        panel.addChild(skipBtn)
-
-        let continueBtn = SimpleButtonNode2(label: "[ CONTINUE ]") { [weak self] in
-            panel.removeFromParent()
-            self?.deathCount = 0
-        }
-        continueBtn.position = CGPoint(x: 70, y: -18)
-        panel.addChild(continueBtn)
-
-        cameraNode.addChild(panel)
-    }
-
-    private func skipLevel() {
-        GameState.shared.setFlag("level_\(levelID)_skipped")
-        levelComplete()
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.6),
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                SceneManager.shared.transition(to: .platform(levelID: self.levelID), from: self)
+            }
+        ]))
     }
 
     private func levelComplete() {
@@ -1364,30 +1313,3 @@ private final class CodeKeyNode: SKNode {
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { alpha = 1.0 }
 }
 
-// MARK: - Skip panel button (reused from before, position-aware)
-
-private final class SimpleButtonNode2: SKNode {
-    private static let hitSize = CGSize(width: 110, height: 32)
-    private let action: () -> Void
-
-    init(label: String, action: @escaping () -> Void) {
-        self.action = action
-        super.init()
-        isUserInteractionEnabled = true
-        let lbl = SKLabelNode(text: label)
-        lbl.fontName = "Menlo-Bold"
-        lbl.fontSize = 12
-        lbl.fontColor = DLOColor.terminalAmber
-        lbl.horizontalAlignmentMode = .center
-        lbl.verticalAlignmentMode = .center
-        addChild(lbl)
-    }
-    required init?(coder: NSCoder) { fatalError() }
-    override func calculateAccumulatedFrame() -> CGRect {
-        let s = SimpleButtonNode2.hitSize
-        return CGRect(x: -s.width / 2, y: -s.height / 2, width: s.width, height: s.height)
-    }
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { alpha = 0.7 }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { alpha = 1.0; action() }
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { alpha = 1.0 }
-}
