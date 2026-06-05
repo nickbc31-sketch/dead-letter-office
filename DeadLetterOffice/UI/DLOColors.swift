@@ -24,7 +24,7 @@ enum DLOColor {
 
     // Platform / world
     static let teal             = SKColor(red: 0.00, green: 0.71, blue: 0.79, alpha: 1)
-    static let platformSilhouette = SKColor(red: 0.05, green: 0.07, blue: 0.11, alpha: 1)
+    static let platformSilhouette = SKColor(red: 0.11, green: 0.15, blue: 0.22, alpha: 1)
     static let scanLight        = SKColor(red: 1.00, green: 0.90, blue: 0.60, alpha: 0.18)
 
     // UI chrome

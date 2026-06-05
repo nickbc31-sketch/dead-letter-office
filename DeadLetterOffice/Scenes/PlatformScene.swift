@@ -39,6 +39,12 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     private var npcTalkedTo: Set<String>      = []
     private var nearbyNPCID: String?
 
+    // Pause system
+    private var isGamePaused: Bool = false
+    private var pauseMenuNode: SKNode?
+    private var pauseButtonRect: CGRect = .zero
+    private var interactButtonCamRect: CGRect = .zero
+
     override func didMove(to view: SKView) {
         SceneManager.shared.view = view
         physicsWorld.gravity = CGVector(dx: 0, dy: -700)  // tuned for jumpImpulse=500
@@ -467,28 +473,57 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
 
         let cam = SceneLayout.makeCamera(scene: self)
 
-        // Mobile-friendly interact button (hidden until near interactable)
-        interactButton = InteractButtonNode { [weak self] in
-            self?.activateNearbyInteractable()
-        }
+        // Interact button — purely visual, tapped via scene-level rect check
+        interactButton = InteractButtonNode()
         interactButton.alpha = 0
         interactButton.zPosition = 1100
         overlayNode.addChild(interactButton)
 
-        let mapLabel = DLOFont.terminalLabel(text: "← PROCEED →", size: 8)
-        mapLabel.horizontalAlignmentMode = .center
-        mapLabel.position = CGPoint(x: cam.midX, y: cam.top - 20)
-        mapLabel.fontColor = DLOColor.uiBorder.withAlphaComponent(0.5)
-        overlayNode.addChild(mapLabel)
-
-        // Objective text — top-left corner, shown only when levelData has it
+        // ── Objective text — top-left, large and readable on physical iPhone ──
         if let obj = levelData?.objectiveText {
-            let objLbl = DLOFont.terminalLabel(text: "OBJ: \(obj)", size: 8)
+            // Dark backing strip for legibility over any background
+            let objBacking = SKSpriteNode(
+                color: DLOColor.terminalBG.withAlphaComponent(0.72),
+                size: CGSize(width: cam.w * 0.55, height: 44))
+            objBacking.anchorPoint = CGPoint(x: 0, y: 1)
+            objBacking.position   = CGPoint(x: cam.left, y: cam.top)
+            objBacking.zPosition  = 1049
+            overlayNode.addChild(objBacking)
+
+            let objLbl = DLOFont.terminalLabel(text: obj, size: 14)
             objLbl.horizontalAlignmentMode = .left
-            objLbl.position = CGPoint(x: cam.left + 12, y: cam.top - 18)
-            objLbl.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.75)
+            objLbl.verticalAlignmentMode   = .top
+            objLbl.position = CGPoint(x: cam.left + 10, y: cam.top - 8)
+            objLbl.fontColor = DLOColor.terminalAmber
+            objLbl.preferredMaxLayoutWidth = cam.w * 0.52
+            objLbl.numberOfLines = 2
+            objLbl.zPosition = 1050
             overlayNode.addChild(objLbl)
         }
+
+        // ── Pause / Menu button — top-right ──────────────────────────────────
+        let pauseW: CGFloat = 88
+        let pauseH: CGFloat = 36
+        let pauseCX = cam.right - pauseW / 2 - 8
+        let pauseCY = cam.top - pauseH / 2 - 8
+
+        let pauseBG = SKShapeNode(rectOf: CGSize(width: pauseW, height: pauseH), cornerRadius: 5)
+        pauseBG.fillColor  = DLOColor.terminalBG.withAlphaComponent(0.85)
+        pauseBG.strokeColor = DLOColor.uiBorder
+        pauseBG.lineWidth   = 1.2
+        pauseBG.position    = CGPoint(x: pauseCX, y: pauseCY)
+        pauseBG.zPosition   = 1050
+        overlayNode.addChild(pauseBG)
+
+        let pauseLbl = DLOFont.terminalLabel(text: "MENU", size: 11)
+        pauseLbl.horizontalAlignmentMode = .center
+        pauseLbl.position  = CGPoint(x: pauseCX, y: pauseCY - 4)
+        pauseLbl.zPosition = 1051
+        overlayNode.addChild(pauseLbl)
+
+        pauseButtonRect = CGRect(
+            x: cam.right - pauseW - 8, y: cam.top - pauseH - 8,
+            width: pauseW, height: pauseH)
 
         cameraNode.addChild(overlayNode)
     }
@@ -507,6 +542,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     // MARK: - Game Loop
 
     override func update(_ currentTime: TimeInterval) {
+        guard !isGamePaused else { return }
         updateMara()
         updateCamera()
         if !isInteractionPaused { updateDrones(currentTime) }
@@ -530,10 +566,12 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         // NPC proximity check (distance-based, no physics sensor needed)
         if !isInteractionPaused { checkNPCProximity() }
 
-        // Position the interact button above Mara in camera space
-        interactButton.position = CGPoint(
+        // Position the interact button above Mara in camera space and track rect for scene touch
+        let ibCenter = CGPoint(
             x: mara.position.x - cameraNode.position.x,
             y: mara.position.y - cameraNode.position.y + 52)
+        interactButton.position = ibCenter
+        interactButtonCamRect = CGRect(x: ibCenter.x - 65, y: ibCenter.y - 15, width: 130, height: 30)
     }
 
     private func updateCamera() {
@@ -1059,6 +1097,111 @@ upon Director's audit completion.
         guard let idx = chapters.firstIndex(of: current), idx + 1 < chapters.count else { return nil }
         return chapters[idx + 1]
     }
+
+    // MARK: - Scene-Level Touch Dispatch (proven DeskScene pattern)
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            let camPos = camSpacePoint(from: touch)
+
+            // Pause button works regardless of game state
+            if pauseButtonRect.contains(camPos) {
+                if isGamePaused { hidePauseMenu() } else { showPauseMenu() }
+                return
+            }
+
+            if isGamePaused || isInteractionPaused { continue }
+
+            // Interact button — tap when visible
+            if interactButton.alpha > 0.1, interactButtonCamRect.contains(camPos) {
+                activateNearbyInteractable()
+                continue
+            }
+
+            // All remaining touches forwarded to VirtualPad
+            virtualPad.notifyTouchBegan(touch, at: touch.location(in: virtualPad))
+        }
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches { virtualPad.notifyTouchEnded(touch) }
+    }
+
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches { virtualPad.notifyTouchCancelled(touch) }
+    }
+
+    private func camSpacePoint(from touch: UITouch) -> CGPoint {
+        let s = touch.location(in: self)
+        return CGPoint(x: s.x - cameraNode.position.x, y: s.y - cameraNode.position.y)
+    }
+
+    // MARK: - Pause Menu
+
+    private func showPauseMenu() {
+        guard pauseMenuNode == nil else { return }
+        isGamePaused = true
+
+        let cam = SceneLayout.makeCamera(scene: self)
+        let panelW = min(cam.w * 0.68, 380)
+        let panelH = min(cam.h * 0.72, 320)
+
+        let panel = SKNode()
+        panel.zPosition = 3000
+
+        let bg = SKSpriteNode(color: DLOColor.terminalBG,
+                              size: CGSize(width: panelW, height: panelH))
+        bg.alpha = 0.96
+        panel.addChild(bg)
+
+        let border = SKShapeNode(rectOf: CGSize(width: panelW - 2, height: panelH - 2),
+                                 cornerRadius: 4)
+        border.strokeColor = DLOColor.uiBorder
+        border.lineWidth   = 1.5
+        border.fillColor   = .clear
+        panel.addChild(border)
+
+        let hdr = DLOFont.titleLabel(text: "SHIFT PAUSED", size: 14)
+        hdr.horizontalAlignmentMode = .center
+        hdr.position = CGPoint(x: 0, y: panelH / 2 - 28)
+        panel.addChild(hdr)
+
+        let div = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.4),
+                               size: CGSize(width: panelW - 32, height: 1))
+        div.position = CGPoint(x: 0, y: panelH / 2 - 44)
+        panel.addChild(div)
+
+        let btnLabels: [(String, () -> Void)] = [
+            ("[ RESUME ]",                  { [weak self] in self?.hidePauseMenu() }),
+            ("[ SAVE + RETURN TO MENU ]",   { [weak self] in
+                GameState.shared.save()
+                self?.hidePauseMenu()
+                SceneManager.shared.transition(to: .mainMenu, from: self!) }),
+            ("[ RETURN WITHOUT SAVING ]",   { [weak self] in
+                self?.hidePauseMenu()
+                SceneManager.shared.transition(to: .mainMenu, from: self!) }),
+            ("[ SETTINGS ]",                { [weak self] in
+                SceneManager.shared.transition(to: .settings, from: self!) })
+        ]
+
+        let btnStep: CGFloat = 52
+        let topBtnY: CGFloat = panelH / 2 - 80
+        for (i, (label, action)) in btnLabels.enumerated() {
+            let btn = PanelButtonNode(label: label, action: action)
+            btn.position = CGPoint(x: 0, y: topBtnY - CGFloat(i) * btnStep)
+            panel.addChild(btn)
+        }
+
+        pauseMenuNode = panel
+        cameraNode.addChild(panel)
+    }
+
+    private func hidePauseMenu() {
+        isGamePaused = false
+        pauseMenuNode?.removeFromParent()
+        pauseMenuNode = nil
+        virtualPad?.resetInput()
+    }
 }
 
 // MARK: - CGPoint distance
@@ -1081,18 +1224,12 @@ private extension SKPhysicsContact {
     }
 }
 
-// MARK: - Interact Button (camera-space, follows Mara)
+// MARK: - Interact Button (camera-space, follows Mara — purely visual, tapped via scene)
 
 private final class InteractButtonNode: SKNode {
-    private let action: () -> Void
     private let lbl: SKLabelNode
-    private let bg: SKSpriteNode
-    private static let btnSize = CGSize(width: 130, height: 30)
 
-    init(action: @escaping () -> Void) {
-        self.action = action
-        bg = SKSpriteNode(color: DLOColor.terminalBG.withAlphaComponent(0.88),
-                          size: InteractButtonNode.btnSize)
+    override init() {
         lbl = SKLabelNode(text: "▲  INTERACT")
         lbl.fontName = "Menlo-Bold"
         lbl.fontSize = 10
@@ -1100,9 +1237,10 @@ private final class InteractButtonNode: SKNode {
         lbl.horizontalAlignmentMode = .center
         lbl.verticalAlignmentMode = .center
         super.init()
-        isUserInteractionEnabled = true
 
-        let border = SKShapeNode(rectOf: InteractButtonNode.btnSize, cornerRadius: 4)
+        let size = CGSize(width: 130, height: 30)
+        let bg = SKSpriteNode(color: DLOColor.terminalBG.withAlphaComponent(0.88), size: size)
+        let border = SKShapeNode(rectOf: size, cornerRadius: 4)
         border.strokeColor = DLOColor.teal
         border.lineWidth = 1.2
         border.fillColor = .clear
@@ -1121,14 +1259,6 @@ private final class InteractButtonNode: SKNode {
         default:          lbl.text = "▲  INTERACT"
         }
     }
-
-    override func calculateAccumulatedFrame() -> CGRect {
-        let s = InteractButtonNode.btnSize
-        return CGRect(x: position.x - s.width / 2, y: position.y - s.height / 2,
-                      width: s.width, height: s.height)
-    }
-
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { action() }
 }
 
 // MARK: - Panel Button (CLOSE / CANCEL)

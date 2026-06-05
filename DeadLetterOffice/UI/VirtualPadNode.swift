@@ -26,7 +26,8 @@ final class VirtualPadNode: SKNode {
 
     override init() {
         super.init()
-        isUserInteractionEnabled = true
+        // isUserInteractionEnabled intentionally NOT set — scene dispatches touches
+        // directly using notifyTouchBegan/Ended/Cancelled (proven pattern).
         buildPad()
     }
 
@@ -80,25 +81,26 @@ final class VirtualPadNode: SKNode {
         return node
     }
 
-    // MARK: - Touch Handling
+    // MARK: - Touch Handling (called by PlatformScene, not ISE)
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches {
-            let pos = touch.location(in: self)
-            let name = hitName(for: pos)
-            activeTouches[touch] = name
-        }
+    func notifyTouchBegan(_ touch: UITouch, at pos: CGPoint) {
+        activeTouches[touch] = hitName(for: pos)
         updateInput()
     }
 
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches { activeTouches.removeValue(forKey: touch) }
+    func notifyTouchEnded(_ touch: UITouch) {
+        activeTouches.removeValue(forKey: touch)
         updateInput()
     }
 
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches { activeTouches.removeValue(forKey: touch) }
+    func notifyTouchCancelled(_ touch: UITouch) {
+        activeTouches.removeValue(forKey: touch)
         updateInput()
+    }
+
+    func resetInput() {
+        activeTouches.removeAll()
+        currentInput = Input()
     }
 
     private func hitName(for pos: CGPoint) -> String {
