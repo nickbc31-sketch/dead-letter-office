@@ -1,0 +1,103 @@
+[
+  {
+    "id": "ch1",
+    "title": "I. ORIENTATION",
+    "subtitle": "Your first shift begins.",
+    "splashImageName": "splash_ch1",
+    "ambientMusicTrack": "ambient_desk",
+    "segments": [
+      {"id": "seg_ch1_desk", "mode": "desk", "resourceID": "cases_ch1", "requiredFlags": null, "setsFlags": ["ch1_desk_complete"]},
+      {"id": "seg_ch1_platform", "mode": "platform", "resourceID": "level_ch1", "requiredFlags": ["ch1_desk_complete"], "setsFlags": ["ch1_platform_complete", "ch2_unlocked"]}
+    ],
+    "unlockRequires": null,
+    "summary": "Mara Venn begins her first shift at the Post-Mortem Communications Authority. Tutorial cases. The final case says: 'I am not dead.'"
+  },
+  {
+    "id": "ch2",
+    "title": "II. THE MISFILED LIVING",
+    "subtitle": "Something is wrong with the registry.",
+    "splashImageName": "splash_ch2",
+    "ambientMusicTrack": "ambient_desk",
+    "segments": [
+      {"id": "seg_ch2_desk", "mode": "desk", "resourceID": "cases_ch2", "requiredFlags": null, "setsFlags": ["ch2_desk_complete"]},
+      {"id": "seg_ch2_platform", "mode": "platform", "resourceID": "level_ch2", "requiredFlags": ["ch2_desk_complete"], "setsFlags": ["ch2_platform_complete", "ch3_unlocked"]}
+    ],
+    "unlockRequires": ["ch2_unlocked"],
+    "summary": "Mara discovers that living citizens are being marked dead. First short platform mission in an abandoned sorting facility."
+  },
+  {
+    "id": "ch3",
+    "title": "III. THE DAUGHTER CLAUSE",
+    "subtitle": "A father's message asks his daughter to run.",
+    "splashImageName": "splash_ch3",
+    "ambientMusicTrack": "ambient_desk",
+    "segments": [
+      {"id": "seg_ch3_desk", "mode": "desk", "resourceID": "cases_ch3", "requiredFlags": null, "setsFlags": ["ch3_desk_complete"]},
+      {"id": "seg_ch3_platform", "mode": "platform", "resourceID": "level_ch3", "requiredFlags": ["ch3_desk_complete"], "setsFlags": ["ch3_platform_complete", "ch4_unlocked"]}
+    ],
+    "unlockRequires": ["ch3_unlocked"],
+    "summary": "A father's final message asks his daughter to run. Records claim she has no father. Player choice affects later outcome."
+  },
+  {
+    "id": "ch4",
+    "title": "IV. GHOST AUDIT",
+    "subtitle": "Your name is on the list.",
+    "splashImageName": "splash_ch4",
+    "ambientMusicTrack": "ambient_desk_tense",
+    "segments": [
+      {"id": "seg_ch4_desk", "mode": "desk", "resourceID": "cases_ch4", "requiredFlags": null, "setsFlags": ["ch4_desk_complete"]},
+      {"id": "seg_ch4_platform", "mode": "platform", "resourceID": "level_ch4", "requiredFlags": ["ch4_desk_complete"], "setsFlags": ["ch4_platform_complete", "ch5_unlocked"]}
+    ],
+    "unlockRequires": ["ch4_unlocked"],
+    "summary": "Mara finds her own name in the death registry. Her scheduled death is three days away."
+  },
+  {
+    "id": "ch5",
+    "title": "V. AFTERLIFE PREMIUM",
+    "subtitle": "Death is a product. Some can afford the upgrade.",
+    "splashImageName": "splash_ch5",
+    "ambientMusicTrack": "ambient_desk",
+    "segments": [
+      {"id": "seg_ch5_desk", "mode": "desk", "resourceID": "cases_ch5", "requiredFlags": null, "setsFlags": ["ch5_desk_complete"]}
+    ],
+    "unlockRequires": ["ch5_unlocked"],
+    "summary": "The rich can edit their death records. Poor citizens are deleted. Mara discovers her brother's death was part of a memory-cleaning trial."
+  },
+  {
+    "id": "ch6",
+    "title": "VI. THE BLACK MAIL TRAIN",
+    "subtitle": "Forbidden letters in motion.",
+    "splashImageName": "splash_ch6",
+    "ambientMusicTrack": "ambient_platform_train",
+    "segments": [
+      {"id": "seg_ch6_platform", "mode": "platform", "resourceID": "level_ch6", "requiredFlags": null, "setsFlags": ["ch6_platform_complete", "ch7_unlocked"]}
+    ],
+    "unlockRequires": ["ch6_unlocked"],
+    "summary": "Platform chapter on an automated underground data train carrying forbidden dead letters."
+  },
+  {
+    "id": "ch7",
+    "title": "VII. THE CHOIR BENEATH",
+    "subtitle": "The dead are not dead.",
+    "splashImageName": "splash_ch7",
+    "ambientMusicTrack": "ambient_desk",
+    "segments": [
+      {"id": "seg_ch7_desk", "mode": "desk", "resourceID": "cases_ch7", "requiredFlags": null, "setsFlags": ["ch7_desk_complete"]},
+      {"id": "seg_ch7_platform", "mode": "platform", "resourceID": "level_ch7", "requiredFlags": ["ch7_desk_complete"], "setsFlags": ["ch7_platform_complete", "ch8_unlocked"]}
+    ],
+    "unlockRequires": ["ch7_unlocked"],
+    "summary": "The Quiet Choir reveals that many 'dead' citizens are alive underground, cut off from the civic system."
+  },
+  {
+    "id": "ch8",
+    "title": "VIII. DEAD LETTER OFFICE",
+    "subtitle": "Your final shift.",
+    "splashImageName": "splash_ch8",
+    "ambientMusicTrack": "ambient_desk_final",
+    "segments": [
+      {"id": "seg_ch8_desk", "mode": "desk", "resourceID": "cases_ch8", "requiredFlags": null, "setsFlags": ["ch8_desk_complete"]}
+    ],
+    "unlockRequires": ["ch8_unlocked"],
+    "summary": "Final shift. Player chooses the ending."
+  }
+]

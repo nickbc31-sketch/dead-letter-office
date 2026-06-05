@@ -1,0 +1,236 @@
+{
+  "id": "level_ch2",
+  "chapter": "ch2",
+  "displayName": "SORTING CENTRE — EAST TRANSIT SECTOR 4",
+  "tileMapName": null,
+  "backgroundLayers": [
+    {
+      "imageName": "bg_city_far",
+      "zPosition": -30,
+      "scrollFactor": 0.1,
+      "yOffset": 0
+    },
+    {
+      "imageName": "bg_facility_mid",
+      "zPosition": -20,
+      "scrollFactor": 0.4,
+      "yOffset": 0
+    },
+    {
+      "imageName": "bg_facility_near",
+      "zPosition": -10,
+      "scrollFactor": 0.7,
+      "yOffset": 0
+    }
+  ],
+  "spawnPoint": [120, 60],
+  "exits": [
+    {"type": "level_end", "x": "3100", "y": "60", "requiredFlagAbsent": "c08_illegal_forward_used", "nextSceneHint": "desk_ch3"},
+    {"type": "level_end", "x": "5880", "y": "60", "nextSceneHint": "desk_ch3"}
+  ],
+  "interactables": [
+    {
+      "id": "sign_tier1",
+      "type": "text_sign",
+      "position": [260, 110],
+      "requiredFlag": null,
+      "setsFlag": null,
+      "requiredCode": null,
+      "displayText": "GRIEF — TIER 1 STANDARD",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    },
+    {
+      "id": "terminal_queue",
+      "type": "terminal",
+      "position": [420, 68],
+      "requiredFlag": null,
+      "setsFlag": "terminal_queue_read",
+      "requiredCode": null,
+      "displayText": "PMCA SORTING CENTRE — QUEUE STATUS\n\n14,847 messages awaiting review.\n12 clerks assigned.\nCurrent throughput: 94.2%\n\nConveyor A-9: INCINERATION PATHWAY\nCurrent load: 312 cases.",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    },
+    {
+      "id": "sign_tier2",
+      "type": "text_sign",
+      "position": [680, 110],
+      "requiredFlag": null,
+      "setsFlag": null,
+      "requiredCode": null,
+      "displayText": "GRIEF — TIER 2 PREMIUM — HELIX MERIDIAN PARTNERS",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    },
+    {
+      "id": "terminal_maintenance",
+      "type": "terminal",
+      "position": [950, 68],
+      "requiredFlag": null,
+      "setsFlag": "c08_maintenance_log_read",
+      "requiredCode": null,
+      "displayText": "SECTOR 12 MAINTENANCE LOG\n\nLast entry: SVC-19-4A\nSector 12, eastern corridor — 06:45\n\nStatus at 12:00 check-in: ABSENT\nReason: death notification\nreceived from Sector 7.\n\nDiscrepancy flag generated: 12:03\nSupervisor response: NONE LOGGED\nFlag status: OPEN",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    },
+    {
+      "id": "sign_tier3",
+      "type": "text_sign",
+      "position": [1200, 110],
+      "requiredFlag": null,
+      "setsFlag": null,
+      "requiredCode": null,
+      "displayText": "GRIEF — TIER 3 — ARCHIVE / INCINERATE",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    },
+    {
+      "id": "sign_names",
+      "type": "text_sign",
+      "position": [1500, 110],
+      "requiredFlag": null,
+      "setsFlag": null,
+      "requiredCode": null,
+      "displayText": "CASES CLOSED THIS WEEK — INCINERATION:\nSEN, G. / BRENT, A. (MINOR) / ORVIN, K.\nHARROW, L. / DAIN, F. / VOSS, N.\n[...and 841 others]\n\nOLDEST UNDELIVERABLE ON RECORD:\nORRA [2130] — STATUS: ARCHIVED",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    },
+    {
+      "id": "terminal_incineration",
+      "type": "terminal",
+      "position": [1900, 68],
+      "requiredFlag": null,
+      "setsFlag": "terminal_incineration_read",
+      "requiredCode": null,
+      "displayText": "INCINERATION SCHEDULE\nWeek of 2147.04.11\n\nCases scheduled: 847\nEstimated completion: 2147.04.15\n\nSection 19.4 overrides processed\nthis week: 3\n\nAverage time from death\nto incineration: 4.2 days",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    },
+    {
+      "id": "sign_processing",
+      "type": "text_sign",
+      "position": [2300, 110],
+      "requiredFlag": null,
+      "setsFlag": null,
+      "requiredCode": null,
+      "displayText": "CLERK PROCESSING TARGETS — Q2\nTARGET: 15,000\nACTUAL: 12,847\nVARIANCE: -2,153\nACTION: QUEUE EXPANSION APPROVED",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    },
+    {
+      "id": "sign_pa",
+      "type": "text_sign",
+      "position": [2800, 110],
+      "requiredFlag": null,
+      "setsFlag": null,
+      "requiredCode": null,
+      "displayText": "[PA SYSTEM — LOOPING]\n'On behalf of all citizens of Veyr,\nwe extend our deepest condolences\nand assure you that your loved\none's final message will be handled\nwith care and dignity.'",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    },
+    {
+      "id": "door_restricted",
+      "type": "door",
+      "position": [3400, 68],
+      "requiredFlag": "c08_illegal_forward_used",
+      "setsFlag": "door_restricted_open",
+      "requiredCode": null,
+      "displayText": "RESTRICTED SECTOR — AUTHORISED ACCESS ONLY",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    },
+    {
+      "id": "cartridge_choir_list",
+      "type": "cartridge",
+      "position": [3700, 120],
+      "requiredFlag": null,
+      "setsFlag": "c08_cartridge_collected",
+      "requiredCode": null,
+      "displayText": null,
+      "cartridgeData": "PMCA PRIORITY MONITORING — CIVIL STATUS AT RISK\nCompiled: unknown. Updated: 2147.04.08.\nClassification: internal.\n\n1. MARR, L. — 29-VL-0034 — ACTIVE MONITORING\n2. SEN, G. — 44-9-T-0811 — DECEASED (2147.04.11)\n3. BRENT, A. — 32-L-0775 — MINOR, GUARDIAN TRANSITION\n4. DAIN, K. — 19-MH-0221 — ACTIVE MONITORING\n5. HARROW, L. — 07-AC-0088 — ACTIVE MONITORING\n6. QUILL, S. — 55-MH-0412 — ACTIVE MONITORING\n7. ORVIN, K. — 38-SV-0091 — ACTIVE MONITORING\n8. [EXPUNGED] — [EXPUNGED] — PRIOR CONTACT, STATUS UNKNOWN",
+      "linkedDialogueID": null
+    },
+    {
+      "id": "sign_exit",
+      "type": "text_sign",
+      "position": [5700, 110],
+      "requiredFlag": null,
+      "setsFlag": null,
+      "requiredCode": null,
+      "displayText": "EAST TRANSIT — SECTOR 4 EXIT\nAUTHORISED PERSONNEL ONLY",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    }
+  ],
+  "patrols": [
+    {
+      "enemyType": "security_drone",
+      "points": [[500, 140], [700, 140]],
+      "speed": 55,
+      "pauseDuration": 2.0
+    },
+    {
+      "enemyType": "security_drone",
+      "points": [[1100, 140], [1400, 140]],
+      "speed": 65,
+      "pauseDuration": 1.5
+    },
+    {
+      "enemyType": "security_drone",
+      "points": [[1800, 140], [2200, 140]],
+      "speed": 65,
+      "pauseDuration": 1.0
+    },
+    {
+      "enemyType": "security_drone",
+      "points": [[2600, 140], [3000, 140]],
+      "speed": 70,
+      "pauseDuration": 2.5
+    },
+    {
+      "enemyType": "security_guard",
+      "points": [[3600, 68], [4100, 68]],
+      "speed": 55,
+      "pauseDuration": 3.0
+    },
+    {
+      "enemyType": "security_drone",
+      "points": [[4200, 140], [4800, 140]],
+      "speed": 80,
+      "pauseDuration": 1.0
+    }
+  ],
+  "pickups": [
+    {"id": "ch2_pickup_01", "x": "300", "y": "180", "setsFlag": "ch2_pickup01_collected"},
+    {"id": "ch2_pickup_02", "x": "1050", "y": "200", "setsFlag": "ch2_pickup02_collected"},
+    {"id": "ch2_pickup_03", "x": "2500", "y": "200", "setsFlag": "ch2_pickup03_collected"},
+    {"id": "ch2_pickup_04", "x": "4500", "y": "200", "setsFlag": "ch2_pickup04_collected"}
+  ],
+  "environmentalTextNodes": [
+    {"x": "200", "y": "90", "text": "EAST TRANSIT SECTOR 4 — SORTING DIVISION"},
+    {"x": "800", "y": "90", "text": "CONVEYOR A-9 — INCINERATION PATHWAY"},
+    {"x": "1700", "y": "90", "text": "SECTION 19 PROCESSING — AUTHORISED ONLY"},
+    {"x": "3050", "y": "90", "text": "SECTOR 4 — SHIFT END CHECKPOINT"},
+    {"x": "3200", "y": "90", "text": "RESTRICTED ZONE — CLEARANCE REQUIRED"},
+    {"x": "4600", "y": "90", "text": "SORTING DIVISION — TIER 3 ARCHIVE"},
+    {"x": "5400", "y": "90", "text": "EXIT — AUTHORISED PERSONNEL ONLY"}
+  ],
+  "npcs": [
+    {
+      "id": "svc19",
+      "position": [2080, 68],
+      "displayName": "MAINTENANCE — SVC-19-4A",
+      "dialogue": [
+        "My shift ended three hours ago. I received a death notification — sector 7. I didn't know what to do with it, so I stayed.",
+        "The conveyor over there routes directly to incineration. It doesn't stop at review. I've watched the trays go through since 04:00. No one checks.",
+        "There's a cartridge in the restricted sector. Someone hid it behind panel C-9. I don't know what's on it. I'm not authorised to know."
+      ],
+      "setsFlag": "ch2_svc19_talked",
+      "repeatable": false
+    }
+  ],
+  "objectiveText": "REACH THE RESTRICTED SECTOR — FIND THE CHOIR LIST",
+  "ambientMusicTrack": "ambient_platform",
+  "levelWidth": 6000,
+  "levelHeight": 500
+}

@@ -1,0 +1,65 @@
+{
+  "id": "intro_ch2",
+  "chapter": "ch2",
+  "returnSceneHint": "desk_ch2",
+  "nodes": [
+    {
+      "id": "n0",
+      "lines": [
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. Before your queue opens. Chapter 1 performance summary has been completed.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Throughput: above baseline. Accuracy index: 94.3%. Case resolution variance: within standard range.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Empathy index: 2.3 standard deviations above baseline for your processing tier.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "What is the baseline for?",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "The baseline measures the average clerk's response pattern to cases assessed as emotionally significant. Your index suggests your response pattern differs from the average.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "And the 94.3% accuracy — is that calculated before or after the empathy adjustment?",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Accuracy is calculated against correct legal action. It does not include an empathy adjustment.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Your queue is ready. Three cases today. Begin when ready.",
+          "voiceFilter": "terminal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": ["ch2_intro_complete"],
+      "nextID": null
+    }
+  ]
+}

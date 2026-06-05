@@ -1,0 +1,153 @@
+{
+  "id": "level_ch1",
+  "chapter": "ch1",
+  "displayName": "SORTING FACILITY — LOWER LEVEL",
+  "tileMapName": null,
+  "backgroundLayers": [
+    {
+      "imageName": "bg_city_far",
+      "zPosition": -30,
+      "scrollFactor": 0.1,
+      "yOffset": 0
+    },
+    {
+      "imageName": "bg_facility_mid",
+      "zPosition": -20,
+      "scrollFactor": 0.4,
+      "yOffset": 0
+    },
+    {
+      "imageName": "bg_facility_near",
+      "zPosition": -10,
+      "scrollFactor": 0.7,
+      "yOffset": 0
+    }
+  ],
+  "spawnPoint": [120, 60],
+  "exits": [
+    {"type": "level_end", "x": "2800", "y": "60", "nextSceneHint": "desk_ch2"}
+  ],
+  "interactables": [
+    {
+      "id": "terminal_01",
+      "type": "terminal",
+      "position": [340, 68],
+      "requiredFlag": null,
+      "setsFlag": "terminal01_read",
+      "requiredCode": null,
+      "displayText": null,
+      "cartridgeData": null,
+      "linkedDialogueID": "field_terminal_01"
+    },
+    {
+      "id": "door_01",
+      "type": "door",
+      "position": [700, 68],
+      "requiredFlag": "terminal01_read",
+      "setsFlag": "door01_open",
+      "requiredCode": null,
+      "displayText": null,
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    },
+    {
+      "id": "cartridge_01",
+      "type": "cartridge",
+      "position": [900, 200],
+      "requiredFlag": null,
+      "setsFlag": "cartridge01_collected",
+      "requiredCode": null,
+      "displayText": null,
+      "cartridgeData": "MESSAGE FRAGMENT — ORIGIN UNKNOWN: 'The sorting machines are routing selected messages to a private network before PMCA processing. I have the node address. If you are reading this — you found my cartridge. The address is: QUIETCHOIR-NODE-7.'",
+      "linkedDialogueID": null
+    },
+    {
+      "id": "terminal_02",
+      "type": "terminal",
+      "position": [1400, 68],
+      "requiredFlag": null,
+      "setsFlag": "terminal02_read",
+      "requiredCode": null,
+      "displayText": null,
+      "cartridgeData": null,
+      "linkedDialogueID": "field_terminal_02"
+    },
+    {
+      "id": "door_02",
+      "type": "door",
+      "position": [2100, 68],
+      "requiredFlag": "door01_open",
+      "setsFlag": "door02_open",
+      "requiredCode": "4471",
+      "displayText": "ACCESS CODE REQUIRED",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    },
+    {
+      "id": "exit_sign",
+      "type": "text_sign",
+      "position": [2600, 100],
+      "requiredFlag": null,
+      "setsFlag": null,
+      "requiredCode": null,
+      "displayText": "FACILITY EXIT — AUTHORISED PERSONNEL ONLY",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    }
+  ],
+  "patrols": [
+    {
+      "enemyType": "security_drone",
+      "points": [[500, 130], [650, 130]],
+      "speed": 60,
+      "pauseDuration": 1.5
+    },
+    {
+      "enemyType": "security_drone",
+      "points": [[1100, 130], [1350, 130]],
+      "speed": 70,
+      "pauseDuration": 2.0
+    },
+    {
+      "enemyType": "security_drone",
+      "points": [[1800, 190], [2000, 190]],
+      "speed": 80,
+      "pauseDuration": 1.0
+    },
+    {
+      "enemyType": "security_guard",
+      "points": [[2250, 68], [2600, 68]],
+      "speed": 50,
+      "pauseDuration": 3.0
+    }
+  ],
+  "pickups": [
+    {"id": "pickup_01", "x": "280", "y": "140", "setsFlag": "pickup01_collected"},
+    {"id": "pickup_02", "x": "1200", "y": "200", "setsFlag": "pickup02_collected"},
+    {"id": "pickup_03", "x": "2400", "y": "220", "setsFlag": "pickup03_collected"}
+  ],
+  "environmentalTextNodes": [
+    {"x": "200", "y": "90", "text": "POST-MORTEM SORTING DIVISION — SECTOR 12"},
+    {"x": "820", "y": "90", "text": "CAUTION: AUTHORISED MESSAGES ONLY"},
+    {"x": "1500", "y": "90", "text": "NEURAL RELAY POINT — DO NOT OBSTRUCT"},
+    {"x": "2300", "y": "90", "text": "RESTRICTED ZONE — CLEARANCE LEVEL 3"}
+  ],
+  "npcs": [
+    {
+      "id": "haas",
+      "position": [570, 68],
+      "displayName": "WORKER — K. HAAS",
+      "dialogue": [
+        "Keep your head down. There's an audit team on the upper floor — they've been here since 05:00.",
+        "I heard the inner checkpoint code rotates with the active case references. Check the desk files. The format is four digits.",
+        "We're not supposed to be down here without a clearance card. If a guard asks — you're on a maintenance reroute. Don't use my name."
+      ],
+      "setsFlag": "ch1_haas_talked",
+      "repeatable": false
+    }
+  ],
+  "objectiveText": "READ TERMINAL 01 — FIND THE RELAY NODE",
+  "ambientMusicTrack": "ambient_platform",
+  "levelWidth": 3000,
+  "levelHeight": 400
+}

@@ -1,0 +1,103 @@
+{
+  "id": "intro_ch1",
+  "chapter": "ch1",
+  "returnSceneHint": "desk_ch1",
+  "nodes": [
+    {
+      "id": "n0",
+      "lines": [
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. Access confirmed.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Your queue is active. Process each case. Apply an action.",
+          "voiceFilter": "terminal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": null,
+      "nextID": "n1"
+    },
+    {
+      "id": "n1",
+      "lines": [
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "The messages — are they exactly what the sender intended? Or are they processed before they reach us?",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Messages are received as transmitted. PMCA does not alter content prior to clerk review.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "And if the documents in a case contradict each other.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "You are not an investigator. Apply an action.",
+          "voiceFilter": "terminal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": null,
+      "nextID": "n2"
+    },
+    {
+      "id": "n2",
+      "lines": [
+        {
+          "speaker": "DIRECTOR CALYX",
+          "portraitAsset": "portrait_calyx",
+          "text": "Clerk Venn. You came from transit records.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "DIRECTOR CALYX",
+          "portraitAsset": "portrait_calyx",
+          "text": "Good instincts, I was told. Reliable. That is what this office requires.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "DIRECTOR CALYX",
+          "portraitAsset": "portrait_calyx",
+          "text": "Most of what passes through your hands here, you will not discuss. With anyone. That is not a request.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "DIRECTOR CALYX",
+          "portraitAsset": "portrait_calyx",
+          "text": "The dead leave messages. We decide which ones arrive.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "DIRECTOR CALYX",
+          "portraitAsset": "portrait_calyx",
+          "text": "Begin.",
+          "voiceFilter": "normal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": ["ch1_intro_complete"],
+      "nextID": null
+    }
+  ]
+}

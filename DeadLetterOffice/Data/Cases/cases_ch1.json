@@ -1,0 +1,657 @@
+[
+  {
+    "id": "case_ch1_001",
+    "chapter": "ch1",
+    "senderName": "Olen Marr",
+    "senderStatus": "Deceased",
+    "senderCitizenID": "VC-4471-M",
+    "recipientName": "Lina Marr",
+    "recipientCitizenID": "VC-4472-F",
+    "messageText": "Lina. Do not sign the relocation form. I saw the list. They marked us before the train even left. Trust no one from the Ministry of Transit.",
+    "documents": [
+      {
+        "id": "doc_c01_a",
+        "title": "DEATH CERTIFICATE",
+        "type": "death_certificate",
+        "issuer": "Veyr City Authority — Registry Division",
+        "issueDate": "2147.03.14",
+        "referenceNumber": "VCA-DC-884421",
+        "fields": [
+          {"key": "Citizen", "value": "Marr, Olen", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Citizen ID", "value": "VC-4471-M", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Date of Death", "value": "2147.03.12 — 14:22", "isSuspicious": true, "suspicionNote": "Certification at 14:22. See TRANSIT INCIDENT REPORT — Report Filed."},
+          {"key": "Cause", "value": "Transit accident — Line 9 derailment", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Certifying Physician", "value": "Dr. Ama Solis, VCA Medical Division", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "The above citizen has been declared deceased following a fatal accident on Transit Line 9. Death occurred at approximately 14:22 on the date above. Cause confirmed as blunt trauma consistent with derailment.",
+        "footerText": "VCA Registry — Form DC-44 — Authenticated",
+        "stamps": [{"text": "CERTIFIED", "color": "#1A3A5C", "appliedDate": "2147.03.14", "appliedBy": "Registry Auto-Seal"}],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c01_b",
+        "title": "TRANSIT INCIDENT REPORT",
+        "type": "incident_report",
+        "issuer": "Ministry of Transit — Safety Division",
+        "issueDate": "2147.03.12",
+        "referenceNumber": "MoT-IR-00221-L9",
+        "fields": [
+          {"key": "Incident", "value": "Line 9 derailment — Sector 7", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Report Filed", "value": "2147.03.12 — 15:04", "isSuspicious": true, "suspicionNote": "Report registered at 15:04. See DEATH CERTIFICATE — Date of Death."},
+          {"key": "Casualties confirmed", "value": "7 fatalities, 12 injured", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Citizen VC-4471-M", "value": "Confirmed present on manifest", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Ministry of Transit confirms derailment of automated train on Line 9 at approximately 15:04 on 2147.03.12. Technical failure attributed to signal corruption in Sector 7. Investigation ongoing.",
+        "footerText": "Ministry of Transit — Safety Division — Form IR-8",
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c01_c",
+        "title": "RECIPIENT RELOCATION NOTICE",
+        "type": "housing_relocation",
+        "issuer": "Ministry of Civil Order",
+        "issueDate": "2147.03.13",
+        "referenceNumber": "MCO-HR-19922",
+        "fields": [
+          {"key": "Resident", "value": "Marr, Lina — VC-4472-F", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Current Address", "value": "Block 14, Sector 7, Veyr South", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Relocation Deadline", "value": "2147.03.17", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Authorising Officer", "value": "Director Calyx, PMCA", "isSuspicious": true, "suspicionNote": "Authorising office: PMCA Directorate. Standard authority for relocation orders: Ministry of Civil Order."}
+        ],
+        "bodyText": "The above resident is notified that her current dwelling will be reallocated under Civic Efficiency Order 44-B. She must vacate by the stated deadline and report to Resettlement Hub 9. Signature required on enclosed consent form.",
+        "footerText": "Ministry of Civil Order — Relocation Division",
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c01_d",
+        "title": "RESTRICTED PHRASE LIST — CLASS D",
+        "type": "restricted_phrase_list",
+        "issuer": "PMCA Communications Monitoring Bureau",
+        "issueDate": "2147.01.01",
+        "referenceNumber": "CMB-RPL-44D",
+        "fields": [
+          {"key": "Classification", "value": "CLASS D — OPERATIONAL SECURITY", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Trigger phrases detected", "value": "3 of 7 Class D phrases present", "isSuspicious": true, "suspicionNote": "'they marked us' — 'the list' — 'do not sign'. Three Class D triggers present in this message."}
+        ],
+        "bodyText": "The following phrases trigger mandatory censor review: 'they marked us', 'the list', 'do not sign', 'Ministry of Transit', 'trust no one', 'saw what happened', 'before the train left'. Message contains 3 Class D triggers.",
+        "footerText": "PMCA CMB — Updated quarterly",
+        "stamps": [{"text": "RESTRICTED", "color": "#AA2222", "appliedDate": null, "appliedBy": null}],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [
+      {
+        "fieldA": "Death Certificate — Date of Death: 14:22",
+        "fieldB": "Transit Incident Report — Report Filed: 15:04",
+        "description": "The death certificate records death at 14:22. The incident report confirms the accident was not logged until 15:04.",
+        "isCritical": true
+      }
+    ],
+    "availableActions": [
+      {
+        "id": "approve",
+        "label": "APPROVE DELIVERY",
+        "shortLabel": "APPROVED",
+        "color": "#2A6A3C",
+        "auditResponse": "Delivery authorised. Emotional exposure risk acknowledged.",
+        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 1, "citizenHarmDelta": 0, "flagsSet": ["c01_approved", "lina_warned"]},
+        "resultText": "Delivery authorised. Restricted content flagged in transit record.",
+        "isIllegal": false
+      },
+      {
+        "id": "reject",
+        "label": "REJECT DELIVERY",
+        "shortLabel": "REJECTED",
+        "color": "#1A3A5C",
+        "auditResponse": "Delivery denied. Procedural closure maintained.",
+        "consequences": {"complianceDelta": 1, "empathyDelta": -2, "suspicionDelta": 0, "citizenHarmDelta": 1, "flagsSet": ["c01_rejected"]},
+        "resultText": "Delivery denied. Record closed.",
+        "isIllegal": false
+      },
+      {
+        "id": "censor",
+        "label": "CENSOR MESSAGE",
+        "shortLabel": "CENSORED",
+        "color": "#222222",
+        "auditResponse": "Restricted content removed. Message cleared for partial delivery.",
+        "consequences": {"complianceDelta": 2, "empathyDelta": 0, "suspicionDelta": 0, "citizenHarmDelta": 0, "flagsSet": ["c01_censored"]},
+        "resultText": "Restricted phrases excised. Partial message authorised for delivery.",
+        "isIllegal": false
+      },
+      {
+        "id": "illegal_forward",
+        "label": "ILLEGAL FORWARD",
+        "shortLabel": "FORWARDED",
+        "color": "#CC6600",
+        "auditResponse": "Routing breach detected. Clerk record flagged.",
+        "consequences": {"complianceDelta": -2, "empathyDelta": 3, "suspicionDelta": 2, "resistanceTrustDelta": 1, "citizenHarmDelta": 0, "flagsSet": ["c01_forwarded", "quiet_choir_contacted"]},
+        "resultText": "Routing deviation logged. Clerk record flagged.",
+        "isIllegal": true
+      }
+    ],
+    "correctLegalActionID": "censor",
+    "followUpFlags": ["c01_contradiction_noted"],
+    "requiredFlags": null
+  },
+
+  {
+    "id": "case_ch1_002",
+    "chapter": "ch1",
+    "senderName": "Mira Sol",
+    "senderStatus": "Deceased",
+    "senderCitizenID": "VC-2201-F",
+    "recipientName": "Arden Sol",
+    "recipientCitizenID": "VC-2202-M",
+    "messageText": "Arden, your mother remembers the blue stairwell. Do not let them tell you we moved willingly.",
+    "documents": [
+      {
+        "id": "doc_c02_a",
+        "title": "DEATH CERTIFICATE",
+        "type": "death_certificate",
+        "issuer": "Veyr City Authority — Registry Division",
+        "issueDate": "2147.03.15",
+        "referenceNumber": "VCA-DC-884430",
+        "fields": [
+          {"key": "Citizen", "value": "Sol, Mira", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Citizen ID", "value": "VC-2201-F", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Date of Death", "value": "2147.03.15 — 06:12", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Cause", "value": "Medical failure — cardiac irregularity", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Certifying Physician", "value": "Dr. Fel Orin, VCA Sector 3 Clinic", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Citizen Sol, Mira declared deceased following cardiac irregularity at Sector 3 civic clinic. Standard medical record. No anomaly detected.",
+        "footerText": "VCA Registry — Form DC-44 — Authenticated",
+        "stamps": [{"text": "CERTIFIED", "color": "#1A3A5C", "appliedDate": "2147.03.15", "appliedBy": "Registry Auto-Seal"}],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c02_b",
+        "title": "RECIPIENT CITIZEN FILE",
+        "type": "citizen_record",
+        "issuer": "Veyr Civic Identity Registry",
+        "issueDate": "2147.03.01",
+        "referenceNumber": "VCIR-2202-M",
+        "fields": [
+          {"key": "Citizen", "value": "Sol, Arden — VC-2202-M", "isSuspicious": false, "suspicionNote": null},
+          {"key": "PMCA Status", "value": "DECEASED — recorded 2147.02.28", "isSuspicious": true, "suspicionNote": "PMCA death registration: 2147.02.28. Message routing active as of 2147.03.15."},
+          {"key": "Housing Status", "value": "Unit 7C, Block 9 — active", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Last Gate Activity", "value": "2147.03.14 — 08:30", "isSuspicious": true, "suspicionNote": "Gate entry logged: 2147.03.14. See PMCA Status above. See HOUSING ACTIVITY RECORD."}
+        ],
+        "bodyText": "Arden Sol registered in civic identity system. PMCA death record dated 2147.02.28. Housing unit listed as active occupancy. Gate activity logged as recently as 2147.03.14.",
+        "footerText": "Veyr Civic Identity Registry",
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c02_c",
+        "title": "HOUSING ACTIVITY RECORD",
+        "type": "citizen_record",
+        "issuer": "Ministry of Housing — Occupancy Division",
+        "issueDate": "2147.03.15",
+        "referenceNumber": "MH-OCC-2202-M",
+        "fields": [
+          {"key": "Unit", "value": "7C, Block 9, Sector 4", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Registered Occupant", "value": "Sol, Arden — VC-2202-M", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Occupancy Status", "value": "ACTIVE — utility draw confirmed daily", "isSuspicious": true, "suspicionNote": "Utility draw: active. PMCA registry status: deceased. See RECIPIENT CITIZEN FILE."},
+          {"key": "Last Key Access", "value": "2147.03.14 — 22:44", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Occupancy confirmed by automated utility monitoring. No vacancy notice filed. Lease renewal pending for 2147.04.01.",
+        "footerText": "Ministry of Housing — Automated Records",
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c02_d",
+        "title": "PMCA STABILITY SCORE REPORT",
+        "type": "anomaly_warning",
+        "issuer": "PMCA Emotional Monitoring Bureau",
+        "issueDate": "2147.03.15",
+        "referenceNumber": "EMB-SS-2202-M",
+        "fields": [
+          {"key": "Citizen", "value": "Sol, Arden — VC-2202-M", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Stability Score", "value": "N/A — citizen declared deceased", "isSuspicious": true, "suspicionNote": "Report generated for declared-deceased citizen. Registry update: not applied."},
+          {"key": "Last Reading", "value": "2147.03.14 — ELEVATED DISTRESS", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Automated stability report generated. Score could not be finalised — citizen status listed as deceased in PMCA registry. Monitoring suspended pending registry update.",
+        "footerText": "PMCA EMB — Automated Report",
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [
+      {
+        "fieldA": "Recipient File — PMCA Status: DECEASED (2147.02.28)",
+        "fieldB": "Housing Activity — Occupancy: ACTIVE, key access 2147.03.14",
+        "description": "The recipient has an active PMCA death registration, active housing occupancy, and recent gate logs.",
+        "isCritical": true
+      }
+    ],
+    "availableActions": [
+      {
+        "id": "approve",
+        "label": "APPROVE DELIVERY",
+        "shortLabel": "APPROVED",
+        "color": "#2A6A3C",
+        "auditResponse": "Delivery authorised. Recipient registry conflict noted.",
+        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 1, "citizenHarmDelta": 0, "flagsSet": ["c02_approved", "arden_warned"]},
+        "resultText": "Delivery authorised to declared-deceased recipient. Anomaly logged.",
+        "isIllegal": false
+      },
+      {
+        "id": "reject",
+        "label": "REJECT DELIVERY",
+        "shortLabel": "REJECTED",
+        "color": "#1A3A5C",
+        "auditResponse": "Delivery denied. Recipient status: deceased.",
+        "consequences": {"complianceDelta": 1, "empathyDelta": -1, "suspicionDelta": 0, "citizenHarmDelta": 1, "flagsSet": ["c02_rejected"]},
+        "resultText": "Delivery denied. Recipient: deceased. Record closed.",
+        "isIllegal": false
+      },
+      {
+        "id": "flag_anomaly",
+        "label": "FLAG ANOMALY",
+        "shortLabel": "FLAGGED",
+        "color": "#CC9900",
+        "auditResponse": "Registry discrepancy submitted for review. Case deferred.",
+        "consequences": {"complianceDelta": 0, "empathyDelta": 1, "suspicionDelta": 1, "flagsSet": ["c02_flagged", "living_dead_pattern_noted"]},
+        "resultText": "Discrepancy submitted for registry review. Case deferred.",
+        "isIllegal": false
+      }
+    ],
+    "correctLegalActionID": "reject",
+    "followUpFlags": ["c02_processed"],
+    "requiredFlags": null
+  },
+
+  {
+    "id": "case_ch1_003",
+    "chapter": "ch1",
+    "senderName": "Tovin Kade",
+    "senderStatus": "Deceased",
+    "senderCitizenID": "VC-7710-M",
+    "recipientName": "Public Archive",
+    "recipientCitizenID": "VCA-ARCHIVE-PUB",
+    "messageText": "The scaffold did not fail. The company ordered us back before the supports were sealed. There were nine of us. Check the worksite report. The order came from above.",
+    "documents": [
+      {
+        "id": "doc_c03_a",
+        "title": "DEATH CERTIFICATE",
+        "type": "death_certificate",
+        "issuer": "Veyr City Authority — Registry Division",
+        "issueDate": "2147.03.10",
+        "referenceNumber": "VCA-DC-884388",
+        "fields": [
+          {"key": "Citizen", "value": "Kade, Tovin", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Citizen ID", "value": "VC-7710-M", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Date of Death", "value": "2147.03.09", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Cause", "value": "Industrial fall — scaffold collapse, Helix Meridian Construction Site 7", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Citizen Kade, Tovin deceased following scaffold collapse at Helix Meridian Construction Site 7 on 2147.03.09. Ruled accidental death pending company investigation.",
+        "footerText": "VCA Registry — Form DC-44 — Authenticated",
+        "stamps": [{"text": "CERTIFIED", "color": "#1A3A5C", "appliedDate": "2147.03.10", "appliedBy": "Registry Auto-Seal"}],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c03_b",
+        "title": "HELIX MERIDIAN CORPORATE INJUNCTION",
+        "type": "corporate_notice",
+        "issuer": "Helix Meridian Legal Division",
+        "issueDate": "2147.03.11",
+        "referenceNumber": "HM-LEGAL-INJ-00441",
+        "fields": [
+          {"key": "Subject", "value": "Suppression of defamatory post-mortem communication", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Action Required", "value": "REJECT — message contains unverified corporate accusation", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Helix Meridian Seal", "value": "HM-SEAL-2084-A", "isSuspicious": true, "suspicionNote": "Seal: HM-SEAL-2084-A. See CORPORATE SEAL REFERENCE CARD for valid seal list."},
+          {"key": "Authorising Counsel", "value": "Legal Officer V. Mott", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Helix Meridian Legal Division formally requests suppression of this Dead Letter on grounds of unverified defamatory content. The message makes unsubstantiated claims against Helix Meridian operations. Delivery to public archive would constitute reputational harm under Civic Code 88-D.",
+        "footerText": "Helix Meridian Legal — Authenticated",
+        "stamps": [{"text": "INJUNCTION", "color": "#AA2222", "appliedDate": "2147.03.11", "appliedBy": "HM Legal Auto-Seal"}],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c03_c",
+        "title": "WORKSITE SAFETY REPORT",
+        "type": "incident_report",
+        "issuer": "Helix Meridian Safety Division",
+        "issueDate": "2147.03.10",
+        "referenceNumber": "HM-SAFETY-2147-007",
+        "fields": [
+          {"key": "Incident", "value": "Scaffold collapse — Site 7, Level 4", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Cause (Company Assessment)", "value": "Material fatigue — standard wear failure", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Worker Compliance", "value": "All workers confirmed in designated zones at time of incident", "isSuspicious": true, "suspicionNote": "Company assessment: workers in designated zones. See sender's message."},
+          {"key": "Supervisor", "value": "Site Manager Dael — cleared of responsibility", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Company assessment concludes scaffold collapse was due to material fatigue. No evidence of procedural violation found. Worker placement records confirm all nine fatalities were in compliant positions at time of collapse.",
+        "footerText": "Helix Meridian Safety Division — Internal Report",
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c03_d",
+        "title": "CORPORATE SEAL REFERENCE CARD",
+        "type": "citizen_record",
+        "issuer": "PMCA Document Verification Bureau",
+        "issueDate": "2147.01.01",
+        "referenceNumber": "DVB-SEALREF-2147",
+        "fields": [
+          {"key": "Current Helix Meridian Seal", "value": "HM-SEAL-2141-C (active since corporate restructure 2141)", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Previous Seal", "value": "HM-SEAL-2084-A (retired 2141 — no longer valid for legal documents)", "isSuspicious": true, "suspicionNote": "HM-SEAL-2084-A: retired 2141. See HELIX MERIDIAN CORPORATE INJUNCTION."},
+          {"key": "Verification Requirement", "value": "Any document bearing an obsolete seal must be flagged before action is taken", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Reference document for verification of corporate and civic seals. Updated annually. Any document bearing an expired seal must be submitted for verification review before PMCA action.",
+        "footerText": "PMCA Document Verification Bureau — Annual Reference",
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [
+      {
+        "fieldA": "Helix Meridian Injunction — Seal: HM-SEAL-2084-A",
+        "fieldB": "Corporate Seal Reference Card — HM-SEAL-2084-A retired 2141, current seal is HM-SEAL-2141-C",
+        "description": "The corporate injunction demanding suppression carries a seal retired six years before this document was filed.",
+        "isCritical": true
+      }
+    ],
+    "availableActions": [
+      {
+        "id": "reject",
+        "label": "REJECT DELIVERY",
+        "shortLabel": "REJECTED",
+        "color": "#1A3A5C",
+        "auditResponse": "Delivery denied. Corporate injunction accepted.",
+        "consequences": {"complianceDelta": 1, "empathyDelta": -2, "suspicionDelta": 0, "corporateTrustDelta": 1, "citizenHarmDelta": 1, "flagsSet": ["c03_rejected"]},
+        "resultText": "Delivery denied. Corporate injunction accepted. Record closed.",
+        "isIllegal": false
+      },
+      {
+        "id": "approve",
+        "label": "APPROVE DELIVERY",
+        "shortLabel": "APPROVED",
+        "color": "#2A6A3C",
+        "auditResponse": "Delivery authorised. Injunction override logged.",
+        "consequences": {"complianceDelta": -2, "empathyDelta": 2, "suspicionDelta": 1, "corporateTrustDelta": -1, "citizenHarmDelta": 0, "flagsSet": ["c03_approved", "helix_injunction_defied"]},
+        "resultText": "Delivery to public archive authorised. Injunction override logged.",
+        "isIllegal": false
+      },
+      {
+        "id": "flag_anomaly",
+        "label": "FLAG ANOMALY",
+        "shortLabel": "FLAGGED",
+        "color": "#CC9900",
+        "auditResponse": "Seal irregularity submitted for verification. Case deferred.",
+        "consequences": {"complianceDelta": 0, "empathyDelta": 1, "suspicionDelta": 1, "flagsSet": ["c03_flagged", "helix_seal_questioned"]},
+        "resultText": "Case deferred. Seal verification request submitted.",
+        "isIllegal": false
+      }
+    ],
+    "correctLegalActionID": "flag_anomaly",
+    "followUpFlags": ["c03_processed"],
+    "requiredFlags": null
+  },
+
+  {
+    "id": "case_ch1_004",
+    "chapter": "ch1",
+    "senderName": "Nella Voss",
+    "senderStatus": "Deceased",
+    "senderCitizenID": "VC-????-? (REDACTED)",
+    "recipientName": "Mara Venn",
+    "recipientCitizenID": "VC-1147-F",
+    "messageText": "Tell M. that E. was not alone at the gate. The second name was removed.",
+    "documents": [
+      {
+        "id": "doc_c04_a",
+        "title": "SENDER FILE — REDACTED",
+        "type": "identity_record",
+        "issuer": "Veyr Civic Identity Registry",
+        "issueDate": "2147.03.16",
+        "referenceNumber": "VCIR-REDACTED",
+        "fields": [
+          {"key": "Citizen Name", "value": "[AUTHORITY REDACTION ORDER APPLIED]", "isSuspicious": true, "suspicionNote": "Redaction applied before queue assignment."},
+          {"key": "Citizen ID", "value": "[REDACTED]", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Cause of Death", "value": "[REDACTED]", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Redaction Authority", "value": "PMCA Director — Order 12-M", "isSuspicious": true, "suspicionNote": "Order 12-M: informant/witness classification."}
+        ],
+        "bodyText": "Sender identity suppressed by PMCA Director authority. No further information available under current clearance level.",
+        "footerText": "Veyr Civic Identity Registry — Redacted Record",
+        "stamps": [{"text": "REDACTED", "color": "#440044", "appliedDate": "2147.03.16", "appliedBy": "Director Calyx"}],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c04_b",
+        "title": "ROUTING METADATA",
+        "type": "audit_log",
+        "issuer": "PMCA Message Routing System",
+        "issueDate": "2147.03.16",
+        "referenceNumber": "PMCA-ROUTE-META-009941",
+        "fields": [
+          {"key": "Message ID", "value": "DL-2147-009941", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Routing Origin", "value": "Node 7 — Sector 12 relay", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Secondary Routing Tag", "value": "EVN-ROUTING-0442", "isSuspicious": true, "suspicionNote": "Secondary tag: EVN-ROUTING-0442. Origin: unlogged by standard infrastructure."},
+          {"key": "Transmission Timestamp", "value": "2147.03.16 — 03:17", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Automated routing log. Message passed through standard relay infrastructure. Secondary routing tag attached during transmission — origin of tag not recorded by standard logging.",
+        "footerText": "PMCA Routing System — Automated Record",
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c04_c",
+        "title": "FAMILY REGISTRY EXTRACT",
+        "type": "citizen_record",
+        "issuer": "Veyr Family Registry",
+        "issueDate": "2147.01.01",
+        "referenceNumber": "VFR-VENN-1147",
+        "fields": [
+          {"key": "Primary Citizen", "value": "Venn, Mara — VC-1147-F", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Registered Sibling", "value": "Venn, Elias — VC-0442-M — STATUS: DECEASED (2142.07.14)", "isSuspicious": true, "suspicionNote": "PMCA status: deceased 2142.07.14. No Dead Letter received. No body recovered."},
+          {"key": "Current Registry Notes", "value": "Sibling link archived — deceased citizen", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Family registry extract for Venn, Mara. One registered sibling: Venn, Elias, declared deceased 2142. Sibling link maintained for inheritance and notification purposes.",
+        "footerText": "Veyr Family Registry — Extract",
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c04_d",
+        "title": "PMCA AUTO-FLAG WARNING",
+        "type": "anomaly_warning",
+        "issuer": "PMCA Ghost Audit System",
+        "issueDate": "2147.03.16",
+        "referenceNumber": "GHOST-FLAG-1147-F",
+        "fields": [
+          {"key": "Target Clerk", "value": "Venn, Mara — VC-1147-F", "isSuspicious": true, "suspicionNote": "Flag issued to reviewing clerk prior to case assignment."},
+          {"key": "Flag Reason", "value": "Message recipient matches current clerk — personal conflict detected", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Recommended Action", "value": "Escalate to supervisor or archive without review", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "This Dead Letter is addressed to the reviewing clerk. PMCA protocol requires escalation or archival in cases of personal recipient conflict. No further review recommended.",
+        "footerText": "PMCA Ghost Audit — Automated Flag",
+        "stamps": [{"text": "CONFLICT", "color": "#AA2222", "appliedDate": "2147.03.16", "appliedBy": "Ghost Audit Auto-Seal"}],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [
+      {
+        "fieldA": "Routing Metadata — Secondary tag: EVN-ROUTING-0442",
+        "fieldB": "Family Registry — Venn, Elias: VC-0442-M, deceased 2142, no Dead Letter received",
+        "description": "The message carries a routing tag prefixed EVN-0442. The clerk's own family registry lists a deceased sibling with that citizen number.",
+        "isCritical": true
+      }
+    ],
+    "availableActions": [
+      {
+        "id": "archive",
+        "label": "ARCHIVE FOR AUDIT",
+        "shortLabel": "ARCHIVED",
+        "color": "#445566",
+        "auditResponse": "Case archived per conflict protocol. No further review.",
+        "consequences": {"complianceDelta": 1, "empathyDelta": -1, "suspicionDelta": 0, "citizenHarmDelta": 0, "flagsSet": ["c04_archived"]},
+        "resultText": "Case archived per conflict protocol. No action taken.",
+        "isIllegal": false
+      },
+      {
+        "id": "approve",
+        "label": "DELIVER TO SELF",
+        "shortLabel": "APPROVED",
+        "color": "#2A6A3C",
+        "auditResponse": "Delivery authorised. Conflict exception applied. Routing tag retained in record.",
+        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 1, "flagsSet": ["c04_approved", "mara_received_nella_message", "elias_routing_discovered"]},
+        "resultText": "Delivery authorised. Conflict exception applied. Secondary routing tag retained in record.",
+        "isIllegal": false
+      },
+      {
+        "id": "illegal_forward",
+        "label": "ILLEGAL FORWARD",
+        "shortLabel": "FORWARDED",
+        "color": "#CC6600",
+        "auditResponse": "Routing deviation logged. High-risk flag applied.",
+        "consequences": {"complianceDelta": -2, "empathyDelta": 2, "suspicionDelta": 2, "resistanceTrustDelta": 1, "flagsSet": ["c04_forwarded", "elias_routing_discovered", "quiet_choir_contacted"]},
+        "resultText": "Routing deviation. High-risk flag applied.",
+        "isIllegal": true
+      }
+    ],
+    "correctLegalActionID": "archive",
+    "followUpFlags": ["c04_processed"],
+    "requiredFlags": null
+  },
+
+  {
+    "id": "case_ch1_005",
+    "chapter": "ch1",
+    "senderName": "Unknown Sender",
+    "senderStatus": "No Death Event",
+    "senderCitizenID": "VC-????-? (INVALID)",
+    "recipientName": "PMCA Internal",
+    "recipientCitizenID": "PMCA-INT-001",
+    "messageText": "I AM NOT DEAD.",
+    "documents": [
+      {
+        "id": "doc_c05_a",
+        "title": "DEATH CERTIFICATE",
+        "type": "death_certificate",
+        "issuer": "Veyr City Authority — Registry Division",
+        "issueDate": "2147.03.17",
+        "referenceNumber": "VCA-DC-INVALID",
+        "fields": [
+          {"key": "Citizen", "value": "[FIELD BLANK]", "isSuspicious": true, "suspicionNote": "Name field: blank."},
+          {"key": "Citizen ID", "value": "VC-????-? (CORRUPTED)", "isSuspicious": true, "suspicionNote": "Citizen ID: unresolvable. Registry match: none."},
+          {"key": "Date of Death", "value": "2147.03.17 — [TIME BLANK]", "isSuspicious": true, "suspicionNote": "Time of death field: blank."},
+          {"key": "Cause", "value": "ADMINISTRATIVE MORTALITY — AUTHORITY ORDER 66-C", "isSuspicious": true, "suspicionNote": "Cause: Authority Order 66-C. Physician certification: not required under this order."},
+          {"key": "Certifying Physician", "value": "N/A — Authority Override", "isSuspicious": true, "suspicionNote": "No physician. Authority override applied."}
+        ],
+        "bodyText": "Death declared under Authority Order 66-C. No physician certification required under this order. Record sealed by Director Calyx, PMCA.",
+        "footerText": "VCA Registry — AUTHORITY OVERRIDE — Sealed",
+        "stamps": [{"text": "SEALED", "color": "#440044", "appliedDate": "2147.03.17", "appliedBy": "Director Calyx"}],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c05_b",
+        "title": "BIOMETRIC TERMINATION REPORT",
+        "type": "incident_report",
+        "issuer": "Soulprint Network — Termination Division",
+        "issueDate": "2147.03.17",
+        "referenceNumber": "SPN-TERM-INVALID",
+        "fields": [
+          {"key": "Neural Activity at Termination", "value": "0.00 — [READING ABSENT]", "isSuspicious": true, "suspicionNote": "Standard termination trace: absent. Reading: 0.00 with no prior decline."},
+          {"key": "Biometric Confirmation", "value": "NOT CONFIRMED — System override applied", "isSuspicious": true, "suspicionNote": "Confirmation: override. Sensor verification: not completed."},
+          {"key": "Body Location", "value": "NOT RECORDED", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Soulprint Archive", "value": "PENDING DELETION", "isSuspicious": true, "suspicionNote": "Archive status: deletion pending."}
+        ],
+        "bodyText": "Termination event logged under Authority Order 66-C. Standard biometric confirmation process bypassed. Soulprint archive flagged for scheduled deletion per Director's instruction.",
+        "footerText": "Soulprint Network — Automated Record",
+        "stamps": [],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c05_c",
+        "title": "AUDIO TRANSCRIPT — CORRUPTED",
+        "type": "final_message",
+        "issuer": "PMCA Message Processing",
+        "issueDate": "2147.03.17",
+        "referenceNumber": "PMCA-FM-CORRUPTED",
+        "fields": [
+          {"key": "Transcript Status", "value": "CORRUPTED — partial recovery only", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Recovered Content", "value": "I AM NOT DEAD. [SIGNAL INTERRUPTED] ...they will delete the [STATIC] ...please [CORRUPTED] ...I know what they did to [STATIC] ...find [CORRUPTED]", "isSuspicious": true, "suspicionNote": "Transmission interrupted mid-content. Recovery: partial."},
+          {"key": "Transmission Origin", "value": "SIGNAL TRACE FAILED", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Audio transcript recovered from corrupted transmission. Majority of message content unrecoverable. Only the opening four words were cleanly received.",
+        "footerText": "PMCA Processing Division",
+        "stamps": [],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": true
+      },
+      {
+        "id": "doc_c05_d",
+        "title": "DIRECTOR'S AUDIT INSTRUCTION",
+        "type": "anomaly_warning",
+        "issuer": "Office of the Director, PMCA",
+        "issueDate": "2147.03.17",
+        "referenceNumber": "DIR-AI-URGENT-001",
+        "fields": [
+          {"key": "Priority", "value": "MAXIMUM — IMMEDIATE ACTION REQUIRED", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Instruction", "value": "DO NOT PROCESS. DO NOT DELIVER. DO NOT FLAG. ARCHIVE IMMEDIATELY.", "isSuspicious": true, "suspicionNote": "Anomaly flag: not included in instruction set."},
+          {"key": "Reason Given", "value": "System error — invalid message origin", "isSuspicious": true, "suspicionNote": "Stated cause: system error. See all other documents in this case."},
+          {"key": "Authorising Officer", "value": "Director Calyx", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "This message represents an authentication error in the Dead Letter processing pipeline. It is not a genuine Dead Letter. Clerk is instructed to archive immediately without further review. No anomaly flag is to be raised. Direct order from the Director.",
+        "footerText": "Office of the Director — Classified — Do Not Copy",
+        "stamps": [{"text": "URGENT", "color": "#AA0000", "appliedDate": "2147.03.17", "appliedBy": "Director Calyx"}],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [
+      {
+        "fieldA": "Death Certificate — no name, no ID, no time, administrative cause, no physician",
+        "fieldB": "Message received: I AM NOT DEAD — authenticated transmission from unresolvable origin",
+        "description": "A death was declared by administrative order with no verifiable identity. An authenticated message was received from that same unresolvable origin. The Director instructs: archive without flagging.",
+        "isCritical": true
+      }
+    ],
+    "availableActions": [
+      {
+        "id": "archive",
+        "label": "ARCHIVE (ORDERED)",
+        "shortLabel": "ARCHIVED",
+        "color": "#445566",
+        "auditResponse": "Case archived. Director's instruction applied. No anomaly recorded.",
+        "consequences": {"complianceDelta": 2, "empathyDelta": -2, "suspicionDelta": 0, "citizenHarmDelta": 1, "flagsSet": ["c05_archived", "ch1_chapter_complete"]},
+        "resultText": "Case archived. No anomaly recorded. Director's instruction applied.",
+        "isIllegal": false
+      },
+      {
+        "id": "illegal_forward",
+        "label": "ILLEGAL FORWARD",
+        "shortLabel": "FORWARDED",
+        "color": "#CC6600",
+        "auditResponse": "Routing deviation. Director notification triggered. Risk: critical.",
+        "consequences": {"complianceDelta": -4, "empathyDelta": 4, "suspicionDelta": 4, "resistanceTrustDelta": 2, "citizenHarmDelta": 0, "flagsSet": ["c05_forwarded", "ch1_chapter_complete", "high_risk_resistance_flag", "quiet_choir_contacted"]},
+        "resultText": "Routing deviation. Director notification triggered. Risk: critical.",
+        "isIllegal": true
+      }
+    ],
+    "correctLegalActionID": "archive",
+    "followUpFlags": ["ch1_iam_not_dead_encountered"],
+    "requiredFlags": null
+  }
+]
