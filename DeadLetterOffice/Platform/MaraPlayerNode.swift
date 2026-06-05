@@ -19,9 +19,14 @@ final class MaraPlayerNode: SKNode {
     // Physics — tuned for gravity=-700 in PlatformScene
     private let moveSpeed: CGFloat   = 180
     private let jumpImpulse: CGFloat = 500
+    private let worldGravity: CGFloat = 700
     private let crouchScale: CGFloat = 0.6
     private var jumpCount: Int = 0
     private let maxJumps: Int = 1
+    private var manualAirborne = false
+    private let bodyHalfH: CGFloat = 25
+    private let floorTopY: CGFloat = 40
+    private let standCenterY: CGFloat = 66
 
     override init() {
         super.init()
@@ -79,8 +84,8 @@ final class MaraPlayerNode: SKNode {
         body.mass = 1.0
         body.allowsRotation = false
         body.restitution = 0
-        body.friction = 0.8
-        body.linearDamping = 0.08
+        body.friction = 0          // ground contact must not zero horizontal velocity
+        body.linearDamping = 0
         body.angularDamping = 1.0
         body.categoryBitMask = PhysicsCategory.player
         body.collisionBitMask = PhysicsCategory.ground
@@ -89,10 +94,12 @@ final class MaraPlayerNode: SKNode {
     }
 
     // MARK: - Input
-    func applyInput(_ input: VirtualPadNode.Input) {
+    func applyInput(_ input: VirtualPadNode.Input, delta: TimeInterval = 1.0 / 60.0) {
         guard let body = physicsBody else { return }
 
-        isGrounded = abs(body.velocity.dy) < 30
+        let feetY = position.y - bodyHalfH
+        let onFloor = feetY <= floorTopY + 3
+        isGrounded = !manualAirborne && (onFloor || abs(body.velocity.dy) < 30)
         if isGrounded { jumpCount = 0 }
 
         isCrouching = input.crouch
@@ -103,19 +110,38 @@ final class MaraPlayerNode: SKNode {
         }
 
         let speed: CGFloat = isCrouching ? moveSpeed * 0.4 : moveSpeed
-        if input.left {
-            body.velocity.dx = -speed
-            if facingRight { flipSprite(right: false) }
-        } else if input.right {
-            body.velocity.dx = speed
-            if !facingRight { flipSprite(right: true) }
-        } else {
-            body.velocity.dx *= 0.8
+
+        // Jump before horizontal so held movement + jump share one frame with full diagonal velocity.
+        if input.jump && !manualAirborne && onFloor && jumpCount < maxJumps && !isCrouching {
+            let hx: CGFloat = input.left ? -speed : (input.right ? speed : body.velocity.dx)
+            manualAirborne = true
+            body.affectedByGravity = false
+            body.collisionBitMask &= ~PhysicsCategory.ground
+            body.velocity = CGVector(dx: hx, dy: jumpImpulse)
+            jumpCount += 1
         }
 
-        if input.jump && isGrounded && jumpCount < maxJumps && !isCrouching {
-            body.velocity.dy = jumpImpulse
-            jumpCount += 1
+        if input.left {
+            let dy = manualAirborne ? body.velocity.dy : (isGrounded ? min(body.velocity.dy, 0) : body.velocity.dy)
+            body.velocity = CGVector(dx: -speed, dy: dy)
+            if facingRight { flipSprite(right: false) }
+        } else if input.right {
+            let dy = manualAirborne ? body.velocity.dy : (isGrounded ? min(body.velocity.dy, 0) : body.velocity.dy)
+            body.velocity = CGVector(dx: speed, dy: dy)
+            if !facingRight { flipSprite(right: true) }
+        } else {
+            let dy = manualAirborne ? body.velocity.dy : (isGrounded ? min(body.velocity.dy, 0) : body.velocity.dy)
+            body.velocity = CGVector(dx: body.velocity.dx * 0.8, dy: dy)
+        }
+
+        if manualAirborne {
+            let dt = CGFloat(delta)
+            let vy = body.velocity.dy - worldGravity * dt
+            body.velocity = CGVector(dx: body.velocity.dx, dy: vy)
+            if vy <= 0 {
+                body.collisionBitMask |= PhysicsCategory.ground
+                body.affectedByGravity = true
+            }
         }
 
         if input.left || input.right {
@@ -124,6 +150,22 @@ final class MaraPlayerNode: SKNode {
                 walkTimer = 0
                 animateWalk()
             }
+        }
+    }
+
+    func finishAirbornePhysicsStep() {
+        guard manualAirborne, let body = physicsBody else { return }
+        let feetY = position.y - bodyHalfH
+        if body.velocity.dy <= 0 && feetY <= floorTopY + 1 {
+            manualAirborne = false
+            body.collisionBitMask |= PhysicsCategory.ground
+            body.affectedByGravity = true
+            position.y = standCenterY
+            body.velocity = CGVector(dx: body.velocity.dx, dy: 0)
+        } else if body.velocity.dy <= 0 && abs(body.velocity.dy) < 25 {
+            manualAirborne = false
+            body.collisionBitMask |= PhysicsCategory.ground
+            body.affectedByGravity = true
         }
     }
 

@@ -13,12 +13,12 @@ class GameViewController: UIViewController {
     private func presentBootSceneIfNeeded() {
         guard !didPresent,
               let sv = view as? SKView,
-              sv.bounds.width > 100,
-              sv.bounds.height > 50 else { return }
+              sv.bounds.width > sv.bounds.height,   // wait for landscape — portrait fires first on device
+              sv.bounds.width > 200 else { return }
         didPresent = true
 
         let sz = sv.bounds.size
-        NSLog("[DLO] GameVC: presenting at %.0f×%.0f", sz.width, sz.height)
+        NSLog("[DLO] GameVC: presenting at %.0f×%.0f (landscape confirmed)", sz.width, sz.height)
         SceneManager.shared.view = sv
 
         // Debug: --start-at-desk / --start-at-dialogue launch arguments for UI testing
@@ -77,6 +77,7 @@ class GameViewController: UIViewController {
         sv.backgroundColor = .black
         sv.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         sv.ignoresSiblingOrder = true
+        sv.isMultipleTouchEnabled = true
         sv.showsFPS = false
         sv.showsNodeCount = false
         view = sv

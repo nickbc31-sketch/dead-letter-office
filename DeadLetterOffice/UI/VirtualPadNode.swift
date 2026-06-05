@@ -116,18 +116,22 @@ final class VirtualPadNode: SKNode {
     private func hitName(for pos: CGPoint) -> String {
         if leftRect.contains(pos)    { return "left" }
         if rightRect.contains(pos)   { return "right" }
-        if jumpRectPad.contains(pos) { return "jump" }
+        // Use live rightCluster position — precomputed jumpRectPad can drift from visual button.
+        let clusterPos = childNode(withName: "rightCluster")?.position ?? .zero
+        let local = CGPoint(x: pos.x - clusterPos.x, y: pos.y - clusterPos.y)
+        if jumpRect.insetBy(dx: -12, dy: -12).contains(local) { return "jump" }
         return "none"
     }
 
     private func updateInput() {
         let names = Set(activeTouches.values)
-        currentInput = Input(
+        let next = Input(
             left:     names.contains("left"),
             right:    names.contains("right"),
             jump:     names.contains("jump"),
             crouch:   names.contains("crouch"),
             interact: names.contains("interact")
         )
+        currentInput = next
     }
 }

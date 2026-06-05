@@ -79,7 +79,8 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
 
         let spawn = CGPoint(x: data.spawnPoint[0], y: data.spawnPoint[1])
         mara = MaraPlayerNode()
-        mara.position = spawn
+        // Feet rest on floor top (y=40); physics body is 50pt tall centred on node.
+        mara.position = CGPoint(x: spawn.x, y: max(spawn.y, 66))
         mara.zPosition = 50
         addChild(mara)
 
@@ -170,8 +171,14 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
                                   size: CGSize(width: width, height: groundH))
         ground.position = CGPoint(x: width / 2, y: groundH / 2)
         ground.zPosition = 20
-        ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
+        // One-way top edge — solid rectangle floor trapped Mara inside the collider.
+        let halfW = width / 2
+        let topY  = groundH / 2
+        ground.physicsBody = SKPhysicsBody(edgeFrom: CGPoint(x: -halfW, y: topY),
+                                           to:   CGPoint(x:  halfW, y: topY))
         ground.physicsBody?.isDynamic = false
+        ground.physicsBody?.restitution = 0
+        ground.physicsBody?.friction = 0
         ground.physicsBody?.categoryBitMask = PhysicsCategory.ground
         ground.physicsBody?.collisionBitMask = PhysicsCategory.player
         ground.physicsBody?.contactTestBitMask = PhysicsCategory.player
@@ -199,10 +206,16 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
                                 size: CGSize(width: width, height: 20))
         plat.position = CGPoint(x: x, y: y)
         plat.zPosition = 20
-        plat.physicsBody = SKPhysicsBody(rectangleOf: plat.size)
+        let pHalfW = plat.size.width / 2
+        let pTopY  = plat.size.height / 2
+        plat.physicsBody = SKPhysicsBody(edgeFrom: CGPoint(x: -pHalfW, y: pTopY),
+                                         to:   CGPoint(x:  pHalfW, y: pTopY))
         plat.physicsBody?.isDynamic = false
+        plat.physicsBody?.restitution = 0
+        plat.physicsBody?.friction = 0
         plat.physicsBody?.categoryBitMask = PhysicsCategory.ground
         plat.physicsBody?.collisionBitMask = PhysicsCategory.player
+        plat.physicsBody?.contactTestBitMask = PhysicsCategory.player
         let edge = SKSpriteNode(color: DLOColor.teal.withAlphaComponent(0.5),
                                 size: CGSize(width: width, height: 2))
         edge.position = CGPoint(x: 0, y: 11)
@@ -543,19 +556,27 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
 
     // MARK: - Game Loop
 
+    private var lastUpdateTime: TimeInterval = 0
+
+    override func didSimulatePhysics() {
+        mara?.finishAirbornePhysicsStep()
+    }
+
     override func update(_ currentTime: TimeInterval) {
         guard !isGamePaused else { return }
-        updateMara()
+        let delta = lastUpdateTime > 0 ? currentTime - lastUpdateTime : 1.0 / 60.0
+        lastUpdateTime = currentTime
+        updateMara(delta: delta)
         updateCamera()
         if !isInteractionPaused { updateDrones(currentTime) }
         if !isInteractionPaused { checkExits() }
     }
 
-    private func updateMara() {
+    private func updateMara(delta: TimeInterval) {
         guard let mara = mara, let pad = virtualPad else { return }
 
         if !isInteractionPaused {
-            mara.applyInput(pad.currentInput)
+            mara.applyInput(pad.currentInput, delta: delta)
         }
 
         // Edge-detect interact button press
