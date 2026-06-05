@@ -10,8 +10,11 @@ final class DroneEnemyNode: SKNode {
     private var currentPointIndex: Int = 0
     private var isPausing: Bool = false
     private var pauseTimer: TimeInterval = 0
+    private var stunTimer: TimeInterval = 0
     private var lastUpdateTime: TimeInterval = 0
     private var facingRight: Bool = true
+
+    var isStunned: Bool { stunTimer > 0 }
 
     private var bodySprite: SKNode!
     private var scanLight: SKShapeNode!
@@ -133,6 +136,15 @@ final class DroneEnemyNode: SKNode {
 
         guard patrolPoints.count > 1 else { return }
 
+        if stunTimer > 0 {
+            stunTimer -= delta
+            if stunTimer <= 0 {
+                scanLight.fillColor = DLOColor.scanLight
+                scanLight.alpha = 1.0
+            }
+            return
+        }
+
         if isPausing {
             pauseTimer -= delta
             if pauseTimer <= 0 {
@@ -166,6 +178,7 @@ final class DroneEnemyNode: SKNode {
     // Drone: downward triangle 120 deep × ±60 wide (half-angle ≈27°).
     // Guard: forward triangle 90 wide × ±30 tall from torso (half-angle ≈18°).
     func canSee(target: CGPoint) -> Bool {
+        guard stunTimer <= 0 else { return false }
         if isGuard {
             // Apex is at torso height (y+32), offset 10pt forward
             let apexX = position.x + (facingRight ? 10 : -10)
@@ -194,20 +207,18 @@ final class DroneEnemyNode: SKNode {
         scanLight.run(SKAction.colorize(with: DLOColor.danger, colorBlendFactor: 1.0, duration: 0.2))
     }
 
-    func stun(duration: TimeInterval = 3.0) {
+    func stun(duration: TimeInterval = 8.0) {
+        stunTimer = duration
         isAlerted = false
         alertIndicator.alpha = 0
         alertIndicator.removeAllActions()
-        scanLight.fillColor = DLOColor.scanLight
-        // Temporarily stop patrolling
-        let savedSpeed = self.droneSpeed
-        isPausing = true
-        pauseTimer = duration
-        run(SKAction.sequence([
-            SKAction.colorize(with: DLOColor.teal.withAlphaComponent(0.3), colorBlendFactor: 0.8, duration: 0.1),
+        scanLight.fillColor = DLOColor.teal.withAlphaComponent(0.2)
+        scanLight.alpha = 0.35
+        bodySprite.removeAction(forKey: "stunTint")
+        bodySprite.run(SKAction.sequence([
+            SKAction.colorize(with: DLOColor.teal.withAlphaComponent(0.45), colorBlendFactor: 0.7, duration: 0.1),
             SKAction.wait(forDuration: duration),
-            SKAction.colorize(withColorBlendFactor: 0, duration: 0.3)
-        ]))
-        _ = savedSpeed
+            SKAction.colorize(withColorBlendFactor: 0, duration: 0.25)
+        ]), withKey: "stunTint")
     }
 }

@@ -21,6 +21,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     private var activePanel: SKNode?
     private var interactButton: InteractButtonNode!
     private var interactWasPressed = false
+    private var empWasPressed = false
 
     // Level state
     private var isLevelComplete = false
@@ -550,7 +551,8 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         virtualPad.zPosition = 500
         cameraNode.addChild(virtualPad)
         // Must be called after addChild so layoutRightCluster can lock down jumpRectPad.
-        virtualPad.layoutRightCluster(x: cam.w - 190)
+        virtualPad.configure(screenWidth: cam.w, screenHeight: cam.h)
+        virtualPad.layoutRightCluster(x: cam.w - 175)
     }
 
     // MARK: - Game Loop
@@ -578,12 +580,27 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
             mara.applyInput(pad.currentInput, delta: delta)
         }
 
-        // Edge-detect interact button press
+        mara.updateStunCooldown(delta: delta)
+
+        // Edge-detect interact button press (right cluster)
         let interactNow = pad.currentInput.interact
         if interactNow && !interactWasPressed && !isInteractionPaused {
             activateNearbyInteractable()
         }
         interactWasPressed = interactNow
+
+        // Edge-detect EMP button press
+        let empNow = pad.currentInput.emp
+        if empNow && !empWasPressed && !isInteractionPaused {
+            if mara.fireStunPulse(scene: self) {
+                applyEmpPulseToNearbyDrones()
+            }
+        }
+        empWasPressed = empNow
+
+        let interactAvailable = nearbyInteractableID != nil || nearbyNPCID != nil
+        pad.setInteractHighlight(interactAvailable)
+        pad.setEmpCooldown(ratio: mara.stunCooldownRatio)
 
         // NPC proximity check (distance-based, no physics sensor needed)
         if !isInteractionPaused { checkNPCProximity() }
@@ -620,6 +637,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     private func updateDrones(_ currentTime: TimeInterval) {
         for drone in patrols {
             drone.update(currentTime: currentTime)
+            guard !drone.isStunned else { continue }
             if !mara.isCrouching && !mara.isHiding,
                drone.canSee(target: mara.position) {
                 maraCaught()
@@ -688,6 +706,14 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     }
 
     // MARK: - Interactable Activation
+
+    private func applyEmpPulseToNearbyDrones() {
+        // Match expanded pulse radius (120 × 2.5 scale in fireStunPulse)
+        let range: CGFloat = 300
+        for drone in patrols where mara.position.distance(to: drone.position) < range {
+            drone.stun(duration: 8.0)
+        }
+    }
 
     private func activateNearbyInteractable() {
         // NPC takes priority over environment interactables when both are in range
@@ -1086,14 +1112,15 @@ upon Director's audit completion.
 
             if isGamePaused || isInteractionPaused { continue }
 
-            // Interact button — tap when visible
-            if interactButton.alpha > 0.1, interactButtonCamRect.contains(camPos) {
-                activateNearbyInteractable()
-                continue
-            }
-
-            // All remaining touches forwarded to VirtualPad
+            // All touches forwarded to VirtualPad (interact is on the right cluster)
             virtualPad.notifyTouchBegan(touch, at: touch.location(in: virtualPad))
+        }
+    }
+
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard !isGamePaused, !isInteractionPaused else { return }
+        for touch in touches {
+            virtualPad.notifyTouchMoved(touch, at: touch.location(in: virtualPad))
         }
     }
 
