@@ -44,6 +44,10 @@ class GameViewController: UIViewController {
             let s = ChapterSelectScene(size: sz); s.scaleMode = .resizeFill
             sv.presentScene(s); return
         }
+        if args.contains("--start-at-debug") {
+            let s = DebugScene(size: sz); s.scaleMode = .resizeFill
+            sv.presentScene(s); return
+        }
 
         let scene = BootScene(size: sz)
         scene.scaleMode = .resizeFill

@@ -45,6 +45,7 @@
 		C8246D43F13BE8073541FBEB /* SceneLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7D3E75D6FE4F7F0EBE1614 /* SceneLayout.swift */; };
 		C8F05E0F65580E4F2A6BC370 /* ChapterCompleteScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3E061F31AF79AAE3FB95E2 /* ChapterCompleteScene.swift */; };
 		CD78FE80E6051BE9B0E51475 /* PlatformScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BC13C826FBD0F00E7C8720 /* PlatformScene.swift */; };
+		F2B8C3D41E5A6F7091A2B3C4 /* DebugScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A7B2C30D4F5E6080B1A2C3 /* DebugScene.swift */; };
 		CD94EA3F3835AAFE9E315450 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4953359B8E93F83BC02CC1BA /* Assets.xcassets */; };
 		CD9F1BAD6675D2E3D527E82F /* DLOColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6255710BF977800E69EA1585 /* DLOColors.swift */; };
 		D71DC39A05E4A9E0EB51F0F1 /* DeskInteractionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FC8EE56AC9AB81A3BAFD3F /* DeskInteractionTests.swift */; };
@@ -109,6 +110,7 @@
 		C4ECBC97DE210F67A1BBD8C6 /* LevelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelData.swift; sourceTree = "<group>"; };
 		C74E8B1A6F3D4A0289B1C392 /* intro_ch3.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = intro_ch3.json; sourceTree = "<group>"; };
 		D6678C35C042AD903F06C489 /* DeskScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeskScene.swift; sourceTree = "<group>"; };
+		E1A7B2C30D4F5E6080B1A2C3 /* DebugScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugScene.swift; sourceTree = "<group>"; };
 		DAA4E7E724AA24CAB4843B35 /* SpriteKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpriteKit.framework; path = System/Library/Frameworks/SpriteKit.framework; sourceTree = SDKROOT; };
 		EA60AB92D50848108B7217AC /* cases_ch3.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = cases_ch3.json; sourceTree = "<group>"; };
 		EC865BFE580FA1F5FAC52156 /* EndingScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndingScene.swift; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 				FD3E061F31AF79AAE3FB95E2 /* ChapterCompleteScene.swift */,
 				254262DB820B5E13A4B4D93B /* ChapterSelectScene.swift */,
 				5E9C77EE836100F7DF39DC9C /* CreditsScene.swift */,
+				E1A7B2C30D4F5E6080B1A2C3 /* DebugScene.swift */,
 				D6678C35C042AD903F06C489 /* DeskScene.swift */,
 				9D905A3EB27702E0B495318E /* DialogueScene.swift */,
 				EC865BFE580FA1F5FAC52156 /* EndingScene.swift */,
@@ -429,6 +432,7 @@
 				9BC53599F5668D11E8FB49EE /* MaraPlayerNode.swift in Sources */,
 				FC03C6E8C2282BED6826D5A0 /* PhysicsCategories.swift in Sources */,
 				CD78FE80E6051BE9B0E51475 /* PlatformScene.swift in Sources */,
+				F2B8C3D41E5A6F7091A2B3C4 /* DebugScene.swift in Sources */,
 				77940AF311E29502366D03DA /* SaveManager.swift in Sources */,
 				5F85EBD238E5B1CDEAAC387D /* SceneDelegate.swift in Sources */,
 				C8246D43F13BE8073541FBEB /* SceneLayout.swift in Sources */,

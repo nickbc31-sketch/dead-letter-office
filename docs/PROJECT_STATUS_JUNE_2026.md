@@ -121,7 +121,7 @@ CaseFile, CaseDocument (DocumentModel), Contradiction, CaseAction, ConsequenceMa
 | Gap | Detail |
 |---|---|
 | **Document zoom / expand missing** | Documents are fixed-size in DeskScene. Bible Section 13 specifies zoomable/expandable documents. Hard to read on smaller phones. |
-| **DebugScene / debug menu missing** | Bible specifies: reset save, load each case, inspect flags, set variables, jump scene. Essential for QA during Ch2–8 development. |
+| **DebugScene** | Implemented — launch with `--start-at-debug`. Reset save, scene jumps, flag toggles, status panel. See `docs/design/Phase0.5_FullAssetAudit_June2026.md`. |
 | **EvidenceScene missing** | Dedicated scene for reviewing platform-found evidence. Required for Ch5+ when physical evidence changes desk decisions. |
 
 ### Medium Priority
@@ -376,6 +376,7 @@ Listed in priority order. Do not skip phases.
 | Bible Gap Analysis | `docs/design/BibleGapAnalysis.md` |
 | Chapter 1 Runtime Analysis | `docs/design/Chapter1RuntimeAnalysis.md` |
 | Content Expansion Plan | `docs/design/ContentExpansionPlan.md` |
+| Phase 0.5 Full Asset Audit | `docs/design/Phase0.5_FullAssetAudit_June2026.md` |
 | Full Game Production Roadmap | `docs/design/FullGameProductionRoadmap.md` |
 | Audio Production Plan | `docs/design/AudioProductionPlan.md` |
 | Contradiction System Audit | `docs/design/ContradictionSystemAudit.md` |

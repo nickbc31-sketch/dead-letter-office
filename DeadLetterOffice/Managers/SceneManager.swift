@@ -16,6 +16,7 @@ indirect enum SceneType {
     case chapterComplete(chapterID: String, nextScene: SceneType)
     case chapterSelect
     case ending(endingType: EndingType)
+    case debug
 }
 
 final class SceneManager {
@@ -60,6 +61,8 @@ final class SceneManager {
             let s = ChapterSelectScene(size: size); s.scaleMode = .resizeFill; return s
         case .ending(let endingType):
             let s = EndingScene(size: size); s.endingType = endingType; s.scaleMode = .resizeFill; return s
+        case .debug:
+            let s = DebugScene(size: size); s.scaleMode = .resizeFill; return s
         }
     }
 }
