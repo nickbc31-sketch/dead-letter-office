@@ -26,7 +26,6 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     private var isLevelComplete = false
     private var deathCount: Int = 0
     private let maxDeathsBeforeSkipPrompt: Int = 3
-
     private var overlayNode: SKNode!
 
     private var isInteractionPaused: Bool { activePanel != nil }
@@ -87,7 +86,11 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         cameraNode = SKCameraNode()
         addChild(cameraNode)
         camera = cameraNode
-        cameraNode.position = mara.position
+        // Start camera at the steady-state target so there is no initial rush that
+        // makes Mara appear to slide backwards while the camera catches up.
+        let halfW = size.width / 2
+        let clampedX = max(halfW, min(spawn.x, CGFloat(data.levelWidth) - halfW))
+        cameraNode.position = CGPoint(x: clampedX, y: spawn.y + size.height * 0.25)
 
         for inter in data.interactables        { buildInteractable(inter) }
         for patrol in data.patrols             { buildPatrol(patrol) }
@@ -533,10 +536,9 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         virtualPad = VirtualPadNode()
         virtualPad.position = CGPoint(x: cam.left, y: cam.bottom)
         virtualPad.zPosition = 500
-        if let rc = virtualPad.childNode(withName: "rightCluster") {
-            rc.position = CGPoint(x: cam.w - 190, y: 0)
-        }
         cameraNode.addChild(virtualPad)
+        // Must be called after addChild so layoutRightCluster can lock down jumpRectPad.
+        virtualPad.layoutRightCluster(x: cam.w - 190)
     }
 
     // MARK: - Game Loop
@@ -645,6 +647,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     }
 
     func didEnd(_ contact: SKPhysicsContact) {
+        // Player + Interactable
         if let (_, b) = contact.bodies(catA: PhysicsCategory.player,
                                         catB: PhysicsCategory.interactable) {
             if let node = b.node,
@@ -1013,6 +1016,7 @@ upon Director's audit completion.
                     guard let self = self else { return }
                     self.mara.position = CGPoint(x: data.spawnPoint[0],
                                                  y: data.spawnPoint[1])
+                    self.mara.physicsBody?.velocity = .zero
                     self.mara.alpha = 1
                     if self.deathCount >= self.maxDeathsBeforeSkipPrompt {
                         self.showSkipOption()
@@ -1360,8 +1364,9 @@ private final class SimpleButtonNode2: SKNode {
     required init?(coder: NSCoder) { fatalError() }
     override func calculateAccumulatedFrame() -> CGRect {
         let s = SimpleButtonNode2.hitSize
-        return CGRect(x: position.x - s.width / 2, y: position.y - s.height / 2,
-                      width: s.width, height: s.height)
+        return CGRect(x: -s.width / 2, y: -s.height / 2, width: s.width, height: s.height)
     }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { action() }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { alpha = 0.7 }
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) { alpha = 1.0; action() }
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { alpha = 1.0 }
 }

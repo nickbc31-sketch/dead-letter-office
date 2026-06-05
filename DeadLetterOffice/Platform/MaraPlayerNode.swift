@@ -13,10 +13,7 @@ final class MaraPlayerNode: SKNode {
     private var lastInputTime: TimeInterval = 0
 
     // Visual
-    private var bodyNode: SKSpriteNode!
-    private var headNode: SKSpriteNode!
-    private var walkAnimFrames: [SKTexture] = []
-    private var currentWalkFrame: Int = 0
+    private var bodyNode: SKNode!
     private var walkTimer: TimeInterval = 0
 
     // Physics — tuned for gravity=-700 in PlatformScene
@@ -35,10 +32,10 @@ final class MaraPlayerNode: SKNode {
 
     // MARK: - Visual
     private func buildSprite() {
-        // Try to load art asset; fall back to procedural shape
         if UIImage(named: "mara_silhouette") != nil {
-            bodyNode = SKSpriteNode(imageNamed: "mara_silhouette")
-            bodyNode.size = CGSize(width: 28, height: 60)
+            let sprite = SKSpriteNode(imageNamed: "mara_silhouette")
+            sprite.size = CGSize(width: 28, height: 60)
+            bodyNode = sprite
         } else {
             bodyNode = buildProceduralMara()
         }
@@ -46,42 +43,34 @@ final class MaraPlayerNode: SKNode {
         addChild(bodyNode)
     }
 
-    private func buildProceduralMara() -> SKSpriteNode {
-        let size = CGSize(width: 24, height: 52)
-        UIGraphicsBeginImageContextWithOptions(size, false, 0)
-        guard let ctx = UIGraphicsGetCurrentContext() else {
-            UIGraphicsEndImageContext()
-            return SKSpriteNode(color: DLOColor.terminalAmber, size: size)
-        }
+    private func buildProceduralMara() -> SKNode {
+        let container = SKNode()
+        let coat = DLOColor.platformSilhouette
+        let teal = DLOColor.teal
 
-        // Body silhouette in Mara's distinct dark coat
-        let coatColor = UIColor(red: 0.10, green: 0.12, blue: 0.18, alpha: 1)
-        let accentColor = UIColor(red: 0.00, green: 0.71, blue: 0.79, alpha: 1) // teal trim
+        let legL = SKSpriteNode(color: coat, size: CGSize(width: 7, height: 20))
+        legL.position = CGPoint(x: -4, y: -15)
+        container.addChild(legL)
 
-        // Legs
-        ctx.setFillColor(coatColor.cgColor)
-        ctx.fill(CGRect(x: 4, y: 0, width: 7, height: 20))
-        ctx.fill(CGRect(x: 13, y: 0, width: 7, height: 20))
+        let legR = SKSpriteNode(color: coat, size: CGSize(width: 7, height: 20))
+        legR.position = CGPoint(x: 4, y: -15)
+        container.addChild(legR)
 
-        // Coat body
-        ctx.fill(CGRect(x: 2, y: 18, width: 20, height: 22))
+        let torso = SKSpriteNode(color: coat, size: CGSize(width: 20, height: 18))
+        torso.position = CGPoint(x: 0, y: 4)
+        container.addChild(torso)
 
-        // Shoulder trim
-        ctx.setFillColor(accentColor.cgColor)
-        ctx.fill(CGRect(x: 1, y: 37, width: 22, height: 2))
+        let trim = SKSpriteNode(color: teal, size: CGSize(width: 22, height: 2))
+        trim.position = CGPoint(x: 0, y: 14)
+        container.addChild(trim)
 
-        // Head
-        ctx.setFillColor(coatColor.cgColor)
-        ctx.addEllipse(in: CGRect(x: 6, y: 40, width: 12, height: 12))
-        ctx.fillPath()
+        let head = SKShapeNode(circleOfRadius: 6)
+        head.fillColor = coat
+        head.strokeColor = .clear
+        head.position = CGPoint(x: 0, y: 23)
+        container.addChild(head)
 
-        let img = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-
-        if let img = img {
-            return SKSpriteNode(texture: SKTexture(image: img), size: size)
-        }
-        return SKSpriteNode(color: DLOColor.platformSilhouette, size: size)
+        return container
     }
 
     private func setupPhysics() {
@@ -91,7 +80,7 @@ final class MaraPlayerNode: SKNode {
         body.allowsRotation = false
         body.restitution = 0
         body.friction = 0.8
-        body.linearDamping = 0.08   // reduced from 0.5 — better airborne control
+        body.linearDamping = 0.08
         body.angularDamping = 1.0
         body.categoryBitMask = PhysicsCategory.player
         body.collisionBitMask = PhysicsCategory.ground
@@ -103,11 +92,9 @@ final class MaraPlayerNode: SKNode {
     func applyInput(_ input: VirtualPadNode.Input) {
         guard let body = physicsBody else { return }
 
-        isGrounded = abs(body.velocity.dy) < 30   // threshold raised for gravity=-700
-
+        isGrounded = abs(body.velocity.dy) < 30
         if isGrounded { jumpCount = 0 }
 
-        // Crouch / hide
         isCrouching = input.crouch
         isHiding = input.crouch
         let targetScaleY: CGFloat = isCrouching ? crouchScale : 1.0
@@ -115,7 +102,6 @@ final class MaraPlayerNode: SKNode {
             bodyNode.run(SKAction.scaleY(to: targetScaleY, duration: 0.08))
         }
 
-        // Horizontal movement
         let speed: CGFloat = isCrouching ? moveSpeed * 0.4 : moveSpeed
         if input.left {
             body.velocity.dx = -speed
@@ -124,16 +110,14 @@ final class MaraPlayerNode: SKNode {
             body.velocity.dx = speed
             if !facingRight { flipSprite(right: true) }
         } else {
-            body.velocity.dx *= 0.8   // friction deceleration
+            body.velocity.dx *= 0.8
         }
 
-        // Jump
         if input.jump && isGrounded && jumpCount < maxJumps && !isCrouching {
             body.velocity.dy = jumpImpulse
             jumpCount += 1
         }
 
-        // Walk animation tick
         if input.left || input.right {
             walkTimer += 0.016
             if walkTimer > 0.12 {
@@ -149,12 +133,11 @@ final class MaraPlayerNode: SKNode {
     }
 
     private func animateWalk() {
-        // Simple bob animation since we don't have a walk cycle yet
         let bob = SKAction.sequence([
             SKAction.moveBy(x: 0, y: 2, duration: 0.06),
             SKAction.moveBy(x: 0, y: -2, duration: 0.06)
         ])
-        bodyNode.run(bob)
+        bodyNode.run(bob, withKey: "walkBob")
     }
 
     // MARK: - Stun Pulse

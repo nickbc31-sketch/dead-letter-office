@@ -19,10 +19,11 @@ final class VirtualPadNode: SKNode {
     private let btnSize = CGSize(width: 60, height: 60)
     private let jumpBtnSize = CGSize(width: 70, height: 70)
 
-    private var leftRect  = CGRect.zero
-    private var rightRect = CGRect.zero
-    private var jumpRect  = CGRect.zero
-    private var interactRect = CGRect.zero
+    private var leftRect      = CGRect.zero
+    private var rightRect     = CGRect.zero
+    private var jumpRect      = CGRect.zero   // in rightCluster space (used internally)
+    private var jumpRectPad   = CGRect.zero   // in VirtualPad space (used by hitName)
+    private var interactRect  = CGRect.zero
 
     override init() {
         super.init()
@@ -81,6 +82,15 @@ final class VirtualPadNode: SKNode {
         return node
     }
 
+    // Called by PlatformScene after VirtualPad is added to the camera.
+    // Positions the right cluster and locks down jumpRectPad so hitName
+    // never needs a dynamic childNode lookup at touch time.
+    func layoutRightCluster(x: CGFloat) {
+        childNode(withName: "rightCluster")?.position = CGPoint(x: x, y: 0)
+        jumpRectPad = CGRect(x: x + jumpRect.minX, y: jumpRect.minY,
+                             width: jumpRect.width, height: jumpRect.height)
+    }
+
     // MARK: - Touch Handling (called by PlatformScene, not ISE)
 
     func notifyTouchBegan(_ touch: UITouch, at pos: CGPoint) {
@@ -104,13 +114,9 @@ final class VirtualPadNode: SKNode {
     }
 
     private func hitName(for pos: CGPoint) -> String {
-        if leftRect.contains(pos)  { return "left" }
-        if rightRect.contains(pos) { return "right" }
-        // Check right cluster positions
-        let rightClusterPos = childNode(withName: "rightCluster")?.position ?? .zero
-        let localR = CGPoint(x: pos.x - rightClusterPos.x, y: pos.y - rightClusterPos.y)
-        if jumpRect.contains(localR)     { return "jump" }
-        if interactRect.contains(localR) { return "interact" }
+        if leftRect.contains(pos)    { return "left" }
+        if rightRect.contains(pos)   { return "right" }
+        if jumpRectPad.contains(pos) { return "jump" }
         return "none"
     }
 
