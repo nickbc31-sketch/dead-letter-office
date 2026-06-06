@@ -123,25 +123,41 @@ enum FieldEnvironmentDecor {
     }
 
     private static func addCh2Decor(to root: SKNode, width: CGFloat) {
-        for x in stride(from: 350, through: min(width - 200, 5200), by: 420) {
-            root.addChild(backgroundGantry(at: x))
-        }
+        root.addChild(relayMast(at: 560))
+        root.addChild(relayMast(at: 1780))
+        root.addChild(relayMast(at: 3650))
+        root.addChild(barrier(at: 3100))
         root.addChild(barrier(at: 3350))
-        root.addChild(dumpster(at: 600))
-        root.addChild(dumpster(at: 1800))
-        root.addChild(relayMast(at: 4100))
-        root.addChild(cameraPost(at: 3400))
+        root.addChild(dumpster(at: 480))
+        root.addChild(dumpster(at: 1420))
+        root.addChild(dumpster(at: 2200))
+        root.addChild(cameraPost(at: 3180))
+        let kiosk = SKSpriteNode(color: DLOColor.platformSilhouette.withAlphaComponent(0.5),
+                                 size: CGSize(width: 28, height: 48))
+        kiosk.position = CGPoint(x: 340, y: 64)
+        root.addChild(kiosk)
+        let uplink = SKSpriteNode(color: DLOColor.teal.withAlphaComponent(0.25),
+                                  size: CGSize(width: 20, height: 36))
+        uplink.position = CGPoint(x: 680, y: 62)
+        root.addChild(uplink)
     }
 
     private static func addCh3Decor(to root: SKNode, width: CGFloat) {
-        root.addChild(apartmentFacade(at: 500, floors: 4))
-        root.addChild(apartmentFacade(at: 1100, floors: 3))
-        root.addChild(apartmentFacade(at: 2400, floors: 4))
-        root.addChild(apartmentFacade(at: 3800, floors: 3))
-        root.addChild(barrier(at: 2550))
-        root.addChild(dumpster(at: 750))
+        root.addChild(apartmentFacade(at: 480, floors: 4))
+        root.addChild(apartmentFacade(at: 1050, floors: 3))
+        root.addChild(apartmentFacade(at: 1680, floors: 4))
+        root.addChild(apartmentFacade(at: 2350, floors: 3))
+        root.addChild(apartmentFacade(at: 3600, floors: 4))
+        root.addChild(barrier(at: 2480))
+        root.addChild(barrier(at: 2680))
+        root.addChild(dumpster(at: 820))
+        root.addChild(dumpster(at: 1920))
+        root.addChild(cameraPost(at: 2480))
         root.addChild(cameraPost(at: 2100))
-        root.addChild(cameraPost(at: 2850))
+        let noticeBoard = SKSpriteNode(color: DLOColor.terminalAmber.withAlphaComponent(0.2),
+                                       size: CGSize(width: 36, height: 28))
+        noticeBoard.position = CGPoint(x: 900, y: 72)
+        root.addChild(noticeBoard)
     }
 
     private static func addCheckpointInteriorDecor(to root: SKNode, width: CGFloat) {

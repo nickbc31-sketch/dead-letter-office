@@ -1,4 +1,5 @@
 import SpriteKit
+import UIKit
 
 final class DocumentNode: SKNode {
 
@@ -6,6 +7,7 @@ final class DocumentNode: SKNode {
     private let nodeSize: CGSize
     private var contentNode: SKNode!
     private var contentHeight: CGFloat = 0
+    private var scrollOffset: CGFloat = 0
     private let padding: CGFloat = 12
 
     init(document: DocumentModel, size: CGSize) {
@@ -21,7 +23,6 @@ final class DocumentNode: SKNode {
         let mult     = GameState.shared.textSizeMultiplier
         let fieldFS  = 11.0 * mult         // field key + value font (was 9.5)
         let bodyFS   = 10.5 * mult         // body paragraph font (was 9.0)
-        let lineH    = fieldFS * 1.78      // vertical step per field line (was 1.65)
 
         // Paper background
         let bg = SKSpriteNode(color: DLOColor.documentBG, size: nodeSize)
@@ -114,9 +115,6 @@ final class DocumentNode: SKNode {
         // ── Fields ────────────────────────────────────────────────────────────
         let keyColW:    CGFloat = 130
         let valueW:     CGFloat = nodeSize.width - padding * 2 - keyColW - 4
-        let charW:      CGFloat = fieldFS * 0.62
-        let keyCharsPerLine = max(1, Int((keyColW - 6) / charW))
-        let valCharsPerLine = max(1, Int(valueW / charW))
 
         for field in document.fields {
             let keyColor = field.isSuspicious
@@ -157,10 +155,10 @@ final class DocumentNode: SKNode {
                 contentNode.addChild(flagDot)
             }
 
-            // Advance y by the taller of wrapped key or wrapped value
-            let keyLines = max(1, (field.key.count + 1 + keyCharsPerLine - 1) / keyCharsPerLine)
-            let valLines = max(1, (field.value.count + valCharsPerLine - 1) / valCharsPerLine)
-            y -= CGFloat(max(keyLines, valLines)) * lineH + 2
+            let keyHeight = Self.measuredTextHeight(
+                field.key.uppercased() + ":", fontSize: fieldFS, width: keyColW - 4)
+            let valHeight = Self.measuredTextHeight(field.value, fontSize: fieldFS, width: valueW)
+            y -= max(keyHeight, valHeight) + 2
         }
 
         // ── Body text ─────────────────────────────────────────────────────────
@@ -183,9 +181,8 @@ final class DocumentNode: SKNode {
             bodyLbl.preferredMaxLayoutWidth = nodeSize.width - padding * 2
             bodyLbl.position = CGPoint(x: padding, y: y)
             contentNode.addChild(bodyLbl)
-            let bodyCharPerLine = max(1, Int((nodeSize.width - padding * 2) / (bodyFS * 0.62)))
-            let bodyLines = max(2, (document.bodyText.count + bodyCharPerLine - 1) / bodyCharPerLine)
-            y -= CGFloat(bodyLines) * (bodyFS * 1.45) + 6
+            let bodyWidth = nodeSize.width - padding * 2
+            y -= Self.measuredTextHeight(document.bodyText, fontSize: bodyFS, width: bodyWidth) + 6
         }
 
         // ── Stamps ────────────────────────────────────────────────────────────
@@ -214,15 +211,28 @@ final class DocumentNode: SKNode {
             contentNode.addChild(tamperedLbl)
         }
 
-        contentHeight = max(nodeSize.height, nodeSize.height - y + padding * 2)
+        let topY = nodeSize.height - padding
+        contentHeight = max(nodeSize.height, topY - y + padding)
+        scrollOffset = 0
+        contentNode.position.y = 0
     }
 
-    // Scroll the content by a delta (positive = scroll down / move content up)
+    /// Swipe up (positive delta) reveals lower document text.
     func scroll(delta: CGFloat) {
         let maxScroll = max(0, contentHeight - nodeSize.height)
-        let newY = (contentNode.position.y + delta)
-            .clamped(to: -maxScroll...0)
-        contentNode.position.y = newY
+        scrollOffset = (scrollOffset + delta).clamped(to: 0...maxScroll)
+        contentNode.position.y = scrollOffset
+    }
+
+    private static func measuredTextHeight(_ text: String, fontSize: CGFloat, width: CGFloat) -> CGFloat {
+        let font = UIFont(name: "Menlo", size: fontSize)
+            ?? UIFont.monospacedSystemFont(ofSize: fontSize, weight: .regular)
+        let rect = (text as NSString).boundingRect(
+            with: CGSize(width: max(1, width), height: .greatestFiniteMagnitude),
+            options: [.usesLineFragmentOrigin, .usesFontLeading],
+            attributes: [.font: font],
+            context: nil)
+        return ceil(rect.height)
     }
 }
 

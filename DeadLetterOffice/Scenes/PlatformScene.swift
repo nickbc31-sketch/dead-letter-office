@@ -1050,6 +1050,7 @@ Return to authorised sector immediately.
             GameState.shared.setFlag(flag)
         }
         if id == "haas" { NotebookManager.onHaasTalked() }
+        NotebookManager.onNPCTalked(npcID: id)
 
         // Build dialogue lines into one body string
         let body = npc.dialogue.joined(separator: "\n\n")
@@ -1604,6 +1605,7 @@ Return to authorised sector immediately.
             enterLadder(inter)
         case "information_node", "text_sign":
             if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
+            NotebookManager.onInformationNodeRead(nodeID: inter.id)
             let header = inter.nodeLabel == "RELAY" ? "CIVIC DATA UPLINK"
                 : "PUBLIC INFORMATION NODE"
             let body = inter.displayText ?? "No data available."
@@ -1639,6 +1641,7 @@ Return to authorised sector immediately.
     private func activateTerminal(_ inter: Interactable) {
         if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
         NotebookManager.onTerminalRead(terminalID: inter.id)
+        if levelID == "level_ch3" { NotebookManager.checkCh3FieldCompletion() }
 
         let body = terminalContent(for: inter.id, displayText: inter.displayText)
         showContentPanel(header: "TERMINAL — \(inter.id.uppercased())", body: body) { }
@@ -1655,6 +1658,8 @@ Return to authorised sector immediately.
 
     private func activateCartridge(_ inter: Interactable) {
         if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
+        NotebookManager.onCartridgeCollected(cartridgeID: inter.id)
+        if levelID == "level_ch3" { NotebookManager.checkCh3FieldCompletion() }
         let body = inter.cartridgeData ?? "CARTRIDGE DATA CORRUPTED."
         let node = interactableNodes[inter.id]
         node?.alpha = 0.25
@@ -1687,9 +1692,10 @@ Sign out before exterior transit.
         showContentPanel(header: "CREDENTIAL LOCKER", body: body) { [weak self] in
             guard let self = self else { return }
             if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
-            NotebookManager.onCredentialCollected()
             if self.levelID.hasPrefix("level_ch2") {
-                GameState.shared.setFlag("ch2_restricted_access")
+                NotebookManager.onCh2CredentialIssued()
+            } else {
+                NotebookManager.onCredentialCollected()
             }
             GameState.shared.save()
             self.interactableNodes[inter.id]?.alpha = 0.35

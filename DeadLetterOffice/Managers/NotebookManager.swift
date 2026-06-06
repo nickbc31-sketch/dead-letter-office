@@ -12,6 +12,7 @@ struct NotebookEntry: Codable, Identifiable {
 enum NotebookManager {
 
     private static let catalog: [String: NotebookEntry] = [
+        // MARK: Chapter 1
         "ch1_victim_id": NotebookEntry(
             id: "ch1_victim_id",
             title: "CASE 1 — VICTIM ID",
@@ -77,6 +78,152 @@ At checkpoint: use PDA override port
 if credential is logged (CONNECT PDA).
 """,
             chapter: "ch1"),
+
+        // MARK: Chapter 2
+        "ch2_jun_override": NotebookEntry(
+            id: "ch2_jun_override",
+            title: "MAINTENANCE OVERRIDE — J.V.",
+            body: """
+Sector 12 maintenance log — 2147.04.08
+Authorisation: J.V.
+Eastern corridor access granted.
+
+Personnel file: NOT FOUND
+Registry cross-check: FAILED
+
+Someone in the maintenance layer
+is using credentials without a record.
+""",
+            chapter: "ch2"),
+        "ch2_maintenance_hint": NotebookEntry(
+            id: "ch2_maintenance_hint",
+            title: "SECTOR 12 — MAINTENANCE CONTACT",
+            body: """
+Worker badge failed east checkpoint.
+Registry: ACTIVE. Roster: ABSENT.
+
+Locker past tier-three signs holds
+maintenance credential (MNT-SEC12-E4).
+
+Restricted sector cartridge hidden
+behind panel C-9 — do not read aloud.
+""",
+            chapter: "ch2"),
+        "ch2_evn_buffer": NotebookEntry(
+            id: "ch2_evn_buffer",
+            title: "EAST TRANSIT — EVN BUFFER",
+            body: """
+PMCA relay buffer — East Transit Node
+Unregistered senders in transit: 47
+Scheduled deletion: 2147.04.15
+
+Routing class: EVN
+Orphan tags logged: 12
+Origin infrastructure: UNLOGGED
+
+Desk terminals cannot see this buffer.
+""",
+            chapter: "ch2"),
+        "ch2_choir_list": NotebookEntry(
+            id: "ch2_choir_list",
+            title: "QUIET CHOIR MONITORING LIST",
+            body: """
+PMCA priority monitoring — civil status.
+Compiled: unknown. Internal only.
+
+MARR, L. — 29-VL-0034 — ACTIVE
+SEN, G. — DECEASED (2147.04.11)
+BRENT, A. — MINOR, GUARDIAN TRANSITION
+DAIN, K. — ACTIVE MONITORING
+
+Names from desk cases exist on a
+street-level monitoring cartridge.
+""",
+            chapter: "ch2"),
+        "ch2_restricted_access": NotebookEntry(
+            id: "ch2_restricted_access",
+            title: "RESTRICTED SECTOR CREDENTIAL",
+            body: """
+Maintenance credential: CH2-MAINT-SEC12
+Locker: MNT-SEC12-E4
+
+Opens restricted east transit sector.
+PDA override port available at checkpoint
+if camera sweep is active.
+
+Sign out before exterior transit.
+""",
+            chapter: "ch2"),
+
+        // MARK: Chapter 3
+        "ch3_evn_orphans": NotebookEntry(
+            id: "ch3_evn_orphans",
+            title: "BLOCK P03 — EVN ORPHAN TAGS",
+            body: """
+Residential register — Block P03
+EVN-ROUTING-0442 — no primary record
+Status: ORPHANED — audit closed 2142
+
+EVN-ROUTING-0447 — pending deletion
+Same routing class as Elias desk tag.
+
+Clerk terminals do not surface these.
+""",
+            chapter: "ch3"),
+        "ch3_orra_mural": NotebookEntry(
+            id: "ch3_orra_mural",
+            title: "ORRA — COMMUNITY MURAL",
+            body: """
+Block A corridor mural:
+'ORRA LIT THE LAMP
+WHEN THE SQUARE WENT DARK'
+— RESTORED 2138 —
+
+PMCA notice: unauthorised symbolism.
+Resistance predates current processing.
+""",
+            chapter: "ch3"),
+        "ch3_relocation": NotebookEntry(
+            id: "ch3_relocation",
+            title: "BATCH RELOCATION — BLOCK A",
+            body: """
+Notice: Units 301-318 — Block A
+Batch relocation order Q1 2147
+Reference: PMCA-REL-0441
+9 units cleared in single morning.
+
+Families told relatives were already
+processed before notifications sent.
+""",
+            chapter: "ch3"),
+        "ch3_marr_unit": NotebookEntry(
+            id: "ch3_marr_unit",
+            title: "UNIT 312 — L. MARR",
+            body: """
+Unit 312 sealing inventory — Marr, L.
+Death: 2147.03.18 — Case C09-0441-V
+Appeal: in processing at desk
+
+Undelivered letter to Review Bureau.
+Relocation enforced posthumously.
+Housing register knew before appeal.
+""",
+            chapter: "ch3"),
+        "ch3_orvin_note": NotebookEntry(
+            id: "ch3_orvin_note",
+            title: "ORVIN — RECOVERED NOTE",
+            body: """
+Unit 204 — Orvin, K. — 38-SV-0091
+Handwritten note recovered pre-incineration:
+
+'I did not write the confession.
+They gave me words — sign or the boy
+loses his guardian. I signed.'
+
+Harrel signed death and destruction
+eighteen minutes apart.
+""",
+            chapter: "ch3"),
     ]
 
     static func entry(for id: String) -> NotebookEntry? { catalog[id] }
@@ -93,7 +240,7 @@ if credential is logged (CONNECT PDA).
             .sorted { $0.title < $1.title }
     }
 
-    // MARK: - Chapter 1 auto-capture hooks
+    // MARK: - Auto-capture hooks
 
     static func onDeskDocumentOpened(documentID: String, caseID: String) {
         if caseID == "case_ch1_001", documentID == "doc_c01_a" {
@@ -113,6 +260,20 @@ if credential is logged (CONNECT PDA).
         case "relay_console_01":
             unlock("ch1_credential_note")
             unlock("ch1_relay_buffer")
+        case "terminal_queue":
+            break
+        case "terminal_maintenance":
+            unlock("ch2_jun_override")
+        case "terminal_incineration":
+            break
+        case "terminal_buffer":
+            unlock("ch2_evn_buffer")
+        case "terminal_checkin":
+            unlock("ch3_evn_orphans")
+        case "terminal_monitoring":
+            unlock("ch3_relocation")
+        case "terminal_apt_main":
+            unlock("ch3_marr_unit")
         default:
             break
         }
@@ -124,6 +285,53 @@ if credential is logged (CONNECT PDA).
 
     static func onHaasTalked() {
         unlock("ch1_code_format")
+    }
+
+    static func onNPCTalked(npcID: String) {
+        switch npcID {
+        case "maint_worker_12":
+            unlock("ch2_maintenance_hint")
+        case "resident_305":
+            unlock("ch3_relocation")
+            unlock("ch3_marr_unit")
+        default:
+            break
+        }
+    }
+
+    static func onCartridgeCollected(cartridgeID: String) {
+        switch cartridgeID {
+        case "cartridge_choir_list":
+            unlock("ch2_choir_list")
+        case "cartridge_kell_orvin":
+            unlock("ch3_orvin_note")
+        default:
+            break
+        }
+    }
+
+    static func onInformationNodeRead(nodeID: String) {
+        switch nodeID {
+        case "sign_orrra_mural":
+            unlock("ch3_orra_mural")
+            GameState.shared.setFlag("orrra_mural_ch3")
+        case "sign_eviction":
+            unlock("ch3_relocation")
+        default:
+            break
+        }
+    }
+
+    static func checkCh3FieldCompletion() {
+        let gs = GameState.shared
+        if gs.hasFlag("ch3_apt_main_read") || gs.hasFlag("ch3_orvin_cartridge_collected") {
+            gs.setFlag("ch3_field_complete")
+            gs.save()
+        }
+    }
+
+    static func onCh2CredentialIssued() {
+        unlock("ch2_restricted_access")
     }
 
     // MARK: - PDA overlay UI

@@ -63,6 +63,7 @@ final class DeskScene: SKScene {
     private var auditCloseRect     = CGRect.zero
     private var isScrollingAudit   = false
     private var auditLastScrollY:  CGFloat = 0
+    private var auditScrollOffset: CGFloat = 0
 
     // Document scrolling (touch-and-drag in the tray area)
     private var isScrollingDocument = false
@@ -1399,6 +1400,8 @@ final class DeskScene: SKScene {
         let contentHolder = SKNode()
         crop.addChild(contentHolder)
         auditContentNode = contentHolder
+        auditScrollOffset = 0
+        contentHolder.position.y = 0
 
         // Build anomaly entries top-to-bottom in contentHolder's local coords
         // Origin of contentHolder is at crop.position (scrollCenterY); y=scrollH/2 is the top.
@@ -1499,6 +1502,7 @@ final class DeskScene: SKScene {
         auditContentNode = nil
         auditCloseRect = .zero
         isScrollingAudit = false
+        auditScrollOffset = 0
         overlay.run(SKAction.sequence([
             SKAction.fadeOut(withDuration: 0.1),
             SKAction.removeFromParent()
@@ -1507,9 +1511,9 @@ final class DeskScene: SKScene {
 
     private func scrollAuditContent(delta: CGFloat) {
         guard let content = auditContentNode else { return }
-        let maxScroll = max(0, auditContentH - auditViewH + 16)
-        let newY = (content.position.y + delta).clamped(to: -maxScroll ... 0)
-        content.position.y = newY
+        let maxScroll = max(0, auditContentH - auditViewH)
+        auditScrollOffset = (auditScrollOffset + delta).clamped(to: 0...maxScroll)
+        content.position.y = auditScrollOffset
     }
 
     private func showMessage(_ text: String, color: SKColor = DLOColor.terminalAmber,

@@ -62,5 +62,33 @@ final class HackingSystem {
                 correctSequence: [0, 1, 3]
             )
         ))
+        register(HackingPuzzleSpec(
+            id: "ch2_restricted_bypass",
+            kind: .signalRoute,
+            title: "RESTRICTED SECTOR RELAY BYPASS",
+            targetInteractableID: "ch2_restricted_override",
+            requiredFlag: "ch2_maintenance_credential",
+            difficulty: 1,
+            timeLimitSeconds: nil,
+            setsFlagOnSuccess: "ch2_restricted_override_used",
+            signalRoute: SignalRoutePuzzlePayload(
+                nodeLabels: ["TRANSIT", "BUFFER", "GATE", "SECTOR-4"],
+                correctSequence: [0, 2, 3]
+            )
+        ))
+        register(HackingPuzzleSpec(
+            id: "ch3_marr_seal_bypass",
+            kind: .signalRoute,
+            title: "RESIDENTIAL SEAL OVERRIDE",
+            targetInteractableID: "override_marr_apt",
+            requiredFlag: "c09_processed",
+            difficulty: 1,
+            timeLimitSeconds: nil,
+            setsFlagOnSuccess: "ch3_override_used",
+            signalRoute: SignalRoutePuzzlePayload(
+                nodeLabels: ["PROPERTY", "MAINT", "SEAL", "UNIT-312"],
+                correctSequence: [1, 2, 3]
+            )
+        ))
     }
 }
