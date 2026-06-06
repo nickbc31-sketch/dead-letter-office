@@ -39,6 +39,7 @@ final class MaraPlayerNode: SKNode {
     private func buildSprite() {
         if UIImage(named: "mara_silhouette") != nil {
             let sprite = SKSpriteNode(imageNamed: "mara_silhouette")
+            sprite.texture?.filteringMode = .nearest
             sprite.size = CGSize(width: 28, height: 60)
             bodyNode = sprite
         } else {

@@ -92,6 +92,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         let halfW = size.width / 2
         let clampedX = max(halfW, min(spawn.x, CGFloat(data.levelWidth) - halfW))
         cameraNode.position = CGPoint(x: clampedX, y: spawn.y + size.height * 0.25)
+        updateParallaxTileWrapping()
 
         for inter in data.interactables        { buildInteractable(inter) }
         for patrol in data.patrols             { buildPatrol(patrol) }
@@ -109,11 +110,13 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         node.userData?["scrollFactor"] = Double(layer.scrollFactor)
 
         if let image = UIImage(named: layer.imageName) {
-            node.addChild(buildTiledParallaxSprites(
+            let tiles = buildTiledParallaxSprites(
                 image: image,
+                imageName: layer.imageName,
                 levelWidth: levelWidth,
                 levelHeight: levelHeight,
-                yOffset: layer.yOffset))
+                yOffset: layer.yOffset)
+            node.addChild(tiles)
         } else {
             node.addChild(buildProceduralBackground(layer: layer,
                                                     width: levelWidth, height: levelHeight))
@@ -121,35 +124,204 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         return node
     }
 
-    /// Tiles a parallax strip to cover level width + viewport, scaled to level height.
+    // MARK: - Parallax blend profiles (vertical composite + seam hiding)
+
+    private enum ParallaxLayerKind {
+        case far, mid, near
+
+        static func from(imageName: String) -> ParallaxLayerKind {
+            switch imageName {
+            case "bg_city_far": return .far
+            case "bg_facility_mid": return .mid
+            case "bg_facility_near": return .near
+            default: return .mid
+            }
+        }
+
+        /// (height fraction from bottom, alpha) — soft vertical composite.
+        var verticalStops: [(CGFloat, CGFloat)] {
+            switch self {
+            case .far:
+                return [(0, 0), (0.50, 0), (0.56, 0.35), (0.60, 1), (1, 1)]
+            case .mid:
+                return [(0, 0), (0.26, 0), (0.30, 0.9), (0.55, 1), (0.60, 0.55), (0.66, 0), (1, 0)]
+            case .near:
+                return [(0, 1), (0.28, 1), (0.32, 0.75), (0.40, 0.25), (0.48, 0.04), (0.55, 0), (1, 0)]
+            }
+        }
+
+        /// Stagger repeat seams so far/mid/near do not align.
+        var phaseFraction: CGFloat {
+            switch self {
+            case .far: return 0
+            case .mid: return 0.34
+            case .near: return 0.68
+            }
+        }
+    }
+
+    private func interpolateAlpha(stops: [(CGFloat, CGFloat)], _ t: CGFloat) -> CGFloat {
+        guard let first = stops.first, let last = stops.last else { return 1 }
+        if t <= first.0 { return first.1 }
+        if t >= last.0 { return last.1 }
+        for i in 0..<(stops.count - 1) {
+            let (t0, a0) = stops[i]
+            let (t1, a1) = stops[i + 1]
+            if t >= t0 && t <= t1 {
+                let u = (t - t0) / max(0.001, t1 - t0)
+                return a0 + (a1 - a0) * u
+            }
+        }
+        return last.1
+    }
+
+    private func smoothstep(_ t: CGFloat) -> CGFloat {
+        let x = max(0, min(1, t))
+        return x * x * (3 - 2 * x)
+    }
+
+    private func horizontalEdgeFade(xFraction: CGFloat, fade: CGFloat, floor: CGFloat = 1) -> CGFloat {
+        if fade <= 0 || floor >= 1 { return 1 }
+        if xFraction < fade {
+            return floor + (1 - floor) * smoothstep(xFraction / fade)
+        }
+        if xFraction > 1 - fade {
+            return floor + (1 - floor) * smoothstep((1 - xFraction) / fade)
+        }
+        return 1
+    }
+
+    /// Vertical layer blend; optional horizontal fade for tile crossfade (never used on backing).
+    private func makeParallaxBlendMask(size: CGSize,
+                                       kind: ParallaxLayerKind,
+                                       horizontalFade: CGFloat) -> UIImage {
+        let w = max(2, Int(size.width.rounded()))
+        let h = max(2, Int(size.height.rounded()))
+        let hFade = horizontalFade
+        let hFloor: CGFloat = horizontalFade > 0 ? 0.88 : 1
+        var pixels = [UInt8](repeating: 0, count: w * h * 4)
+        for y in 0..<h {
+            let bottomFrac = 1 - CGFloat(y) / CGFloat(h - 1)
+            let vAlpha = interpolateAlpha(stops: kind.verticalStops, bottomFrac)
+            for x in 0..<w {
+                let xFrac = CGFloat(x) / CGFloat(w - 1)
+                let alpha = vAlpha * horizontalEdgeFade(xFraction: xFrac, fade: hFade, floor: hFloor)
+                let a = UInt8(min(255, max(0, alpha * 255)))
+                let idx = (y * w + x) * 4
+                pixels[idx] = 255
+                pixels[idx + 1] = 255
+                pixels[idx + 2] = 255
+                pixels[idx + 3] = a
+            }
+        }
+        let cs = CGColorSpaceCreateDeviceRGB()
+        guard let ctx = CGContext(data: &pixels,
+                                  width: w,
+                                  height: h,
+                                  bitsPerComponent: 8,
+                                  bytesPerRow: w * 4,
+                                  space: cs,
+                                  bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue),
+              let cgImage = ctx.makeImage() else {
+            return UIImage()
+        }
+        return UIImage(cgImage: cgImage)
+    }
+
+    /// Tiled parallax strip with overlap, blend masks, and a small rolling tile pool.
     private func buildTiledParallaxSprites(image: UIImage,
+                                           imageName: String,
                                            levelWidth: CGFloat,
                                            levelHeight: CGFloat,
                                            yOffset: CGFloat) -> SKNode {
         let container = SKNode()
+        container.name = "parallaxTiles"
+
         let texture = SKTexture(image: image)
         texture.filteringMode = .linear
 
         let texSize = texture.size()
         guard texSize.width > 0, texSize.height > 0 else { return container }
 
+        let kind = ParallaxLayerKind.from(imageName: imageName)
         let targetH = levelHeight
         let scale = targetH / texSize.height
         let tileW = texSize.width * scale
-        let viewportW = max(size.width, 400)
-        // Extra tiles for parallax shift (near layer scrollFactor up to ~0.9).
-        let coverage = levelWidth + viewportW * 2
-        let tileCount = max(2, Int(ceil(coverage / tileW)) + 1)
+        let overlap = min(tileW * 0.22, max(160, tileW * 0.16))
+        let stride = tileW - overlap
         let centerY = levelHeight / 2 + yOffset
+        // Stagger seam position per layer without leaving uncovered gaps on the left.
+        let phaseShift = kind.phaseFraction * stride
+        let viewPad = max(size.width, levelWidth * 0.35)
+        let coverageMin = -viewPad
+        let firstCenterX = coverageMin + tileW * 0.5 + phaseShift
+        let tileSize = CGSize(width: tileW, height: targetH)
 
+        let maskImage = makeParallaxBlendMask(size: tileSize, kind: kind, horizontalFade: 0.1)
+        let maskTexture = SKTexture(image: maskImage)
+        maskTexture.filteringMode = .linear
+
+        let tileCount = 7
         for i in 0..<tileCount {
             let sprite = SKSpriteNode(texture: texture)
             sprite.size = CGSize(width: tileW, height: targetH)
             sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-            sprite.position = CGPoint(x: tileW * (CGFloat(i) + 0.5), y: centerY)
-            container.addChild(sprite)
+
+            let mask = SKSpriteNode(texture: maskTexture)
+            mask.size = sprite.size
+
+            let crop = SKCropNode()
+            crop.maskNode = mask
+            crop.addChild(sprite)
+            crop.position = CGPoint(x: firstCenterX + stride * CGFloat(i), y: centerY)
+            crop.name = "parallaxTile"
+            container.addChild(crop)
         }
+
+        container.userData = NSMutableDictionary()
+        container.userData?["tileWidth"] = Double(tileW)
+        container.userData?["tileStride"] = Double(stride)
         return container
+    }
+
+    /// Repositions edge tiles to hide horizontal repeat seams during camera scroll.
+    private func updateParallaxTileWrapping() {
+        guard let camera = cameraNode else { return }
+        let viewW = size.width
+        let margin: CGFloat = viewW * 0.6
+
+        for layer in children where layer.name?.hasPrefix("bgLayer_") == true {
+            guard let container = layer.childNode(withName: "parallaxTiles"),
+                  let tileW = container.userData?["tileWidth"] as? Double,
+                  let stride = container.userData?["tileStride"] as? Double else { continue }
+
+            let w = CGFloat(tileW)
+            let s = CGFloat(stride)
+            let localMin = camera.position.x - viewW * 0.5 - margin - layer.position.x
+            let localMax = camera.position.x + viewW * 0.5 + margin - layer.position.x
+
+            let tiles = container.children
+                .filter { $0.name == "parallaxTile" }
+                .sorted { $0.position.x < $1.position.x }
+            guard tiles.count > 1 else { continue }
+
+            for tile in tiles {
+                if tile.position.x + w * 0.5 < localMin {
+                    let maxX = container.children
+                        .filter { $0.name == "parallaxTile" }
+                        .map(\.position.x).max() ?? tile.position.x
+                    tile.position.x = maxX + s
+                }
+            }
+            for tile in tiles.reversed() {
+                if tile.position.x - w * 0.5 > localMax {
+                    let minX = container.children
+                        .filter { $0.name == "parallaxTile" }
+                        .map(\.position.x).min() ?? tile.position.x
+                    tile.position.x = minX - s
+                }
+            }
+        }
     }
 
     private func buildProceduralBackground(layer: BackgroundLayer,
@@ -663,6 +835,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
                 let factor = CGFloat(layer.userData?["scrollFactor"] as? Double ?? 0)
                 layer.position.x = -cameraNode.position.x * factor
             }
+        updateParallaxTileWrapping()
     }
 
     private func updateDrones(_ currentTime: TimeInterval) {
