@@ -18,7 +18,7 @@ struct PatrolRoute: Codable {
 
 struct Interactable: Codable, Identifiable {
     var id: String
-    var type: String            // terminal, door, cartridge, cabinet, security_override, building_entrance, building_exit, text_sign, ladder
+    var type: String            // terminal, door, cartridge, cabinet, security_override, building_entrance, building_exit, information_node, text_sign, ladder
     var position: [CGFloat]     // [x, y]
     var requiredFlag: String?
     var requiredFlagsAny: [String]?   // OR gate — any listed flag satisfies access
@@ -31,6 +31,8 @@ struct Interactable: Codable, Identifiable {
     var linkedLevelID: String?  // building_entrance → interior level id
     var buildingVisual: BuildingVisualSpec?  // configurable exterior shell (module C)
     var ladderExtent: [CGFloat]?  // [bottomY, topY] for ladder interactables
+    var hackPuzzleID: String?     // PDA hack puzzle registry id
+    var nodeLabel: String?          // information node / prompt label
 }
 
 struct BackgroundLayer: Codable {
@@ -70,6 +72,8 @@ struct LevelData: Codable, Identifiable {
     var isInterior: Bool?            // compact interior room layout
     var levelWidth: CGFloat
     var levelHeight: CGFloat
+    var fieldBoundaryX: CGFloat?    // hard east boundary — security enforcer
+    var securityCameras: [SecurityCameraSpec]?
 
     static func load(id: String) -> LevelData? {
         guard

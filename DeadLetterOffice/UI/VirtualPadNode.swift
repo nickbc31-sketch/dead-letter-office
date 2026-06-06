@@ -5,7 +5,7 @@ final class VirtualPadNode: SKNode {
     struct Input {
         var left: Bool = false
         var right: Bool = false
-        var jump: Bool = false
+        var hack: Bool = false
         var crouch: Bool = false
         var hide: Bool = false
         var interact: Bool = false
@@ -14,23 +14,24 @@ final class VirtualPadNode: SKNode {
     }
 
     private(set) var currentInput = Input()
+    private(set) var inputLocked = false
 
-    // Touch tracking: touch uid → right-cluster button name
     private var activeTouches: [UITouch: String] = [:]
     private var thumbstickTouch: UITouch?
 
     private let actionBtnSize = CGSize(width: 56, height: 56)
-    private let jumpBtnSize = CGSize(width: 70, height: 70)
+    private let hackBtnSize = CGSize(width: 70, height: 70)
 
     private var leftZoneRect = CGRect.zero
-    // Right-cluster rects in rightCluster local space
-    private var jumpRect = CGRect.zero
+    private var hackRect = CGRect.zero
     private var interactRect = CGRect.zero
     private var empRect = CGRect.zero
 
     private let thumbstick = ThumbstickNode()
 
     private weak var interactBtnBG: SKShapeNode?
+    private weak var hackBtnBG: SKShapeNode?
+    private weak var hackBtnLbl: SKLabelNode?
     private weak var empBtnBG: SKShapeNode?
     private var empCooldownOverlay: SKShapeNode?
 
@@ -44,7 +45,6 @@ final class VirtualPadNode: SKNode {
     private func buildPad() {
         addChild(thumbstick)
 
-        // Right cluster — Interact / EMP stacked left, Jump primary on the right
         let rightCluster = SKNode()
         rightCluster.name = "rightCluster"
         addChild(rightCluster)
@@ -80,16 +80,21 @@ final class VirtualPadNode: SKNode {
         empBtn.addChild(overlay)
         empCooldownOverlay = overlay
 
-        let jumpPair = makeButton(color: DLOColor.terminalAmber.withAlphaComponent(0.35),
-                                  size: jumpBtnSize, label: "↑")
-        let jumpBtn = jumpPair.node
-        jumpBtn.name = "jump"
-        jumpBtn.position = CGPoint(x: 88, y: 50)
-        rightCluster.addChild(jumpBtn)
-        jumpRect = CGRect(x: 53, y: 15, width: jumpBtnSize.width, height: jumpBtnSize.height)
+        let hackPair = makeButton(
+            color: SKColor(red: 0.22, green: 0.28, blue: 0.32, alpha: 0.45),
+            size: hackBtnSize,
+            label: "PDA")
+        let hackBtn = hackPair.node
+        hackBtnBG = hackPair.bg
+        hackBtnLbl = hackPair.lbl
+        hackBtn.name = "hack"
+        hackBtn.position = CGPoint(x: 88, y: 50)
+        rightCluster.addChild(hackBtn)
+        hackRect = CGRect(x: 53, y: 15, width: hackBtnSize.width, height: hackBtnSize.height)
     }
 
-    private func makeButton(color: SKColor, size: CGSize, label: String) -> (node: SKNode, bg: SKShapeNode) {
+    private func makeButton(color: SKColor, size: CGSize, label: String)
+        -> (node: SKNode, bg: SKShapeNode, lbl: SKLabelNode) {
         let node = SKNode()
         let bg = SKShapeNode(rectOf: size, cornerRadius: 8)
         bg.fillColor = color
@@ -103,10 +108,9 @@ final class VirtualPadNode: SKNode {
         lbl.verticalAlignmentMode = .center
         lbl.horizontalAlignmentMode = .center
         node.addChild(lbl)
-        return (node, bg)
+        return (node, bg, lbl)
     }
 
-    /// Lower-left 40% × 40% touch zone in this node's coordinate space.
     func configure(screenWidth: CGFloat, screenHeight: CGFloat) {
         leftZoneRect = CGRect(x: 0, y: 0,
                               width: screenWidth * 0.4,
@@ -117,6 +121,11 @@ final class VirtualPadNode: SKNode {
         childNode(withName: "rightCluster")?.position = CGPoint(x: x, y: 0)
     }
 
+    func setInputLocked(_ locked: Bool) {
+        inputLocked = locked
+        if locked { resetInput() }
+    }
+
     func setInteractHighlight(_ available: Bool) {
         let fill = available
             ? DLOColor.teal.withAlphaComponent(0.45)
@@ -124,7 +133,21 @@ final class VirtualPadNode: SKNode {
         interactBtnBG?.fillColor = fill
     }
 
-    /// ratio 0 = ready, 1 = full cooldown remaining
+    func setHackHighlight(_ available: Bool) {
+        let fill = available
+            ? SKColor(red: 0.32, green: 0.48, blue: 0.42, alpha: 0.55)
+            : SKColor(red: 0.22, green: 0.28, blue: 0.32, alpha: 0.35)
+        hackBtnBG?.fillColor = fill
+        hackBtnLbl?.fontColor = available
+            ? SKColor(red: 0.62, green: 0.82, blue: 0.68, alpha: 1)
+            : DLOColor.terminalAmber.withAlphaComponent(0.55)
+    }
+
+    func setHackLabel(_ label: String) {
+        hackBtnLbl?.text = label
+        hackBtnLbl?.fontSize = label.count > 3 ? 9 : 10
+    }
+
     func setEmpCooldown(ratio: CGFloat) {
         let clamped = max(0, min(1, ratio))
         empCooldownOverlay?.isHidden = clamped <= 0.01
@@ -134,9 +157,8 @@ final class VirtualPadNode: SKNode {
         empCooldownOverlay?.alpha = 0.35 + clamped * 0.55
     }
 
-    // MARK: - Touch Handling (called by PlatformScene, not ISE)
-
     func notifyTouchBegan(_ touch: UITouch, at pos: CGPoint) {
+        guard !inputLocked else { return }
         if let action = rightClusterHit(for: pos) {
             activeTouches[touch] = action
         } else if thumbstickTouch == nil, leftZoneRect.contains(pos) {
@@ -147,6 +169,7 @@ final class VirtualPadNode: SKNode {
     }
 
     func notifyTouchMoved(_ touch: UITouch, at pos: CGPoint) {
+        guard !inputLocked else { return }
         guard touch === thumbstickTouch else { return }
         thumbstick.updateKnob(finger: pos)
         updateInput()
@@ -182,11 +205,15 @@ final class VirtualPadNode: SKNode {
         let local = CGPoint(x: pos.x - clusterPos.x, y: pos.y - clusterPos.y)
         if interactRect.insetBy(dx: -10, dy: -10).contains(local) { return "interact" }
         if empRect.insetBy(dx: -10, dy: -10).contains(local)       { return "emp" }
-        if jumpRect.insetBy(dx: -12, dy: -12).contains(local)      { return "jump" }
+        if hackRect.insetBy(dx: -12, dy: -12).contains(local)        { return "hack" }
         return nil
     }
 
     private func updateInput() {
+        guard !inputLocked else {
+            currentInput = Input()
+            return
+        }
         let names = Set(activeTouches.values)
         let stick = thumbstick.snappedVector
         let moveLeft = stick.dx < -0.3
@@ -195,8 +222,7 @@ final class VirtualPadNode: SKNode {
         currentInput = Input(
             left: moveLeft,
             right: moveRight,
-            jump: names.contains("jump"),
-            // Phase C: expose 8-way intent on the struct but keep gameplay to walk only.
+            hack: names.contains("hack"),
             crouch: false,
             hide: false,
             interact: names.contains("interact"),

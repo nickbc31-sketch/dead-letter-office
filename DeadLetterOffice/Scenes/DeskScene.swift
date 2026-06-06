@@ -46,7 +46,8 @@ final class DeskScene: SKScene {
     private var pauseResumeRect = CGRect.zero
     private var pauseExitRect   = CGRect.zero
     private var notebookOverlay:  SKNode?
-    private var notebookCloseRect = CGRect.zero
+    private var notebookScrollState: ScrollableReadablePanel.ScrollState?
+    private var notebookScrollTouch: UITouch?
 
     // Action result overlay (shown after stamp, over doc area)
     private var resultPanel:        SKNode?
@@ -158,6 +159,11 @@ final class DeskScene: SKScene {
         guard let touch = touches.first else { return }
         let pos = touch.location(in: self)
 
+        if notebookOverlay != nil, notebookScrollState?.maxScroll ?? 0 > 0 {
+            notebookScrollTouch = touch
+            return
+        }
+
         if auditOverlay != nil {
             // Audit overlay: enable vertical scroll anywhere in the overlay
             isScrollingAudit = true
@@ -186,6 +192,11 @@ final class DeskScene: SKScene {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let pos = touch.location(in: self)
+        if let scrollTouch = notebookScrollTouch, touch === scrollTouch,
+           let state = notebookScrollState {
+            state.applyDrag(deltaY: pos.y - touch.previousLocation(in: self).y)
+            return
+        }
         if isScrollingAudit {
             let delta = pos.y - auditLastScrollY
             auditLastScrollY = pos.y
@@ -202,6 +213,9 @@ final class DeskScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         isScrollingDocument = false
         isScrollingAudit = false
+        for touch in touches where touch === notebookScrollTouch {
+            notebookScrollTouch = nil
+        }
         guard let touch = touches.first else { return }
         handleTap(at: touch.location(in: self))
     }
@@ -259,13 +273,8 @@ final class DeskScene: SKScene {
             return "overlay-bg"
         }
 
-        // ── Notebook overlay ──────────────────────────────────────────────────
         if notebookOverlay != nil {
-            if notebookCloseRect.contains(pos) {
-                hideNotebookOverlay()
-                return "notebook-close"
-            }
-            return "notebook-bg"
+            return "notebook-open"
         }
 
         if notebookButtonRect.contains(pos) {
@@ -1629,27 +1638,22 @@ final class DeskScene: SKScene {
 
     private func showNotebookOverlay() {
         guard notebookOverlay == nil else { return }
-        let panel = NotebookManager.makeDeskOverlayNode(layout: layout, chapter: chapterID)
-        let panelH = layout.h * 0.82
-        let closeLbl = DLOFont.terminalLabel(text: "[ CLOSE ]", size: 11 * GameState.shared.textSizeMultiplier)
-        closeLbl.fontColor = DLOColor.terminalAmber
-        closeLbl.horizontalAlignmentMode = .center
-        closeLbl.position = CGPoint(x: 0, y: -panelH / 2 + 22)
-        closeLbl.zPosition = 4
-        panel.addChild(closeLbl)
-        notebookCloseRect = CGRect(x: layout.midX - 70, y: layout.midY - panelH / 2 + 2,
-                                   width: 140, height: 36)
-        panel.zPosition = 850
-        panel.alpha = 0
-        addChild(panel)
-        notebookOverlay = panel
-        panel.run(SKAction.fadeIn(withDuration: 0.12))
+        let built = NotebookManager.makeDeskPDAPanel(layout: layout, chapter: chapterID) { [weak self] in
+            self?.hideNotebookOverlay()
+        }
+        built.panel.zPosition = 850
+        built.panel.alpha = 0
+        addChild(built.panel)
+        notebookOverlay = built.panel
+        notebookScrollState = built.scrollState
+        built.panel.run(SKAction.fadeIn(withDuration: 0.12))
     }
 
     private func hideNotebookOverlay() {
         guard let overlay = notebookOverlay else { return }
         notebookOverlay = nil
-        notebookCloseRect = .zero
+        notebookScrollState = nil
+        notebookScrollTouch = nil
         overlay.run(SKAction.sequence([
             SKAction.fadeOut(withDuration: 0.1),
             SKAction.removeFromParent()

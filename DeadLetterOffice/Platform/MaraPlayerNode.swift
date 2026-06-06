@@ -2,6 +2,8 @@ import SpriteKit
 
 final class MaraPlayerNode: SKNode {
 
+    static let defaultStandCenterY: CGFloat = 71
+
     // State
     private(set) var isCrouching: Bool = false
     private(set) var isHiding: Bool = false
@@ -26,9 +28,11 @@ final class MaraPlayerNode: SKNode {
     private var jumpCount: Int = 0
     private let maxJumps: Int = 1
     private var manualAirborne = false
-    private let bodyHalfH: CGFloat = 25
+    private let bodyHalfH: CGFloat = 31
     private let floorTopY: CGFloat = 40
-    private let standCenterY: CGFloat = 66
+    private let standCenterY: CGFloat = 71
+    private let spriteWidth: CGFloat = 38
+    private let spriteHeight: CGFloat = 78
     private var ladderRailX: CGFloat = 0
     private var ladderBottomY: CGFloat = 66
     private var ladderTopY: CGFloat = 120
@@ -45,7 +49,7 @@ final class MaraPlayerNode: SKNode {
         if UIImage(named: "mara_silhouette") != nil {
             let sprite = SKSpriteNode(imageNamed: "mara_silhouette")
             sprite.texture?.filteringMode = .nearest
-            sprite.size = CGSize(width: 28, height: 60)
+            sprite.size = CGSize(width: spriteWidth, height: spriteHeight)
             bodyNode = sprite
         } else {
             bodyNode = buildProceduralMara()
@@ -59,33 +63,33 @@ final class MaraPlayerNode: SKNode {
         let coat = DLOColor.platformSilhouette
         let teal = DLOColor.teal
 
-        let legL = SKSpriteNode(color: coat, size: CGSize(width: 7, height: 20))
-        legL.position = CGPoint(x: -4, y: -15)
+        let legL = SKSpriteNode(color: coat, size: CGSize(width: 9, height: 26))
+        legL.position = CGPoint(x: -6, y: -20)
         container.addChild(legL)
 
-        let legR = SKSpriteNode(color: coat, size: CGSize(width: 7, height: 20))
-        legR.position = CGPoint(x: 4, y: -15)
+        let legR = SKSpriteNode(color: coat, size: CGSize(width: 9, height: 26))
+        legR.position = CGPoint(x: 6, y: -20)
         container.addChild(legR)
 
-        let torso = SKSpriteNode(color: coat, size: CGSize(width: 20, height: 18))
-        torso.position = CGPoint(x: 0, y: 4)
+        let torso = SKSpriteNode(color: coat, size: CGSize(width: 26, height: 24))
+        torso.position = CGPoint(x: 0, y: 6)
         container.addChild(torso)
 
-        let trim = SKSpriteNode(color: teal, size: CGSize(width: 22, height: 2))
-        trim.position = CGPoint(x: 0, y: 14)
+        let trim = SKSpriteNode(color: teal, size: CGSize(width: 28, height: 2))
+        trim.position = CGPoint(x: 0, y: 19)
         container.addChild(trim)
 
-        let head = SKShapeNode(circleOfRadius: 6)
+        let head = SKShapeNode(circleOfRadius: 8)
         head.fillColor = coat
         head.strokeColor = .clear
-        head.position = CGPoint(x: 0, y: 23)
+        head.position = CGPoint(x: 0, y: 31)
         container.addChild(head)
 
         return container
     }
 
     private func setupPhysics() {
-        let bodySize = CGSize(width: 20, height: 50)
+        let bodySize = CGSize(width: 26, height: 62)
         let body = SKPhysicsBody(rectangleOf: bodySize)
         body.mass = 1.0
         body.allowsRotation = false
@@ -97,6 +101,20 @@ final class MaraPlayerNode: SKNode {
         body.collisionBitMask = PhysicsCategory.ground
         body.contactTestBitMask = PhysicsCategory.pickup | PhysicsCategory.interactable
         physicsBody = body
+    }
+
+    // MARK: - Movement halt (modal lock)
+
+    func haltMovement() {
+        manualAirborne = false
+        if isOnLadder {
+            detachFromLadder(standingY: position.y)
+        }
+        if let body = physicsBody {
+            body.velocity = .zero
+            body.affectedByGravity = true
+            body.collisionBitMask |= PhysicsCategory.ground
+        }
     }
 
     // MARK: - Ladder
@@ -131,23 +149,47 @@ final class MaraPlayerNode: SKNode {
         let dt = CGFloat(delta)
         var newY = position.y
 
-        if input.movementVector.dy > 0.25 {
+        if input.movementVector.dy > 0.22 {
             newY += ladderClimbSpeed * dt
-        } else if input.movementVector.dy < -0.25 || input.crouch {
+        } else if input.movementVector.dy < -0.22 || input.crouch {
             newY -= ladderClimbSpeed * dt
         }
 
+        if newY >= ladderTopY - 3 {
+            detachFromLadder(standingY: ladderTopY)
+            if input.right {
+                position.x += 28
+                flipSprite(right: true)
+            } else if input.left {
+                position.x -= 28
+                flipSprite(right: false)
+            }
+            return
+        }
+
+        if newY <= ladderBottomY + 3 {
+            detachFromLadder(standingY: ladderBottomY)
+            if input.right {
+                position.x += 20
+                flipSprite(right: true)
+            } else if input.left {
+                position.x -= 20
+                flipSprite(right: false)
+            }
+            return
+        }
+
         if input.left || input.right {
-            if newY >= ladderTopY - 4 {
+            if newY >= ladderTopY - 8 {
                 detachFromLadder(standingY: ladderTopY)
-                if input.right { facingRight = true; bodyNode.xScale = abs(bodyNode.xScale) }
-                else { facingRight = false; bodyNode.xScale = -abs(bodyNode.xScale) }
+                position.x += input.right ? 28 : -28
+                flipSprite(right: input.right)
                 return
             }
-            if newY <= ladderBottomY + 4 {
+            if newY <= ladderBottomY + 8 {
                 detachFromLadder(standingY: ladderBottomY)
-                if input.right { facingRight = true; bodyNode.xScale = abs(bodyNode.xScale) }
-                else { facingRight = false; bodyNode.xScale = -abs(bodyNode.xScale) }
+                position.x += input.right ? 20 : -20
+                flipSprite(right: input.right)
                 return
             }
         }
@@ -174,16 +216,6 @@ final class MaraPlayerNode: SKNode {
         }
 
         let speed: CGFloat = isCrouching ? moveSpeed * 0.4 : moveSpeed
-
-        // Jump before horizontal so held movement + jump share one frame with full diagonal velocity.
-        if input.jump && !manualAirborne && onFloor && jumpCount < maxJumps && !isCrouching {
-            let hx: CGFloat = input.left ? -speed : (input.right ? speed : body.velocity.dx)
-            manualAirborne = true
-            body.affectedByGravity = false
-            body.collisionBitMask &= ~PhysicsCategory.ground
-            body.velocity = CGVector(dx: hx, dy: jumpImpulse)
-            jumpCount += 1
-        }
 
         if input.left {
             let dy = manualAirborne ? body.velocity.dy : (isGrounded ? min(body.velocity.dy, 0) : body.velocity.dy)

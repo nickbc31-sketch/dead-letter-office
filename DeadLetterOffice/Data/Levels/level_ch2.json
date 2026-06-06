@@ -31,8 +31,9 @@
   "interactables": [
     {
       "id": "sign_tier1",
-      "type": "text_sign",
-      "position": [260, 110],
+      "type": "information_node",
+      "position": [260, 68],
+      "nodeLabel": "NOTICE",
       "requiredFlag": null,
       "setsFlag": null,
       "requiredCode": null,
@@ -53,8 +54,9 @@
     },
     {
       "id": "sign_tier2",
-      "type": "text_sign",
-      "position": [680, 110],
+      "type": "information_node",
+      "position": [680, 68],
+      "nodeLabel": "RELAY",
       "requiredFlag": null,
       "setsFlag": null,
       "requiredCode": null,
@@ -75,8 +77,9 @@
     },
     {
       "id": "sign_tier3",
-      "type": "text_sign",
-      "position": [1200, 110],
+      "type": "information_node",
+      "position": [1200, 68],
+      "nodeLabel": "NOTICE",
       "requiredFlag": null,
       "setsFlag": null,
       "requiredCode": null,
@@ -86,8 +89,9 @@
     },
     {
       "id": "sign_names",
-      "type": "text_sign",
-      "position": [1500, 110],
+      "type": "information_node",
+      "position": [1500, 68],
+      "nodeLabel": "NOTICE",
       "requiredFlag": null,
       "setsFlag": null,
       "requiredCode": null,
@@ -108,8 +112,9 @@
     },
     {
       "id": "sign_processing",
-      "type": "text_sign",
-      "position": [2300, 110],
+      "type": "information_node",
+      "position": [2300, 68],
+      "nodeLabel": "NOTICE",
       "requiredFlag": null,
       "setsFlag": null,
       "requiredCode": null,
@@ -119,8 +124,9 @@
     },
     {
       "id": "sign_pa",
-      "type": "text_sign",
-      "position": [2800, 110],
+      "type": "information_node",
+      "position": [2800, 68],
+      "nodeLabel": "NOTICE",
       "requiredFlag": null,
       "setsFlag": null,
       "requiredCode": null,
@@ -164,7 +170,8 @@
     {
       "id": "cartridge_choir_list",
       "type": "cartridge",
-      "position": [3700, 120],
+      "position": [3700, 68],
+      "nodeLabel": "FILE",
       "requiredFlag": null,
       "setsFlag": "c08_cartridge_collected",
       "requiredCode": null,
@@ -174,8 +181,9 @@
     },
     {
       "id": "sign_exit",
-      "type": "text_sign",
-      "position": [5700, 110],
+      "type": "information_node",
+      "position": [5700, 68],
+      "nodeLabel": "NOTICE",
       "requiredFlag": null,
       "setsFlag": null,
       "requiredCode": null,
@@ -223,10 +231,10 @@
     }
   ],
   "pickups": [
-    {"id": "ch2_pickup_01", "x": "300", "y": "180", "setsFlag": "ch2_pickup01_collected"},
-    {"id": "ch2_pickup_02", "x": "1050", "y": "200", "setsFlag": "ch2_pickup02_collected"},
-    {"id": "ch2_pickup_03", "x": "2500", "y": "200", "setsFlag": "ch2_pickup03_collected"},
-    {"id": "ch2_pickup_04", "x": "4500", "y": "200", "setsFlag": "ch2_pickup04_collected"}
+    {"id": "ch2_pickup_01", "x": "300", "y": "68", "setsFlag": "ch2_pickup01_collected"},
+    {"id": "ch2_pickup_02", "x": "1050", "y": "68", "setsFlag": "ch2_pickup02_collected"},
+    {"id": "ch2_pickup_03", "x": "2500", "y": "68", "setsFlag": "ch2_pickup03_collected"},
+    {"id": "ch2_pickup_04", "x": "4500", "y": "68", "setsFlag": "ch2_pickup04_collected"}
   ],
   "environmentalTextNodes": [
     {"x": "200", "y": "90", "text": "EAST TRANSIT SECTOR 4 — SORTING DIVISION"},
@@ -240,7 +248,7 @@
   "npcs": [
     {
       "id": "maint_worker_12",
-      "position": [2080, 68],
+      "position": [2180, 68],
       "displayName": "MAINTENANCE — SECTOR 12",
       "dialogue": [
         "You're not supposed to be on this floor after shift end. Neither am I, technically.",

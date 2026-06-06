@@ -28,7 +28,7 @@
     {
       "id": "checkpoint_code_door",
       "type": "door",
-      "position": [300, 68],
+      "position": [280, 68],
       "requiredFlag": "ch1_relay_credential",
       "setsFlag": "ch1_checkpoint_unlocked",
       "requiredCode": "4471",
@@ -40,11 +40,12 @@
     {
       "id": "checkpoint_security_override",
       "type": "security_override",
-      "position": [360, 68],
+      "position": [420, 68],
       "requiredFlag": "ch1_relay_credential",
       "setsFlag": "ch1_checkpoint_override_used",
+      "hackPuzzleID": "ch1_checkpoint_bypass",
       "requiredCode": null,
-      "displayText": "PMCA CHECKPOINT — CREDENTIAL OVERRIDE\n\nCredential: CH1-RELAY-MAINT-07 verified.\nApply bureaucratic override to archive door?\n\nBypasses keypad — logs override to audit trail.",
+      "displayText": "PMCA CHECKPOINT — CREDENTIAL OVERRIDE\n\nCredential: CH1-RELAY-MAINT-07 verified.\nRoute access signal to bypass archive keypad.\n\nBypasses keypad — logs override to audit trail.",
       "cartridgeData": null,
       "linkedDialogueID": null,
       "linkedLevelID": null,
@@ -66,11 +67,12 @@
   "patrols": [],
   "pickups": [],
   "environmentalTextNodes": [
-    {"x": "300", "y": "110", "text": "SECTOR 12 INNER CHECKPOINT — CLEARANCE LEVEL 3"},
-    {"x": "420", "y": "90", "text": "ARCHIVE RELAY ACCESS — AUTHORISED PERSONNEL ONLY"},
+    {"x": "280", "y": "110", "text": "SECTOR 12 INNER CHECKPOINT — CLEARANCE LEVEL 3"},
+    {"x": "420", "y": "110", "text": "ARCHIVE RELAY ACCESS — AUTHORISED PERSONNEL ONLY"},
     {"x": "180", "y": "125", "text": "BUFFER NODE 7 — ROUTING LOG ACTIVE"},
     {"x": "440", "y": "120", "text": "ORPHAN TAG CLASS EVN — SUPERVISOR REVIEW"},
-    {"x": "480", "y": "100", "text": "▶ ARCHIVE TRANSIT — PROCEED WHEN CLEARED"}
+    {"x": "480", "y": "100", "text": "▶ ARCHIVE TRANSIT — PROCEED WHEN CLEARED"},
+    {"x": "420", "y": "108", "text": "PDA OVERRIDE PORT — CREDENTIAL REQUIRED"}
   ],
   "objectiveText": "ENTER CHECKPOINT CODE — COMPLETE TRANSIT",
   "ambientMusicTrack": "ambient_platform",

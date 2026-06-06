@@ -145,6 +145,8 @@ enum PlatformInteriorVisuals {
             return exitFrame(width: 36, height: 70, at: floorH)
         case ("level_ch1_checkpoint_interior", "door", "checkpoint_code_door"):
             return fortifiedDoor(width: 44, height: 76, at: floorH)
+        case ("level_ch1_checkpoint_interior", "security_override", "checkpoint_security_override"):
+            return overridePort(width: 52, height: 62, at: floorH)
         case ("level_ch1_checkpoint_interior", "building_exit", "checkpoint_building_exit"):
             return exitFrame(width: 36, height: 70, at: floorH)
         default:
@@ -323,6 +325,25 @@ enum PlatformInteriorVisuals {
         keypad.position = CGPoint(x: w / 2 - 4, y: floor + h / 2)
         door.addChild(keypad)
         return door
+    }
+
+    private static func overridePort(width w: CGFloat, height h: CGFloat, at floor: CGFloat) -> SKNode {
+        let port = SKNode()
+        port.zPosition = 17
+        let housing = SKSpriteNode(color: SKColor(red: 0.09, green: 0.12, blue: 0.14, alpha: 1),
+                                   size: CGSize(width: w, height: h))
+        housing.anchorPoint = CGPoint(x: 0.5, y: 0)
+        housing.position = CGPoint(x: 0, y: floor)
+        port.addChild(housing)
+        let slot = SKSpriteNode(color: SKColor(red: 0.18, green: 0.28, blue: 0.24, alpha: 1),
+                                size: CGSize(width: 28, height: 10))
+        slot.position = CGPoint(x: 0, y: floor + h * 0.55)
+        port.addChild(slot)
+        let lbl = DLOFont.terminalLabel(text: "PDA", size: 7)
+        lbl.fontColor = SKColor(red: 0.52, green: 0.74, blue: 0.62, alpha: 0.85)
+        lbl.position = CGPoint(x: 0, y: floor + h * 0.3)
+        port.addChild(lbl)
+        return port
     }
 
     private static func blinkAction(min: CGFloat, max: CGFloat, duration: TimeInterval) -> SKAction {

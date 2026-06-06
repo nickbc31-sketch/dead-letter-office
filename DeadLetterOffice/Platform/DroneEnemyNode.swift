@@ -195,8 +195,9 @@ final class DroneEnemyNode: SKNode {
             let allowedDY = forward / 3.0   // ±30 at range 90
             return abs(target.y - apexY) <= allowedDY
         } else {
-            // Apex at drone center, scans straight down
-            let below = position.y - target.y
+            // Apex matches scanLight origin (y offset -8), scans straight down
+            let apexY = position.y - 8
+            let below = apexY - target.y
             guard below > 0 && below <= 120 else { return false }
             let allowedDX = below * 0.5     // ±60 at depth 120
             return abs(target.x - position.x) <= allowedDX

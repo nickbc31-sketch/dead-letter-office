@@ -74,7 +74,7 @@ enum PlatformEncounterComposer {
                     if env.kind == "sign", let signID = env.signID {
                         interactables.append(Interactable(
                             id: signID,
-                            type: "text_sign",
+                            type: "information_node",
                             position: [env.x, env.y],
                             requiredFlag: nil,
                             setsFlag: nil,

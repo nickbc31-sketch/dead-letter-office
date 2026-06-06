@@ -322,3 +322,123 @@ enum PlatformBuildingVisuals {
         ]))
     }
 }
+
+// MARK: - Field investigation interactables
+
+/// Visual primitives for information nodes and level boundaries.
+enum FieldInvestigationVisuals {
+
+    static func informationNodeBeacon(label: String = "NOTICE") -> SKNode {
+        let node = SKNode()
+        let housing = SKSpriteNode(
+            color: SKColor(red: 0.12, green: 0.16, blue: 0.22, alpha: 1),
+            size: CGSize(width: 22, height: 30))
+        housing.position = CGPoint(x: 0, y: 15)
+        node.addChild(housing)
+
+        let screen = SKSpriteNode(
+            color: SKColor(red: 0.08, green: 0.20, blue: 0.28, alpha: 1),
+            size: CGSize(width: 16, height: 12))
+        screen.position = CGPoint(x: 0, y: 20)
+        node.addChild(screen)
+
+        let pulse = SKSpriteNode(color: DLOColor.teal.withAlphaComponent(0.35),
+                                 size: CGSize(width: 4, height: 4))
+        pulse.position = CGPoint(x: 7, y: 24)
+        node.addChild(pulse)
+        pulse.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.fadeAlpha(to: 0.15, duration: 1.0),
+            SKAction.fadeAlpha(to: 0.55, duration: 1.0),
+        ])))
+
+        let bracketL = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.5),
+                                    size: CGSize(width: 2, height: 26))
+        bracketL.position = CGPoint(x: -12, y: 15)
+        node.addChild(bracketL)
+        let bracketR = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.5),
+                                    size: CGSize(width: 2, height: 26))
+        bracketR.position = CGPoint(x: 12, y: 15)
+        node.addChild(bracketR)
+
+        let tag = DLOFont.terminalLabel(text: label, size: 6)
+        tag.fontColor = DLOColor.teal.withAlphaComponent(0.75)
+        tag.position = CGPoint(x: 0, y: 36)
+        node.addChild(tag)
+        return node
+    }
+
+    static func enforcementRobot() -> SKNode {
+        let robot = SKNode()
+        robot.name = "enforcement_robot"
+
+        let base = SKSpriteNode(color: SKColor(red: 0.14, green: 0.14, blue: 0.16, alpha: 1),
+                                size: CGSize(width: 36, height: 14))
+        base.position = CGPoint(x: 0, y: 7)
+        robot.addChild(base)
+
+        let body = SKSpriteNode(color: SKColor(red: 0.20, green: 0.20, blue: 0.24, alpha: 1),
+                                size: CGSize(width: 28, height: 44))
+        body.position = CGPoint(x: 0, y: 36)
+        robot.addChild(body)
+
+        let eye = SKShapeNode(circleOfRadius: 5)
+        eye.fillColor = DLOColor.danger.withAlphaComponent(0.9)
+        eye.strokeColor = .clear
+        eye.position = CGPoint(x: 0, y: 48)
+        robot.addChild(eye)
+        eye.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.fadeAlpha(to: 0.4, duration: 0.6),
+            SKAction.fadeAlpha(to: 1.0, duration: 0.6),
+        ])))
+
+        let lbl = DLOFont.terminalLabel(text: "ENFORCER", size: 6)
+        lbl.fontColor = DLOColor.danger.withAlphaComponent(0.8)
+        lbl.position = CGPoint(x: 0, y: 82)
+        robot.addChild(lbl)
+
+        let cone = SKShapeNode()
+        let conePath = CGMutablePath()
+        conePath.move(to: CGPoint(x: 0, y: 48))
+        conePath.addLine(to: CGPoint(x: -55, y: -72))
+        conePath.addLine(to: CGPoint(x: 55, y: -72))
+        conePath.closeSubpath()
+        cone.path = conePath
+        cone.fillColor = DLOColor.danger.withAlphaComponent(0.08)
+        cone.strokeColor = DLOColor.danger.withAlphaComponent(0.25)
+        cone.lineWidth = 1
+        cone.zPosition = -1
+        robot.addChild(cone)
+
+        let warn = DLOFont.terminalLabel(text: "RESTRICTED", size: 5)
+        warn.fontColor = DLOColor.danger.withAlphaComponent(0.65)
+        warn.position = CGPoint(x: 0, y: 94)
+        robot.addChild(warn)
+        return robot
+    }
+
+    static func dataCartridgePedestal() -> SKNode {
+        let node = SKNode()
+        let base = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.35),
+                                size: CGSize(width: 28, height: 10))
+        base.position = CGPoint(x: 0, y: 5)
+        node.addChild(base)
+        let cart = SKSpriteNode(color: DLOColor.terminalGreen.withAlphaComponent(0.55),
+                                size: CGSize(width: 14, height: 20))
+        cart.position = CGPoint(x: 0, y: 18)
+        node.addChild(cart)
+        let tag = DLOFont.terminalLabel(text: "FILE", size: 5)
+        tag.fontColor = DLOColor.terminalGreen.withAlphaComponent(0.8)
+        tag.position = CGPoint(x: 0, y: 34)
+        node.addChild(tag)
+        return node
+    }
+
+    static func civicNoticeBoard(label: String) -> SKNode {
+        let node = informationNodeBeacon(label: label)
+        let stand = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.3),
+                                 size: CGSize(width: 18, height: 6))
+        stand.position = CGPoint(x: 0, y: 3)
+        node.addChild(stand)
+        return node
+    }
+}

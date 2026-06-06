@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		20C9B31E427CEDFB0C8A8ACC /* VirtualPadNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A5C68A0ABD39C2B2B40AAAF /* VirtualPadNode.swift */; };
+		P4N3LB7TN0D3S1N5RC3S01 /* PanelButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = P4N3LB7TN0D3N0D3F1L3R02 /* PanelButtonNode.swift */; };
+		SCR0LLP4N3L1N5RC3S01 /* ScrollableReadablePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = SCR0LLP4N3L1N3F1L3R02 /* ScrollableReadablePanel.swift */; };
+		H4CK1NG5Y5T3M1N5RC01 /* HackingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = H4CK1NG5Y5T3M1N4G3F1L02 /* HackingSystem.swift */; };
+		PDAH4CKP4N3L1N5RC01 /* PDAHackPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = PDAH4CKP4N3L1N0D3F1L02 /* PDAHackPanel.swift */; };
+		S3CUR1TYC4M3R4N01 /* SecurityCameraNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = S3CUR1TYC4M3R4N0D3F02 /* SecurityCameraNode.swift */; };
+		F13LD3C0R3N5V1R01 /* FieldEnvironmentDecor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13LD3C0R3N5V1R0F02 /* FieldEnvironmentDecor.swift */; };
+		F13LD1NV35T1G4RUL35RC01 /* FieldInvestigationDesignRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13LD1NV35T1G4RUL35F1L02 /* FieldInvestigationDesignRules.swift */; };
 		E7C4A1B92F3D8E5600A1B2C3 /* ThumbstickNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B3A0C82E4F7D4500B1A2C3 /* ThumbstickNode.swift */; };
 		23DE76C84615827AB5988ADD /* ChapterSelectScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254262DB820B5E13A4B4D93B /* ChapterSelectScene.swift */; };
 		2BABE2DBE07652669BED229C /* SpriteKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAA4E7E724AA24CAB4843B35 /* SpriteKit.framework */; };
@@ -86,6 +93,13 @@
 		11FC8EE56AC9AB81A3BAFD3F /* DeskInteractionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeskInteractionTests.swift; sourceTree = "<group>"; };
 		172C0CD746B6854BC0361131 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		1A5C68A0ABD39C2B2B40AAAF /* VirtualPadNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualPadNode.swift; sourceTree = "<group>"; };
+		P4N3LB7TN0D3N0D3F1L3R02 /* PanelButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelButtonNode.swift; sourceTree = "<group>"; };
+		SCR0LLP4N3L1N3F1L3R02 /* ScrollableReadablePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableReadablePanel.swift; sourceTree = "<group>"; };
+		H4CK1NG5Y5T3M1N4G3F1L02 /* HackingSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HackingSystem.swift; sourceTree = "<group>"; };
+		PDAH4CKP4N3L1N0D3F1L02 /* PDAHackPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDAHackPanel.swift; sourceTree = "<group>"; };
+		S3CUR1TYC4M3R4N0D3F02 /* SecurityCameraNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityCameraNode.swift; sourceTree = "<group>"; };
+		F13LD3C0R3N5V1R0F02 /* FieldEnvironmentDecor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldEnvironmentDecor.swift; sourceTree = "<group>"; };
+		F13LD1NV35T1G4RUL35F1L02 /* FieldInvestigationDesignRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldInvestigationDesignRules.swift; sourceTree = "<group>"; };
 		D8B3A0C82E4F7D4500B1A2C3 /* ThumbstickNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbstickNode.swift; sourceTree = "<group>"; };
 		1D3790AD78FE1EAFAF67407A /* DLOFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DLOFonts.swift; sourceTree = "<group>"; };
 		254262DB820B5E13A4B4D93B /* ChapterSelectScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterSelectScene.swift; sourceTree = "<group>"; };
@@ -193,8 +207,10 @@
 				A1318103735222BFB65B41CA /* DroneEnemyNode.swift */,
 				F3BDF9E2E7AD315F4F7C9C75 /* MaraPlayerNode.swift */,
 				F60718293A4B5C6D7E8F901A /* PlatformBuildingVisuals.swift */,
+				F13LD3C0R3N5V1R0F02 /* FieldEnvironmentDecor.swift */,
 				D4E5F60718293A4B5C6D7E8F9 /* PlatformInteriorVisuals.swift */,
 				EE3AE68DB989367798FAE4BD /* PhysicsCategories.swift */,
+				S3CUR1TYC4M3R4N0D3F02 /* SecurityCameraNode.swift */,
 			);
 			path = Platform;
 			sourceTree = "<group>";
@@ -236,6 +252,8 @@
 				F5083C106395EB6E0FF810A6 /* AudioManager.swift */,
 				A4B53D746FE64F4186375629 /* GameState.swift */,
 				N0T3B00K1M4N4G3R5W1F7T02 /* NotebookManager.swift */,
+				F13LD1NV35T1G4RUL35F1L02 /* FieldInvestigationDesignRules.swift */,
+				H4CK1NG5Y5T3M1N4G3F1L02 /* HackingSystem.swift */,
 				D4E5F60718293A4B5C6D7E8F /* PlatformEncounterComposer.swift */,
 				38FC24ABAF4B16275755F4C6 /* SaveManager.swift */,
 				4FC22ABA6B3E4591AA62B0AF /* SceneManager.swift */,
@@ -311,6 +329,9 @@
 				6255710BF977800E69EA1585 /* DLOColors.swift */,
 				1D3790AD78FE1EAFAF67407A /* DLOFonts.swift */,
 				8370870E1C692EA0A735E7F9 /* DocumentNode.swift */,
+				P4N3LB7TN0D3N0D3F1L3R02 /* PanelButtonNode.swift */,
+				PDAH4CKP4N3L1N0D3F1L02 /* PDAHackPanel.swift */,
+				SCR0LLP4N3L1N3F1L3R02 /* ScrollableReadablePanel.swift */,
 				9F7D3E75D6FE4F7F0EBE1614 /* SceneLayout.swift */,
 				74BD6BDEF6DC2CF56278C615 /* StampButtonNode.swift */,
 				D8B3A0C82E4F7D4500B1A2C3 /* ThumbstickNode.swift */,
@@ -462,6 +483,11 @@
 				9F04C167F28B214FE06D6F1A /* EndingScene.swift in Sources */,
 				6523F73DC4B231B5611A0A14 /* GameState.swift in Sources */,
 				N0T3B00K1M4N4G3R5W1F7T01 /* NotebookManager.swift in Sources */,
+				F13LD1NV35T1G4RUL35RC01 /* FieldInvestigationDesignRules.swift in Sources */,
+				H4CK1NG5Y5T3M1N5RC01 /* HackingSystem.swift in Sources */,
+				PDAH4CKP4N3L1N5RC01 /* PDAHackPanel.swift in Sources */,
+				S3CUR1TYC4M3R4N01 /* SecurityCameraNode.swift in Sources */,
+				F13LD3C0R3N5V1R01 /* FieldEnvironmentDecor.swift in Sources */,
 				35E5741867EA2FD7F01FCAD8 /* GameViewController.swift in Sources */,
 				E4CD7FBAF6615A1AB4E9A3CB /* LevelData.swift in Sources */,
 				A1B2C3D4E5F60718293A4B5C /* PlatformEncounterModel.swift in Sources */,
@@ -479,6 +505,8 @@
 				9B6D27227B111D0B267A6DCD /* SceneManager.swift in Sources */,
 				541FA036D4669D399B75A212 /* SettingsScene.swift in Sources */,
 				6450EF6C9A0F40ED6C5831AB /* StampButtonNode.swift in Sources */,
+				P4N3LB7TN0D3S1N5RC3S01 /* PanelButtonNode.swift in Sources */,
+				SCR0LLP4N3L1N5RC3S01 /* ScrollableReadablePanel.swift in Sources */,
 				E7C4A1B92F3D8E5600A1B2C3 /* ThumbstickNode.swift in Sources */,
 				20C9B31E427CEDFB0C8A8ACC /* VirtualPadNode.swift in Sources */,
 			);

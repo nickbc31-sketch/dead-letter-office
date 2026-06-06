@@ -10,6 +10,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     private var virtualPad: VirtualPadNode!
     private var cameraNode: SKCameraNode!
     private var patrols: [DroneEnemyNode] = []
+    private var securityCameras: [SecurityCameraNode] = []
     private var collectiblePickups: [SKNode] = []
     private var environmentTextNodes: [SKNode] = []
 
@@ -22,13 +23,18 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     private var interactButton: InteractButtonNode!
     private var interactWasPressed = false
     private var empWasPressed = false
+    private var hackWasPressed = false
+    private var nearbyHackableID: String?
 
     // Level state
     private var isLevelComplete = false
     private var isRestartingAfterCatch = false
     private var overlayNode: SKNode!
+    private var isModalInputLocked = false
+    private var enforcementBoundaryX: CGFloat?
+    private var lastBoundaryWarning: TimeInterval = 0
 
-    private var isInteractionPaused: Bool { activePanel != nil }
+    private var isGameplayInputFrozen: Bool { isModalInputLocked || activePanel != nil }
 
     // MARK: - Scene Entry
 
@@ -44,6 +50,8 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     private var pauseButtonRect: CGRect = .zero
     private var notebookButtonRect: CGRect = .zero
     private var interactButtonCamRect: CGRect = .zero
+    private var panelScrollState: ScrollableReadablePanel.ScrollState?
+    private var panelScrollTouch: UITouch?
 
     override func didMove(to view: SKView) {
         SceneManager.shared.view = view
@@ -91,7 +99,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         }
         mara = MaraPlayerNode()
         // Feet rest on floor top (y=40); physics body is 50pt tall centred on node.
-        mara.position = CGPoint(x: spawnXY.x, y: max(spawnXY.y, 66))
+        mara.position = CGPoint(x: spawnXY.x, y: max(spawnXY.y, MaraPlayerNode.defaultStandCenterY))
         mara.zPosition = 50
         addChild(mara)
 
@@ -110,6 +118,82 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         for pickup in data.pickups             { buildPickup(pickup) }
         for envText in data.environmentalTextNodes { buildEnvironmentText(envText) }
         for npc in data.npcs ?? []             { buildNPC(npc) }
+        for cam in data.securityCameras ?? []  { buildSecurityCamera(cam) }
+        if let boundaryX = data.fieldBoundaryX { buildFieldBoundary(at: boundaryX) }
+        FieldEnvironmentDecor.addToScene(self, levelID: levelID, width: data.levelWidth)
+    }
+
+    private func buildSecurityCamera(_ spec: SecurityCameraSpec) {
+        let camera = SecurityCameraNode(spec: spec)
+        camera.zPosition = 38
+        addChild(camera)
+        securityCameras.append(camera)
+    }
+
+    // MARK: - Modal input lock
+
+    private func engageModalLock() {
+        isModalInputLocked = true
+        mara?.haltMovement()
+        virtualPad?.resetInput()
+        virtualPad?.setInputLocked(true)
+        interactWasPressed = true
+        empWasPressed = true
+        hackWasPressed = true
+    }
+
+    private func releaseModalLock() {
+        isModalInputLocked = false
+        virtualPad?.setInputLocked(false)
+        interactWasPressed = false
+        empWasPressed = false
+        hackWasPressed = false
+    }
+
+    // MARK: - Field boundary (security enforcer)
+
+    private func buildFieldBoundary(at x: CGFloat) {
+        enforcementBoundaryX = x
+        let robot = FieldInvestigationVisuals.enforcementRobot()
+        robot.position = CGPoint(x: x, y: 128)
+        robot.zPosition = 42
+        addChild(robot)
+
+        let wall = SKNode()
+        wall.position = CGPoint(x: x + 36, y: 120)
+        wall.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: 24, height: 260))
+        wall.physicsBody?.isDynamic = false
+        wall.physicsBody?.categoryBitMask = PhysicsCategory.ground
+        wall.physicsBody?.collisionBitMask = PhysicsCategory.player
+        addChild(wall)
+
+        let sign = DLOFont.terminalLabel(text: "UNAUTHORISED ACCESS ZONE", size: 7)
+        sign.fontColor = DLOColor.danger.withAlphaComponent(0.75)
+        sign.position = CGPoint(x: x, y: 168)
+        sign.zPosition = 41
+        addChild(sign)
+    }
+
+    private func checkFieldBoundary(_ currentTime: TimeInterval) {
+        guard let boundary = enforcementBoundaryX, !isGameplayInputFrozen else { return }
+        if mara.position.x > boundary - 16 {
+            mara.haltMovement()
+            mara.position.x = boundary - 36
+            guard currentTime - lastBoundaryWarning > 2.5 else { return }
+            lastBoundaryWarning = currentTime
+            showContentPanel(
+                header: "SECURITY ENFORCEMENT ROBOT",
+                body: """
+UNAUTHORISED ACCESS ZONE
+
+Detection immediate.
+No stealth bypass.
+No EMP bypass.
+
+Return to authorised sector immediately.
+"""
+            ) { }
+        }
     }
 
     private func buildBackgroundLayer(_ layer: BackgroundLayer,
@@ -465,24 +549,11 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func buildPlatforms(_ data: LevelData) {
-        let nodes = data.platformNodes ?? defaultPlatformNodes()
+        guard let nodes = data.platformNodes, !nodes.isEmpty else { return }
         for node in nodes {
             addPlatform(x: node.x, y: node.y, width: node.width,
                         assetName: node.assetName, visualScale: node.visualScale)
         }
-    }
-
-    private func defaultPlatformNodes() -> [PlatformNode] {
-        [
-            PlatformNode(x: 400, y: 120, width: 180, assetName: nil),
-            PlatformNode(x: 700, y: 170, width: 140, assetName: nil),
-            PlatformNode(x: 1000, y: 130, width: 160, assetName: nil),
-            PlatformNode(x: 1300, y: 200, width: 150, assetName: nil),
-            PlatformNode(x: 1600, y: 150, width: 180, assetName: nil),
-            PlatformNode(x: 1900, y: 190, width: 130, assetName: nil),
-            PlatformNode(x: 2200, y: 130, width: 180, assetName: nil),
-            PlatformNode(x: 2500, y: 170, width: 160, assetName: nil),
-        ]
     }
 
     private struct PlatformAssetProfile {
@@ -576,6 +647,23 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         ceilingCollider.physicsBody?.categoryBitMask = PhysicsCategory.ground
         ceilingCollider.physicsBody?.collisionBitMask = PhysicsCategory.player
         addChild(ceilingCollider)
+        buildInteriorWalls(width: width, height: height)
+    }
+
+    private func buildInteriorWalls(width: CGFloat, height: CGFloat) {
+        let floorH: CGFloat = 40
+        let wallH = height - floorH
+        let thickness: CGFloat = 14
+
+        for xPos in [thickness / 2, width - thickness / 2] {
+            let wall = SKNode()
+            wall.position = CGPoint(x: xPos, y: floorH + wallH / 2)
+            wall.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: thickness, height: wallH))
+            wall.physicsBody?.isDynamic = false
+            wall.physicsBody?.categoryBitMask = PhysicsCategory.ground
+            wall.physicsBody?.collisionBitMask = PhysicsCategory.player
+            addChild(wall)
+        }
     }
 
     // MARK: - Interactable Building
@@ -614,6 +702,25 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         node.name = "interactable_\(inter.id)"
         node.zPosition = 30
 
+        if inter.type == "information_node" || inter.type == "text_sign" {
+            let beaconLabel = inter.nodeLabel ?? informationNodeBeaconLabel(for: inter)
+            let beacon = FieldInvestigationVisuals.civicNoticeBoard(label: beaconLabel)
+            beacon.position = CGPoint(x: 0, y: 0)
+            node.addChild(beacon)
+        } else if inter.type == "cartridge" {
+            let cart = FieldInvestigationVisuals.dataCartridgePedestal()
+            node.addChild(cart)
+        } else if inter.type == "security_override" {
+            let port = SKSpriteNode(color: SKColor(red: 0.14, green: 0.18, blue: 0.16, alpha: 1),
+                                    size: CGSize(width: 16, height: 22))
+            port.position = CGPoint(x: 0, y: 11)
+            node.addChild(port)
+            let lbl = DLOFont.terminalLabel(text: "PDA", size: 6)
+            lbl.fontColor = SKColor(red: 0.52, green: 0.74, blue: 0.62, alpha: 0.9)
+            lbl.position = CGPoint(x: 0, y: 28)
+            node.addChild(lbl)
+        }
+
         let (icon, color) = iconAndColor(for: inter.type)
         let sprite = SKLabelNode(text: icon)
         sprite.fontName = "Menlo-Bold"
@@ -621,7 +728,10 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         sprite.fontColor = color
         sprite.horizontalAlignmentMode = .center
         sprite.verticalAlignmentMode = .center
-        if inter.type == "building_entrance" {
+        if inter.type == "information_node" || inter.type == "text_sign"
+            || inter.type == "cartridge" || inter.type == "security_override" {
+            sprite.alpha = 0
+        } else if inter.type == "building_entrance" {
             if inter.buildingVisual != nil {
                 sprite.text = "▲"
                 sprite.fontSize = 9
@@ -637,6 +747,11 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
             sprite.fontSize = 10
             sprite.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.8)
             sprite.position = CGPoint(x: 0, y: 42)
+        } else if inter.type == "security_override", levelData?.isInterior == true {
+            sprite.text = "PDA"
+            sprite.fontSize = 8
+            sprite.fontColor = SKColor(red: 0.52, green: 0.74, blue: 0.62, alpha: 0.9)
+            sprite.position = CGPoint(x: 0, y: 44)
         } else if inter.type == "cabinet", levelData?.isInterior == true {
             sprite.text = "▤"
             sprite.fontSize = 10
@@ -671,7 +786,8 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
             }
         }
 
-        if inter.type != "text_sign" && inter.type != "building_exit" && inter.type != "ladder" {
+        if inter.type != "text_sign" && inter.type != "information_node"
+            && inter.type != "building_exit" && inter.type != "ladder" {
             sprite.run(SKAction.repeatForever(SKAction.sequence([
                 SKAction.fadeAlpha(to: 0.5, duration: 1.2),
                 SKAction.fadeAlpha(to: 1.0, duration: 1.2)
@@ -679,7 +795,18 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         }
 
         // Physics proximity sensor
-        let body = SKPhysicsBody(rectangleOf: CGSize(width: 48, height: 72))
+        let sensorSize: CGSize
+        if inter.type == "ladder", let extent = inter.ladderExtent, extent.count >= 2 {
+            let ladderH = max(80, extent[1] - extent[0] + 20)
+            sensorSize = CGSize(width: 72, height: ladderH)
+        } else if inter.type == "security_override" {
+            sensorSize = CGSize(width: 64, height: 80)
+        } else if inter.type == "door", inter.requiredCode != nil {
+            sensorSize = CGSize(width: 64, height: 80)
+        } else {
+            sensorSize = CGSize(width: 48, height: 72)
+        }
+        let body = SKPhysicsBody(rectangleOf: sensorSize)
         body.isDynamic = false
         body.categoryBitMask = PhysicsCategory.interactable
         body.contactTestBitMask = PhysicsCategory.player
@@ -691,16 +818,6 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         addChild(node)
         interactableNodes[inter.id] = node
 
-        // Text signs show their text passively (no interaction needed)
-        if inter.type == "text_sign", let text = inter.displayText {
-            let lbl = SKLabelNode(text: text)
-            lbl.fontName = "Menlo"
-            lbl.fontSize = 8
-            lbl.fontColor = DLOColor.uiBorder.withAlphaComponent(0.6)
-            lbl.horizontalAlignmentMode = .center
-            lbl.position = CGPoint(x: 0, y: 28)
-            node.addChild(lbl)
-        }
     }
 
     private func buildDoorBarrier(at pos: CGPoint, visible: Bool = true,
@@ -736,6 +853,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         case "cabinet":            return ("▤", DLOColor.terminalAmber)
         case "building_entrance":  return ("⌂", DLOColor.teal)
         case "building_exit":      return ("⇐", DLOColor.dimText)
+        case "information_node":   return ("▣", DLOColor.teal)
         case "text_sign":          return ("ℹ", DLOColor.dimText)
         case "security_override":  return ("⚡", DLOColor.terminalAmber)
         case "ladder":             return ("║", DLOColor.teal)
@@ -762,17 +880,8 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         node.zPosition = 30
         node.name = "pickup_\(pickup["id"] ?? "unknown")"
 
-        let icon = SKLabelNode(text: "◆")
-        icon.fontName = "Menlo"
-        icon.fontSize = 14
-        icon.fontColor = DLOColor.terminalGreen
-        icon.horizontalAlignmentMode = .center
-        icon.verticalAlignmentMode = .center
-        node.addChild(icon)
-        icon.run(SKAction.repeatForever(SKAction.sequence([
-            SKAction.moveBy(x: 0, y: 4, duration: 0.8),
-            SKAction.moveBy(x: 0, y: -4, duration: 0.8)
-        ])))
+        let pickupVisual = FieldInvestigationVisuals.dataCartridgePedestal()
+        node.addChild(pickupVisual)
 
         let body = SKPhysicsBody(circleOfRadius: 12)
         body.isDynamic = false
@@ -846,6 +955,51 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
 
         addChild(node)
         npcNodes[npc.id] = node
+    }
+
+    // MARK: - Ladder Proximity (distance-based — more reliable than physics alone)
+
+    private func checkLadderProximity() {
+        guard !mara.isOnLadder else {
+            if nearbyInteractableID != nil {
+                interactButton.configure(for: "ladder_active")
+            }
+            return
+        }
+
+        let xRange: CGFloat = 54
+        var bestID: String?
+        var bestScore: CGFloat = .infinity
+
+        for (id, inter) in interactableData where inter.type == "ladder" {
+            guard let extent = inter.ladderExtent, extent.count >= 2 else { continue }
+            let railX = inter.position[0]
+            let bottomY = extent[0]
+            let topY = extent[1]
+            let dx = abs(mara.position.x - railX)
+            guard dx <= xRange else { continue }
+            guard mara.position.y >= bottomY - 14, mara.position.y <= topY + 18 else { continue }
+            let score = dx + abs(mara.position.y - bottomY) * 0.35
+            if score < bestScore {
+                bestScore = score
+                bestID = id
+            }
+        }
+
+        if let bestID {
+            if nearbyInteractableID != bestID {
+                nearbyInteractableID = bestID
+                nearbyNPCID = nil
+                interactButton.configure(for: "ladder")
+                interactButton.run(SKAction.fadeIn(withDuration: 0.15))
+            }
+        } else if let current = nearbyInteractableID,
+                  interactableData[current]?.type == "ladder" {
+            nearbyInteractableID = nil
+            if nearbyNPCID == nil && !isGameplayInputFrozen {
+                interactButton.run(SKAction.fadeOut(withDuration: 0.15))
+            }
+        }
     }
 
     // MARK: - NPC Proximity (distance-based, called every frame)
@@ -965,33 +1119,34 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         pauseLbl.zPosition = 1051
         overlayNode.addChild(pauseLbl)
 
-        pauseButtonRect = CGRect(
-            x: cam.right - pauseW - 8, y: cam.top - pauseH - 8,
-            width: pauseW, height: pauseH)
-
-        // ── Notebook button — bottom-left HUD ───────────────────────────────
+        // ── PDA / Notes button — top-right, left of MENU ────────────────────
         let notesW: CGFloat = 72
-        let notesH: CGFloat = 32
-        let notesCX = cam.left + notesW / 2 + 8
-        let notesCY = cam.bottom + notesH / 2 + 8
+        let notesH: CGFloat = 36
+        let notesCX = cam.right - pauseW - notesW / 2 - 16
+        let notesCY = pauseCY
 
         let notesBG = SKShapeNode(rectOf: CGSize(width: notesW, height: notesH), cornerRadius: 5)
         notesBG.fillColor  = DLOColor.terminalBG.withAlphaComponent(0.85)
-        notesBG.strokeColor = DLOColor.uiBorder
+        notesBG.strokeColor = SKColor(red: 0.38, green: 0.48, blue: 0.42, alpha: 0.8)
         notesBG.lineWidth   = 1.2
         notesBG.position    = CGPoint(x: notesCX, y: notesCY)
         notesBG.zPosition   = 1050
         overlayNode.addChild(notesBG)
 
-        let notesLbl = DLOFont.terminalLabel(text: "NOTES", size: 10 * textMult)
+        let notesLbl = DLOFont.terminalLabel(text: "PDA", size: 10 * textMult)
         notesLbl.horizontalAlignmentMode = .center
+        notesLbl.fontColor = SKColor(red: 0.52, green: 0.74, blue: 0.62, alpha: 1)
         notesLbl.position  = CGPoint(x: notesCX, y: notesCY - 4)
         notesLbl.zPosition = 1051
         overlayNode.addChild(notesLbl)
 
         notebookButtonRect = CGRect(
-            x: cam.left + 8, y: cam.bottom + 8,
+            x: cam.right - pauseW - notesW - 16, y: cam.top - notesH - 8,
             width: notesW, height: notesH)
+
+        pauseButtonRect = CGRect(
+            x: cam.right - pauseW - 8, y: cam.top - pauseH - 8,
+            width: pauseW, height: pauseH)
 
         cameraNode.addChild(overlayNode)
     }
@@ -1021,46 +1176,119 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         lastUpdateTime = currentTime
         updateMara(delta: delta)
         updateCamera()
-        if !isInteractionPaused { updateDrones(currentTime) }
-        if !isInteractionPaused { checkExits() }
+        if !isGameplayInputFrozen {
+            updateDrones(currentTime)
+            updateSecurityCameras(delta: delta)
+            checkSecurityCameras()
+            checkExits()
+            checkFieldBoundary(currentTime)
+        }
+    }
+
+    private func updateSecurityCameras(delta: TimeInterval) {
+        for camera in securityCameras { camera.update(delta: delta) }
+    }
+
+    private func checkSecurityCameras() {
+        guard !mara.isCrouching, !mara.isHiding else { return }
+        for camera in securityCameras where camera.canSee(target: mara.position) {
+            maraCaught()
+            return
+        }
+    }
+
+    private func informationNodeBeaconLabel(for inter: Interactable) -> String {
+        if let label = inter.nodeLabel { return label }
+        switch inter.id {
+        case let id where id.contains("sign"), let id where id.contains("notice"): return "NOTICE"
+        case let id where id.contains("relay"): return "RELAY"
+        default: return "NOTICE"
+        }
+    }
+
+    private func informationNodePrompt(for inter: Interactable) -> String {
+        switch inter.nodeLabel ?? inter.id {
+        case "FILE", "cartridge_choir_list", "cartridge_kell_orvin": return "COLLECT FILE"
+        case "RELAY", "sign_tier2": return "CHECK UPLINK"
+        case "NOTICE", "sign_tier1", "sign_tier3", "sign_housing": return "READ NOTICE"
+        case "sign_exit", "sign_pa": return "READ NOTICE"
+        default:
+            if inter.displayText?.contains("UPLINK") == true { return "CHECK UPLINK" }
+            return "READ NOTICE"
+        }
+    }
+
+    private func promptForInteractable(_ inter: Interactable) -> String? {
+        switch inter.type {
+        case "information_node", "text_sign": return informationNodePrompt(for: inter)
+        case "cartridge": return "COLLECT FILE"
+        case "terminal": return "READ TERMINAL"
+        case "door": return inter.requiredCode != nil ? "ENTER CODE" : "OPEN DOOR"
+        case "security_override": return "CONNECT PDA"
+        case "cabinet": return "OPEN LOCKER"
+        case "building_entrance": return "ENTER"
+        case "building_exit": return "EXIT"
+        default: return nil
+        }
     }
 
     private func updateMara(delta: TimeInterval) {
         guard let mara = mara, let pad = virtualPad else { return }
 
-        if !isInteractionPaused {
+        if !isGameplayInputFrozen {
             if mara.isOnLadder {
                 mara.applyLadderInput(pad.currentInput, delta: delta)
             } else {
                 mara.applyInput(pad.currentInput, delta: delta)
                 tryEnterNearbyLadder(pad: pad)
             }
+        } else {
+            mara.haltMovement()
+        }
+
+        if let data = levelData, data.isInterior == true, !mara.isOnLadder {
+            let margin: CGFloat = 24
+            mara.position.x = max(margin, min(data.levelWidth - margin, mara.position.x))
         }
 
         mara.updateStunCooldown(delta: delta)
 
         // Edge-detect interact button press (right cluster)
         let interactNow = pad.currentInput.interact
-        if interactNow && !interactWasPressed && !isInteractionPaused {
+        if interactNow && !interactWasPressed && !isGameplayInputFrozen {
             activateNearbyInteractable()
         }
         interactWasPressed = interactNow
 
-        // Edge-detect EMP button press
         let empNow = pad.currentInput.emp
-        if empNow && !empWasPressed && !isInteractionPaused {
+        if empNow && !empWasPressed && !isGameplayInputFrozen {
             if mara.fireStunPulse(scene: self) {
                 applyEmpPulseToNearbyDrones()
             }
         }
         empWasPressed = empNow
 
-        let interactAvailable = nearbyInteractableID != nil || nearbyNPCID != nil || mara.isOnLadder
+        let hackNow = pad.currentInput.hack
+        if hackNow && !hackWasPressed && !isGameplayInputFrozen {
+            attemptContextualHack()
+        }
+        hackWasPressed = hackNow
+
+        let interactAvailable = !isGameplayInputFrozen
+            && (nearbyInteractableID != nil || nearbyNPCID != nil || mara.isOnLadder)
         pad.setInteractHighlight(interactAvailable)
         pad.setEmpCooldown(ratio: mara.stunCooldownRatio)
 
-        // NPC proximity check (distance-based, no physics sensor needed)
-        if !isInteractionPaused { checkNPCProximity() }
+        if !isGameplayInputFrozen {
+            checkLadderProximity()
+            updateHackableProximity()
+            if nearbyInteractableID == nil
+                || interactableData[nearbyInteractableID!]?.type != "ladder" {
+                checkNPCProximity()
+            }
+        } else {
+            pad.setHackHighlight(false)
+        }
 
         // Position the interact button above Mara in camera space and track rect for scene touch
         let ibCenter = CGPoint(
@@ -1146,7 +1374,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
                let id = node.userData?["interactableID"] as? String,
                let inter = interactableData[id] {
                 nearbyInteractableID = id
-                interactButton.configure(for: inter.type)
+                interactButton.configure(for: inter.type, prompt: promptForInteractable(inter))
                 interactButton.run(SKAction.fadeIn(withDuration: 0.2))
             }
         }
@@ -1176,6 +1404,156 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     }
 
     // MARK: - Interactable Activation
+
+    private func isHackableInteractable(_ inter: Interactable, id: String) -> Bool {
+        inter.type == "security_override"
+            || inter.hackPuzzleID != nil
+            || HackingSystem.shared.specForInteractable(id) != nil
+    }
+
+    private func securityOverride(linkedToDoorID doorID: String) -> Interactable? {
+        interactableData.values.first {
+            $0.type == "security_override" && $0.linkedInteractableID == doorID
+        }
+    }
+
+    /// Distance-based hack targeting — independent of which interactable E-button claims.
+    private func findNearbyHackTarget() -> Interactable? {
+        let overrideRange: CGFloat = 100
+        let doorHackZoneRange: CGFloat = 130
+        var best: (CGFloat, Interactable)?
+
+        for (id, node) in interactableNodes {
+            guard let inter = interactableData[id],
+                  isHackableInteractable(inter, id: id) else { continue }
+            let dist = mara.position.distance(to: node.position)
+            if dist < overrideRange, best == nil || dist < best!.0 {
+                best = (dist, inter)
+            }
+        }
+
+        // Coded doors share a hack zone with their linked PDA override port.
+        for (doorID, doorNode) in interactableNodes {
+            guard let door = interactableData[doorID],
+                  door.type == "door",
+                  door.requiredCode != nil,
+                  let override = securityOverride(linkedToDoorID: doorID) else { continue }
+            let doorDist = mara.position.distance(to: doorNode.position)
+            guard doorDist < doorHackZoneRange else { continue }
+            if let overrideNode = interactableNodes[override.id] {
+                let score = min(doorDist, mara.position.distance(to: overrideNode.position))
+                if best == nil || score < best!.0 {
+                    best = (score, override)
+                }
+            } else if best == nil || doorDist < best!.0 {
+                best = (doorDist, override)
+            }
+        }
+
+        return best?.1
+    }
+
+    private func updateHackableProximity() {
+        if let target = findNearbyHackTarget() {
+            nearbyHackableID = target.id
+            virtualPad.setHackHighlight(true)
+            virtualPad.setHackLabel("HACK")
+        } else {
+            nearbyHackableID = nil
+            virtualPad.setHackHighlight(false)
+            virtualPad.setHackLabel("PDA")
+        }
+    }
+
+    private func attemptContextualHack() {
+        guard let inter = findNearbyHackTarget() else {
+            showBriefMessage("PDA — NO SYSTEM IN RANGE")
+            return
+        }
+
+        let requiredFlag = inter.requiredFlag
+            ?? inter.hackPuzzleID.flatMap { HackingSystem.shared.spec(for: $0)?.requiredFlag }
+            ?? HackingSystem.shared.specForInteractable(inter.id)?.requiredFlag
+
+        if let req = requiredFlag, !GameState.shared.hasFlag(req) {
+            if req == "ch1_relay_credential" {
+                showBriefMessage("PDA DENIED — RELAY CREDENTIAL NOT LOGGED")
+            } else {
+                showBriefMessage(accessDeniedText(for: inter, requiredFlag: req))
+            }
+            return
+        }
+
+        launchPDAHack(for: inter)
+    }
+
+    private func launchPDAHack(for inter: Interactable) {
+        let spec = inter.hackPuzzleID.flatMap { HackingSystem.shared.spec(for: $0) }
+            ?? HackingSystem.shared.specForInteractable(inter.id)
+
+        guard let spec else {
+            if inter.type == "security_override" {
+                activateSecurityOverride(inter)
+            } else {
+                showBriefMessage("PDA — NO EXPLOIT REGISTERED")
+            }
+            return
+        }
+        if let req = spec.requiredFlag, !GameState.shared.hasFlag(req) {
+            showBriefMessage("PDA DENIED — RELAY CREDENTIAL NOT LOGGED")
+            return
+        }
+        if let flag = spec.setsFlagOnSuccess, GameState.shared.hasFlag(flag) {
+            showBriefMessage("PDA — OVERRIDE ALREADY LOGGED")
+            return
+        }
+        guard activePanel == nil else { return }
+        engageModalLock()
+
+        switch spec.kind {
+        case .signalRoute:
+            guard let payload = spec.signalRoute else {
+                releaseModalLock()
+                return
+            }
+            let cam = SceneLayout.makeCamera(scene: self)
+            let panelSize = CGSize(width: cam.w * 0.78, height: cam.h * 0.62)
+            let built = PDAHackPanel.presentSignalRoute(
+                title: spec.title,
+                nodeLabels: payload.nodeLabels,
+                correctSequence: payload.correctSequence,
+                panelSize: panelSize,
+                textMultiplier: GameState.shared.textSizeMultiplier,
+                onSuccess: { [weak self] in
+                    self?.completePDAHack(spec: spec, interactable: inter)
+                },
+                onCancel: { [weak self] in
+                    self?.dismissActivePanel()
+                }
+            )
+            built.panel.zPosition = 2500
+            activePanel = built.panel
+            cameraNode.addChild(built.panel)
+        default:
+            releaseModalLock()
+            showBriefMessage("PDA — PUZZLE TYPE NOT IMPLEMENTED")
+        }
+    }
+
+    private func completePDAHack(spec: HackingPuzzleSpec, interactable: Interactable) {
+        dismissActivePanel()
+        if let flag = spec.setsFlagOnSuccess { GameState.shared.setFlag(flag) }
+        if let flag = interactable.setsFlag { GameState.shared.setFlag(flag) }
+        if let linkedID = interactable.linkedInteractableID,
+           let door = interactableData[linkedID] {
+            if let doorFlag = door.setsFlag { GameState.shared.setFlag(doorFlag) }
+            openDoor(door)
+        }
+        interactableNodes[interactable.id]?.alpha = 0.35
+        GameState.shared.save()
+        AudioManager.shared.playTerminalBeep(on: self)
+        showBriefMessage("PDA — ACCESS SIGNAL ROUTED")
+    }
 
     private func applyEmpPulseToNearbyDrones() {
         // Match expanded pulse radius (120 × 2.5 scale in fireStunPulse)
@@ -1224,11 +1602,12 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
             activateBuildingExit(inter)
         case "ladder":
             enterLadder(inter)
-        case "text_sign":
+        case "information_node", "text_sign":
             if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
-            if let text = inter.displayText {
-                showBriefMessage(text)
-            }
+            let header = inter.nodeLabel == "RELAY" ? "CIVIC DATA UPLINK"
+                : "PUBLIC INFORMATION NODE"
+            let body = inter.displayText ?? "No data available."
+            showContentPanel(header: header, body: body) { }
         default:
             break
         }
@@ -1248,8 +1627,10 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
             return "LOCKED — READ RELAY CONSOLE FIRST"
         case "door" where requiredFlag == "marr_apt_accessed" || requiredFlag == "ch2_maintenance_credential":
             return "ACCESS DENIED — CLEARANCE NOT MET"
+        case "security_override" where requiredFlag == "ch1_relay_credential":
+            return "PDA DENIED — RELAY CREDENTIAL NOT LOGGED"
         case "security_override":
-            return "OVERRIDE LOCKED — CASE STATUS REQUIRED"
+            return "PDA DENIED — REQUIRED CLEARANCE NOT MET"
         default:
             return "ACCESS DENIED — REQUIRED CLEARANCE NOT MET"
         }
@@ -1318,29 +1699,34 @@ Sign out before exterior transit.
 
     private func activateSecurityOverride(_ inter: Interactable) {
         if let flag = inter.setsFlag, GameState.shared.hasFlag(flag) {
-            showBriefMessage("OVERRIDE ALREADY APPLIED")
+            showBriefMessage("PDA — OVERRIDE ALREADY LOGGED")
             return
         }
 
         let body = inter.displayText ?? """
-MAINTENANCE OVERRIDE — RESIDENTIAL SEAL
-Authorisation: SECTOR MAINTENANCE LAYER
-Status: PENDING CLERK ACKNOWLEDGEMENT
+Connect PDA to maintenance override port.
 
-Apply temporary access to sealed unit?
+Apply temporary access?
 """
-        showContentPanel(header: "OVERRIDE PANEL", body: body) { [weak self] in
-            guard let self = self else { return }
-            if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
-            if let linkedID = inter.linkedInteractableID,
-               let door = self.interactableData[linkedID] {
-                if let doorFlag = door.setsFlag { GameState.shared.setFlag(doorFlag) }
-                self.openDoor(door)
-            }
-            GameState.shared.save()
-            self.interactableNodes[inter.id]?.alpha = 0.35
-            AudioManager.shared.playTerminalBeep(on: self)
-        }
+        showPDAPanel(
+            header: "MARA PDA — SYSTEM OVERRIDE",
+            body: body,
+            primaryLabel: "[ CONNECT PDA ]",
+            onPrimary: { [weak self] in
+                guard let self = self else { return }
+                if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
+                if let linkedID = inter.linkedInteractableID,
+                   let door = self.interactableData[linkedID] {
+                    if let doorFlag = door.setsFlag { GameState.shared.setFlag(doorFlag) }
+                    self.openDoor(door)
+                }
+                GameState.shared.save()
+                self.interactableNodes[inter.id]?.alpha = 0.35
+                AudioManager.shared.playTerminalBeep(on: self)
+                self.showBriefMessage("Credential accepted. Archive door override authorised.")
+            },
+            secondaryLabel: "[ CANCEL ]"
+        )
     }
 
     private func activateBuildingEntrance(_ inter: Interactable) {
@@ -1445,67 +1831,94 @@ console login acknowledgement.
 
     // MARK: - Content Panel
 
+    private func dismissActivePanel(onClose: (() -> Void)? = nil) {
+        activePanel?.removeFromParent()
+        activePanel = nil
+        panelScrollState = nil
+        panelScrollTouch = nil
+        releaseModalLock()
+        onClose?()
+    }
+
     private func showContentPanel(header: String, body: String,
                                   onClose: @escaping () -> Void) {
+        showReadablePanel(style: .terminal, header: header, body: body,
+                          primaryLabel: "[ CLOSE ]", onPrimary: onClose)
+    }
+
+    private func showPDAPanel(header: String, body: String,
+                              primaryLabel: String,
+                              onPrimary: @escaping () -> Void,
+                              secondaryLabel: String? = nil) {
         guard activePanel == nil else { return }
+        engageModalLock()
 
         let cam = SceneLayout.makeCamera(scene: self)
-        let panelW = cam.w * 0.72
-        let panelH = cam.h * 0.72
+        let panelSize = CGSize(width: cam.w * 0.78, height: cam.h * 0.76)
+        let entries = NotebookManager.unlockedEntries(forChapter: levelData?.chapter)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy.MM.dd HH:mm"
+        let meta = ScrollableReadablePanel.PDAMetadata(
+            deviceID: "MARA-UNIT-7",
+            caseRef: levelData?.chapter.uppercased() ?? "FIELD",
+            noteCount: entries.count,
+            syncStatus: "LOCAL ONLY",
+            timestamp: formatter.string(from: Date())
+        )
+        let built = ScrollableReadablePanel.build(
+            style: .pda,
+            header: header,
+            body: body,
+            panelSize: panelSize,
+            textMultiplier: GameState.shared.textSizeMultiplier,
+            primaryButton: .init(label: primaryLabel, action: { [weak self] in
+                self?.dismissActivePanel(onClose: onPrimary)
+            }),
+            secondaryButton: secondaryLabel.map { label in
+                .init(label: label, action: { [weak self] in self?.dismissActivePanel() })
+            },
+            pdaMetadata: meta
+        )
+        built.panel.zPosition = 2500
+        activePanel = built.panel
+        panelScrollState = built.scrollState
+        cameraNode.addChild(built.panel)
+    }
 
-        let panel = SKNode()
-        panel.zPosition = 2500
+    private func showReadablePanel(style: ScrollableReadablePanel.Style,
+                                   header: String, body: String,
+                                   primaryLabel: String,
+                                   onPrimary: @escaping () -> Void,
+                                   secondaryLabel: String? = nil) {
+        guard activePanel == nil else { return }
+        engageModalLock()
 
-        let bg = SKSpriteNode(color: DLOColor.terminalBG,
-                              size: CGSize(width: panelW, height: panelH))
-        bg.alpha = 0.97
-        panel.addChild(bg)
-
-        let border = SKShapeNode(rectOf: CGSize(width: panelW - 2, height: panelH - 2),
-                                 cornerRadius: 4)
-        border.strokeColor = DLOColor.teal
-        border.lineWidth = 1.5
-        border.fillColor = .clear
-        panel.addChild(border)
-
-        let textMult = GameState.shared.textSizeMultiplier
-        let headerLbl = DLOFont.terminalLabel(text: "[ \(header) ]", size: 12 * textMult)
-        headerLbl.horizontalAlignmentMode = .center
-        headerLbl.position = CGPoint(x: 0, y: panelH / 2 - 22)
-        panel.addChild(headerLbl)
-
-        let divider = SKSpriteNode(color: DLOColor.teal.withAlphaComponent(0.4),
-                                   size: CGSize(width: panelW - 24, height: 1))
-        divider.position = CGPoint(x: 0, y: panelH / 2 - 36)
-        panel.addChild(divider)
-
-        let bodyLbl = SKLabelNode(text: body)
-        bodyLbl.fontName = "Menlo"
-        bodyLbl.fontSize = 11 * textMult
-        bodyLbl.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.9)
-        bodyLbl.horizontalAlignmentMode = .center
-        bodyLbl.verticalAlignmentMode = .top
-        bodyLbl.numberOfLines = 0
-        bodyLbl.preferredMaxLayoutWidth = panelW - 40
-        bodyLbl.position = CGPoint(x: 0, y: panelH / 2 - 46)
-        panel.addChild(bodyLbl)
-
-        let closeBtn = PanelButtonNode(label: "[ CLOSE ]") { [weak self] in
-            panel.removeFromParent()
-            self?.activePanel = nil
-            onClose()
-        }
-        closeBtn.position = CGPoint(x: 0, y: -panelH / 2 + 24)
-        panel.addChild(closeBtn)
-
-        activePanel = panel
-        cameraNode.addChild(panel)
+        let cam = SceneLayout.makeCamera(scene: self)
+        let panelSize = CGSize(width: cam.w * 0.78, height: cam.h * 0.76)
+        let built = ScrollableReadablePanel.build(
+            style: style,
+            header: header,
+            body: body,
+            panelSize: panelSize,
+            textMultiplier: GameState.shared.textSizeMultiplier,
+            primaryButton: .init(label: primaryLabel, action: { [weak self] in
+                self?.dismissActivePanel(onClose: onPrimary)
+            }),
+            secondaryButton: secondaryLabel.map { label in
+                .init(label: label, action: { [weak self] in self?.dismissActivePanel() })
+            }
+        )
+        built.panel.zPosition = 2500
+        activePanel = built.panel
+        panelScrollState = built.scrollState
+        cameraNode.addChild(built.panel)
     }
 
     // MARK: - Code Entry Panel
 
     private func showCodePad(for inter: Interactable) {
         guard activePanel == nil else { return }
+        engageModalLock()
 
         let panel = SKNode()
         panel.zPosition = 2500
@@ -1576,8 +1989,7 @@ console login acknowledgement.
                     if enteredCode == inter.requiredCode {
                         if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
                         self.openDoor(inter)
-                        panel.removeFromParent()
-                        self.activePanel = nil
+                        self.dismissActivePanel()
                     } else {
                         enteredCode = ""
                         updateDisplay()
@@ -1604,8 +2016,7 @@ console login acknowledgement.
         }
 
         let cancelBtn = PanelButtonNode(label: "[ CANCEL ]") { [weak self] in
-            panel.removeFromParent()
-            self?.activePanel = nil
+            self?.dismissActivePanel()
         }
         cancelBtn.position = CGPoint(x: 0, y: -panelH / 2 + 20)
         panel.addChild(cancelBtn)
@@ -1622,6 +2033,9 @@ console login acknowledgement.
         guard let extent = inter.ladderExtent, extent.count >= 2, !mara.isOnLadder else { return }
         let bottomY = extent[0]
         let topY = extent[1]
+        guard mara.position.y <= bottomY + 16 else { return }
+        mara.position.x = inter.position[0]
+        if mara.position.y < bottomY { mara.position.y = bottomY }
         mara.attachToLadder(railX: inter.position[0], bottomY: bottomY, topY: topY)
         interactButton.configure(for: "ladder_active")
         nearbyInteractableID = inter.id
@@ -1633,8 +2047,8 @@ console login acknowledgement.
               inter.type == "ladder",
               let extent = inter.ladderExtent, extent.count >= 2 else { return }
         let bottomY = extent[0]
-        guard mara.position.y <= bottomY + 10,
-              pad.currentInput.movementVector.dy > 0.35 else { return }
+        let wantsClimb = pad.currentInput.movementVector.dy > 0.28
+        guard mara.position.y <= bottomY + 14, wantsClimb else { return }
         enterLadder(inter)
     }
 
@@ -1642,20 +2056,17 @@ console login acknowledgement.
 
     private func showNotebook() {
         guard activePanel == nil else { return }
+        engageModalLock()
         isGamePaused = true
         let cam = SceneLayout.makeCamera(scene: self)
-        let panel = NotebookManager.makeOverlayNode(
-            cam: cam, chapter: levelData?.chapter)
-        let panelH = CGFloat(panel.userData?["panelH"] as? Double ?? 280)
-        let closeBtn = PanelButtonNode(label: "[ CLOSE ]") { [weak self] in
-            panel.removeFromParent()
-            self?.activePanel = nil
+        let built = NotebookManager.makePDAPanel(cam: cam, chapter: levelData?.chapter) { [weak self] in
             self?.isGamePaused = false
+            self?.dismissActivePanel()
         }
-        closeBtn.position = CGPoint(x: 0, y: -panelH / 2 + 24)
-        panel.addChild(closeBtn)
-        activePanel = panel
-        cameraNode.addChild(panel)
+        built.panel.zPosition = 2500
+        activePanel = built.panel
+        panelScrollState = built.scrollState
+        cameraNode.addChild(built.panel)
     }
 
     private func showBriefMessage(_ text: String) {
@@ -1800,7 +2211,13 @@ console login acknowledgement.
                 return
             }
 
-            if isGamePaused || isInteractionPaused { continue }
+            if activePanel != nil, panelScrollState != nil,
+               panelScrollState!.maxScroll > 0 {
+                panelScrollTouch = touch
+                return
+            }
+
+            if isGamePaused || isGameplayInputFrozen { continue }
 
             // All touches forwarded to VirtualPad (interact is on the right cluster)
             virtualPad.notifyTouchBegan(touch, at: touch.location(in: virtualPad))
@@ -1808,18 +2225,32 @@ console login acknowledgement.
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard !isGamePaused, !isInteractionPaused else { return }
+        if let scrollTouch = panelScrollTouch,
+           let state = panelScrollState,
+           touches.contains(scrollTouch) {
+            let pos = scrollTouch.location(in: self)
+            let prev = scrollTouch.previousLocation(in: self)
+            state.applyDrag(deltaY: pos.y - prev.y)
+            return
+        }
+        guard !isGamePaused, !isGameplayInputFrozen else { return }
         for touch in touches {
             virtualPad.notifyTouchMoved(touch, at: touch.location(in: virtualPad))
         }
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches { virtualPad.notifyTouchEnded(touch) }
+        for touch in touches {
+            if touch === panelScrollTouch { panelScrollTouch = nil }
+            virtualPad.notifyTouchEnded(touch)
+        }
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches { virtualPad.notifyTouchCancelled(touch) }
+        for touch in touches {
+            if touch === panelScrollTouch { panelScrollTouch = nil }
+            virtualPad.notifyTouchCancelled(touch)
+        }
     }
 
     private func camSpacePoint(from touch: UITouch) -> CGPoint {
@@ -1831,6 +2262,7 @@ console login acknowledgement.
 
     private func showPauseMenu() {
         guard pauseMenuNode == nil else { return }
+        engageModalLock()
         isGamePaused = true
 
         let cam = SceneLayout.makeCamera(scene: self)
@@ -1897,7 +2329,7 @@ console login acknowledgement.
         isGamePaused = false
         pauseMenuNode?.removeFromParent()
         pauseMenuNode = nil
-        virtualPad?.resetInput()
+        releaseModalLock()
     }
 }
 
@@ -1947,59 +2379,26 @@ private final class InteractButtonNode: SKNode {
     }
     required init?(coder: NSCoder) { fatalError() }
 
-    func configure(for type: String) {
+    func configure(for type: String, prompt: String? = nil) {
+        if let prompt {
+            lbl.text = "▲  \(prompt)"
+            return
+        }
         switch type {
         case "terminal":           lbl.text = "▲  READ TERMINAL"
         case "door":               lbl.text = "▲  OPEN DOOR"
-        case "cartridge":          lbl.text = "▲  RETRIEVE"
+        case "cartridge":          lbl.text = "▲  COLLECT FILE"
         case "cabinet":            lbl.text = "▲  OPEN LOCKER"
         case "building_entrance":  lbl.text = "▲  ENTER"
         case "building_exit":      lbl.text = "▲  EXIT"
-        case "security_override":  lbl.text = "▲  OVERRIDE"
+        case "security_override":  lbl.text = "▲  CONNECT PDA"
         case "ladder":             lbl.text = "▲  CLIMB"
         case "ladder_active":      lbl.text = "▲  ON LADDER"
         case "npc":                lbl.text = "▲  TALK"
+        case "information_node", "text_sign": lbl.text = "▲  READ NOTICE"
         default:                   lbl.text = "▲  INTERACT"
         }
     }
-}
-
-// MARK: - Panel Button (CLOSE / CANCEL)
-
-private final class PanelButtonNode: SKNode {
-    private let action: () -> Void
-    private static let btnSize = CGSize(width: 140, height: 32)
-
-    init(label: String, action: @escaping () -> Void) {
-        self.action = action
-        super.init()
-        isUserInteractionEnabled = true
-
-        let bg = SKShapeNode(rectOf: PanelButtonNode.btnSize, cornerRadius: 4)
-        bg.fillColor = DLOColor.uiBorder.withAlphaComponent(0.25)
-        bg.strokeColor = DLOColor.uiBorder
-        bg.lineWidth = 1.2
-        addChild(bg)
-
-        let lbl = DLOFont.terminalLabel(text: label, size: 11)
-        lbl.horizontalAlignmentMode = .center
-        lbl.fontColor = DLOColor.terminalAmber
-        lbl.position = CGPoint(x: 0, y: -4)
-        addChild(lbl)
-    }
-    required init?(coder: NSCoder) { fatalError() }
-
-    override func calculateAccumulatedFrame() -> CGRect {
-        let s = PanelButtonNode.btnSize
-        return CGRect(x: position.x - s.width / 2, y: position.y - s.height / 2,
-                      width: s.width, height: s.height)
-    }
-
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { alpha = 0.7 }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        alpha = 1.0; action()
-    }
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { alpha = 1.0 }
 }
 
 // MARK: - Code Key (number pad key)

@@ -30,8 +30,9 @@
   "interactables": [
     {
       "id": "sign_housing",
-      "type": "text_sign",
-      "position": [280, 110],
+      "type": "information_node",
+      "position": [280, 68],
+      "nodeLabel": "NOTICE",
       "requiredFlag": null,
       "setsFlag": null,
       "requiredCode": null,
@@ -52,8 +53,9 @@
     },
     {
       "id": "sign_orrra_mural",
-      "type": "text_sign",
-      "position": [720, 130],
+      "type": "information_node",
+      "position": [720, 68],
+      "nodeLabel": "NOTICE",
       "requiredFlag": null,
       "setsFlag": "orrra_mural_ch3",
       "requiredCode": null,
@@ -63,8 +65,9 @@
     },
     {
       "id": "sign_eviction",
-      "type": "text_sign",
-      "position": [900, 110],
+      "type": "information_node",
+      "position": [900, 68],
+      "nodeLabel": "NOTICE",
       "requiredFlag": null,
       "setsFlag": null,
       "requiredCode": null,
@@ -153,7 +156,8 @@
     {
       "id": "cartridge_kell_orvin",
       "type": "cartridge",
-      "position": [3900, 120],
+      "position": [3900, 68],
+      "nodeLabel": "FILE",
       "requiredFlag": null,
       "setsFlag": "ch3_orvin_cartridge_collected",
       "requiredCode": null,
@@ -195,10 +199,10 @@
     }
   ],
   "pickups": [
-    {"id": "ch3_pickup_01", "x": "350", "y": "180", "setsFlag": "ch3_pickup01_collected"},
-    {"id": "ch3_pickup_02", "x": "1200", "y": "200", "setsFlag": "ch3_pickup02_collected"},
-    {"id": "ch3_pickup_03", "x": "2400", "y": "200", "setsFlag": "ch3_pickup03_collected"},
-    {"id": "ch3_pickup_04", "x": "4300", "y": "200", "setsFlag": "ch3_pickup04_collected"}
+    {"id": "ch3_pickup_01", "x": "350", "y": "68", "setsFlag": "ch3_pickup01_collected"},
+    {"id": "ch3_pickup_02", "x": "1200", "y": "68", "setsFlag": "ch3_pickup02_collected"},
+    {"id": "ch3_pickup_03", "x": "2400", "y": "68", "setsFlag": "ch3_pickup03_collected"},
+    {"id": "ch3_pickup_04", "x": "4300", "y": "68", "setsFlag": "ch3_pickup04_collected"}
   ],
   "environmentalTextNodes": [
     {"x": "200", "y": "90", "text": "P03 LOWER HOUSING BLOCK — RESIDENTIAL SECTOR"},
@@ -224,6 +228,16 @@
   ],
   "objectiveText": "INVESTIGATE BLOCK P03 — REACH MARR'S APARTMENT",
   "ambientMusicTrack": "ambient_platform",
+  "securityCameras": [
+    {
+      "id": "ch3_block_c_cam",
+      "position": [2550, 68],
+      "coneLength": 110,
+      "coneAngle": 36,
+      "scanAmplitude": 0,
+      "disabledFlag": "ch3_block_c_cam_disabled"
+    }
+  ],
   "levelWidth": 5500,
   "levelHeight": 500
 }
