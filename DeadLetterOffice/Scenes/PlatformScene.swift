@@ -105,18 +105,51 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         let node = SKNode()
         node.zPosition = layer.zPosition
         node.name = "bgLayer_\(layer.zPosition)"
+        node.userData = NSMutableDictionary()
+        node.userData?["scrollFactor"] = Double(layer.scrollFactor)
 
-        if UIImage(named: layer.imageName) != nil {
-            let sprite = SKSpriteNode(imageNamed: layer.imageName)
-            sprite.size = CGSize(width: levelWidth, height: levelHeight)
-            sprite.position = CGPoint(x: levelWidth / 2,
-                                      y: levelHeight / 2 + layer.yOffset)
-            node.addChild(sprite)
+        if let image = UIImage(named: layer.imageName) {
+            node.addChild(buildTiledParallaxSprites(
+                image: image,
+                levelWidth: levelWidth,
+                levelHeight: levelHeight,
+                yOffset: layer.yOffset))
         } else {
             node.addChild(buildProceduralBackground(layer: layer,
                                                     width: levelWidth, height: levelHeight))
         }
         return node
+    }
+
+    /// Tiles a parallax strip to cover level width + viewport, scaled to level height.
+    private func buildTiledParallaxSprites(image: UIImage,
+                                           levelWidth: CGFloat,
+                                           levelHeight: CGFloat,
+                                           yOffset: CGFloat) -> SKNode {
+        let container = SKNode()
+        let texture = SKTexture(image: image)
+        texture.filteringMode = .linear
+
+        let texSize = texture.size()
+        guard texSize.width > 0, texSize.height > 0 else { return container }
+
+        let targetH = levelHeight
+        let scale = targetH / texSize.height
+        let tileW = texSize.width * scale
+        let viewportW = max(size.width, 400)
+        // Extra tiles for parallax shift (near layer scrollFactor up to ~0.9).
+        let coverage = levelWidth + viewportW * 2
+        let tileCount = max(2, Int(ceil(coverage / tileW)) + 1)
+        let centerY = levelHeight / 2 + yOffset
+
+        for i in 0..<tileCount {
+            let sprite = SKSpriteNode(texture: texture)
+            sprite.size = CGSize(width: tileW, height: targetH)
+            sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            sprite.position = CGPoint(x: tileW * (CGFloat(i) + 0.5), y: centerY)
+            container.addChild(sprite)
+        }
+        return container
     }
 
     private func buildProceduralBackground(layer: BackgroundLayer,
@@ -627,9 +660,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         children
             .compactMap { $0.name?.hasPrefix("bgLayer_") == true ? $0 : nil }
             .forEach { layer in
-                let z = CGFloat(Double(
-                    layer.name?.replacingOccurrences(of: "bgLayer_", with: "") ?? "0") ?? 0)
-                let factor = max(0, (-z) / 50) * 0.3
+                let factor = CGFloat(layer.userData?["scrollFactor"] as? Double ?? 0)
                 layer.position.x = -cameraNode.position.x * factor
             }
     }
