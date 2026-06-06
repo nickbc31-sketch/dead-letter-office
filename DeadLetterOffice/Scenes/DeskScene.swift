@@ -99,7 +99,8 @@ final class DeskScene: SKScene {
                DialogueFile.load(id: "intro_\(chapterID)") != nil {
                 SceneManager.shared.transition(
                     to: .dialogue(dialogueID: "intro_\(chapterID)",
-                                  returnScene: .desk(chapterID: chapterID)),
+                                  returnScene: .desk(chapterID: chapterID),
+                                  startNodeID: nil),
                     from: self)
                 return
             }
@@ -923,7 +924,7 @@ final class DeskScene: SKScene {
         let isChapterCulmination = action.consequences.flagsSet?.contains("ch1_chapter_complete") == true
         let nextAction: () -> Void = isChapterCulmination
             ? { [weak self] in self?.playChapterCulminationGlitch() }
-            : { [weak self] in self?.advanceCase() }
+            : { [weak self] in self?.continueAfterCaseAction(caseFile: caseFile, action: action) }
 
         // Show result as a readable overlay over the document area instead of the
         // right panel — cleaner, not obscured by stamp buttons or Next Case.
@@ -931,6 +932,57 @@ final class DeskScene: SKScene {
                               color: .fromHex(action.color),
                               auditResponse: action.auditResponse,
                               onContinue: nextAction)
+    }
+
+    private struct PendingDeskDialogue {
+        let dialogueID: String
+        let startNodeID: String
+        let returnScene: SceneType
+    }
+
+    private func pendingDialogueAfterStamp(caseFile: CaseFile, action: CaseAction) -> PendingDeskDialogue? {
+        if chapterID == "ch3",
+           caseFile.id.hasPrefix("case_ch3_001"),
+           GameState.shared.hasFlag("c09_processed"),
+           !GameState.shared.hasFlag("ch3_c09_note_shown") {
+            return PendingDeskDialogue(
+                dialogueID: "intro_ch3",
+                startNodeID: "n1",
+                returnScene: .desk(chapterID: "ch3"))
+        }
+
+        if chapterID == "ch3",
+           caseFile.id == "case_ch3_003",
+           action.consequences.flagsSet?.contains("ch3_desk_complete") == true,
+           !GameState.shared.hasFlag("ch3_outro_complete") {
+            let platformLevelID = "level_ch3"
+            let nextScene: SceneType
+            if LevelData.load(id: platformLevelID) != nil,
+               !GameState.shared.completedLevelIDs.contains(platformLevelID) {
+                nextScene = .chapterComplete(chapterID: "ch3",
+                                             nextScene: .platform(levelID: platformLevelID))
+            } else {
+                nextScene = resolveNextScene(afterDeskFor: "ch3")
+            }
+            return PendingDeskDialogue(
+                dialogueID: "intro_ch3",
+                startNodeID: "n2",
+                returnScene: nextScene)
+        }
+
+        return nil
+    }
+
+    private func continueAfterCaseAction(caseFile: CaseFile, action: CaseAction) {
+        if let pending = pendingDialogueAfterStamp(caseFile: caseFile, action: action) {
+            SceneManager.shared.transition(
+                to: .dialogue(dialogueID: pending.dialogueID,
+                              returnScene: pending.returnScene,
+                              startNodeID: pending.startNodeID),
+                from: self)
+            return
+        }
+        advanceCase()
     }
 
     private func playChapterCulminationGlitch() {

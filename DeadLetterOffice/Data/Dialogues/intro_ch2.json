@@ -59,6 +59,40 @@
       "autoAdvance": false,
       "flagsRequired": null,
       "flagsSet": ["ch2_intro_complete"],
+      "nextID": "n1"
+    },
+    {
+      "id": "n1",
+      "lines": [
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Supplemental note. Case C04-001-V remains archived at your processing tier.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk proximity flag for routing tag EVN-0442 class: active.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "You mean my brother's file.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "That information is not available at your clearance level.",
+          "voiceFilter": "terminal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": ["elias_routing_discovered"],
+      "flagsSet": ["ch2_elias_flag_reminder"],
       "nextID": null
     }
   ]

@@ -23,9 +23,9 @@
       "yOffset": 0
     }
   ],
-  "spawnPoint": [120, 60],
+  "spawnPoint": [120, 90],
   "exits": [
-    {"type": "level_end", "x": "5300", "y": "60", "nextSceneHint": "desk_ch4"}
+    {"type": "platform_end", "x": "5300", "y": "60", "dialogueID": "dialogue_ch3_platform_end", "requiredFlag": "ch3_desk_complete", "nextSceneHint": "desk_ch4"}
   ],
   "interactables": [
     {
@@ -44,9 +44,20 @@
       "type": "terminal",
       "position": [420, 68],
       "requiredFlag": null,
-      "setsFlag": "ch3_checkin_read",
+      "setsFlag": "ch3_orphan_tags_read",
       "requiredCode": null,
-      "displayText": "PMCA RESIDENTIAL REGISTER — BLOCK P03\nUpdated: 2147.04.22\n\nUnit 312 — MARR, L. — VC-4472-F\nStatus: DECEASED — 2147.03.18\nCase: C09-0441-V — Posthumous appeal\nAppeal status: in processing\n\nUnit 408 — DAIN, F. — 19-MH-0221\nStatus: DECEASED — 2147.03.16 (registry)\nDependent: K. DAIN — 19-MH-0221-K\nRelocation: enforced 2147.03.14 (prior to registry date)\n\nUnit 204 — ORVIN, K. — 38-SV-0091\nStatus: INCINERATION COMPLETE — 2147.04.18\nNote: Final correspondence processed",
+      "displayText": "PMCA RESIDENTIAL REGISTER — BLOCK P03\nUpdated: 2147.04.22\n\nUnit 312 — MARR, L. — VC-4472-F\nStatus: DECEASED — 2147.03.18\nCase: C09-0441-V — Posthumous appeal\nAppeal status: in processing\n\nUnit 408 — DAIN, F. — 19-MH-0221\nStatus: DECEASED — 2147.03.16 (registry)\nDependent: K. DAIN — 19-MH-0221-K\nRelocation: enforced 2147.03.14 (prior to registry date)\n\nUnit 204 — ORVIN, K. — 38-SV-0091\nStatus: INCINERATION COMPLETE — 2147.04.18\nNote: Final correspondence processed\n\n— — —\nORPHAN ROUTING TAGS — EVN CLASS\nEVN-ROUTING-0442 — no primary record\nStatus: ORPHANED — audit closed 2142\nEVN-ROUTING-0447 — no primary record\nStatus: ORPHANED — pending deletion\nNote: Tags not visible from clerk terminals.",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    },
+    {
+      "id": "sign_orrra_mural",
+      "type": "text_sign",
+      "position": [720, 130],
+      "requiredFlag": null,
+      "setsFlag": "orrra_mural_ch3",
+      "requiredCode": null,
+      "displayText": "[COMMUNITY MURAL — BLOCK A CORRIDOR]\n'ORRA LIT THE LAMP\nWHEN THE SQUARE WENT DARK'\n— RESTORED 2138 —\nPMCA NOTICE: UNAUTHORISED\nSYMBOLISM — DO NOT REPRODUCE",
       "cartridgeData": null,
       "linkedDialogueID": null
     },
@@ -73,13 +84,25 @@
       "linkedDialogueID": null
     },
     {
+      "id": "override_marr_apt",
+      "type": "security_override",
+      "position": [2550, 68],
+      "requiredFlag": "c09_processed",
+      "setsFlag": "ch3_override_used",
+      "requiredCode": null,
+      "displayText": "MAINTENANCE OVERRIDE — RESIDENTIAL SEAL\nUnit 312 — Marr, L.\nSeal authority: PMCA Property Division\n\nTemporary access available via\nmaintenance layer credentials.\n\nApply override?",
+      "cartridgeData": null,
+      "linkedDialogueID": null,
+      "linkedInteractableID": "door_marr_apt"
+    },
+    {
       "id": "door_marr_apt",
       "type": "door",
       "position": [2700, 68],
-      "requiredFlag": "c09_processed",
+      "requiredFlag": "marr_apt_accessed",
       "setsFlag": "ch3_marr_apt_open",
       "requiredCode": null,
-      "displayText": "APT 312 — MARR, L. — [SEALED]\nPMCA CASE PENDING — AUTHORISED ACCESS ONLY",
+      "displayText": "APT 312 — MARR, L. — [SEALED]\nMAINTENANCE OVERRIDE OR AUTHORISED ACCESS REQUIRED",
       "cartridgeData": null,
       "linkedDialogueID": null
     },

@@ -155,19 +155,19 @@
         {
           "speaker": "MARA VENN",
           "portraitAsset": "portrait_mara",
-          "text": "Who is J. Harrel-09?",
+          "text": "EVN-ROUTING-0442. The same secondary tag from my brother's file — on a confession that failed live-transmission at 0.23.",
           "voiceFilter": "normal"
         },
         {
           "speaker": "THE AUDIT VOICE",
           "portraitAsset": "portrait_audit_voice",
-          "text": "That information is not available at your clearance level.",
+          "text": "Routing metadata analysis is not a standard clerk function.",
           "voiceFilter": "terminal"
         },
         {
           "speaker": "MARA VENN",
           "portraitAsset": "portrait_mara",
-          "text": "Then why is the same signature on two separate death forms for the same subject?",
+          "text": "Harrel-09 certified the death and recommended incineration eighteen minutes later. Who wrote the confession?",
           "voiceFilter": "normal"
         },
         {

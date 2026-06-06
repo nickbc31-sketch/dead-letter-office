@@ -11,7 +11,7 @@ indirect enum SceneType {
     case credits
     case settings
     case desk(chapterID: String)
-    case dialogue(dialogueID: String, returnScene: SceneType)
+    case dialogue(dialogueID: String, returnScene: SceneType, startNodeID: String?)
     case platform(levelID: String)
     case chapterComplete(chapterID: String, nextScene: SceneType)
     case chapterSelect
@@ -43,10 +43,11 @@ final class SceneManager {
             let s = SettingsScene(size: size); s.scaleMode = .resizeFill; return s
         case .desk(let chapterID):
             let s = DeskScene(size: size); s.chapterID = chapterID; s.scaleMode = .resizeFill; return s
-        case .dialogue(let dialogueID, let returnScene):
+        case .dialogue(let dialogueID, let returnScene, let startNodeID):
             let s = DialogueScene(size: size)
             s.dialogueID = dialogueID
             s.returnSceneType = returnScene
+            s.startNodeID = startNodeID
             s.scaleMode = .resizeFill
             return s
         case .platform(let levelID):

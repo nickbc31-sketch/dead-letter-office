@@ -1,0 +1,41 @@
+{
+  "id": "dialogue_ch3_platform_end",
+  "chapter": "ch3",
+  "returnSceneHint": "desk_ch4",
+  "nodes": [
+    {
+      "id": "n0",
+      "lines": [
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Unit 312 confirms it. Whatever I stamped on Lina's appeal — the housing register already knew.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Orvin's note was scheduled for incineration. Harrel signed the death and the destruction eighteen minutes apart.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. Your exterior movement has exceeded standard duration.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "I need to get out of this building before they schedule mine.",
+          "voiceFilter": "normal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": ["ch3_platform_complete"],
+      "nextID": null
+    }
+  ]
+}

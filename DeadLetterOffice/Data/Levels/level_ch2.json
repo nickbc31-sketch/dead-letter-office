@@ -23,10 +23,10 @@
       "yOffset": 0
     }
   ],
-  "spawnPoint": [120, 60],
+  "spawnPoint": [120, 90],
   "exits": [
     {"type": "level_end", "x": "3100", "y": "60", "requiredFlagAbsent": "c08_illegal_forward_used", "nextSceneHint": "desk_ch3"},
-    {"type": "level_end", "x": "5880", "y": "60", "nextSceneHint": "desk_ch3"}
+    {"type": "platform_end", "x": "5880", "y": "60", "dialogueID": "dialogue_ch2_platform_end", "requiredFlag": "ch2_desk_complete", "nextSceneHint": "desk_ch3"}
   ],
   "interactables": [
     {
@@ -67,9 +67,9 @@
       "type": "terminal",
       "position": [950, 68],
       "requiredFlag": null,
-      "setsFlag": "c08_maintenance_log_read",
+      "setsFlag": "jun_override_log_read",
       "requiredCode": null,
-      "displayText": "SECTOR 12 MAINTENANCE LOG\n\nLast entry: SVC-19-4A\nSector 12, eastern corridor — 06:45\n\nStatus at 12:00 check-in: ABSENT\nReason: death notification\nreceived from Sector 7.\n\nDiscrepancy flag generated: 12:03\nSupervisor response: NONE LOGGED\nFlag status: OPEN",
+      "displayText": "SECTOR 12 MAINTENANCE LOG\n\nLast entry: SVC-19-4A\nSector 12, eastern corridor — 06:45\n\nStatus at 12:00 check-in: ABSENT\nReason: death notification\nreceived from Sector 7.\n\nDiscrepancy flag generated: 12:03\nSupervisor response: NONE LOGGED\nFlag status: OPEN\n\n— — —\nOVERRIDE LOG — 2147.04.08 22:17\nAuthorisation: J.V.\nSector 12 eastern corridor —\nmaintenance layer access\nPERSONNEL FILE: NOT FOUND\nRegistry cross-check: FAILED",
       "cartridgeData": null,
       "linkedDialogueID": null
     },
@@ -129,10 +129,32 @@
       "linkedDialogueID": null
     },
     {
+      "id": "cabinet_ch2_credential",
+      "type": "cabinet",
+      "position": [3180, 68],
+      "requiredFlag": null,
+      "setsFlag": "ch2_maintenance_credential",
+      "requiredCode": null,
+      "displayText": "MAINTENANCE CREDENTIAL LOCKER\nLocker ID: MNT-SEC12-E4\n\nSector 12 restricted corridor\ncredential issued to authorised\nmaintenance personnel.\n\n— — —\nCREDENTIAL: CH2-MAINT-SEC12\nStatus: ACTIVE\n— — —\n\nSign out before restricted transit.",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    },
+    {
+      "id": "terminal_buffer",
+      "type": "terminal",
+      "position": [4100, 68],
+      "requiredFlag": null,
+      "setsFlag": "ch2_buffer_senders_found",
+      "requiredCode": null,
+      "displayText": "PMCA RELAY BUFFER — EAST TRANSIT NODE\n\nUnregistered senders in transit: 47\nScheduled deletion: 2147.04.15\n\nSecondary routing class: EVN\nOrphan tags logged: 12\nOrigin infrastructure: UNLOGGED\n\nNote: Buffer contents not visible\nfrom clerk processing terminals.",
+      "cartridgeData": null,
+      "linkedDialogueID": null
+    },
+    {
       "id": "door_restricted",
       "type": "door",
       "position": [3400, 68],
-      "requiredFlag": "c08_illegal_forward_used",
+      "requiredFlagsAny": ["c08_illegal_forward_used", "ch2_maintenance_credential"],
       "setsFlag": "door_restricted_open",
       "requiredCode": null,
       "displayText": "RESTRICTED SECTOR — AUTHORISED ACCESS ONLY",
@@ -217,15 +239,16 @@
   ],
   "npcs": [
     {
-      "id": "svc19",
+      "id": "maint_worker_12",
       "position": [2080, 68],
-      "displayName": "MAINTENANCE — SVC-19-4A",
+      "displayName": "MAINTENANCE — SECTOR 12",
       "dialogue": [
-        "My shift ended three hours ago. I received a death notification — sector 7. I didn't know what to do with it, so I stayed.",
-        "The conveyor over there routes directly to incineration. It doesn't stop at review. I've watched the trays go through since 04:00. No one checks.",
-        "There's a cartridge in the restricted sector. Someone hid it behind panel C-9. I don't know what's on it. I'm not authorised to know."
+        "You're not supposed to be on this floor after shift end. Neither am I, technically.",
+        "My badge didn't scan at the east checkpoint. Registry says I'm active. The roster says I'm absent. Both are correct, which is the problem.",
+        "There's a locker past the tier-three signs — maintenance credential, if you know which corridor. The restricted sector has a cartridge someone hid behind panel C-9. I was told not to read it.",
+        "If you see a log entry for J.V. — don't expect a personnel file. Maintenance layer doesn't always use real names."
       ],
-      "setsFlag": "ch2_svc19_talked",
+      "setsFlag": "jun_vale_hint",
       "repeatable": false
     }
   ],

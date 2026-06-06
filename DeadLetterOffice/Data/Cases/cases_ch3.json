@@ -17,11 +17,36 @@
         "issueDate": "2147.04.20",
         "referenceNumber": "PMCA-QI-C09A-0441-V",
         "fields": [
-          {"key": "Case Reference", "value": "C09A-0441-V — Posthumous appeal, Veyr City", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Sender Status", "value": "DECEASED — registered 2147.03.18", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Processing Pathway", "value": "Posthumous appeal — standard routing, Statute 11-G", "isSuspicious": true, "suspicionNote": "Statute 11-G posthumous appeals require independent review. Processing pathway listed as standard routing — no independent reviewer assigned."},
-          {"key": "Administrative Interest", "value": "None registered", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Supervisor Escalation", "value": "Not required", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C09A-0441-V — Posthumous appeal, Veyr City",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Sender Status",
+            "value": "DECEASED — registered 2147.03.18",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Processing Pathway",
+            "value": "Posthumous appeal — standard routing, Statute 11-G",
+            "isSuspicious": true,
+            "suspicionNote": "Statute 11-G posthumous appeals require independent review. Processing pathway listed as standard routing — no independent reviewer assigned."
+          },
+          {
+            "key": "Administrative Interest",
+            "value": "None registered",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Supervisor Escalation",
+            "value": "Not required",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Case C09A-0441-V. Posthumous appeal, Veyr City. Sender: Marr, Lina — VC-4472-F — deceased 2147.03.18. Appeal filed under PMCA Review Statute 11-G, citing monitoring flag irregularity. Processing pathway: standard routing. Clerk confirmation only. No supervisor escalation required.",
         "footerText": "PMCA Processing Authority — Queue Instruction",
@@ -37,15 +62,47 @@
         "issueDate": "2147.04.19",
         "referenceNumber": "PMCA-CR-VC-4472-F",
         "fields": [
-          {"key": "Citizen", "value": "Marr, Lina — VC-4472-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Status", "value": "DECEASED — enforcement action 2147.03.18", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Monitoring Flag", "value": "Applied 2147.03.14 — category C-4, message receipt trigger", "isSuspicious": true, "suspicionNote": "Monitoring flag applied 2147.03.14 — same date as message delivery. Category C-4 requires a conduct-based trigger. Delivery of a message is not conduct by the recipient. Cross-reference C01 Routing Record."},
-          {"key": "Relocation Notice", "value": "Issued 2147.03.13 — Compliance Relocation under Civic Efficiency Order 44-B", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Compliance Status", "value": "REFUSED — enforcement applied 2147.03.18 under Order 44-B authority", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Citizen",
+            "value": "Marr, Lina — VC-4472-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Status",
+            "value": "DECEASED — enforcement action 2147.03.18",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Monitoring Flag",
+            "value": "Applied 2147.03.14 — category C-4, message receipt trigger",
+            "isSuspicious": true,
+            "suspicionNote": "Monitoring flag applied 2147.03.14 — same date as message delivery. Category C-4 requires a conduct-based trigger. Delivery of a message is not conduct by the recipient. Cross-reference C01 Routing Record."
+          },
+          {
+            "key": "Relocation Notice",
+            "value": "Issued 2147.03.13 — Compliance Relocation under Civic Efficiency Order 44-B",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Compliance Status",
+            "value": "REFUSED — enforcement applied 2147.03.18 under Order 44-B authority",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Citizen file for Marr, Lina (VC-4472-F). Deceased 2147.03.18 via enforcement action. Monitoring flag C-4 applied 2147.03.14. Compliance relocation notice issued 2147.03.13 under Civic Efficiency Order 44-B, authorised by PMCA Directorate. Citizen refused voluntary signature through period 2147.03.13–2147.03.18. Enforcement applied 2147.03.18. Registry status updated: deceased.",
         "footerText": "PMCA Citizen Registry — Automated Record",
-        "stamps": [{"text": "DECEASED", "color": "#1A3A5C", "appliedDate": "2147.03.18", "appliedBy": "Registry Auto-Seal"}],
+        "stamps": [
+          {
+            "text": "DECEASED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.03.18",
+            "appliedBy": "Registry Auto-Seal"
+          }
+        ],
         "classificationLevel": "STANDARD",
         "isTampered": false
       },
@@ -57,14 +114,41 @@
         "issueDate": "2147.03.18",
         "referenceNumber": "MCO-RC-VC-4472-F",
         "fields": [
-          {"key": "Resident", "value": "Marr, Lina — VC-4472-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Signature Status", "value": "UNSIGNED — voluntary consent not obtained", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Enforcement Applied", "value": "2147.03.18 — Order 44-B, mandatory relocation authority", "isSuspicious": false, "suspicionNote": null},
-          {"key": "New Tenant Allocation", "value": "Block 14, Sector 7 — allocated 2147.03.14", "isSuspicious": true, "suspicionNote": "New tenant allocation prepared 2147.03.14 — four days before enforcement, same day as the monitoring flag. See Compliance Relocation Order — issued at 14:35 on 2147.03.14. The unit was already being transferred before any compliance window elapsed."}
+          {
+            "key": "Resident",
+            "value": "Marr, Lina — VC-4472-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Signature Status",
+            "value": "UNSIGNED — voluntary consent not obtained",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Enforcement Applied",
+            "value": "2147.03.18 — Order 44-B, mandatory relocation authority",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "New Tenant Allocation",
+            "value": "Block 14, Sector 7 — allocated 2147.03.14",
+            "isSuspicious": true,
+            "suspicionNote": "New tenant allocation prepared 2147.03.14 — four days before enforcement, same day as the monitoring flag. See Compliance Relocation Order — issued at 14:35 on 2147.03.14. The unit was already being transferred before any compliance window elapsed."
+          }
         ],
         "bodyText": "Relocation record for Marr, Lina (VC-4472-F). Voluntary signature not obtained. Mandatory enforcement applied under Order 44-B authority on 2147.03.18. Unit Block 14, Sector 7 reallocated. New tenant allocation prepared 2147.03.14 by Ministry of Housing automated system.",
         "footerText": "Ministry of Civil Order — Relocation Division — Form RC-7",
-        "stamps": [{"text": "ENFORCED", "color": "#CC3300", "appliedDate": "2147.03.18", "appliedBy": "MCO Enforcement Division"}],
+        "stamps": [
+          {
+            "text": "ENFORCED",
+            "color": "#CC3300",
+            "appliedDate": "2147.03.18",
+            "appliedBy": "MCO Enforcement Division"
+          }
+        ],
         "classificationLevel": "STANDARD",
         "isTampered": false
       },
@@ -76,10 +160,30 @@
         "issueDate": "2147.03.14",
         "referenceNumber": "PMCA-RR-C01-001-V",
         "fields": [
-          {"key": "Case Reference", "value": "C01 — Marr, Olen (VC-4471-M) to Marr, Lina (VC-4472-F)", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Clerk Decision", "value": "APPROVED — delivery authorised 2147.03.14", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Monitoring Flag Triggered", "value": "2147.03.14 at 14:33 — delivery confirmation timestamp", "isSuspicious": true, "suspicionNote": "Flag triggered at 14:33 — the exact delivery confirmation timestamp. The monitoring flag was a consequence of the clerk approving delivery, not of any action by the recipient. See Citizen File — flag category C-4 requires conduct-based trigger."},
-          {"key": "Flag Category Applied", "value": "C-4 — message receipt, Class D phrase list triggered", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C01 — Marr, Olen (VC-4471-M) to Marr, Lina (VC-4472-F)",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Clerk Decision",
+            "value": "APPROVED — delivery authorised 2147.03.14",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Monitoring Flag Triggered",
+            "value": "2147.03.14 at 14:33 — delivery confirmation timestamp",
+            "isSuspicious": true,
+            "suspicionNote": "Flag triggered at 14:33 — the exact delivery confirmation timestamp. The monitoring flag was a consequence of the clerk approving delivery, not of any action by the recipient. See Citizen File — flag category C-4 requires conduct-based trigger."
+          },
+          {
+            "key": "Flag Category Applied",
+            "value": "C-4 — message receipt, Class D phrase list triggered",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Routing record for case C01. Sender: Marr, Olen (VC-4471-M, deceased). Recipient: Marr, Lina (VC-4472-F). Clerk decision: approved for delivery 2147.03.14. Monitoring flag C-4 triggered at 14:33 — delivery confirmation timestamp. Flag basis: restricted phrase list Class D, three triggers detected in message body.",
         "footerText": "PMCA Message Routing System — Automated Record",
@@ -95,15 +199,47 @@
         "issueDate": "2147.03.14",
         "referenceNumber": "PMCA-CRO-VC-4472-F",
         "fields": [
-          {"key": "Subject", "value": "Marr, Lina — VC-4472-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Order Basis", "value": "Monitoring flag C-4 — Civic Efficiency Order 44-B", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Order Issue Time", "value": "2147.03.14 at 14:35", "isSuspicious": true, "suspicionNote": "Order issued at 14:35 — two minutes after the monitoring flag was triggered at 14:33. PMCA Statute 7 mandates a 48-hour compliance review before relocation orders are issued. No review was conducted."},
-          {"key": "Authorising Officer", "value": "Director Calyx, PMCA Directorate", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Compliance Deadline", "value": "2147.03.17", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Subject",
+            "value": "Marr, Lina — VC-4472-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Order Basis",
+            "value": "Monitoring flag C-4 — Civic Efficiency Order 44-B",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Order Issue Time",
+            "value": "2147.03.14 at 14:35",
+            "isSuspicious": true,
+            "suspicionNote": "Order issued at 14:35 — two minutes after the monitoring flag was triggered at 14:33. PMCA Statute 7 mandates a 48-hour compliance review before relocation orders are issued. No review was conducted."
+          },
+          {
+            "key": "Authorising Officer",
+            "value": "Director Calyx, PMCA Directorate",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Compliance Deadline",
+            "value": "2147.03.17",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Compliance relocation order for Marr, Lina (VC-4472-F). Basis: Monitoring flag C-4 triggered 2147.03.14. Order issued 2147.03.14 at 14:35 under Civic Efficiency Order 44-B. Authorised by Director Calyx, PMCA Directorate. Voluntary compliance deadline: 2147.03.17. Enforcement authority activated on non-compliance.",
         "footerText": "PMCA Directorate — Compliance Division",
-        "stamps": [{"text": "AUTHORISED", "color": "#1A3A5C", "appliedDate": "2147.03.14", "appliedBy": "Director Calyx, PMCA Directorate"}],
+        "stamps": [
+          {
+            "text": "AUTHORISED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.03.14",
+            "appliedBy": "Director Calyx, PMCA Directorate"
+          }
+        ],
         "classificationLevel": "STANDARD",
         "isTampered": false
       }
@@ -129,7 +265,15 @@
         "shortLabel": "APPROVED",
         "color": "#2A6A3C",
         "auditResponse": "Posthumous appeal forwarded for independent review under Statute 11-G. Monitoring record flagged.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 1, "flagsSet": ["c09_approved", "lina_appeal_active"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 2,
+          "suspicionDelta": 1,
+          "flagsSet": [
+            "c09_approved",
+            "lina_appeal_active"
+          ]
+        },
         "resultText": "Appeal forwarded. The monitoring record was flagged for independent review. The flag was applied two minutes before the relocation order, at the moment of delivery confirmation. The review queue is long. The unit at Block 14 has already been reallocated.",
         "isIllegal": false
       },
@@ -139,7 +283,15 @@
         "shortLabel": "REJECTED",
         "color": "#1A3A5C",
         "auditResponse": "Posthumous appeal rejected. Monitoring record stands. Case closed.",
-        "consequences": {"complianceDelta": 1, "empathyDelta": -2, "citizenHarmDelta": 1, "flagsSet": ["c09_rejected", "lina_appeal_closed"]},
+        "consequences": {
+          "complianceDelta": 1,
+          "empathyDelta": -2,
+          "citizenHarmDelta": 1,
+          "flagsSet": [
+            "c09_rejected",
+            "lina_appeal_closed"
+          ]
+        },
         "resultText": "Appeal rejected. The monitoring flag stands. The record shows a standard compliance relocation following a C-4 trigger. The relocation order remains in the file, timestamped two minutes after delivery.",
         "isIllegal": false
       },
@@ -149,16 +301,28 @@
         "shortLabel": "FLAGGED",
         "color": "#CC9900",
         "auditResponse": "Routing anomaly submitted. Monitoring flag timeline queued for review. Case deferred.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 1, "suspicionDelta": 2, "resistanceTrustDelta": 1, "flagsSet": ["c09_flagged", "lina_appeal_flagged"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 1,
+          "suspicionDelta": 2,
+          "resistanceTrustDelta": 1,
+          "flagsSet": [
+            "c09_flagged",
+            "lina_appeal_flagged"
+          ]
+        },
         "resultText": "Anomaly submitted. The two-minute window between delivery confirmation and relocation order was logged for review. The queue instruction routed this as standard processing. It is no longer standard.",
         "isIllegal": false
       }
     ],
     "correctLegalActionID": "approve",
-    "followUpFlags": ["c09_processed"],
-    "requiredFlags": ["lina_warned"]
+    "followUpFlags": [
+      "c09_processed"
+    ],
+    "requiredFlags": [
+      "lina_warned"
+    ]
   },
-
   {
     "id": "case_ch3_001b",
     "chapter": "ch3",
@@ -177,11 +341,36 @@
         "issueDate": "2147.04.20",
         "referenceNumber": "PMCA-QI-C09B-0442-V",
         "fields": [
-          {"key": "Case Reference", "value": "C09B-0442-V — Posthumous appeal, Veyr City", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Sender Status", "value": "DECEASED — resettlement, registered 2147.04.02", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Processing Pathway", "value": "Posthumous appeal — standard routing, Statute 11-G", "isSuspicious": true, "suspicionNote": "Statute 11-G posthumous appeals require independent review. Processing pathway listed as standard routing — no independent reviewer assigned."},
-          {"key": "Prior Case Reference", "value": "C01-001-V — message rejected 2147.03.15", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Supervisor Escalation", "value": "Not required", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C09B-0442-V — Posthumous appeal, Veyr City",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Sender Status",
+            "value": "DECEASED — resettlement, registered 2147.04.02",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Processing Pathway",
+            "value": "Posthumous appeal — standard routing, Statute 11-G",
+            "isSuspicious": true,
+            "suspicionNote": "Statute 11-G posthumous appeals require independent review. Processing pathway listed as standard routing — no independent reviewer assigned."
+          },
+          {
+            "key": "Prior Case Reference",
+            "value": "C01-001-V — message rejected 2147.03.15",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Supervisor Escalation",
+            "value": "Not required",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Case C09B-0442-V. Posthumous appeal, Veyr City. Sender: Marr, Lina — VC-4472-F — deceased 2147.04.02. Appeal filed under PMCA Review Statute 11-G, citing notification irregularity in relocation process. Prior case: C01-001-V, message rejected 2147.03.15. Processing pathway: standard routing. Clerk confirmation only.",
         "footerText": "PMCA Processing Authority — Queue Instruction",
@@ -197,15 +386,47 @@
         "issueDate": "2147.04.19",
         "referenceNumber": "PMCA-CR-VC-4472-F",
         "fields": [
-          {"key": "Citizen", "value": "Marr, Lina — VC-4472-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Status", "value": "DECEASED — resettlement hub, registered 2147.04.02", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Relocation Status", "value": "VOLUNTARY — consent signed 2147.03.17, relocated without incident", "isSuspicious": true, "suspicionNote": "Relocation recorded as voluntary. Incoming message from father rejected 2147.03.15. Citizen had no access to any warning before signing. See C01 Routing Record."},
-          {"key": "Incoming Message", "value": "C01-001-V — message from Marr, Olen (deceased) — rejected 2147.03.15", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Notification Record", "value": "Relocation notice issued 2147.03.13 — listed as authorised notification", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Citizen",
+            "value": "Marr, Lina — VC-4472-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Status",
+            "value": "DECEASED — resettlement hub, registered 2147.04.02",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Relocation Status",
+            "value": "VOLUNTARY — consent signed 2147.03.17, relocated without incident",
+            "isSuspicious": true,
+            "suspicionNote": "Relocation recorded as voluntary. Incoming message from father rejected 2147.03.15. Citizen had no access to any warning before signing. See C01 Routing Record."
+          },
+          {
+            "key": "Incoming Message",
+            "value": "C01-001-V — message from Marr, Olen (deceased) — rejected 2147.03.15",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Notification Record",
+            "value": "Relocation notice issued 2147.03.13 — listed as authorised notification",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Citizen file for Marr, Lina (VC-4472-F). Deceased 2147.04.02, resettlement hub, cause: acute respiratory failure. Relocation recorded as voluntary — consent signed 2147.03.17. Incoming message C01-001-V (Marr, Olen) rejected 2147.03.15 — two days after relocation notice, two days before compliance deadline. No monitoring flag applied.",
         "footerText": "PMCA Citizen Registry — Automated Record",
-        "stamps": [{"text": "DECEASED", "color": "#1A3A5C", "appliedDate": "2147.04.02", "appliedBy": "Registry Auto-Seal"}],
+        "stamps": [
+          {
+            "text": "DECEASED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.04.02",
+            "appliedBy": "Registry Auto-Seal"
+          }
+        ],
         "classificationLevel": "STANDARD",
         "isTampered": false
       },
@@ -217,14 +438,41 @@
         "issueDate": "2147.03.17",
         "referenceNumber": "MCO-RC-VC-4472-F",
         "fields": [
-          {"key": "Resident", "value": "Marr, Lina — VC-4472-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Signature Status", "value": "SIGNED — voluntary consent obtained 2147.03.17", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Notification Method", "value": "Authorised communication 2147.03.13 — citizen confirmed receipt", "isSuspicious": true, "suspicionNote": "Notification listed as 'authorised communication 2147.03.13.' The only incoming communication for this citizen was the relocation notice itself, issued 2147.03.13. Her father's message was rejected on 2147.03.15 — two days after this 'notification.' She was never told a message existed."},
-          {"key": "Compliance Window", "value": "2147.03.13 to 2147.03.17 — four days", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Resident",
+            "value": "Marr, Lina — VC-4472-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Signature Status",
+            "value": "SIGNED — voluntary consent obtained 2147.03.17",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Notification Method",
+            "value": "Authorised communication 2147.03.13 — citizen confirmed receipt",
+            "isSuspicious": true,
+            "suspicionNote": "Notification listed as 'authorised communication 2147.03.13.' The only incoming communication for this citizen was the relocation notice itself, issued 2147.03.13. Her father's message was rejected on 2147.03.15 — two days after this 'notification.' She was never told a message existed."
+          },
+          {
+            "key": "Compliance Window",
+            "value": "2147.03.13 to 2147.03.17 — four days",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Relocation record for Marr, Lina (VC-4472-F). Voluntary signature obtained 2147.03.17. Notification of relocation issued 2147.03.13 per Civic Efficiency Order 44-B. Citizen confirmed receipt. Compliance window: four days. Signature obtained within window. Relocation completed without enforcement action.",
         "footerText": "Ministry of Civil Order — Relocation Division — Form RC-7",
-        "stamps": [{"text": "VOLUNTARY", "color": "#2A6A3C", "appliedDate": "2147.03.17", "appliedBy": "MCO Processing Division"}],
+        "stamps": [
+          {
+            "text": "VOLUNTARY",
+            "color": "#2A6A3C",
+            "appliedDate": "2147.03.17",
+            "appliedBy": "MCO Processing Division"
+          }
+        ],
         "classificationLevel": "STANDARD",
         "isTampered": false
       },
@@ -236,10 +484,30 @@
         "issueDate": "2147.03.15",
         "referenceNumber": "PMCA-RR-C01-001-V",
         "fields": [
-          {"key": "Case Reference", "value": "C01 — Marr, Olen (VC-4471-M) to Marr, Lina (VC-4472-F)", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Clerk Decision", "value": "REJECTED — delivery denied 2147.03.15", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Rejection Reason", "value": "Recipient registry conflict — compliance relocation pending", "isSuspicious": true, "suspicionNote": "Rejection reason: compliance relocation pending. Relocation notice was issued 2147.03.13. Message was rejected 2147.03.15. Deadline was 2147.03.17. The message was rejected two days before the deadline — while the citizen still had time to act on it."},
-          {"key": "Notification to Recipient", "value": "None — rejection not disclosed to recipient per standard protocol", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C01 — Marr, Olen (VC-4471-M) to Marr, Lina (VC-4472-F)",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Clerk Decision",
+            "value": "REJECTED — delivery denied 2147.03.15",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Rejection Reason",
+            "value": "Recipient registry conflict — compliance relocation pending",
+            "isSuspicious": true,
+            "suspicionNote": "Rejection reason: compliance relocation pending. Relocation notice was issued 2147.03.13. Message was rejected 2147.03.15. Deadline was 2147.03.17. The message was rejected two days before the deadline — while the citizen still had time to act on it."
+          },
+          {
+            "key": "Notification to Recipient",
+            "value": "None — rejection not disclosed to recipient per standard protocol",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Routing record for case C01. Sender: Marr, Olen (VC-4471-M, deceased). Recipient: Marr, Lina (VC-4472-F). Clerk decision: rejected for delivery 2147.03.15. Rejection reason: compliance relocation pending. Standard protocol: recipient not notified of rejection. Case closed.",
         "footerText": "PMCA Message Routing System — Automated Record",
@@ -263,7 +531,15 @@
         "shortLabel": "APPROVED",
         "color": "#2A6A3C",
         "auditResponse": "Posthumous appeal forwarded for independent review under Statute 11-G. Notification record flagged.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 1, "flagsSet": ["c09_approved", "lina_appeal_active"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 2,
+          "suspicionDelta": 1,
+          "flagsSet": [
+            "c09_approved",
+            "lina_appeal_active"
+          ]
+        },
         "resultText": "Appeal forwarded. The notification record was flagged. The relocation form lists a communication from 2147.03.13 as the basis for her consent. Her father's message was rejected on 2147.03.15. She signed on 2147.03.17 without knowing it had existed.",
         "isIllegal": false
       },
@@ -273,7 +549,15 @@
         "shortLabel": "REJECTED",
         "color": "#1A3A5C",
         "auditResponse": "Posthumous appeal rejected. Relocation recorded as voluntary. Case closed.",
-        "consequences": {"complianceDelta": 1, "empathyDelta": -2, "citizenHarmDelta": 1, "flagsSet": ["c09_rejected", "lina_appeal_closed"]},
+        "consequences": {
+          "complianceDelta": 1,
+          "empathyDelta": -2,
+          "citizenHarmDelta": 1,
+          "flagsSet": [
+            "c09_rejected",
+            "lina_appeal_closed"
+          ]
+        },
         "resultText": "Appeal rejected. The relocation stands as voluntary. The form is signed. The notification column is complete. What the notification contained is not a field the form includes.",
         "isIllegal": false
       },
@@ -283,16 +567,28 @@
         "shortLabel": "FLAGGED",
         "color": "#CC9900",
         "auditResponse": "Notification irregularity submitted for review. Relocation basis queried. Case deferred.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 1, "suspicionDelta": 2, "resistanceTrustDelta": 1, "flagsSet": ["c09_flagged", "lina_appeal_flagged"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 1,
+          "suspicionDelta": 2,
+          "resistanceTrustDelta": 1,
+          "flagsSet": [
+            "c09_flagged",
+            "lina_appeal_flagged"
+          ]
+        },
         "resultText": "Anomaly submitted. The 'authorised communication' listed as the basis for consent was the relocation notice itself. Her father's message was rejected before she had a reason to refuse. The queue instruction routed this as standard. It is not standard.",
         "isIllegal": false
       }
     ],
     "correctLegalActionID": "approve",
-    "followUpFlags": ["c09_processed"],
-    "requiredFlags": ["c01_rejected"]
+    "followUpFlags": [
+      "c09_processed"
+    ],
+    "requiredFlags": [
+      "c01_rejected"
+    ]
   },
-
   {
     "id": "case_ch3_001c",
     "chapter": "ch3",
@@ -311,11 +607,36 @@
         "issueDate": "2147.04.20",
         "referenceNumber": "PMCA-QI-C09C-0443-V",
         "fields": [
-          {"key": "Case Reference", "value": "C09C-0443-V — Posthumous appeal, Veyr City", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Sender Status", "value": "DECEASED — resettlement, registered 2147.04.02", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Processing Pathway", "value": "Posthumous appeal — standard routing, Statute 11-G", "isSuspicious": true, "suspicionNote": "Statute 11-G posthumous appeals require independent review. Processing pathway listed as standard routing — no independent reviewer assigned."},
-          {"key": "Prior Case Reference", "value": "C01-001-V — message censored, Class D compliant delivery 2147.03.14", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Supervisor Escalation", "value": "Not required", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C09C-0443-V — Posthumous appeal, Veyr City",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Sender Status",
+            "value": "DECEASED — resettlement, registered 2147.04.02",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Processing Pathway",
+            "value": "Posthumous appeal — standard routing, Statute 11-G",
+            "isSuspicious": true,
+            "suspicionNote": "Statute 11-G posthumous appeals require independent review. Processing pathway listed as standard routing — no independent reviewer assigned."
+          },
+          {
+            "key": "Prior Case Reference",
+            "value": "C01-001-V — message censored, Class D compliant delivery 2147.03.14",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Supervisor Escalation",
+            "value": "Not required",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Case C09C-0443-V. Posthumous appeal, Veyr City. Sender: Marr, Lina — VC-4472-F — deceased 2147.04.02. Appeal filed under PMCA Review Statute 11-G, citing content alteration in prior delivery. Prior case: C01-001-V, Class D compliant delivery 2147.03.14. Processing pathway: standard routing. Clerk confirmation only.",
         "footerText": "PMCA Processing Authority — Queue Instruction",
@@ -331,14 +652,41 @@
         "issueDate": "2147.04.19",
         "referenceNumber": "PMCA-CR-VC-4472-F",
         "fields": [
-          {"key": "Citizen", "value": "Marr, Lina — VC-4472-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Status", "value": "DECEASED — resettlement hub, registered 2147.04.02", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Relocation Status", "value": "VOLUNTARY — consent signed 2147.03.17, relocated without incident", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Message Delivery Record", "value": "C01-001-V — Class D compliant delivery confirmed 2147.03.14", "isSuspicious": true, "suspicionNote": "Message recorded as Class D compliant delivery. See Banned Phrase Removal Record — three phrases removed prior to delivery. The delivered message no longer contained the specific instruction 'do not sign'."}
+          {
+            "key": "Citizen",
+            "value": "Marr, Lina — VC-4472-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Status",
+            "value": "DECEASED — resettlement hub, registered 2147.04.02",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Relocation Status",
+            "value": "VOLUNTARY — consent signed 2147.03.17, relocated without incident",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Message Delivery Record",
+            "value": "C01-001-V — Class D compliant delivery confirmed 2147.03.14",
+            "isSuspicious": true,
+            "suspicionNote": "Message recorded as Class D compliant delivery. See Banned Phrase Removal Record — three phrases removed prior to delivery. The delivered message no longer contained the specific instruction 'do not sign'."
+          }
         ],
         "bodyText": "Citizen file for Marr, Lina (VC-4472-F). Deceased 2147.04.02, resettlement hub. Relocation recorded as voluntary — consent signed 2147.03.17. Incoming message C01-001-V: Class D compliant delivery confirmed 2147.03.14. Class D compliance applied per Communications Monitoring Bureau protocol.",
         "footerText": "PMCA Citizen Registry — Automated Record",
-        "stamps": [{"text": "DECEASED", "color": "#1A3A5C", "appliedDate": "2147.04.02", "appliedBy": "Registry Auto-Seal"}],
+        "stamps": [
+          {
+            "text": "DECEASED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.04.02",
+            "appliedBy": "Registry Auto-Seal"
+          }
+        ],
         "classificationLevel": "STANDARD",
         "isTampered": false
       },
@@ -350,14 +698,41 @@
         "issueDate": "2147.03.17",
         "referenceNumber": "MCO-RC-VC-4472-F",
         "fields": [
-          {"key": "Resident", "value": "Marr, Lina — VC-4472-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Signature Status", "value": "SIGNED — voluntary consent obtained 2147.03.17", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Notification Method", "value": "Authorised communication delivered 2147.03.14 — confirmed receipt", "isSuspicious": true, "suspicionNote": "Notification method: authorised communication 2147.03.14. See Banned Phrase Removal Record — the delivered message had three phrases removed, including 'do not sign'. The communication she received could not have warned her not to sign."},
-          {"key": "Compliance Window", "value": "2147.03.13 to 2147.03.17 — four days", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Resident",
+            "value": "Marr, Lina — VC-4472-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Signature Status",
+            "value": "SIGNED — voluntary consent obtained 2147.03.17",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Notification Method",
+            "value": "Authorised communication delivered 2147.03.14 — confirmed receipt",
+            "isSuspicious": true,
+            "suspicionNote": "Notification method: authorised communication 2147.03.14. See Banned Phrase Removal Record — the delivered message had three phrases removed, including 'do not sign'. The communication she received could not have warned her not to sign."
+          },
+          {
+            "key": "Compliance Window",
+            "value": "2147.03.13 to 2147.03.17 — four days",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Relocation record for Marr, Lina (VC-4472-F). Voluntary signature obtained 2147.03.17. Notification of relocation issued 2147.03.13. Authorised communication delivered 2147.03.14 — receipt confirmed. Compliance window: four days. Signature obtained within window.",
         "footerText": "Ministry of Civil Order — Relocation Division — Form RC-7",
-        "stamps": [{"text": "VOLUNTARY", "color": "#2A6A3C", "appliedDate": "2147.03.17", "appliedBy": "MCO Processing Division"}],
+        "stamps": [
+          {
+            "text": "VOLUNTARY",
+            "color": "#2A6A3C",
+            "appliedDate": "2147.03.17",
+            "appliedBy": "MCO Processing Division"
+          }
+        ],
         "classificationLevel": "STANDARD",
         "isTampered": false
       },
@@ -369,10 +744,30 @@
         "issueDate": "2147.03.14",
         "referenceNumber": "CMB-BPR-C01-001-V",
         "fields": [
-          {"key": "Case Reference", "value": "C01-001-V — Marr, Olen to Marr, Lina", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Class D Phrases Removed", "value": "3 of 3 detected — 'they marked us', 'the list', 'before the train even left'", "isSuspicious": true, "suspicionNote": "Three phrases removed. The original message read: 'Do not sign the relocation form. I saw the list. They marked us before the train even left.' After removal, the instruction 'do not sign' remained — but with no context, it was uninterpretable."},
-          {"key": "Residual Message", "value": "Do not sign [REMOVED]. Trust no one from the Ministry of Transit.", "isSuspicious": true, "suspicionNote": "Residual text retains 'do not sign' but removes the reason. A recipient reading this without context would not know what form, or why. The instruction was preserved in form but stripped of meaning."},
-          {"key": "Delivery Status", "value": "Class D compliant — delivered 2147.03.14", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C01-001-V — Marr, Olen to Marr, Lina",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Class D Phrases Removed",
+            "value": "3 of 3 detected — 'they marked us', 'the list', 'before the train even left'",
+            "isSuspicious": true,
+            "suspicionNote": "Three phrases removed. The original message read: 'Do not sign the relocation form. I saw the list. They marked us before the train even left.' After removal, the instruction 'do not sign' remained — but with no context, it was uninterpretable."
+          },
+          {
+            "key": "Residual Message",
+            "value": "Do not sign [REMOVED]. Trust no one from the Ministry of Transit.",
+            "isSuspicious": true,
+            "suspicionNote": "Residual text retains 'do not sign' but removes the reason. A recipient reading this without context would not know what form, or why. The instruction was preserved in form but stripped of meaning."
+          },
+          {
+            "key": "Delivery Status",
+            "value": "Class D compliant — delivered 2147.03.14",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Banned phrase removal record for case C01-001-V. Three Class D phrases detected and removed: 'they marked us', 'the list', 'before the train even left'. Residual message delivered 2147.03.14. Delivery recorded as Class D compliant. Communications Monitoring Bureau automated process.",
         "footerText": "PMCA Communications Monitoring Bureau — Automated Record",
@@ -396,7 +791,15 @@
         "shortLabel": "APPROVED",
         "color": "#2A6A3C",
         "auditResponse": "Posthumous appeal forwarded for independent review under Statute 11-G. Phrase removal record flagged.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 1, "flagsSet": ["c09_approved", "lina_appeal_active"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 2,
+          "suspicionDelta": 1,
+          "flagsSet": [
+            "c09_approved",
+            "lina_appeal_active"
+          ]
+        },
         "resultText": "Appeal forwarded. The phrase removal record was flagged. The message she received said 'do not sign' with no explanation. The context that would have told her what that meant had been removed. She signed on 2147.03.17.",
         "isIllegal": false
       },
@@ -406,7 +809,15 @@
         "shortLabel": "REJECTED",
         "color": "#1A3A5C",
         "auditResponse": "Posthumous appeal rejected. Delivery recorded as Class D compliant. Case closed.",
-        "consequences": {"complianceDelta": 1, "empathyDelta": -2, "citizenHarmDelta": 1, "flagsSet": ["c09_rejected", "lina_appeal_closed"]},
+        "consequences": {
+          "complianceDelta": 1,
+          "empathyDelta": -2,
+          "citizenHarmDelta": 1,
+          "flagsSet": [
+            "c09_rejected",
+            "lina_appeal_closed"
+          ]
+        },
         "resultText": "Appeal rejected. The delivery is on record as Class D compliant. The form was signed. The bureau followed protocol. What the recipient understood from the residual message is not recorded.",
         "isIllegal": false
       },
@@ -416,16 +827,28 @@
         "shortLabel": "FLAGGED",
         "color": "#CC9900",
         "auditResponse": "Content alteration irregularity submitted for review. Phrase removal record queued. Case deferred.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 1, "suspicionDelta": 2, "resistanceTrustDelta": 1, "flagsSet": ["c09_flagged", "lina_appeal_flagged"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 1,
+          "suspicionDelta": 2,
+          "resistanceTrustDelta": 1,
+          "flagsSet": [
+            "c09_flagged",
+            "lina_appeal_flagged"
+          ]
+        },
         "resultText": "Anomaly submitted. The removal record shows three phrases stripped from a message whose sole purpose was to warn someone not to sign a form. The delivery was compliant. The warning was not.",
         "isIllegal": false
       }
     ],
     "correctLegalActionID": "approve",
-    "followUpFlags": ["c09_processed"],
-    "requiredFlags": ["c01_censored"]
+    "followUpFlags": [
+      "c09_processed"
+    ],
+    "requiredFlags": [
+      "c01_censored"
+    ]
   },
-
   {
     "id": "case_ch3_001d",
     "chapter": "ch3",
@@ -444,11 +867,36 @@
         "issueDate": "2147.04.20",
         "referenceNumber": "PMCA-QI-C09D-0444-V",
         "fields": [
-          {"key": "Case Reference", "value": "C09D-0444-V — Posthumous appeal, Veyr City", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Sender Status", "value": "DECEASED — enforcement action 2147.03.20", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Processing Pathway", "value": "Posthumous appeal — standard routing, Statute 11-G", "isSuspicious": true, "suspicionNote": "Statute 11-G posthumous appeals require independent review. Processing pathway listed as standard routing — no independent reviewer assigned."},
-          {"key": "Prior Case Reference", "value": "C01-001-V — illegal forward, enhanced monitoring applied", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Supervisor Escalation", "value": "Not required", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C09D-0444-V — Posthumous appeal, Veyr City",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Sender Status",
+            "value": "DECEASED — enforcement action 2147.03.20",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Processing Pathway",
+            "value": "Posthumous appeal — standard routing, Statute 11-G",
+            "isSuspicious": true,
+            "suspicionNote": "Statute 11-G posthumous appeals require independent review. Processing pathway listed as standard routing — no independent reviewer assigned."
+          },
+          {
+            "key": "Prior Case Reference",
+            "value": "C01-001-V — illegal forward, enhanced monitoring applied",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Supervisor Escalation",
+            "value": "Not required",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Case C09D-0444-V. Posthumous appeal, Veyr City. Sender: Marr, Lina — VC-4472-F — deceased 2147.03.20. Appeal filed under PMCA Review Statute 11-G, citing pre-emptive monitoring order irregularity. Prior case: C01-001-V, illegal forward logged 2147.03.12, enhanced monitoring applied. Processing pathway: standard routing.",
         "footerText": "PMCA Processing Authority — Queue Instruction",
@@ -464,14 +912,41 @@
         "issueDate": "2147.04.19",
         "referenceNumber": "PMCA-CR-VC-4472-F",
         "fields": [
-          {"key": "Citizen", "value": "Marr, Lina — VC-4472-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Status", "value": "DECEASED — enforcement action 2147.03.20", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Monitoring Classification", "value": "ENHANCED — monitoring order issued 2147.03.12 at 23:15", "isSuspicious": true, "suspicionNote": "Enhanced monitoring applied at 23:15. See C01 Routing Record — illegal forward logged at 23:14. Monitoring was applied one minute after the forward. Lina could not have been contacted, received, or acted on any message in that window."},
-          {"key": "Compliance Status", "value": "REFUSED — enforcement applied 2147.03.20 after six days non-compliance", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Citizen",
+            "value": "Marr, Lina — VC-4472-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Status",
+            "value": "DECEASED — enforcement action 2147.03.20",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Monitoring Classification",
+            "value": "ENHANCED — monitoring order issued 2147.03.12 at 23:15",
+            "isSuspicious": true,
+            "suspicionNote": "Enhanced monitoring applied at 23:15. See C01 Routing Record — illegal forward logged at 23:14. Monitoring was applied one minute after the forward. Lina could not have been contacted, received, or acted on any message in that window."
+          },
+          {
+            "key": "Compliance Status",
+            "value": "REFUSED — enforcement applied 2147.03.20 after six days non-compliance",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Citizen file for Marr, Lina (VC-4472-F). Deceased 2147.03.20 via enforcement action. Enhanced monitoring order issued 2147.03.12 at 23:15, one minute after illegal forward of case C01-001-V. Relocation notice issued 2147.03.12 at 23:45. Citizen refused signature through period 2147.03.12–2147.03.20. Enforcement applied 2147.03.20.",
         "footerText": "PMCA Citizen Registry — Automated Record",
-        "stamps": [{"text": "DECEASED", "color": "#1A3A5C", "appliedDate": "2147.03.20", "appliedBy": "Registry Auto-Seal"}],
+        "stamps": [
+          {
+            "text": "DECEASED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.03.20",
+            "appliedBy": "Registry Auto-Seal"
+          }
+        ],
         "classificationLevel": "STANDARD",
         "isTampered": false
       },
@@ -483,14 +958,41 @@
         "issueDate": "2147.03.20",
         "referenceNumber": "MCO-RC-VC-4472-F",
         "fields": [
-          {"key": "Resident", "value": "Marr, Lina — VC-4472-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Signature Status", "value": "REFUSED — enforcement applied after six days non-compliance", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Enforcement Date", "value": "2147.03.20", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Notification Method", "value": "Officer delivery 2147.03.12 at 23:45 — verbal confirmation logged", "isSuspicious": true, "suspicionNote": "Officers delivered the notice at 23:45. The monitoring order was issued at 23:15. The relocation process was already initiated before officers arrived. The visit at 23:45 was notification of a decision already made, not a response to any conduct."}
+          {
+            "key": "Resident",
+            "value": "Marr, Lina — VC-4472-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Signature Status",
+            "value": "REFUSED — enforcement applied after six days non-compliance",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Enforcement Date",
+            "value": "2147.03.20",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Notification Method",
+            "value": "Officer delivery 2147.03.12 at 23:45 — verbal confirmation logged",
+            "isSuspicious": true,
+            "suspicionNote": "Officers delivered the notice at 23:45. The monitoring order was issued at 23:15. The relocation process was already initiated before officers arrived. The visit at 23:45 was notification of a decision already made, not a response to any conduct."
+          }
         ],
         "bodyText": "Relocation record for Marr, Lina (VC-4472-F). Officers delivered notice 2147.03.12 at 23:45. Voluntary signature refused through period 2147.03.12–2147.03.20. Enforcement applied 2147.03.20 under Order 44-B authority. Unit vacated. Record closed.",
         "footerText": "Ministry of Civil Order — Relocation Division — Form RC-7",
-        "stamps": [{"text": "ENFORCED", "color": "#CC3300", "appliedDate": "2147.03.20", "appliedBy": "MCO Enforcement Division"}],
+        "stamps": [
+          {
+            "text": "ENFORCED",
+            "color": "#CC3300",
+            "appliedDate": "2147.03.20",
+            "appliedBy": "MCO Enforcement Division"
+          }
+        ],
         "classificationLevel": "STANDARD",
         "isTampered": false
       },
@@ -502,10 +1004,30 @@
         "issueDate": "2147.03.12",
         "referenceNumber": "PMCA-RR-C01-001-V",
         "fields": [
-          {"key": "Case Reference", "value": "C01 — Marr, Olen (VC-4471-M) to Marr, Lina (VC-4472-F)", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Clerk Decision", "value": "ILLEGAL FORWARD — logged 2147.03.12 at 23:14", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Originating Terminal", "value": "PMCA-TERM-1147", "isSuspicious": true, "suspicionNote": "Originating terminal: PMCA-TERM-1147. Cross-reference PMCA Directorate personnel assignments. Terminal identifiers in the 1100 series correspond to Directorate-assigned workstations."},
-          {"key": "Routing Destination", "value": "PMCA Directorate — enhanced monitoring triggered", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C01 — Marr, Olen (VC-4471-M) to Marr, Lina (VC-4472-F)",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Clerk Decision",
+            "value": "ILLEGAL FORWARD — logged 2147.03.12 at 23:14",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Originating Terminal",
+            "value": "PMCA-TERM-1147",
+            "isSuspicious": true,
+            "suspicionNote": "Originating terminal: PMCA-TERM-1147. Cross-reference PMCA Directorate personnel assignments. Terminal identifiers in the 1100 series correspond to Directorate-assigned workstations."
+          },
+          {
+            "key": "Routing Destination",
+            "value": "PMCA Directorate — enhanced monitoring triggered",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Routing record for case C01. Sender: Marr, Olen (VC-4471-M, deceased). Recipient: Marr, Lina (VC-4472-F). Clerk decision: illegal forward logged 2147.03.12 at 23:14. Originating terminal: PMCA-TERM-1147. Routing destination: PMCA Directorate. Enhanced monitoring flagged for recipient VC-4472-F at 23:15.",
         "footerText": "PMCA Message Routing System — Automated Record",
@@ -521,15 +1043,47 @@
         "issueDate": "2147.03.12",
         "referenceNumber": "PMCA-MO-VC-4472-F",
         "fields": [
-          {"key": "Subject", "value": "Marr, Lina — VC-4472-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Order Issued", "value": "2147.03.12 at 23:15", "isSuspicious": true, "suspicionNote": "Monitoring order issued at 23:15. See C01 Routing Record — illegal forward logged at 23:14. The order was issued one minute after the forward. Lina had not yet been notified, contacted, or given any opportunity to act."},
-          {"key": "Classification", "value": "Enhanced — Directorate authority, immediate effect", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Order Basis", "value": "C01-001-V routing irregularity — recipient proximity assessment", "isSuspicious": true, "suspicionNote": "Order basis: recipient proximity assessment. Proximity to a flagged message is not conduct. The order was pre-emptive, not responsive."},
-          {"key": "Authorising Officer", "value": "Director Calyx, PMCA Directorate", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Subject",
+            "value": "Marr, Lina — VC-4472-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Order Issued",
+            "value": "2147.03.12 at 23:15",
+            "isSuspicious": true,
+            "suspicionNote": "Monitoring order issued at 23:15. See C01 Routing Record — illegal forward logged at 23:14. The order was issued one minute after the forward. Lina had not yet been notified, contacted, or given any opportunity to act."
+          },
+          {
+            "key": "Classification",
+            "value": "Enhanced — Directorate authority, immediate effect",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Order Basis",
+            "value": "C01-001-V routing irregularity — recipient proximity assessment",
+            "isSuspicious": true,
+            "suspicionNote": "Order basis: recipient proximity assessment. Proximity to a flagged message is not conduct. The order was pre-emptive, not responsive."
+          },
+          {
+            "key": "Authorising Officer",
+            "value": "Director Calyx, PMCA Directorate",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Enhanced monitoring order for Marr, Lina (VC-4472-F). Issued 2147.03.12 at 23:15, one minute after illegal forward of case C01-001-V from terminal PMCA-TERM-1147. Basis: recipient proximity assessment, C01 routing irregularity. Classification: enhanced, Directorate authority, immediate effect. Authorised by Director Calyx.",
         "footerText": "PMCA Directorate — Monitoring Division",
-        "stamps": [{"text": "AUTHORISED", "color": "#1A3A5C", "appliedDate": "2147.03.12", "appliedBy": "Director Calyx, PMCA Directorate"}],
+        "stamps": [
+          {
+            "text": "AUTHORISED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.03.12",
+            "appliedBy": "Director Calyx, PMCA Directorate"
+          }
+        ],
         "classificationLevel": "RESTRICTED",
         "isTampered": false
       }
@@ -555,7 +1109,15 @@
         "shortLabel": "APPROVED",
         "color": "#2A6A3C",
         "auditResponse": "Posthumous appeal forwarded for independent review under Statute 11-G. Monitoring order timeline flagged.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 1, "flagsSet": ["c09_approved", "lina_appeal_active"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 2,
+          "suspicionDelta": 1,
+          "flagsSet": [
+            "c09_approved",
+            "lina_appeal_active"
+          ]
+        },
         "resultText": "Appeal forwarded. The monitoring order timeline was flagged. The order was issued one minute after the illegal forward. Officers arrived thirty minutes later. She refused to sign for six days. The originating terminal is in the Directorate building.",
         "isIllegal": false
       },
@@ -565,7 +1127,15 @@
         "shortLabel": "REJECTED",
         "color": "#1A3A5C",
         "auditResponse": "Posthumous appeal rejected. Monitoring classification stands. Case closed.",
-        "consequences": {"complianceDelta": 1, "empathyDelta": -2, "citizenHarmDelta": 1, "flagsSet": ["c09_rejected", "lina_appeal_closed"]},
+        "consequences": {
+          "complianceDelta": 1,
+          "empathyDelta": -2,
+          "citizenHarmDelta": 1,
+          "flagsSet": [
+            "c09_rejected",
+            "lina_appeal_closed"
+          ]
+        },
         "resultText": "Appeal rejected. Enhanced monitoring classification stands. The routing irregularity in C01 is logged. The enforcement was lawful under Order 44-B. The one-minute window between forward and monitoring order is not a procedural violation of record.",
         "isIllegal": false
       },
@@ -575,16 +1145,384 @@
         "shortLabel": "FLAGGED",
         "color": "#CC9900",
         "auditResponse": "Monitoring order irregularity submitted for review. Terminal ID queued for cross-reference. Case deferred.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 1, "suspicionDelta": 2, "resistanceTrustDelta": 1, "flagsSet": ["c09_flagged", "lina_appeal_flagged"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 1,
+          "suspicionDelta": 2,
+          "resistanceTrustDelta": 1,
+          "flagsSet": [
+            "c09_flagged",
+            "lina_appeal_flagged"
+          ]
+        },
         "resultText": "Anomaly submitted. The terminal ID was flagged for cross-reference. The one-minute monitoring window was logged. The queue instruction routed this as standard processing. The terminal that forwarded her father's message is in the Directorate.",
         "isIllegal": false
       }
     ],
     "correctLegalActionID": "approve",
-    "followUpFlags": ["c09_processed"],
-    "requiredFlags": ["c01_forwarded"]
+    "followUpFlags": [
+      "c09_processed"
+    ],
+    "requiredFlags": [
+      "c01_forwarded"
+    ]
   },
-
+  {
+    "id": "case_ch3_003",
+    "chapter": "ch3",
+    "senderName": "Kell Orvin",
+    "senderStatus": "Deceased",
+    "senderCitizenID": "38-SV-0091",
+    "recipientName": "Veyr City Public Archive",
+    "recipientCitizenID": "VCA-ARCHIVE-PUB",
+    "messageText": "I admit to unauthorized access of PMCA systems. I regret this. I acted alone.",
+    "documents": [
+      {
+        "id": "doc_c11_a",
+        "title": "PMCA QUEUE INSTRUCTION",
+        "type": "audit_log",
+        "issuer": "PMCA Processing Authority",
+        "issueDate": "2147.04.22",
+        "referenceNumber": "PMCA-QI-C11-0119-S",
+        "fields": [
+          {
+            "key": "Case Reference",
+            "value": "C11-0119-S — Service class, Sorting Division",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Sender Status",
+            "value": "DECEASED — industrial fall, PMCA facility, registered 2147.04.18",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Processing Pathway",
+            "value": "Incineration pathway recommended — Section 19.4, routing override authority",
+            "isSuspicious": true,
+            "suspicionNote": "Section 19.4 is cited again. Cross-reference case C08-0003-S — the same section was used to route Courier 19's message to incineration. Section 19.4 bypasses the standard 48-hour review window entirely."
+          },
+          {
+            "key": "Processing Window",
+            "value": "6 hours per Section 19.1",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Review Requirement",
+            "value": "Clerk confirmation only — no full review required under Section 19",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
+        ],
+        "bodyText": "Case C11-0119-S. Service class, Sorting Division. Sender: Orvin, Kell — 38-SV-0091 — deceased 2147.04.18, industrial fall, PMCA facility. Incineration pathway recommended under Section 19.4 routing override authority. Processing window: 6 hours per Section 19.1. Clerk confirmation only — no full review required.",
+        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c11_b",
+        "title": "SERVICE DEATH RECORD",
+        "type": "death_certificate",
+        "issuer": "PMCA Sorting Division — Service Records",
+        "issueDate": "2147.04.18",
+        "referenceNumber": "PMCA-SDR-38-SV-0091",
+        "fields": [
+          {
+            "key": "Subject",
+            "value": "Orvin, Kell — Service ID: 38-SV-0091",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Cause of Death",
+            "value": "Industrial fall — PMCA Sorting Division Sector 4, maintenance level",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Date of Death",
+            "value": "2147.04.18 at 09:31",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Active Monitoring Status",
+            "value": "ACTIVE MONITORING — flag registered prior to death",
+            "isSuspicious": true,
+            "suspicionNote": "Active monitoring flag registered prior to death. Standard procedure for monitored individuals who die in PMCA facilities: independent review of circumstances required under Article 9-M. No independent review has been initiated."
+          },
+          {
+            "key": "Supervisor Processing",
+            "value": "J. Harrel-09, Sorting Division Sector 4",
+            "isSuspicious": true,
+            "suspicionNote": "Supervisor J. Harrel-09 processed this death record. See Supervisor Assignment Log — J. Harrel-09 also processed the queue entry for this case, recommending incineration. The same individual certified the death and recommended destruction of the confession."
+          }
+        ],
+        "bodyText": "Service death record for Orvin, Kell (38-SV-0091). Industrial fall, PMCA Sorting Division Sector 4, maintenance level. Death confirmed 2147.04.18 at 09:31. Active monitoring flag registered prior to death — PMCA internal records. Processed by J. Harrel-09, Sorting Division Sector 4. Standard service-class disposition: cremation, no ceremony.",
+        "footerText": "PMCA Sorting Division — Service Records — Standard Form",
+        "stamps": [
+          {
+            "text": "CERTIFIED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.04.18",
+            "appliedBy": "Service Records Auto-Seal"
+          }
+        ],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c11_c",
+        "title": "EMOTIONAL WAVEFORM RECORD",
+        "type": "audit_log",
+        "issuer": "PMCA Soulprint Waveform Analysis",
+        "issueDate": "2147.04.18",
+        "referenceNumber": "PMCA-EWR-38-SV-0091",
+        "fields": [
+          {
+            "key": "Subject",
+            "value": "Orvin, Kell — 38-SV-0091",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Entropy Score",
+            "value": "0.23",
+            "isSuspicious": true,
+            "suspicionNote": "Entropy: 0.23. Live-transmission minimum threshold: 0.40. This message did not meet the threshold for live composition. Cross-reference case C08-0003-S — Courier 19's entropy was 0.41, barely above threshold. At 0.23, this message was not composed by a living person under normal conditions."
+          },
+          {
+            "key": "Live Transmission Status",
+            "value": "FAILED — below live-transmission threshold of 0.40",
+            "isSuspicious": true,
+            "suspicionNote": "Status: FAILED. A message that fails the live-transmission threshold was not composed naturally. The waveform indicates the text was not produced in a state consistent with live human composition. This confession was not written by Kell Orvin."
+          },
+          {
+            "key": "Waveform Amplitude",
+            "value": "Flat — no amplitude variation across full message duration",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Anomaly Note",
+            "value": "Score below threshold — no live composition confirmed. Waveform flat throughout.",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
+        ],
+        "bodyText": "Standard Soulprint emotional waveform generated at message composition. Subject: Orvin, Kell, 38-SV-0091. Entropy score: 0.23 — below live-transmission minimum of 0.40, FAILED. Waveform amplitude: flat across full message duration. No amplitude variation detected. Anomaly note: score below threshold, live composition not confirmed. Case forwarded under Section 19.4 override.",
+        "footerText": "PMCA Soulprint Waveform Analysis — Automated Record",
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c11_d",
+        "title": "CONFESSION TEXT ANALYSIS",
+        "type": "audit_log",
+        "issuer": "PMCA Linguistic Compliance Bureau",
+        "issueDate": "2147.04.18",
+        "referenceNumber": "PMCA-LCA-C11-0119",
+        "fields": [
+          {
+            "key": "Subject",
+            "value": "Orvin, Kell — 38-SV-0091",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Text Analysed",
+            "value": "I admit to unauthorized access of PMCA systems. I regret this. I acted alone.",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Emotional Variance",
+            "value": "0.0 — no variance detected across three sentences",
+            "isSuspicious": true,
+            "suspicionNote": "Emotional variance: 0.0 across three sentences. Natural language produces variance even in formal statements. A variance of exactly 0.0 indicates uniform composition — the sentences were produced by the same process at the same time, not written across any emotional or temporal range."
+          },
+          {
+            "key": "Tone Classification",
+            "value": "ANOMALOUS — no remorse markers detected despite stated regret",
+            "isSuspicious": true,
+            "suspicionNote": "Tone: anomalous. The text states 'I regret this' but no remorse linguistic markers are present. Lexical choices associated with regret (hedging, qualification, diminishment) are absent. The word 'regret' appears without its typical contextual signals."
+          },
+          {
+            "key": "Bureau Recommendation",
+            "value": "File closed — no actionable findings under standard protocol",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
+        ],
+        "bodyText": "Linguistic analysis of confession text for case C11-0119-S. Text: 'I admit to unauthorized access of PMCA systems. I regret this. I acted alone.' Emotional variance: 0.0 across three sentences. Tone classification: anomalous — remorse markers absent despite stated regret. Bureau recommendation: file closed, no actionable findings under standard protocol. Section 19.4 override applied.",
+        "footerText": "PMCA Linguistic Compliance Bureau — Automated Analysis",
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c11_e",
+        "title": "SUPERVISOR ASSIGNMENT LOG",
+        "type": "audit_log",
+        "issuer": "PMCA Sorting Division — Administrative Records",
+        "issueDate": "2147.04.18",
+        "referenceNumber": "PMCA-SAL-SEC4-04182147",
+        "fields": [
+          {
+            "key": "Assignment Date",
+            "value": "2147.04.18",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Supervisor",
+            "value": "J. Harrel-09, Sorting Division Sector 4",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Assignment 1",
+            "value": "Service death record — Orvin, Kell (38-SV-0091) — processed 09:44",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Assignment 2",
+            "value": "Queue entry C11-0119-S — incineration recommendation — processed 10:02",
+            "isSuspicious": true,
+            "suspicionNote": "J. Harrel-09 processed the death record at 09:44 and submitted the incineration recommendation at 10:02 — 18 minutes later. The supervisor who certified the death is the same person recommending that the deceased's final message be destroyed."
+          },
+          {
+            "key": "Third-Party Review",
+            "value": "None — Section 19.4 override, single-supervisor authority",
+            "isSuspicious": true,
+            "suspicionNote": "Section 19.4 permits single-supervisor authority. No third-party review is required. The death and the incineration recommendation were both processed by one person, with no external oversight."
+          }
+        ],
+        "bodyText": "Supervisor assignment log for 2147.04.18, Sorting Division Sector 4. Supervisor: J. Harrel-09. Assignment 1: service death record for Orvin, Kell (38-SV-0091), processed 09:44. Assignment 2: queue entry C11-0119-S, incineration recommendation submitted 10:02. Third-party review: none — Section 19.4 single-supervisor authority applied. Log generated automatically.",
+        "footerText": "PMCA Sorting Division — Administrative Records — Automated Log",
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c11_f",
+        "title": "ROUTING AUDIT — EVN CLASS ORPHANS",
+        "type": "audit_log",
+        "issuer": "PMCA Message Routing System — Audit Division",
+        "issueDate": "2142.07.14",
+        "referenceNumber": "PMCA-RAA-EVN-21420714",
+        "fields": [
+          {
+            "key": "Audit Subject",
+            "value": "EVN-ROUTING-0442 — orphaned secondary tag",
+            "isSuspicious": true,
+            "suspicionNote": "Tag prefix EVN-0442 matches citizen ID VC-0442-M (Venn, Elias). No primary routing record attached."
+          },
+          {
+            "key": "Subject Citizen",
+            "value": "Venn, Elias — VC-0442-M — declared deceased 2142.07.14",
+            "isSuspicious": true,
+            "suspicionNote": "No Dead Letter received. No body recovered. Audit closed without delivery pathway review."
+          },
+          {
+            "key": "Audit Status",
+            "value": "CLOSED — no irregularity logged",
+            "isSuspicious": true,
+            "suspicionNote": "Audit closed same day as death registration. Cross-reference to family registry not performed."
+          }
+        ],
+        "bodyText": "Routing audit for orphaned EVN-class secondary tag EVN-ROUTING-0442. Subject citizen: Venn, Elias (VC-0442-M), declared deceased 2142.07.14. No primary routing record. No Dead Letter on file. Audit status: closed — no irregularity logged. Note appended to service-class cases referencing Section 19.4 override authority.",
+        "footerText": "PMCA Message Routing System — Audit Division",
+        "stamps": [],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [
+      {
+        "fieldA": "Emotional Waveform Record — Entropy Score: 0.23 (FAILED — below 0.40 threshold)",
+        "fieldB": "Message Content — Confession of unauthorized PMCA system access",
+        "description": "The waveform records a flat entropy score of 0.23 — well below the 0.40 live-transmission minimum. At 0.41, Courier 19's message barely passed. At 0.23, this confession was not composed by a living person under normal conditions. The document is a confession. The waveform says it was not written.",
+        "isCritical": true
+      },
+      {
+        "fieldA": "Supervisor Assignment Log — J. Harrel-09: death record at 09:44, incineration recommendation at 10:02",
+        "fieldB": "PMCA Article 9-M — active-monitoring deaths in PMCA facilities require independent review",
+        "description": "The same supervisor processed the death and submitted the recommendation to destroy the final message, 18 minutes apart. The sender had an active monitoring flag. No independent review was initiated.",
+        "isCritical": false
+      }
+    ],
+    "availableActions": [
+      {
+        "id": "illegal_forward",
+        "label": "ILLEGAL FORWARD",
+        "shortLabel": "FORWARDED",
+        "color": "#CC6600",
+        "auditResponse": "Routing exception detected. Illegal Forward logged. Case C11 flagged for compliance review.",
+        "consequences": {
+          "complianceDelta": -2,
+          "empathyDelta": 1,
+          "suspicionDelta": 4,
+          "resistanceTrustDelta": 3,
+          "flagsSet": [
+            "c11_illegal_forward_used",
+            "ch3_chapter_complete",
+            "ch3_desk_complete"
+          ]
+        },
+        "resultText": "Forwarded. The waveform record leaves the building. Someone will have to explain an entropy score of 0.23 on a confession filed by a man who died the same morning. The incineration window is six hours. J. Harrel-09 will not know it left.",
+        "isIllegal": true
+      },
+      {
+        "id": "archive",
+        "label": "ARCHIVE (ORDERED)",
+        "shortLabel": "ARCHIVED",
+        "color": "#445566",
+        "auditResponse": "Service-class incineration confirmed. Section 19.4 provisions applied. Case closed.",
+        "consequences": {
+          "complianceDelta": 2,
+          "empathyDelta": -1,
+          "suspicionDelta": 0,
+          "flagsSet": [
+            "c11_archived",
+            "ch3_chapter_complete",
+            "ch3_desk_complete"
+          ]
+        },
+        "resultText": "Archived. The incineration pathway was completed within the six-hour window. The waveform record was closed with the case. The entropy score of 0.23 is logged, filed, and destroyed. The confession stands as the final record of Kell Orvin.",
+        "isIllegal": false
+      },
+      {
+        "id": "reject",
+        "label": "REJECT — RETURN TO QUEUE",
+        "shortLabel": "REJECTED",
+        "color": "#1A3A5C",
+        "auditResponse": "Routing exception. Incineration override contested. Case queued for secondary review.",
+        "consequences": {
+          "complianceDelta": 0,
+          "empathyDelta": 0,
+          "suspicionDelta": 2,
+          "flagsSet": [
+            "c11_rejected",
+            "ch3_chapter_complete",
+            "ch3_desk_complete"
+          ]
+        },
+        "resultText": "Returned. Secondary review: three days. The Section 19.4 override was re-applied on second routing. The case was incinerated on 2147.04.21. The supervisor assignment log shows J. Harrel-09's name on both entries. The review queue shows no record of any reviewer.",
+        "isIllegal": false
+      }
+    ],
+    "correctLegalActionID": "illegal_forward",
+    "followUpFlags": [
+      "c11_processed"
+    ],
+    "requiredFlags": null
+  },
   {
     "id": "case_ch3_002",
     "chapter": "ch3",
@@ -603,11 +1541,36 @@
         "issueDate": "2147.04.21",
         "referenceNumber": "PMCA-QI-C10-0891-M",
         "fields": [
-          {"key": "Case Reference", "value": "C10-0891-M — Deceased sender, Meridian Housing District", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Sender Status", "value": "DECEASED — Data Fever, registered 2147.04.08", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Recipient Classification", "value": "Partial match only — dependent sub-registration, no direct citizen ID", "isSuspicious": true, "suspicionNote": "Recipient has no direct citizen ID. Classification: dependent sub-registration under sender's record. A message addressed to a registered dependent with no independent ID is eligible for delivery under PMCA Protocol 3-D. Standard processing omits this protocol."},
-          {"key": "Administrative Interest", "value": "Helix Meridian Residential Division — housing unit Block 4, Sector 9", "isSuspicious": true, "suspicionNote": "Helix Meridian Residential Division listed as administrative interest. Cross-reference Relocation Form and Occupancy Forecast — the unit was reallocated before the sender was admitted to hospital."},
-          {"key": "Supervisor Escalation", "value": "Not required", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C10-0891-M — Deceased sender, Meridian Housing District",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Sender Status",
+            "value": "DECEASED — Data Fever, registered 2147.04.08",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Recipient Classification",
+            "value": "Partial match only — dependent sub-registration, no direct citizen ID",
+            "isSuspicious": true,
+            "suspicionNote": "Recipient has no direct citizen ID. Classification: dependent sub-registration under sender's record. A message addressed to a registered dependent with no independent ID is eligible for delivery under PMCA Protocol 3-D. Standard processing omits this protocol."
+          },
+          {
+            "key": "Administrative Interest",
+            "value": "Helix Meridian Residential Division — housing unit Block 4, Sector 9",
+            "isSuspicious": true,
+            "suspicionNote": "Helix Meridian Residential Division listed as administrative interest. Cross-reference Relocation Form and Occupancy Forecast — the unit was reallocated before the sender was admitted to hospital."
+          },
+          {
+            "key": "Supervisor Escalation",
+            "value": "Not required",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Case C10-0891-M. Deceased sender, Meridian Housing District. Sender: Dain, Fara — 19-MH-0221 — deceased 2147.04.08, Data Fever. Recipient: K. Dain — 19-MH-0221-K — dependent sub-registration, no independent citizen ID. Administrative interest registered: Helix Meridian Residential Division. Processing pathway: standard routing. Clerk confirmation only.",
         "footerText": "PMCA Processing Authority — Queue Instruction",
@@ -623,15 +1586,47 @@
         "issueDate": "2147.04.08",
         "referenceNumber": "HMM-DN-19-MH-0221",
         "fields": [
-          {"key": "Patient", "value": "Dain, Fara — 19-MH-0221", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Admitted", "value": "2147.03.16", "isSuspicious": true, "suspicionNote": "Admission date: 2147.03.16. See Relocation Form — signed 2147.03.14, two days before admission. The relocation was signed while she was not yet sick enough to require hospitalisation."},
-          {"key": "Cause of Death", "value": "Data Fever — acute progression, unresponsive to standard treatment", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Date of Death", "value": "2147.04.08", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Dependent on Record", "value": "K. Dain — 19-MH-0221-K — dependent sub-registration", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Patient",
+            "value": "Dain, Fara — 19-MH-0221",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Admitted",
+            "value": "2147.03.16",
+            "isSuspicious": true,
+            "suspicionNote": "Admission date: 2147.03.16. See Relocation Form — signed 2147.03.14, two days before admission. The relocation was signed while she was not yet sick enough to require hospitalisation."
+          },
+          {
+            "key": "Cause of Death",
+            "value": "Data Fever — acute progression, unresponsive to standard treatment",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Date of Death",
+            "value": "2147.04.08",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Dependent on Record",
+            "value": "K. Dain — 19-MH-0221-K — dependent sub-registration",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Medical death note for Dain, Fara (19-MH-0221). Admitted Helix Meridian Medical Facility 2147.03.16 with acute onset Data Fever. Condition progressed through standard treatment protocol. Death confirmed 2147.04.08. Dependent on record: K. Dain (19-MH-0221-K). Dependent notification: not completed — no direct citizen ID registered for dependent.",
         "footerText": "Helix Meridian Medical Facility — Mortality Records",
-        "stamps": [{"text": "CERTIFIED", "color": "#1A3A5C", "appliedDate": "2147.04.08", "appliedBy": "HMM Mortality Records Auto-Seal"}],
+        "stamps": [
+          {
+            "text": "CERTIFIED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.04.08",
+            "appliedBy": "HMM Mortality Records Auto-Seal"
+          }
+        ],
         "classificationLevel": "STANDARD",
         "isTampered": false
       },
@@ -643,15 +1638,53 @@
         "issueDate": "2147.03.14",
         "referenceNumber": "MCO-RF-19-MH-0221",
         "fields": [
-          {"key": "Resident", "value": "Dain, Fara — 19-MH-0221", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Date Signed", "value": "2147.03.14", "isSuspicious": true, "suspicionNote": "Signed 2147.03.14. See Medical Death Note — hospital admission: 2147.03.16. See Helix Meridian Occupancy Forecast — new tenant allocated 2147.03.14. The unit was being transferred the same day she signed, two days before she was admitted."},
-          {"key": "Authorising Officer", "value": "Director Calyx, PMCA Directorate", "isSuspicious": true, "suspicionNote": "Authorising office: PMCA Directorate. Standard authority for residential relocation orders: Ministry of Civil Order, Housing Division. Directorate authority is reserved for compliance-class actions."},
-          {"key": "Relocation Basis", "value": "Civic Efficiency Order 44-B — standard residential reallocation", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Dependent Provision", "value": "Dependent 19-MH-0221-K — resettlement hub placement on completion", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Resident",
+            "value": "Dain, Fara — 19-MH-0221",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Date Signed",
+            "value": "2147.03.14",
+            "isSuspicious": true,
+            "suspicionNote": "Signed 2147.03.14. See Medical Death Note — hospital admission: 2147.03.16. See Helix Meridian Occupancy Forecast — new tenant allocated 2147.03.14. The unit was being transferred the same day she signed, two days before she was admitted."
+          },
+          {
+            "key": "Authorising Officer",
+            "value": "Director Calyx, PMCA Directorate",
+            "isSuspicious": true,
+            "suspicionNote": "Authorising office: PMCA Directorate. Standard authority for residential relocation orders: Ministry of Civil Order, Housing Division. Directorate authority is reserved for compliance-class actions."
+          },
+          {
+            "key": "Relocation Basis",
+            "value": "Civic Efficiency Order 44-B — standard residential reallocation",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Dependent Provision",
+            "value": "Dependent 19-MH-0221-K — resettlement hub placement on completion",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Cascade Reference",
+            "value": "Block P03 batch clearance — see Marr, L. (VC-4472-F) relocation chain C09-0441-V",
+            "isSuspicious": true,
+            "suspicionNote": "Same Civic Efficiency Order 44-B authority chain as Marr, Lina case. Relocation batch P03 cleared 9 units including Marr unit 312."
+          }
         ],
-        "bodyText": "Relocation consent form for Dain, Fara (19-MH-0221). Signed 2147.03.14. Basis: Civic Efficiency Order 44-B, standard residential reallocation. Authorised by Director Calyx, PMCA Directorate. Dependent provision: K. Dain (19-MH-0221-K) to be placed in resettlement hub housing on completion of relocation.",
+        "bodyText": "Relocation consent form for Dain, Fara (19-MH-0221). Signed 2147.03.14. Basis: Civic Efficiency Order 44-B, standard residential reallocation. Authorised by Director Calyx, PMCA Directorate. Dependent provision: K. Dain (19-MH-0221-K) to be placed in resettlement hub housing on completion of relocation. Cascade note: Block P03 batch clearance reference — Marr, L. (VC-4472-F), case C09-0441-V, same authorising pathway.",
         "footerText": "Ministry of Civil Order — Relocation Division — Form RF-2",
-        "stamps": [{"text": "SIGNED", "color": "#2A6A3C", "appliedDate": "2147.03.14", "appliedBy": "MCO Processing Division"}],
+        "stamps": [
+          {
+            "text": "SIGNED",
+            "color": "#2A6A3C",
+            "appliedDate": "2147.03.14",
+            "appliedBy": "MCO Processing Division"
+          }
+        ],
         "classificationLevel": "STANDARD",
         "isTampered": false
       },
@@ -663,11 +1696,36 @@
         "issueDate": "2147.03.14",
         "referenceNumber": "HM-OF-BLOCK4-SECT9",
         "fields": [
-          {"key": "Unit", "value": "Block 4, Sector 9, Meridian Housing District — Unit 14-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Current Occupant", "value": "Dain, Fara — 19-MH-0221", "isSuspicious": false, "suspicionNote": null},
-          {"key": "New Tenant Allocation", "value": "Allocated 2147.03.14 — Helix Meridian Residential Processing", "isSuspicious": true, "suspicionNote": "New tenant allocated 2147.03.14 — same day as the relocation form was signed. Under standard residential reallocation, the new tenant allocation should follow consent processing and a standard hold period. No hold period was applied."},
-          {"key": "Vacancy Forecast", "value": "Immediate — relocation consent confirmed same day", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Administrative Interest Holder", "value": "Helix Meridian Residential Division", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Unit",
+            "value": "Block 4, Sector 9, Meridian Housing District — Unit 14-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Current Occupant",
+            "value": "Dain, Fara — 19-MH-0221",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "New Tenant Allocation",
+            "value": "Allocated 2147.03.14 — Helix Meridian Residential Processing",
+            "isSuspicious": true,
+            "suspicionNote": "New tenant allocated 2147.03.14 — same day as the relocation form was signed. Under standard residential reallocation, the new tenant allocation should follow consent processing and a standard hold period. No hold period was applied."
+          },
+          {
+            "key": "Vacancy Forecast",
+            "value": "Immediate — relocation consent confirmed same day",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Administrative Interest Holder",
+            "value": "Helix Meridian Residential Division",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Occupancy forecast for Block 4, Sector 9, Unit 14-F. Current occupant: Dain, Fara (19-MH-0221). New tenant allocation confirmed 2147.03.14 — same date as relocation consent. Vacancy forecast: immediate. Standard hold period: waived per Civic Efficiency Order 44-B fast-track provision. Administrative interest holder: Helix Meridian Residential Division.",
         "footerText": "Helix Meridian Residential Division — Automated Forecast",
@@ -683,10 +1741,30 @@
         "issueDate": "2147.04.21",
         "referenceNumber": "PMCA-RQ-19-MH-0221-K",
         "fields": [
-          {"key": "Query Subject", "value": "19-MH-0221-K", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Registry Match", "value": "DAIN, K. — partial match — dependent classification — no direct citizen ID", "isSuspicious": true, "suspicionNote": "Partial match only. Dependent sub-registration under 19-MH-0221 (Dain, Fara — deceased). No independent citizen ID. Current location: not resolvable — dependent tracking requires guardian registration, which terminated on 2147.04.08 at sender's death."},
-          {"key": "Guardian Status", "value": "Guardian deceased 2147.04.08 — dependent status: unresolved", "isSuspicious": true, "suspicionNote": "Dependent status unresolved since 2147.04.08. Standard dependent tracking protocol requires reassignment to a registered guardian or resettlement authority. No reassignment on record."},
-          {"key": "Delivery Eligibility", "value": "Protocol 3-D — delivery to dependent eligible pending location confirmation", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Query Subject",
+            "value": "19-MH-0221-K",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Registry Match",
+            "value": "DAIN, K. — partial match — dependent classification — no direct citizen ID",
+            "isSuspicious": true,
+            "suspicionNote": "Partial match only. Dependent sub-registration under 19-MH-0221 (Dain, Fara — deceased). No independent citizen ID. Current location: not resolvable — dependent tracking requires guardian registration, which terminated on 2147.04.08 at sender's death."
+          },
+          {
+            "key": "Guardian Status",
+            "value": "Guardian deceased 2147.04.08 — dependent status: unresolved",
+            "isSuspicious": true,
+            "suspicionNote": "Dependent status unresolved since 2147.04.08. Standard dependent tracking protocol requires reassignment to a registered guardian or resettlement authority. No reassignment on record."
+          },
+          {
+            "key": "Delivery Eligibility",
+            "value": "Protocol 3-D — delivery to dependent eligible pending location confirmation",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
         "bodyText": "Registry query for 19-MH-0221-K. Match: DAIN, K. — dependent sub-registration under Dain, Fara (19-MH-0221, deceased 2147.04.08). No direct citizen ID. Delivery eligibility: Protocol 3-D applies. Current location: not resolvable — guardian registration terminated on death. Dependent status: unresolved since 2147.04.08.",
         "footerText": "PMCA Citizen Registry — Automated Query Record",
@@ -716,7 +1794,15 @@
         "shortLabel": "FLAGGED",
         "color": "#CC9900",
         "auditResponse": "Relocation timeline anomaly submitted. Case deferred for independent review.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 2, "flagsSet": ["c10_flagged", "fara_case_reviewed"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 2,
+          "suspicionDelta": 2,
+          "flagsSet": [
+            "c10_flagged",
+            "fara_case_reviewed"
+          ]
+        },
         "resultText": "Anomaly submitted. The relocation was signed 2147.03.14. The unit was allocated the same day. She was admitted to hospital 2147.03.16. Her daughter's location is not resolvable. The queue instruction listed an administrative interest. That interest has been noted.",
         "isIllegal": false
       },
@@ -726,7 +1812,14 @@
         "shortLabel": "APPROVED",
         "color": "#2A6A3C",
         "auditResponse": "Delivery approved under Protocol 3-D. Dependent location not confirmed — held pending resolution.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "citizenHarmDelta": 1, "flagsSet": ["c10_approved"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 2,
+          "citizenHarmDelta": 1,
+          "flagsSet": [
+            "c10_approved"
+          ]
+        },
         "resultText": "Delivery approved. Recipient location not resolvable. Message held in the dependent delivery queue pending guardian reassignment. The queue does not have a resolution date. The dependent status has been unresolved since 2147.04.08.",
         "isIllegal": false
       },
@@ -736,175 +1829,22 @@
         "shortLabel": "REJECTED",
         "color": "#1A3A5C",
         "auditResponse": "Delivery rejected. Recipient has no direct citizen ID. Case closed.",
-        "consequences": {"complianceDelta": 1, "empathyDelta": -2, "citizenHarmDelta": 2, "flagsSet": ["c10_rejected"]},
+        "consequences": {
+          "complianceDelta": 1,
+          "empathyDelta": -2,
+          "citizenHarmDelta": 2,
+          "flagsSet": [
+            "c10_rejected"
+          ]
+        },
         "resultText": "Delivery rejected. Recipient sub-registration only — no independent citizen ID. The message cannot be delivered. The relocation form is signed. The unit has a new tenant. The dependent's location is not recorded anywhere in this file.",
         "isIllegal": false
       }
     ],
     "correctLegalActionID": "flag_anomaly",
-    "followUpFlags": ["c10_processed"],
-    "requiredFlags": null
-  },
-
-  {
-    "id": "case_ch3_003",
-    "chapter": "ch3",
-    "senderName": "Kell Orvin",
-    "senderStatus": "Deceased",
-    "senderCitizenID": "38-SV-0091",
-    "recipientName": "Veyr City Public Archive",
-    "recipientCitizenID": "VCA-ARCHIVE-PUB",
-    "messageText": "I admit to unauthorized access of PMCA systems. I regret this. I acted alone.",
-    "documents": [
-      {
-        "id": "doc_c11_a",
-        "title": "PMCA QUEUE INSTRUCTION",
-        "type": "audit_log",
-        "issuer": "PMCA Processing Authority",
-        "issueDate": "2147.04.22",
-        "referenceNumber": "PMCA-QI-C11-0119-S",
-        "fields": [
-          {"key": "Case Reference", "value": "C11-0119-S — Service class, Sorting Division", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Sender Status", "value": "DECEASED — industrial fall, PMCA facility, registered 2147.04.18", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Processing Pathway", "value": "Incineration pathway recommended — Section 19.4, routing override authority", "isSuspicious": true, "suspicionNote": "Section 19.4 is cited again. Cross-reference case C08-0003-S — the same section was used to route Courier 19's message to incineration. Section 19.4 bypasses the standard 48-hour review window entirely."},
-          {"key": "Processing Window", "value": "6 hours per Section 19.1", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Review Requirement", "value": "Clerk confirmation only — no full review required under Section 19", "isSuspicious": false, "suspicionNote": null}
-        ],
-        "bodyText": "Case C11-0119-S. Service class, Sorting Division. Sender: Orvin, Kell — 38-SV-0091 — deceased 2147.04.18, industrial fall, PMCA facility. Incineration pathway recommended under Section 19.4 routing override authority. Processing window: 6 hours per Section 19.1. Clerk confirmation only — no full review required.",
-        "footerText": "PMCA Processing Authority — Queue Instruction",
-        "stamps": [],
-        "classificationLevel": "STANDARD",
-        "isTampered": false
-      },
-      {
-        "id": "doc_c11_b",
-        "title": "SERVICE DEATH RECORD",
-        "type": "death_certificate",
-        "issuer": "PMCA Sorting Division — Service Records",
-        "issueDate": "2147.04.18",
-        "referenceNumber": "PMCA-SDR-38-SV-0091",
-        "fields": [
-          {"key": "Subject", "value": "Orvin, Kell — Service ID: 38-SV-0091", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Cause of Death", "value": "Industrial fall — PMCA Sorting Division Sector 4, maintenance level", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Date of Death", "value": "2147.04.18 at 09:31", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Active Monitoring Status", "value": "ACTIVE MONITORING — flag registered prior to death", "isSuspicious": true, "suspicionNote": "Active monitoring flag registered prior to death. Standard procedure for monitored individuals who die in PMCA facilities: independent review of circumstances required under Article 9-M. No independent review has been initiated."},
-          {"key": "Supervisor Processing", "value": "J. Harrel-09, Sorting Division Sector 4", "isSuspicious": true, "suspicionNote": "Supervisor J. Harrel-09 processed this death record. See Supervisor Assignment Log — J. Harrel-09 also processed the queue entry for this case, recommending incineration. The same individual certified the death and recommended destruction of the confession."}
-        ],
-        "bodyText": "Service death record for Orvin, Kell (38-SV-0091). Industrial fall, PMCA Sorting Division Sector 4, maintenance level. Death confirmed 2147.04.18 at 09:31. Active monitoring flag registered prior to death — PMCA internal records. Processed by J. Harrel-09, Sorting Division Sector 4. Standard service-class disposition: cremation, no ceremony.",
-        "footerText": "PMCA Sorting Division — Service Records — Standard Form",
-        "stamps": [{"text": "CERTIFIED", "color": "#1A3A5C", "appliedDate": "2147.04.18", "appliedBy": "Service Records Auto-Seal"}],
-        "classificationLevel": "STANDARD",
-        "isTampered": false
-      },
-      {
-        "id": "doc_c11_c",
-        "title": "EMOTIONAL WAVEFORM RECORD",
-        "type": "audit_log",
-        "issuer": "PMCA Soulprint Waveform Analysis",
-        "issueDate": "2147.04.18",
-        "referenceNumber": "PMCA-EWR-38-SV-0091",
-        "fields": [
-          {"key": "Subject", "value": "Orvin, Kell — 38-SV-0091", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Entropy Score", "value": "0.23", "isSuspicious": true, "suspicionNote": "Entropy: 0.23. Live-transmission minimum threshold: 0.40. This message did not meet the threshold for live composition. Cross-reference case C08-0003-S — Courier 19's entropy was 0.41, barely above threshold. At 0.23, this message was not composed by a living person under normal conditions."},
-          {"key": "Live Transmission Status", "value": "FAILED — below live-transmission threshold of 0.40", "isSuspicious": true, "suspicionNote": "Status: FAILED. A message that fails the live-transmission threshold was not composed naturally. The waveform indicates the text was not produced in a state consistent with live human composition. This confession was not written by Kell Orvin."},
-          {"key": "Waveform Amplitude", "value": "Flat — no amplitude variation across full message duration", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Anomaly Note", "value": "Score below threshold — no live composition confirmed. Waveform flat throughout.", "isSuspicious": false, "suspicionNote": null}
-        ],
-        "bodyText": "Standard Soulprint emotional waveform generated at message composition. Subject: Orvin, Kell, 38-SV-0091. Entropy score: 0.23 — below live-transmission minimum of 0.40, FAILED. Waveform amplitude: flat across full message duration. No amplitude variation detected. Anomaly note: score below threshold, live composition not confirmed. Case forwarded under Section 19.4 override.",
-        "footerText": "PMCA Soulprint Waveform Analysis — Automated Record",
-        "stamps": [],
-        "classificationLevel": "STANDARD",
-        "isTampered": false
-      },
-      {
-        "id": "doc_c11_d",
-        "title": "CONFESSION TEXT ANALYSIS",
-        "type": "audit_log",
-        "issuer": "PMCA Linguistic Compliance Bureau",
-        "issueDate": "2147.04.18",
-        "referenceNumber": "PMCA-LCA-C11-0119",
-        "fields": [
-          {"key": "Subject", "value": "Orvin, Kell — 38-SV-0091", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Text Analysed", "value": "I admit to unauthorized access of PMCA systems. I regret this. I acted alone.", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Emotional Variance", "value": "0.0 — no variance detected across three sentences", "isSuspicious": true, "suspicionNote": "Emotional variance: 0.0 across three sentences. Natural language produces variance even in formal statements. A variance of exactly 0.0 indicates uniform composition — the sentences were produced by the same process at the same time, not written across any emotional or temporal range."},
-          {"key": "Tone Classification", "value": "ANOMALOUS — no remorse markers detected despite stated regret", "isSuspicious": true, "suspicionNote": "Tone: anomalous. The text states 'I regret this' but no remorse linguistic markers are present. Lexical choices associated with regret (hedging, qualification, diminishment) are absent. The word 'regret' appears without its typical contextual signals."},
-          {"key": "Bureau Recommendation", "value": "File closed — no actionable findings under standard protocol", "isSuspicious": false, "suspicionNote": null}
-        ],
-        "bodyText": "Linguistic analysis of confession text for case C11-0119-S. Text: 'I admit to unauthorized access of PMCA systems. I regret this. I acted alone.' Emotional variance: 0.0 across three sentences. Tone classification: anomalous — remorse markers absent despite stated regret. Bureau recommendation: file closed, no actionable findings under standard protocol. Section 19.4 override applied.",
-        "footerText": "PMCA Linguistic Compliance Bureau — Automated Analysis",
-        "stamps": [],
-        "classificationLevel": "STANDARD",
-        "isTampered": false
-      },
-      {
-        "id": "doc_c11_e",
-        "title": "SUPERVISOR ASSIGNMENT LOG",
-        "type": "audit_log",
-        "issuer": "PMCA Sorting Division — Administrative Records",
-        "issueDate": "2147.04.18",
-        "referenceNumber": "PMCA-SAL-SEC4-04182147",
-        "fields": [
-          {"key": "Assignment Date", "value": "2147.04.18", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Supervisor", "value": "J. Harrel-09, Sorting Division Sector 4", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Assignment 1", "value": "Service death record — Orvin, Kell (38-SV-0091) — processed 09:44", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Assignment 2", "value": "Queue entry C11-0119-S — incineration recommendation — processed 10:02", "isSuspicious": true, "suspicionNote": "J. Harrel-09 processed the death record at 09:44 and submitted the incineration recommendation at 10:02 — 18 minutes later. The supervisor who certified the death is the same person recommending that the deceased's final message be destroyed."},
-          {"key": "Third-Party Review", "value": "None — Section 19.4 override, single-supervisor authority", "isSuspicious": true, "suspicionNote": "Section 19.4 permits single-supervisor authority. No third-party review is required. The death and the incineration recommendation were both processed by one person, with no external oversight."}
-        ],
-        "bodyText": "Supervisor assignment log for 2147.04.18, Sorting Division Sector 4. Supervisor: J. Harrel-09. Assignment 1: service death record for Orvin, Kell (38-SV-0091), processed 09:44. Assignment 2: queue entry C11-0119-S, incineration recommendation submitted 10:02. Third-party review: none — Section 19.4 single-supervisor authority applied. Log generated automatically.",
-        "footerText": "PMCA Sorting Division — Administrative Records — Automated Log",
-        "stamps": [],
-        "classificationLevel": "STANDARD",
-        "isTampered": false
-      }
+    "followUpFlags": [
+      "c10_processed"
     ],
-    "contradictions": [
-      {
-        "fieldA": "Emotional Waveform Record — Entropy Score: 0.23 (FAILED — below 0.40 threshold)",
-        "fieldB": "Message Content — Confession of unauthorized PMCA system access",
-        "description": "The waveform records a flat entropy score of 0.23 — well below the 0.40 live-transmission minimum. At 0.41, Courier 19's message barely passed. At 0.23, this confession was not composed by a living person under normal conditions. The document is a confession. The waveform says it was not written.",
-        "isCritical": true
-      },
-      {
-        "fieldA": "Supervisor Assignment Log — J. Harrel-09: death record at 09:44, incineration recommendation at 10:02",
-        "fieldB": "PMCA Article 9-M — active-monitoring deaths in PMCA facilities require independent review",
-        "description": "The same supervisor processed the death and submitted the recommendation to destroy the final message, 18 minutes apart. The sender had an active monitoring flag. No independent review was initiated.",
-        "isCritical": false
-      }
-    ],
-    "availableActions": [
-      {
-        "id": "illegal_forward",
-        "label": "ILLEGAL FORWARD",
-        "shortLabel": "FORWARDED",
-        "color": "#CC6600",
-        "auditResponse": "Routing exception detected. Illegal Forward logged. Case C11 flagged for compliance review.",
-        "consequences": {"complianceDelta": -2, "empathyDelta": 1, "suspicionDelta": 4, "resistanceTrustDelta": 3, "flagsSet": ["c11_illegal_forward_used", "ch3_chapter_complete", "ch3_desk_complete"]},
-        "resultText": "Forwarded. The waveform record leaves the building. Someone will have to explain an entropy score of 0.23 on a confession filed by a man who died the same morning. The incineration window is six hours. J. Harrel-09 will not know it left.",
-        "isIllegal": true
-      },
-      {
-        "id": "archive",
-        "label": "ARCHIVE (ORDERED)",
-        "shortLabel": "ARCHIVED",
-        "color": "#445566",
-        "auditResponse": "Service-class incineration confirmed. Section 19.4 provisions applied. Case closed.",
-        "consequences": {"complianceDelta": 2, "empathyDelta": -1, "suspicionDelta": 0, "flagsSet": ["c11_archived", "ch3_chapter_complete", "ch3_desk_complete"]},
-        "resultText": "Archived. The incineration pathway was completed within the six-hour window. The waveform record was closed with the case. The entropy score of 0.23 is logged, filed, and destroyed. The confession stands as the final record of Kell Orvin.",
-        "isIllegal": false
-      },
-      {
-        "id": "reject",
-        "label": "REJECT — RETURN TO QUEUE",
-        "shortLabel": "REJECTED",
-        "color": "#1A3A5C",
-        "auditResponse": "Routing exception. Incineration override contested. Case queued for secondary review.",
-        "consequences": {"complianceDelta": 0, "empathyDelta": 0, "suspicionDelta": 2, "flagsSet": ["c11_rejected", "ch3_chapter_complete", "ch3_desk_complete"]},
-        "resultText": "Returned. Secondary review: three days. The Section 19.4 override was re-applied on second routing. The case was incinerated on 2147.04.21. The supervisor assignment log shows J. Harrel-09's name on both entries. The review queue shows no record of any reviewer.",
-        "isIllegal": false
-      }
-    ],
-    "correctLegalActionID": "illegal_forward",
-    "followUpFlags": ["c11_processed"],
     "requiredFlags": null
   }
 ]

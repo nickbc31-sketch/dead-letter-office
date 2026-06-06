@@ -642,6 +642,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         case "building_entrance":  return ("⌂", DLOColor.teal)
         case "building_exit":      return ("⇐", DLOColor.dimText)
         case "text_sign":          return ("ℹ", DLOColor.dimText)
+        case "security_override":  return ("⚡", DLOColor.terminalAmber)
         default:                   return ("?", DLOColor.dimText)
         }
     }
@@ -1066,9 +1067,9 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         guard let id = nearbyInteractableID,
               let inter = interactableData[id] else { return }
 
-        // Check required flag gate
-        if let required = inter.requiredFlag, !GameState.shared.hasFlag(required) {
-            showBriefMessage(accessDeniedText(for: inter, requiredFlag: required))
+        if !satisfiesFlagGate(inter) {
+            let hint = inter.requiredFlagsAny?.first ?? inter.requiredFlag ?? ""
+            showBriefMessage(accessDeniedText(for: inter, requiredFlag: hint))
             return
         }
 
@@ -1081,11 +1082,14 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
             activateCartridge(inter)
         case "cabinet":
             activateCabinet(inter)
+        case "security_override":
+            activateSecurityOverride(inter)
         case "building_entrance":
             activateBuildingEntrance(inter)
         case "building_exit":
             activateBuildingExit(inter)
         case "text_sign":
+            if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
             if let text = inter.displayText {
                 showBriefMessage(text)
             }
@@ -1106,6 +1110,10 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
             return "EXIT BLOCKED — COLLECT MAINTENANCE CREDENTIAL"
         case "cabinet" where requiredFlag == "relay_console_read":
             return "LOCKED — READ RELAY CONSOLE FIRST"
+        case "door" where requiredFlag == "marr_apt_accessed" || requiredFlag == "ch2_maintenance_credential":
+            return "ACCESS DENIED — CLEARANCE NOT MET"
+        case "security_override":
+            return "OVERRIDE LOCKED — CASE STATUS REQUIRED"
         default:
             return "ACCESS DENIED — REQUIRED CLEARANCE NOT MET"
         }
@@ -1143,7 +1151,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
             return
         }
 
-        let body = """
+        let body = inter.displayText ?? """
 MAINTENANCE CREDENTIAL LOCKER
 Locker ID: MNT-RELAY-07
 
@@ -1161,6 +1169,34 @@ Sign out before exterior transit.
         showContentPanel(header: "CREDENTIAL LOCKER", body: body) { [weak self] in
             guard let self = self else { return }
             if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
+            GameState.shared.setFlag("ch2_restricted_access")
+            GameState.shared.save()
+            self.interactableNodes[inter.id]?.alpha = 0.35
+            AudioManager.shared.playTerminalBeep(on: self)
+        }
+    }
+
+    private func activateSecurityOverride(_ inter: Interactable) {
+        if let flag = inter.setsFlag, GameState.shared.hasFlag(flag) {
+            showBriefMessage("OVERRIDE ALREADY APPLIED")
+            return
+        }
+
+        let body = inter.displayText ?? """
+MAINTENANCE OVERRIDE — RESIDENTIAL SEAL
+Authorisation: SECTOR MAINTENANCE LAYER
+Status: PENDING CLERK ACKNOWLEDGEMENT
+
+Apply temporary access to sealed unit?
+"""
+        showContentPanel(header: "OVERRIDE PANEL", body: body) { [weak self] in
+            guard let self = self else { return }
+            if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
+            GameState.shared.setFlag("marr_apt_accessed")
+            if let linkedID = inter.linkedInteractableID,
+               let door = self.interactableData[linkedID] {
+                self.openDoor(door)
+            }
             GameState.shared.save()
             self.interactableNodes[inter.id]?.alpha = 0.35
             AudioManager.shared.playTerminalBeep(on: self)
@@ -1481,11 +1517,22 @@ console login acknowledgement.
         ]))
     }
 
+    private func satisfiesFlagGate(_ inter: Interactable) -> Bool {
+        if let any = inter.requiredFlagsAny, !any.isEmpty {
+            return any.contains { GameState.shared.hasFlag($0) }
+        }
+        if let required = inter.requiredFlag {
+            return GameState.shared.hasFlag(required)
+        }
+        return true
+    }
+
     private func completePlatformSection(dialogueID: String) {
         guard !isLevelComplete else { return }
         isLevelComplete = true
-        GameState.shared.recordLevelComplete("level_ch1")
-        if let nextID = nextChapterID(from: levelData?.chapter ?? "ch1") {
+        let chapterID = levelData?.chapter ?? "ch1"
+        GameState.shared.recordLevelComplete(levelID)
+        if let nextID = nextChapterID(from: chapterID) {
             GameState.shared.setFlag("\(nextID)_unlocked")
         }
         GameState.shared.save()
@@ -1500,10 +1547,13 @@ console login acknowledgement.
             SKAction.fadeIn(withDuration: 0.8),
             SKAction.run { [weak self] in
                 guard let self = self else { return }
-                GameState.shared.currentChapterID = "ch2"
+                let nextChapter = self.nextChapterID(from: chapterID) ?? chapterID
+                GameState.shared.currentChapterID = nextChapter
                 GameState.shared.save()
                 SceneManager.shared.transition(
-                    to: .dialogue(dialogueID: dialogueID, returnScene: .desk(chapterID: "ch2")),
+                    to: .dialogue(dialogueID: dialogueID,
+                                  returnScene: .desk(chapterID: nextChapter),
+                                  startNodeID: nil),
                     from: self
                 )
             }
@@ -1708,6 +1758,7 @@ private final class InteractButtonNode: SKNode {
         case "cabinet":            lbl.text = "▲  OPEN LOCKER"
         case "building_entrance":  lbl.text = "▲  ENTER"
         case "building_exit":      lbl.text = "▲  EXIT"
+        case "security_override":  lbl.text = "▲  OVERRIDE"
         case "npc":                lbl.text = "▲  TALK"
         default:                   lbl.text = "▲  INTERACT"
         }

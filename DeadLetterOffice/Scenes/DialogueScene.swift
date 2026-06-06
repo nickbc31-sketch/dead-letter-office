@@ -4,6 +4,7 @@ final class DialogueScene: SKScene {
 
     var dialogueID: String = ""
     var returnSceneType: SceneType = .mainMenu
+    var startNodeID: String?
 
     private var dialogueFile: DialogueFile?
     private var currentNodeIndex: Int = 0
@@ -202,7 +203,13 @@ final class DialogueScene: SKScene {
     // MARK: - Dialogue Logic
     private func loadDialogue() {
         dialogueFile = DialogueFile.load(id: dialogueID) ?? makeFallbackDialogue()
-        currentNodeIndex = 0
+        if let startID = startNodeID,
+           let file = dialogueFile,
+           let idx = file.nodes.firstIndex(where: { $0.id == startID }) {
+            currentNodeIndex = idx
+        } else {
+            currentNodeIndex = 0
+        }
         currentLineIndex = 0
         presentCurrentLine()
     }

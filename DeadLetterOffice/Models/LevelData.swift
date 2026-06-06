@@ -18,10 +18,12 @@ struct PatrolRoute: Codable {
 
 struct Interactable: Codable, Identifiable {
     var id: String
-    var type: String            // terminal, door, cartridge, cabinet, building_entrance, building_exit, text_sign, ladder
+    var type: String            // terminal, door, cartridge, cabinet, security_override, building_entrance, building_exit, text_sign, ladder
     var position: [CGFloat]     // [x, y]
     var requiredFlag: String?
+    var requiredFlagsAny: [String]?   // OR gate — any listed flag satisfies access
     var setsFlag: String?
+    var linkedInteractableID: String? // security_override → door to open
     var requiredCode: String?   // For locked terminals
     var displayText: String?    // Environmental text
     var cartridgeData: String?  // JSON content inside a data cartridge

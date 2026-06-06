@@ -183,7 +183,8 @@ final class MainMenuScene: SKScene {
         if !state.hasFlag(introFlag), DialogueFile.load(id: "intro_ch1") != nil {
             SceneManager.shared.transition(
                 to: .dialogue(dialogueID: "intro_ch1",
-                              returnScene: .desk(chapterID: "ch1")),
+                              returnScene: .desk(chapterID: "ch1"),
+                              startNodeID: nil),
                 from: self)
         } else {
             let ch = state.currentChapterID.isEmpty ? "ch1" : state.currentChapterID
@@ -270,7 +271,8 @@ final class MainMenuScene: SKScene {
         if DialogueFile.load(id: "intro_ch1") != nil {
             SceneManager.shared.transition(
                 to: .dialogue(dialogueID: "intro_ch1",
-                              returnScene: .desk(chapterID: "ch1")),
+                              returnScene: .desk(chapterID: "ch1"),
+                              startNodeID: nil),
                 from: self)
         } else {
             SceneManager.shared.transition(to: .desk(chapterID: "ch1"), from: self)

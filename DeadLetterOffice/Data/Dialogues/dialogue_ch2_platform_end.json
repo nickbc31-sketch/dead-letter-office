@@ -1,0 +1,41 @@
+{
+  "id": "dialogue_ch2_platform_end",
+  "chapter": "ch2",
+  "returnSceneHint": "desk_ch3",
+  "nodes": [
+    {
+      "id": "n0",
+      "lines": [
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "The coordinates on the map match the waveform. Courier 19 encoded the restricted sector before he died.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "The Choir list is real. Names I processed at the desk — Sen, Brent, Dain — all on it.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. Exterior transit concluded. Return to processing.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "The buffer holds senders the desk cannot see. I need to understand what happens upstairs before they close the next case.",
+          "voiceFilter": "normal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": ["ch2_platform_complete"],
+      "nextID": null
+    }
+  ]
+}

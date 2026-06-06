@@ -87,7 +87,7 @@ final class DebugScene: SKScene {
             ("PLATFORM CH3", { SceneManager.shared.transition(to: .platform(levelID: "level_ch3"), from: self) }),
             ("DIALOGUE INTRO CH1", {
                 SceneManager.shared.transition(
-                    to: .dialogue(dialogueID: "intro_ch1", returnScene: .debug),
+                    to: .dialogue(dialogueID: "intro_ch1", returnScene: .debug, startNodeID: nil),
                     from: self)
             }),
             ("ENDING BROADCAST", { SceneManager.shared.transition(to: .ending(endingType: .broadcast), from: self) }),
@@ -123,6 +123,12 @@ final class DebugScene: SKScene {
             ("mara_death_scheduled", "MARA SCHEDULED"),
             ("ch1_tutorial_shown", "TUTORIAL SHOWN"),
             ("c09_processed", "C09 PROCESSED"),
+            ("ch2_desk_complete", "CH2 DESK DONE"),
+            ("ch2_elias_flag_reminder", "CH2 ELIAS REMINDER"),
+            ("jun_vale_hint", "JUN HINT"),
+            ("ch3_desk_complete", "CH3 DESK DONE"),
+            ("marr_apt_accessed", "MARR APT ACCESS"),
+            ("orrra_mural_ch3", "ORRA MURAL"),
         ]
 
         let colW = layout.w * 0.22

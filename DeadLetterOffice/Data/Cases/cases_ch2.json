@@ -126,6 +126,25 @@
         "stamps": [{"text": "CLOSED", "color": "#1A3A5C", "appliedDate": "2147.04.11", "appliedBy": "Automated Audit System"}],
         "classificationLevel": "STANDARD",
         "isTampered": false
+      },
+      {
+        "id": "doc_c06_g",
+        "title": "DIRECTORATE MEMO — EMPATHY REVIEW",
+        "type": "audit_log",
+        "issuer": "PMCA Directorate",
+        "issueDate": "2147.04.10",
+        "referenceNumber": "PMCA-DIR-EMP-2147-Q2",
+        "fields": [
+          {"key": "Distribution", "value": "Processing Authority — Queue Instruction Authors", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Subject", "value": "Elevated empathy index — clerk review cohort", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Instruction", "value": "Flag cases with emotional exposure markers for secondary empathy review before delivery authorisation", "isSuspicious": true, "suspicionNote": "Directorate-level empathy review exceeds standard clerk processing authority. Review criteria not disclosed to clerks."},
+          {"key": "Authorising Officer", "value": "Director Calyx, PMCA Directorate", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Memo excerpt for queue instruction authors. Clerks in the elevated empathy cohort are to receive cases pre-marked for emotional exposure review. Standard delivery authorisation requires confirmation that empathy review pathway has been acknowledged. Directorate reserves authority to reclassify clerk decisions post-hoc. Authorised by Director Calyx, PMCA Directorate.",
+        "footerText": "PMCA Directorate — Internal Distribution",
+        "stamps": [{"text": "AUTHORISED", "color": "#1A3A5C", "appliedDate": "2147.04.10", "appliedBy": "Director Calyx, PMCA Directorate"}],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
       }
     ],
     "contradictions": [
@@ -181,7 +200,7 @@
       }
     ],
     "correctLegalActionID": "flag_anomaly",
-    "followUpFlags": ["c06_processed"],
+    "followUpFlags": ["c06_processed", "calyx_memo_ch2_seen"],
     "requiredFlags": null
   },
 
@@ -289,9 +308,10 @@
           {"key": "Entry Date", "value": "2147.01.03", "isSuspicious": true, "suspicionNote": "Entry date: 2147.01.03. The Banned Phrase Analysis Report cites the same date as its 'classification basis.' Both documents reference the same date as both the source and the output. They are logically circular."},
           {"key": "Source", "value": "Choir Signal Detection System v2.3 — intercepted communications, 2146.11–2146.12", "isSuspicious": false, "suspicionNote": null},
           {"key": "Manual Review", "value": "None conducted — automated classification, no escalation triggered", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Curriculum Note", "value": "Phrase also appears in Lower Veyr Primary Standard Cultural Curriculum, Vol. 3, Song 14. No disambiguation review conducted.", "isSuspicious": true, "suspicionNote": "The registry notes the phrase appears in school curriculum materials. No disambiguation was performed to determine whether the Choir adopted the phrase from the song, or the song is the Choir's origin. A 28% false-positive probability exists."}
+          {"key": "Curriculum Note", "value": "Phrase also appears in Lower Veyr Primary Standard Cultural Curriculum, Vol. 3, Song 14. No disambiguation review conducted.", "isSuspicious": true, "suspicionNote": "The registry notes the phrase appears in school curriculum materials. No disambiguation was performed to determine whether the Choir adopted the phrase from the song, or the song is the Choir's origin. A 28% false-positive probability exists."},
+          {"key": "Historical Footnote", "value": "Orra Square curfew hymns (2130–2141) used variant wording — civic archive cross-reference not performed", "isSuspicious": true, "suspicionNote": "Registry entry does not reference Orra Square hymn archive. Saint Orra tradition predates Choir classification by 17 years."}
         ],
-        "bodyText": "PMCA Banned Phrase Registry, entry 7,441. Phrase: 'little lamp.' Entry date: 2147.01.03. Source: Choir Signal Detection System v2.3. Source corpus: intercepted Choir communications, November–December 2146. Manual review: none — automated classification only. Note: phrase also present in Lower Veyr Primary Standard Cultural Curriculum, Vol. 3, Song 14. No disambiguation review was conducted prior to registry entry. Phrase retained at Tier 2 classification.",
+        "bodyText": "PMCA Banned Phrase Registry, entry 7,441. Phrase: 'little lamp.' Entry date: 2147.01.03. Source: Choir Signal Detection System v2.3. Source corpus: intercepted Choir communications, November–December 2146. Manual review: none — automated classification only. Note: phrase also present in Lower Veyr Primary Standard Cultural Curriculum, Vol. 3, Song 14. Historical footnote: Orra Square curfew hymns (2130–2141) used variant wording. Civic archive cross-reference not performed. Phrase retained at Tier 2 classification.",
         "footerText": "PMCA Banned Phrase Registry — Record",
         "stamps": [],
         "classificationLevel": "RESTRICTED",
@@ -381,7 +401,7 @@
       }
     ],
     "correctLegalActionID": "approve",
-    "followUpFlags": ["c07_processed"],
+    "followUpFlags": ["c07_processed", "orrra_lamp_noted"],
     "requiredFlags": null
   },
 
@@ -509,9 +529,10 @@
           {"key": "Routing Modification", "value": "2147.04.09 at 12:03 — automated authority, Section 19.4", "isSuspicious": false, "suspicionNote": null},
           {"key": "Modified Routing Destination", "value": "Incineration Archive — East Transit Processing Facility", "isSuspicious": false, "suspicionNote": null},
           {"key": "Expungement Note", "value": "Initial recipient field expunged per Section 19.4 protocol — recipient identity not recoverable", "isSuspicious": true, "suspicionNote": "The override also expunged the original recipient field. Section 19.4 does not require expungement of recipient data — it only authorises routing modification. The expungement is not explained by the cited protocol."},
-          {"key": "Override Authority", "value": "Section 19.4 — bypasses standard 48-hour review window", "isSuspicious": false, "suspicionNote": null}
+          {"key": "Override Authority", "value": "Section 19.4 — bypasses standard 48-hour review window", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Secondary Routing Tag", "value": "EVN-ROUTING-0442 — origin: unlogged buffer infrastructure", "isSuspicious": true, "suspicionNote": "Secondary tag: EVN-ROUTING-0442. Same tag class as flagged personal routing metadata in case C04-001-V. Origin not logged by standard PMCA infrastructure."}
         ],
-        "bodyText": "Message routing history for case C08-0003-S. Initial queue entry: 2147.04.09 at 11:52. Original recipient field: [DATA EXPUNGED — FIELD MODIFIED at 12:03 by automated authority]. Routing modification applied 2147.04.09 at 12:03 under Section 19.4 authority. New routing destination: Incineration Archive, East Transit Processing Facility. Section 19.4 priority override bypasses standard 48-hour review window. Initial recipient field expunged per Section 19.4 protocol — not recoverable. Note: coincident with Maintenance Roster discrepancy flag generated at 12:03.",
+        "bodyText": "Message routing history for case C08-0003-S. Initial queue entry: 2147.04.09 at 11:52. Original recipient field: [DATA EXPUNGED — FIELD MODIFIED at 12:03 by automated authority]. Secondary routing tag detected: EVN-ROUTING-0442 — origin unlogged by standard infrastructure. Routing modification applied 2147.04.09 at 12:03 under Section 19.4 authority. New routing destination: Incineration Archive, East Transit Processing Facility. Section 19.4 priority override bypasses standard 48-hour review window. Initial recipient field expunged per Section 19.4 protocol — not recoverable. Note: coincident with Maintenance Roster discrepancy flag generated at 12:03.",
         "footerText": "PMCA Message Routing System — Automated Record",
         "stamps": [],
         "classificationLevel": "RESTRICTED",
@@ -545,7 +566,7 @@
         "shortLabel": "ARCHIVED",
         "color": "#445566",
         "auditResponse": "Service-class archive confirmed. Incineration pathway complete. Section 19 provisions applied.",
-        "consequences": {"complianceDelta": 2, "empathyDelta": -1, "suspicionDelta": 0, "corporateTrustDelta": 1, "citizenHarmDelta": 1, "flagsSet": ["c08_archived", "ch2_chapter_complete"]},
+        "consequences": {"complianceDelta": 2, "empathyDelta": -1, "suspicionDelta": 0, "corporateTrustDelta": 1, "citizenHarmDelta": 1, "flagsSet": ["c08_archived", "ch2_chapter_complete", "ch2_desk_complete"]},
         "resultText": "Archived. The waveform peaks were overwritten when the case closed. The map fragment was logged as personal effects — category: miscellaneous; disposition: destroyed with case. The discrepancy flag on the maintenance roster remains open. No supervisor has responded to it. It will auto-close in 30 days per standard protocol.",
         "isIllegal": false
       },
@@ -555,7 +576,7 @@
         "shortLabel": "REJECTED",
         "color": "#1A3A5C",
         "auditResponse": "Routing exception. Recipient field unresolvable. Case queued for secondary review.",
-        "consequences": {"complianceDelta": 0, "empathyDelta": 0, "suspicionDelta": 2, "resistanceTrustDelta": 1, "flagsSet": ["c08_rejected", "ch2_chapter_complete"]},
+        "consequences": {"complianceDelta": 0, "empathyDelta": 0, "suspicionDelta": 2, "resistanceTrustDelta": 1, "flagsSet": ["c08_rejected", "ch2_chapter_complete", "ch2_desk_complete"]},
         "resultText": "Returned. Secondary review: three days. The incineration override was re-applied under Section 19.4 authority. The case was destroyed on second routing. The discrepancy flag auto-closed before any supervisor responded. The log shows the assignment in Sector 12 as confirmed; the death in Sector 7 as confirmed; and no resolution between them.",
         "isIllegal": false
       },
@@ -565,8 +586,8 @@
         "shortLabel": "FORWARDED",
         "color": "#CC6600",
         "auditResponse": "Routing exception detected. Illegal Forward logged. Case C08 flagged for compliance review. Processing suspended pending review.",
-        "consequences": {"complianceDelta": -2, "empathyDelta": 1, "suspicionDelta": 4, "resistanceTrustDelta": 3, "flagsSet": ["c08_illegal_forward_used", "c08_choir_contact_initiated", "ch2_chapter_complete"]},
-        "resultText": "Forwarded. The routing log records the case reaching an unregistered terminal in East Transit at 23:14. The terminal did not acknowledge receipt. The case is marked as delivered-unconfirmed — a classification that does not officially exist. Someone will have to explain this field to the next auditor who looks at the log. That auditor will not be Mara.",
+        "consequences": {"complianceDelta": -2, "empathyDelta": 1, "suspicionDelta": 4, "resistanceTrustDelta": 3, "flagsSet": ["c08_illegal_forward_used", "c08_choir_contact_initiated", "ch2_chapter_complete", "ch2_desk_complete", "ch2_elias_echo"]},
+        "resultText": "Forwarded. The routing log records the case reaching an unregistered terminal in East Transit at 23:14. EVN-ROUTING-0442 appears in the intercept metadata — the same secondary tag on my brother's file. I know that number. The terminal did not acknowledge receipt. The case is marked as delivered-unconfirmed — a classification that does not officially exist. Someone will have to explain this field to the next auditor who looks at the log. That auditor will not be Mara.",
         "isIllegal": true
       }
     ],
