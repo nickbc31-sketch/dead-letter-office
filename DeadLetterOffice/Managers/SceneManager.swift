@@ -33,6 +33,21 @@ final class SceneManager {
         view.presentScene(scene, transition: fade)
     }
 
+    /// Resume gameplay after Settings when opened from an active scene.
+    func returnFromSettings(from source: SKScene) {
+        guard let dest = GameState.shared.consumeSettingsReturn() else {
+            transition(to: .mainMenu, from: source)
+            return
+        }
+        switch dest {
+        case .platform(let levelID, let spawn):
+            GameState.shared.setPlatformSpawnOverride(levelID: levelID, point: spawn)
+            transition(to: .platform(levelID: levelID), from: source)
+        case .desk(let chapterID):
+            transition(to: .desk(chapterID: chapterID), from: source)
+        }
+    }
+
     private func makeScene(for type: SceneType, size: CGSize) -> SKScene {
         switch type {
         case .mainMenu:

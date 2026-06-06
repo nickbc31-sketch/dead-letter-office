@@ -30,6 +30,7 @@ struct Interactable: Codable, Identifiable {
     var linkedDialogueID: String?
     var linkedLevelID: String?  // building_entrance → interior level id
     var buildingVisual: BuildingVisualSpec?  // configurable exterior shell (module C)
+    var ladderExtent: [CGFloat]?  // [bottomY, topY] for ladder interactables
 }
 
 struct BackgroundLayer: Codable {

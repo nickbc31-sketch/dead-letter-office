@@ -34,16 +34,16 @@ struct BuildingVisualSpec: Codable {
 
     static func defaultWidth(for preset: String) -> CGFloat {
         switch preset {
-        case "relay_depot": return 360
-        case "checkpoint":  return 128
+        case "relay_depot": return 380
+        case "checkpoint":  return 200
         default:            return 112
         }
     }
 
     static func defaultHeight(for preset: String) -> CGFloat {
         switch preset {
-        case "relay_depot": return 74
-        case "checkpoint":  return 108
+        case "relay_depot": return 84
+        case "checkpoint":  return 132
         default:            return 98
         }
     }

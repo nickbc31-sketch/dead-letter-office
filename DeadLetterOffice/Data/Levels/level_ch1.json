@@ -94,8 +94,8 @@
         "linkedLevelID": "level_ch1_relay_interior",
         "visual": {
           "preset": "relay_depot",
-          "widthScreenFraction": 0.45,
-          "height": 74
+          "widthScreenFraction": 0.46,
+          "height": 84
         },
         "signageText": "RELAY UTILITY ACCESS — MAINTENANCE PERSONNEL ONLY"
       }
@@ -161,9 +161,10 @@
         "requiredFlag": "ch1_relay_credential",
         "visual": {
           "preset": "checkpoint",
-          "width": 128,
-          "height": 108
-        }
+          "widthScreenFraction": 0.34,
+          "height": 132
+        },
+        "signageText": "RESTRICTED — INNER CHECKPOINT — CLEARANCE LEVEL 3"
       }
     },
     {
@@ -189,7 +190,20 @@
       }
     }
   ],
-  "interactables": [],
+  "interactables": [
+    {
+      "id": "gantry_ladder_01",
+      "type": "ladder",
+      "position": [420, 66],
+      "ladderExtent": [66, 120]
+    },
+    {
+      "id": "gantry_ladder_02",
+      "type": "ladder",
+      "position": [1650, 66],
+      "ladderExtent": [66, 130]
+    }
+  ],
   "patrols": [],
   "pickups": [
     {"id": "pickup_01", "x": "280", "y": "140", "setsFlag": "pickup01_collected"}

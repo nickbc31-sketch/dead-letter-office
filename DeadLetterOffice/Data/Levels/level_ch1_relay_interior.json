@@ -58,7 +58,9 @@
   "pickups": [],
   "environmentalTextNodes": [
     {"x": "200", "y": "100", "text": "RELAY NODE 7 — UTILITY CONTROL"},
-    {"x": "420", "y": "100", "text": "MAINTENANCE CREDENTIAL LOCKER — AUTHORISED ACCESS ONLY"}
+    {"x": "420", "y": "100", "text": "MAINTENANCE CREDENTIAL LOCKER — AUTHORISED ACCESS ONLY"},
+    {"x": "280", "y": "130", "text": "SECONDARY ROUTING — BUFFER STATUS: ACTIVE"},
+    {"x": "480", "y": "115", "text": "UNAUTHORISED ACCESS — PMCA SECTOR 12"}
   ],
   "objectiveText": "READ RELAY CONSOLE — FIND CREDENTIAL",
   "ambientMusicTrack": "ambient_platform",

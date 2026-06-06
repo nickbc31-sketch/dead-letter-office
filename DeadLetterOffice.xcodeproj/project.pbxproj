@@ -25,6 +25,7 @@
 		61FF9018069148C62F9DCA31 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 471AAB36D150E71DA6D12CD2 /* AppDelegate.swift */; };
 		6450EF6C9A0F40ED6C5831AB /* StampButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BD6BDEF6DC2CF56278C615 /* StampButtonNode.swift */; };
 		6523F73DC4B231B5611A0A14 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B53D746FE64F4186375629 /* GameState.swift */; };
+		N0T3B00K1M4N4G3R5W1F7T01 /* NotebookManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = N0T3B00K1M4N4G3R5W1F7T02 /* NotebookManager.swift */; };
 		70511D3E4CDB9030C6549C77 /* ChapterData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8BF1EF717B584A6DFF3FBBA /* ChapterData.swift */; };
 		77940AF311E29502366D03DA /* SaveManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FC24ABAF4B16275755F4C6 /* SaveManager.swift */; };
 		785B3C71A31D4A3A2722343B /* cases_ch1.json in Resources */ = {isa = PBXBuildFile; fileRef = 09B5A44DBF8E96A09AA006B2 /* cases_ch1.json */; };
@@ -61,6 +62,7 @@
 		A1B2C3D4E5F60718293A4B5C /* PlatformEncounterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F60718293A4B5C6D /* PlatformEncounterModel.swift */; };
 		C3D4E5F60718293A4B5C6D7E /* PlatformEncounterComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F60718293A4B5C6D7E8F /* PlatformEncounterComposer.swift */; };
 		E5F60718293A4B5C6D7E8F90 /* PlatformBuildingVisuals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60718293A4B5C6D7E8F901A /* PlatformBuildingVisuals.swift */; };
+		C3D4E5F60718293A4B5C6D7E8 /* PlatformInteriorVisuals.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F60718293A4B5C6D7E8F9 /* PlatformInteriorVisuals.swift */; };
 		EB9003ECFFCC64A59FD553A8 /* DocumentNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8370870E1C692EA0A735E7F9 /* DocumentNode.swift */; };
 		FC03C6E8C2282BED6826D5A0 /* PhysicsCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3AE68DB989367798FAE4BD /* PhysicsCategories.swift */; };
 		FD4528E3D8F5AAD73E944658 /* BootScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC0C852D18DE2CB92FEB9D6 /* BootScene.swift */; };
@@ -115,6 +117,7 @@
 		A1318103735222BFB65B41CA /* DroneEnemyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroneEnemyNode.swift; sourceTree = "<group>"; };
 		A1B29E5C3D7F4018BE4C7A96 /* level_ch3.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = level_ch3.json; sourceTree = "<group>"; };
 		A4B53D746FE64F4186375629 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
+		N0T3B00K1M4N4G3R5W1F7T02 /* NotebookManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotebookManager.swift; sourceTree = "<group>"; };
 		A8BF1EF717B584A6DFF3FBBA /* ChapterData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterData.swift; sourceTree = "<group>"; };
 		AB59B2903A46E71524324063 /* DialogueModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogueModel.swift; sourceTree = "<group>"; };
 		AB701588025115B822B23C9C /* DeadLetterOffice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DeadLetterOffice.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,6 +127,7 @@
 		B2C3D4E5F60718293A4B5C6D /* PlatformEncounterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformEncounterModel.swift; sourceTree = "<group>"; };
 		D4E5F60718293A4B5C6D7E8F /* PlatformEncounterComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformEncounterComposer.swift; sourceTree = "<group>"; };
 		F60718293A4B5C6D7E8F901A /* PlatformBuildingVisuals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformBuildingVisuals.swift; sourceTree = "<group>"; };
+		D4E5F60718293A4B5C6D7E8F9 /* PlatformInteriorVisuals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformInteriorVisuals.swift; sourceTree = "<group>"; };
 		C74E8B1A6F3D4A0289B1C392 /* intro_ch3.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = intro_ch3.json; sourceTree = "<group>"; };
 		D6678C35C042AD903F06C489 /* DeskScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeskScene.swift; sourceTree = "<group>"; };
 		E1A7B2C30D4F5E6080B1A2C3 /* DebugScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugScene.swift; sourceTree = "<group>"; };
@@ -189,6 +193,7 @@
 				A1318103735222BFB65B41CA /* DroneEnemyNode.swift */,
 				F3BDF9E2E7AD315F4F7C9C75 /* MaraPlayerNode.swift */,
 				F60718293A4B5C6D7E8F901A /* PlatformBuildingVisuals.swift */,
+				D4E5F60718293A4B5C6D7E8F9 /* PlatformInteriorVisuals.swift */,
 				EE3AE68DB989367798FAE4BD /* PhysicsCategories.swift */,
 			);
 			path = Platform;
@@ -230,6 +235,7 @@
 			children = (
 				F5083C106395EB6E0FF810A6 /* AudioManager.swift */,
 				A4B53D746FE64F4186375629 /* GameState.swift */,
+				N0T3B00K1M4N4G3R5W1F7T02 /* NotebookManager.swift */,
 				D4E5F60718293A4B5C6D7E8F /* PlatformEncounterComposer.swift */,
 				38FC24ABAF4B16275755F4C6 /* SaveManager.swift */,
 				4FC22ABA6B3E4591AA62B0AF /* SceneManager.swift */,
@@ -455,11 +461,13 @@
 				53A7A098C1692F0442B481DD /* DroneEnemyNode.swift in Sources */,
 				9F04C167F28B214FE06D6F1A /* EndingScene.swift in Sources */,
 				6523F73DC4B231B5611A0A14 /* GameState.swift in Sources */,
+				N0T3B00K1M4N4G3R5W1F7T01 /* NotebookManager.swift in Sources */,
 				35E5741867EA2FD7F01FCAD8 /* GameViewController.swift in Sources */,
 				E4CD7FBAF6615A1AB4E9A3CB /* LevelData.swift in Sources */,
 				A1B2C3D4E5F60718293A4B5C /* PlatformEncounterModel.swift in Sources */,
 				C3D4E5F60718293A4B5C6D7E /* PlatformEncounterComposer.swift in Sources */,
 				E5F60718293A4B5C6D7E8F90 /* PlatformBuildingVisuals.swift in Sources */,
+				C3D4E5F60718293A4B5C6D7E8 /* PlatformInteriorVisuals.swift in Sources */,
 				312978CBEB498B8EADF10268 /* MainMenuScene.swift in Sources */,
 				9BC53599F5668D11E8FB49EE /* MaraPlayerNode.swift in Sources */,
 				FC03C6E8C2282BED6826D5A0 /* PhysicsCategories.swift in Sources */,

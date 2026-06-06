@@ -3,8 +3,9 @@ import SpriteKit
 final class SettingsScene: SKScene {
 
     private var layout  = SceneLayout.fallback(size: CGSize(width: 844, height: 390))
-    private var backRect:     CGRect = .zero
-    private var deleteRect:   CGRect = .zero
+    private var backRect:       CGRect = .zero
+    private var resumeRect:     CGRect = .zero
+    private var deleteRect:     CGRect = .zero
     private var confirmPanel: SKNode?
     private var confirmRect:   CGRect = .zero
     private var cancelledRect: CGRect = .zero
@@ -97,10 +98,20 @@ final class SettingsScene: SKScene {
         addSlider(label: "TEXT SIZE", value: (state.textSizeMultiplier - 0.8) / 0.8, y: yPos) { val in
             GameState.shared.textSizeMultiplier = 0.8 + val * 0.8; GameState.shared.save()
         }
-        yPos -= rowStep * 1.4
+        yPos -= rowStep * 1.2
 
         let btnH: CGFloat = 36
-        let btnW: CGFloat = layout.w * 0.28
+        let btnW: CGFloat = layout.w * 0.34
+        let hasReturn = GameState.shared.settingsReturnDestination != nil
+
+        if hasReturn {
+            buildTextButton(text: "> RETURN TO GAME", x: layout.midX, y: yPos, color: DLOColor.teal)
+            resumeRect = CGRect(x: layout.midX - btnW / 2, y: yPos - btnH / 2, width: btnW, height: btnH)
+            yPos -= rowStep * 0.95
+        } else {
+            resumeRect = .zero
+        }
+
         buildTextButton(text: "< BACK TO MENU", x: layout.x(0.15), y: yPos, color: DLOColor.terminalAmber)
         backRect = CGRect(x: layout.x(0.15) - 8, y: yPos - btnH / 2, width: btnW, height: btnH)
         buildTextButton(text: "DELETE SAVE DATA", x: layout.x(0.62), y: yPos, color: DLOColor.danger)
@@ -244,6 +255,7 @@ final class SettingsScene: SKScene {
             }
         }
 
+        if resumeRect.contains(pos) { returnToGame() }
         if backRect.contains(pos)   { goBack() }
         if deleteRect.contains(pos) { confirmDeleteSave() }
     }
@@ -280,7 +292,12 @@ final class SettingsScene: SKScene {
     // MARK: - Actions
 
     private func goBack() {
+        GameState.shared.settingsReturnDestination = nil
         SceneManager.shared.transition(to: .mainMenu, from: self)
+    }
+
+    private func returnToGame() {
+        SceneManager.shared.returnFromSettings(from: self)
     }
 
     private func confirmDeleteSave() {

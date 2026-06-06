@@ -1,4 +1,10 @@
 import Foundation
+import CoreGraphics
+
+enum SettingsReturnDestination: Equatable {
+    case platform(levelID: String, spawn: CGPoint)
+    case desk(chapterID: String)
+}
 
 // Singleton holding all mutable runtime game state.
 final class GameState {
@@ -24,6 +30,12 @@ final class GameState {
     // Transient platform transition (not persisted)
     var platformSpawnOverride: CGPoint?
     var platformSpawnOverrideLevelID: String?
+
+    // Transient settings return (not persisted)
+    var settingsReturnDestination: SettingsReturnDestination?
+
+    // Investigation notebook — unlocked entry IDs (persisted)
+    var notebookUnlockedIDs: Set<String> = []
 
     // Settings
     var subtitlesEnabled: Bool = true
@@ -71,6 +83,21 @@ final class GameState {
         platformSpawnOverride = point
     }
 
+    func setSettingsReturn(_ destination: SettingsReturnDestination) {
+        settingsReturnDestination = destination
+    }
+
+    func consumeSettingsReturn() -> SettingsReturnDestination? {
+        let dest = settingsReturnDestination
+        settingsReturnDestination = nil
+        return dest
+    }
+
+    func unlockNotebookEntry(_ id: String) {
+        notebookUnlockedIDs.insert(id)
+        save()
+    }
+
     private func loadFromSave() {
         SaveManager.shared.load(into: self)
     }
@@ -91,6 +118,7 @@ final class GameState {
         completedLevelIDs = []
         activeFlags      = []
         caseDecisions    = [:]
+        notebookUnlockedIDs = []
         // Settings (subtitlesEnabled, reducedFlashingEnabled, textSizeMultiplier,
         // musicVolume, sfxVolume) are preserved across new game starts.
     }

@@ -39,11 +39,14 @@ final class DeskScene: SKScene {
     private var continueRect:  CGRect?
     private var continueAction: (() -> Void)?
     private var pauseButtonRect = CGRect.zero
+    private var notebookButtonRect = CGRect.zero
 
     // Pause overlay rects (populated when overlay is shown, cleared when hidden)
     private var pauseOverlay:     SKNode?
     private var pauseResumeRect = CGRect.zero
     private var pauseExitRect   = CGRect.zero
+    private var notebookOverlay:  SKNode?
+    private var notebookCloseRect = CGRect.zero
 
     // Action result overlay (shown after stamp, over doc area)
     private var resultPanel:        SKNode?
@@ -254,6 +257,20 @@ final class DeskScene: SKScene {
             }
             NSLog("[DLO Touch] → overlay background (consumed)")
             return "overlay-bg"
+        }
+
+        // ── Notebook overlay ──────────────────────────────────────────────────
+        if notebookOverlay != nil {
+            if notebookCloseRect.contains(pos) {
+                hideNotebookOverlay()
+                return "notebook-close"
+            }
+            return "notebook-bg"
+        }
+
+        if notebookButtonRect.contains(pos) {
+            showNotebookOverlay()
+            return "notebook-open"
         }
 
         // ── Pause button ──────────────────────────────────────────────────────
@@ -618,6 +635,20 @@ final class DeskScene: SKScene {
         statusLabel.zPosition = 6
         addChild(statusLabel)
 
+        // Case notes button
+        let notesLbl = DLOFont.terminalLabel(text: "NOTES", size: 9)
+        notesLbl.fontColor = DLOColor.teal.withAlphaComponent(0.75)
+        notesLbl.horizontalAlignmentMode = .right
+        notesLbl.verticalAlignmentMode   = .center
+        notesLbl.position   = CGPoint(x: layout.right - 72, y: kHudY)
+        notesLbl.zPosition  = 6
+        addChild(notesLbl)
+
+        let btnH: CGFloat = max(kStatusH, 44)
+        notebookButtonRect = CGRect(x: layout.right - 110,
+                                      y: kHudY - btnH / 2,
+                                      width: 52, height: btnH)
+
         // Pause / menu button — tap target stored in pauseButtonRect
         let menuLbl = DLOFont.terminalLabel(text: "≡ MENU", size: 9)
         menuLbl.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.6)
@@ -627,8 +658,6 @@ final class DeskScene: SKScene {
         menuLbl.zPosition  = 6
         addChild(menuLbl)
 
-        // Extend hit area to 44pt minimum
-        let btnH: CGFloat = max(kStatusH, 44)
         pauseButtonRect = CGRect(x: layout.right - 60,
                                  y: kHudY - btnH / 2,
                                  width: 60, height: btnH)
@@ -788,7 +817,11 @@ final class DeskScene: SKScene {
         documentNodes[index].alpha = 0
         documentNodes[index].run(SKAction.fadeIn(withDuration: 0.07))
         activeDocumentIndex = index
-        if let caseFile = currentCase { buildDocumentTabs(caseFile) }
+        if let caseFile = currentCase, caseFile.documents.indices.contains(index) {
+            NotebookManager.onDeskDocumentOpened(
+                documentID: caseFile.documents[index].id, caseID: caseFile.id)
+            buildDocumentTabs(caseFile)
+        }
         AudioManager.shared.playPageTurn(on: self)
     }
 
@@ -1589,6 +1622,37 @@ final class DeskScene: SKScene {
                     to: .chapterComplete(chapterID: self.chapterID, nextScene: nextScene),
                     from: self)
             }
+        ]))
+    }
+
+    // MARK: - Notebook Overlay
+
+    private func showNotebookOverlay() {
+        guard notebookOverlay == nil else { return }
+        let panel = NotebookManager.makeDeskOverlayNode(layout: layout, chapter: chapterID)
+        let panelH = layout.h * 0.82
+        let closeLbl = DLOFont.terminalLabel(text: "[ CLOSE ]", size: 11 * GameState.shared.textSizeMultiplier)
+        closeLbl.fontColor = DLOColor.terminalAmber
+        closeLbl.horizontalAlignmentMode = .center
+        closeLbl.position = CGPoint(x: 0, y: -panelH / 2 + 22)
+        closeLbl.zPosition = 4
+        panel.addChild(closeLbl)
+        notebookCloseRect = CGRect(x: layout.midX - 70, y: layout.midY - panelH / 2 + 2,
+                                   width: 140, height: 36)
+        panel.zPosition = 850
+        panel.alpha = 0
+        addChild(panel)
+        notebookOverlay = panel
+        panel.run(SKAction.fadeIn(withDuration: 0.12))
+    }
+
+    private func hideNotebookOverlay() {
+        guard let overlay = notebookOverlay else { return }
+        notebookOverlay = nil
+        notebookCloseRect = .zero
+        overlay.run(SKAction.sequence([
+            SKAction.fadeOut(withDuration: 0.1),
+            SKAction.removeFromParent()
         ]))
     }
 

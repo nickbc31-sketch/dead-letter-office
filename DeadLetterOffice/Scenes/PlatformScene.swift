@@ -42,11 +42,12 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     private var isGamePaused: Bool = false
     private var pauseMenuNode: SKNode?
     private var pauseButtonRect: CGRect = .zero
+    private var notebookButtonRect: CGRect = .zero
     private var interactButtonCamRect: CGRect = .zero
 
     override func didMove(to view: SKView) {
         SceneManager.shared.view = view
-        physicsWorld.gravity = CGVector(dx: 0, dy: -700)  // tuned for jumpImpulse=500
+        physicsWorld.gravity = CGVector(dx: 0, dy: -700)  // tuned for jumpImpulse=285
         physicsWorld.contactDelegate = self
 
         guard let raw = LevelData.load(id: levelID) else {
@@ -78,7 +79,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
 
         buildFloor(width: data.levelWidth, height: data.levelHeight)
         if data.isInterior == true {
-            buildInteriorShell(width: data.levelWidth, height: data.levelHeight)
+            buildInteriorShell(levelID: data.id, width: data.levelWidth, height: data.levelHeight)
         }
         buildPlatforms(data)
 
@@ -178,6 +179,31 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
             case .near: return 0.68
             }
         }
+
+        /// How much of each tile width overlaps its neighbour (crossfade zone).
+        var overlapFraction: CGFloat {
+            switch self {
+            case .far:  return 0.48
+            case .mid:  return 0.42
+            case .near: return 0.24
+            }
+        }
+
+        /// Minimum mask alpha at tile edges; fog layers fade to 0 so seams dissolve.
+        var horizontalFadeFloor: CGFloat {
+            switch self {
+            case .far, .mid: return 0
+            case .near:       return 0.78
+            }
+        }
+
+        /// Horizontal fade band as a fraction of tile width (≈ half overlap for fog).
+        func horizontalFadeWidth(overlapFraction: CGFloat) -> CGFloat {
+            switch self {
+            case .far, .mid: return overlapFraction * 0.52
+            case .near:      return 0.12
+            }
+        }
     }
 
     private func interpolateAlpha(stops: [(CGFloat, CGFloat)], _ t: CGFloat) -> CGFloat {
@@ -211,14 +237,15 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         return 1
     }
 
-    /// Vertical layer blend; optional horizontal fade for tile crossfade (never used on backing).
+    /// Vertical layer blend; horizontal fade crossfades overlapping tiles at repeat boundaries.
     private func makeParallaxBlendMask(size: CGSize,
                                        kind: ParallaxLayerKind,
-                                       horizontalFade: CGFloat) -> UIImage {
+                                       horizontalFade: CGFloat,
+                                       horizontalFloor: CGFloat) -> UIImage {
         let w = max(2, Int(size.width.rounded()))
         let h = max(2, Int(size.height.rounded()))
         let hFade = horizontalFade
-        let hFloor: CGFloat = horizontalFade > 0 ? 0.88 : 1
+        let hFloor: CGFloat = horizontalFade > 0 ? horizontalFloor : 1
         var pixels = [UInt8](repeating: 0, count: w * h * 4)
         for y in 0..<h {
             let bottomFrac = 1 - CGFloat(y) / CGFloat(h - 1)
@@ -266,8 +293,9 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         let kind = ParallaxLayerKind.from(imageName: imageName)
         let targetH = levelHeight
         let scale = targetH / texSize.height
-        let tileW = texSize.width * scale
-        let overlap = min(tileW * 0.22, max(160, tileW * 0.16))
+        // Snap width to half-points so linear filtering does not drift subpixel seams.
+        let tileW = (texSize.width * scale * 2).rounded() / 2
+        let overlap = tileW * kind.overlapFraction
         let stride = tileW - overlap
         let centerY = levelHeight / 2 + yOffset
         // Stagger seam position per layer without leaving uncovered gaps on the left.
@@ -275,25 +303,33 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         let viewPad = max(size.width, levelWidth * 0.35)
         let coverageMin = -viewPad
         let firstCenterX = coverageMin + tileW * 0.5 + phaseShift
-        let tileSize = CGSize(width: tileW, height: targetH)
+        // Slight horizontal bleed hides 1px texture-edge sampling gaps.
+        let bleed: CGFloat = 2
+        let tileSize = CGSize(width: tileW + bleed, height: targetH)
+        let hFade = kind.horizontalFadeWidth(overlapFraction: kind.overlapFraction)
 
-        let maskImage = makeParallaxBlendMask(size: tileSize, kind: kind, horizontalFade: 0.1)
+        let maskImage = makeParallaxBlendMask(size: tileSize,
+                                              kind: kind,
+                                              horizontalFade: hFade,
+                                              horizontalFloor: kind.horizontalFadeFloor)
         let maskTexture = SKTexture(image: maskImage)
         maskTexture.filteringMode = .linear
 
-        let tileCount = 7
+        let tileCount = 9
         for i in 0..<tileCount {
             let sprite = SKSpriteNode(texture: texture)
-            sprite.size = CGSize(width: tileW, height: targetH)
+            sprite.size = tileSize
             sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            sprite.blendMode = .alpha
 
             let mask = SKSpriteNode(texture: maskTexture)
-            mask.size = sprite.size
+            mask.size = tileSize
 
             let crop = SKCropNode()
             crop.maskNode = mask
             crop.addChild(sprite)
-            crop.position = CGPoint(x: firstCenterX + stride * CGFloat(i), y: centerY)
+            let tileX = (firstCenterX + stride * CGFloat(i) * 2).rounded() / 2
+            crop.position = CGPoint(x: tileX, y: centerY)
             crop.name = "parallaxTile"
             container.addChild(crop)
         }
@@ -330,7 +366,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
                     let maxX = container.children
                         .filter { $0.name == "parallaxTile" }
                         .map(\.position.x).max() ?? tile.position.x
-                    tile.position.x = maxX + s
+                    tile.position.x = ((maxX + s) * 2).rounded() / 2
                 }
             }
             for tile in tiles.reversed() {
@@ -338,7 +374,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
                     let minX = container.children
                         .filter { $0.name == "parallaxTile" }
                         .map(\.position.x).min() ?? tile.position.x
-                    tile.position.x = minX - s
+                    tile.position.x = ((minX - s) * 2).rounded() / 2
                 }
             }
         }
@@ -512,22 +548,34 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         addChild(plat)
     }
 
-    private func buildInteriorShell(width: CGFloat, height: CGFloat) {
+    private func buildInteriorShell(levelID: String, width: CGFloat, height: CGFloat) {
         let floorH: CGFloat = 40
         let wallH = max(120, height - floorH - 20)
-        let metal = DLOColor.platformSilhouette
+        let backMetal = SKColor(red: 0.08, green: 0.11, blue: 0.16, alpha: 1)
 
-        let back = SKSpriteNode(color: metal.withAlphaComponent(0.92),
+        let back = SKSpriteNode(color: backMetal,
                                  size: CGSize(width: width, height: wallH))
         back.position = CGPoint(x: width / 2, y: floorH + wallH / 2)
         back.zPosition = 18
         addChild(back)
 
-        let ceiling = SKSpriteNode(color: SKColor(red: 0.07, green: 0.10, blue: 0.14, alpha: 1),
+        let ceiling = SKSpriteNode(color: SKColor(red: 0.06, green: 0.09, blue: 0.13, alpha: 1),
                                    size: CGSize(width: width, height: 14))
         ceiling.position = CGPoint(x: width / 2, y: floorH + wallH + 6)
         ceiling.zPosition = 18
         addChild(ceiling)
+
+        PlatformInteriorVisuals.decorate(levelID: levelID, width: width, height: height, into: self)
+
+        // Low interior ceiling collider — prevents jumping over doors/barriers.
+        let ceilingColliderY = floorH + wallH - 8
+        let ceilingCollider = SKNode()
+        ceilingCollider.position = CGPoint(x: width / 2, y: ceilingColliderY)
+        ceilingCollider.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: width, height: 10))
+        ceilingCollider.physicsBody?.isDynamic = false
+        ceilingCollider.physicsBody?.categoryBitMask = PhysicsCategory.ground
+        ceilingCollider.physicsBody?.collisionBitMask = PhysicsCategory.player
+        addChild(ceilingCollider)
     }
 
     // MARK: - Interactable Building
@@ -543,11 +591,18 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
             ))
         }
 
+        if levelData?.isInterior == true,
+           let backdrop = PlatformInteriorVisuals.backdrop(for: inter, levelID: levelID) {
+            backdrop.position = pos
+            addChild(backdrop)
+        }
+
         // Door: physical barrier that blocks movement
         if inter.type == "door" {
             let alreadyOpen = inter.setsFlag.map { GameState.shared.hasFlag($0) } ?? false
             if !alreadyOpen {
-                let barrier = buildDoorBarrier(at: pos, visible: true)
+                let barrier = buildDoorBarrier(at: pos, visible: true,
+                                               tall: levelData?.isInterior == true)
                 doorBarriers[inter.id] = barrier
                 addChild(barrier)
             }
@@ -567,18 +622,56 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         sprite.horizontalAlignmentMode = .center
         sprite.verticalAlignmentMode = .center
         if inter.type == "building_entrance" {
-            let buildingH = inter.buildingVisual?.resolvedSize(screenWidth: size.width).height ?? 74
-            sprite.position = CGPoint(x: 0, y: buildingH * 0.42)
-            sprite.fontSize = 12
+            if inter.buildingVisual != nil {
+                sprite.text = "▲"
+                sprite.fontSize = 9
+                sprite.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.75)
+                sprite.position = CGPoint(x: 0, y: 18)
+            } else {
+                let buildingH = inter.buildingVisual?.resolvedSize(screenWidth: size.width).height ?? 74
+                sprite.position = CGPoint(x: 0, y: buildingH * 0.42)
+                sprite.fontSize = 12
+            }
+        } else if inter.type == "terminal", levelData?.isInterior == true {
+            sprite.text = "▣"
+            sprite.fontSize = 10
+            sprite.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.8)
+            sprite.position = CGPoint(x: 0, y: 42)
+        } else if inter.type == "cabinet", levelData?.isInterior == true {
+            sprite.text = "▤"
+            sprite.fontSize = 10
+            sprite.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.8)
+            sprite.position = CGPoint(x: 0, y: 38)
         } else if inter.type == "building_exit" {
             sprite.position = CGPoint(x: 0, y: 32)
             sprite.fontSize = 11
         } else if inter.type == "cabinet" {
             sprite.position = CGPoint(x: 0, y: 36)
+        } else if inter.type == "ladder" {
+            sprite.alpha = 0
         }
         node.addChild(sprite)
 
-        if inter.type != "text_sign" && inter.type != "building_exit" {
+        if inter.type == "ladder", let extent = inter.ladderExtent, extent.count >= 2 {
+            let bottomY = extent[0]
+            let topY = extent[1]
+            let railH = topY - bottomY
+            let rail = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.35),
+                                    size: CGSize(width: 6, height: railH))
+            rail.position = CGPoint(x: 0, y: (bottomY + topY) / 2 - pos.y)
+            node.addChild(rail)
+            let rungCount = max(3, Int(railH / 18))
+            for i in 0..<rungCount {
+                let t = CGFloat(i) / CGFloat(rungCount - 1)
+                let rungY = bottomY + t * railH - pos.y
+                let rung = SKSpriteNode(color: DLOColor.teal.withAlphaComponent(0.45),
+                                        size: CGSize(width: 14, height: 2))
+                rung.position = CGPoint(x: 0, y: rungY)
+                node.addChild(rung)
+            }
+        }
+
+        if inter.type != "text_sign" && inter.type != "building_exit" && inter.type != "ladder" {
             sprite.run(SKAction.repeatForever(SKAction.sequence([
                 SKAction.fadeAlpha(to: 0.5, duration: 1.2),
                 SKAction.fadeAlpha(to: 1.0, duration: 1.2)
@@ -610,11 +703,13 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
-    private func buildDoorBarrier(at pos: CGPoint, visible: Bool = true) -> SKSpriteNode {
+    private func buildDoorBarrier(at pos: CGPoint, visible: Bool = true,
+                                  tall: Bool = false) -> SKSpriteNode {
+        let barrierH: CGFloat = tall ? 260 : 200
         let barrier = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.8),
-                                   size: CGSize(width: 16, height: 200))
+                                   size: CGSize(width: 16, height: barrierH))
         // Centre the barrier so it sits on the floor (floor top ≈ y=40)
-        barrier.position = CGPoint(x: pos.x, y: 140)
+        barrier.position = CGPoint(x: pos.x, y: 40 + barrierH / 2)
         barrier.zPosition = 22
         barrier.alpha = visible ? 1 : 0
 
@@ -624,8 +719,8 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         barrier.physicsBody?.collisionBitMask = PhysicsCategory.player
 
         if visible {
-            let edge = SKSpriteNode(color: DLOColor.teal.withAlphaComponent(0.9),
-                                    size: CGSize(width: 3, height: 200))
+            let edge = SKSpriteNode(color: DLOColor.terminalAmber.withAlphaComponent(0.45),
+                                    size: CGSize(width: 3, height: barrierH))
             edge.position = CGPoint(x: -6.5, y: 0)
             barrier.addChild(edge)
         }
@@ -643,6 +738,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         case "building_exit":      return ("⇐", DLOColor.dimText)
         case "text_sign":          return ("ℹ", DLOColor.dimText)
         case "security_override":  return ("⚡", DLOColor.terminalAmber)
+        case "ladder":             return ("║", DLOColor.teal)
         default:                   return ("?", DLOColor.dimText)
         }
     }
@@ -799,6 +895,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         if let flag = npc.setsFlag {
             GameState.shared.setFlag(flag)
         }
+        if id == "haas" { NotebookManager.onHaasTalked() }
 
         // Build dialogue lines into one body string
         let body = npc.dialogue.joined(separator: "\n\n")
@@ -824,6 +921,8 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         interactButton.zPosition = 1100
         overlayNode.addChild(interactButton)
 
+        let textMult = GameState.shared.textSizeMultiplier
+
         // ── Objective text — top-left, large and readable on physical iPhone ──
         if let obj = levelData?.objectiveText {
             // Dark backing strip for legibility over any background
@@ -835,7 +934,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
             objBacking.zPosition  = 1049
             overlayNode.addChild(objBacking)
 
-            let objLbl = DLOFont.terminalLabel(text: obj, size: 14)
+            let objLbl = DLOFont.terminalLabel(text: obj, size: 14 * textMult)
             objLbl.horizontalAlignmentMode = .left
             objLbl.verticalAlignmentMode   = .top
             objLbl.position = CGPoint(x: cam.left + 10, y: cam.top - 8)
@@ -869,6 +968,30 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         pauseButtonRect = CGRect(
             x: cam.right - pauseW - 8, y: cam.top - pauseH - 8,
             width: pauseW, height: pauseH)
+
+        // ── Notebook button — bottom-left HUD ───────────────────────────────
+        let notesW: CGFloat = 72
+        let notesH: CGFloat = 32
+        let notesCX = cam.left + notesW / 2 + 8
+        let notesCY = cam.bottom + notesH / 2 + 8
+
+        let notesBG = SKShapeNode(rectOf: CGSize(width: notesW, height: notesH), cornerRadius: 5)
+        notesBG.fillColor  = DLOColor.terminalBG.withAlphaComponent(0.85)
+        notesBG.strokeColor = DLOColor.uiBorder
+        notesBG.lineWidth   = 1.2
+        notesBG.position    = CGPoint(x: notesCX, y: notesCY)
+        notesBG.zPosition   = 1050
+        overlayNode.addChild(notesBG)
+
+        let notesLbl = DLOFont.terminalLabel(text: "NOTES", size: 10 * textMult)
+        notesLbl.horizontalAlignmentMode = .center
+        notesLbl.position  = CGPoint(x: notesCX, y: notesCY - 4)
+        notesLbl.zPosition = 1051
+        overlayNode.addChild(notesLbl)
+
+        notebookButtonRect = CGRect(
+            x: cam.left + 8, y: cam.bottom + 8,
+            width: notesW, height: notesH)
 
         cameraNode.addChild(overlayNode)
     }
@@ -906,7 +1029,12 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         guard let mara = mara, let pad = virtualPad else { return }
 
         if !isInteractionPaused {
-            mara.applyInput(pad.currentInput, delta: delta)
+            if mara.isOnLadder {
+                mara.applyLadderInput(pad.currentInput, delta: delta)
+            } else {
+                mara.applyInput(pad.currentInput, delta: delta)
+                tryEnterNearbyLadder(pad: pad)
+            }
         }
 
         mara.updateStunCooldown(delta: delta)
@@ -927,7 +1055,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         }
         empWasPressed = empNow
 
-        let interactAvailable = nearbyInteractableID != nil || nearbyNPCID != nil
+        let interactAvailable = nearbyInteractableID != nil || nearbyNPCID != nil || mara.isOnLadder
         pad.setInteractHighlight(interactAvailable)
         pad.setEmpCooldown(ratio: mara.stunCooldownRatio)
 
@@ -982,7 +1110,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
 
             if exit["type"] == "platform_end" {
                 if let req = exit["requiredFlag"], !GameState.shared.hasFlag(req) { continue }
-                if mara.position.distance(to: CGPoint(x: x, y: y)) < 80 {
+                if mara.position.distance(to: CGPoint(x: x, y: y)) < 100 {
                     if let dialogueID = exit["dialogueID"] {
                         completePlatformSection(dialogueID: dialogueID)
                     } else {
@@ -1058,6 +1186,12 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func activateNearbyInteractable() {
+        if mara.isOnLadder {
+            mara.detachFromLadder(standingY: mara.position.y)
+            interactButton.configure(for: "ladder")
+            return
+        }
+
         // NPC takes priority over environment interactables when both are in range
         if let npcID = nearbyNPCID {
             activateNPC(id: npcID)
@@ -1088,6 +1222,8 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
             activateBuildingEntrance(inter)
         case "building_exit":
             activateBuildingExit(inter)
+        case "ladder":
+            enterLadder(inter)
         case "text_sign":
             if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
             if let text = inter.displayText {
@@ -1121,6 +1257,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
 
     private func activateTerminal(_ inter: Interactable) {
         if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
+        NotebookManager.onTerminalRead(terminalID: inter.id)
 
         let body = terminalContent(for: inter.id, displayText: inter.displayText)
         showContentPanel(header: "TERMINAL — \(inter.id.uppercased())", body: body) { }
@@ -1169,7 +1306,10 @@ Sign out before exterior transit.
         showContentPanel(header: "CREDENTIAL LOCKER", body: body) { [weak self] in
             guard let self = self else { return }
             if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
-            GameState.shared.setFlag("ch2_restricted_access")
+            NotebookManager.onCredentialCollected()
+            if self.levelID.hasPrefix("level_ch2") {
+                GameState.shared.setFlag("ch2_restricted_access")
+            }
             GameState.shared.save()
             self.interactableNodes[inter.id]?.alpha = 0.35
             AudioManager.shared.playTerminalBeep(on: self)
@@ -1192,9 +1332,9 @@ Apply temporary access to sealed unit?
         showContentPanel(header: "OVERRIDE PANEL", body: body) { [weak self] in
             guard let self = self else { return }
             if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
-            GameState.shared.setFlag("marr_apt_accessed")
             if let linkedID = inter.linkedInteractableID,
                let door = self.interactableData[linkedID] {
+                if let doorFlag = door.setsFlag { GameState.shared.setFlag(doorFlag) }
                 self.openDoor(door)
             }
             GameState.shared.save()
@@ -1257,9 +1397,10 @@ for secondary routing.
 Origin: unlogged by standard system.
 
 Interior clearance codes rotated.
-Codes derived from active case
-reference numbers. Consult your
-desk files for the sequence.
+Derived from active case victim IDs.
+Format: VC-[XXXX]-M (enter XXXX).
+
+Case 1 on your desk lists the ID.
 """
         case "terminal_02":
             return """
@@ -1327,7 +1468,8 @@ console login acknowledgement.
         border.fillColor = .clear
         panel.addChild(border)
 
-        let headerLbl = DLOFont.terminalLabel(text: "[ \(header) ]", size: 11)
+        let textMult = GameState.shared.textSizeMultiplier
+        let headerLbl = DLOFont.terminalLabel(text: "[ \(header) ]", size: 12 * textMult)
         headerLbl.horizontalAlignmentMode = .center
         headerLbl.position = CGPoint(x: 0, y: panelH / 2 - 22)
         panel.addChild(headerLbl)
@@ -1339,7 +1481,7 @@ console login acknowledgement.
 
         let bodyLbl = SKLabelNode(text: body)
         bodyLbl.fontName = "Menlo"
-        bodyLbl.fontSize = 9
+        bodyLbl.fontSize = 11 * textMult
         bodyLbl.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.9)
         bodyLbl.horizontalAlignmentMode = .center
         bodyLbl.verticalAlignmentMode = .top
@@ -1384,14 +1526,15 @@ console login acknowledgement.
         border.fillColor = .clear
         panel.addChild(border)
 
-        let headerLbl = DLOFont.terminalLabel(text: "ACCESS CODE REQUIRED", size: 10)
+        let textMult = GameState.shared.textSizeMultiplier
+        let headerLbl = DLOFont.terminalLabel(text: "ACCESS CODE REQUIRED", size: 11 * textMult)
         headerLbl.horizontalAlignmentMode = .center
         headerLbl.position = CGPoint(x: 0, y: panelH / 2 - 22)
         panel.addChild(headerLbl)
 
         let codeDisplay = SKLabelNode(text: "_ _ _ _")
         codeDisplay.fontName = "Menlo-Bold"
-        codeDisplay.fontSize = 22
+        codeDisplay.fontSize = 24 * textMult
         codeDisplay.fontColor = DLOColor.terminalAmber
         codeDisplay.horizontalAlignmentMode = .center
         codeDisplay.position = CGPoint(x: 0, y: panelH / 2 - 52)
@@ -1473,9 +1616,51 @@ console login acknowledgement.
 
     // MARK: - Brief Message Toast
 
+    // MARK: - Ladder
+
+    private func enterLadder(_ inter: Interactable) {
+        guard let extent = inter.ladderExtent, extent.count >= 2, !mara.isOnLadder else { return }
+        let bottomY = extent[0]
+        let topY = extent[1]
+        mara.attachToLadder(railX: inter.position[0], bottomY: bottomY, topY: topY)
+        interactButton.configure(for: "ladder_active")
+        nearbyInteractableID = inter.id
+    }
+
+    private func tryEnterNearbyLadder(pad: VirtualPadNode) {
+        guard let id = nearbyInteractableID,
+              let inter = interactableData[id],
+              inter.type == "ladder",
+              let extent = inter.ladderExtent, extent.count >= 2 else { return }
+        let bottomY = extent[0]
+        guard mara.position.y <= bottomY + 10,
+              pad.currentInput.movementVector.dy > 0.35 else { return }
+        enterLadder(inter)
+    }
+
+    // MARK: - Notebook
+
+    private func showNotebook() {
+        guard activePanel == nil else { return }
+        isGamePaused = true
+        let cam = SceneLayout.makeCamera(scene: self)
+        let panel = NotebookManager.makeOverlayNode(
+            cam: cam, chapter: levelData?.chapter)
+        let panelH = CGFloat(panel.userData?["panelH"] as? Double ?? 280)
+        let closeBtn = PanelButtonNode(label: "[ CLOSE ]") { [weak self] in
+            panel.removeFromParent()
+            self?.activePanel = nil
+            self?.isGamePaused = false
+        }
+        closeBtn.position = CGPoint(x: 0, y: -panelH / 2 + 24)
+        panel.addChild(closeBtn)
+        activePanel = panel
+        cameraNode.addChild(panel)
+    }
+
     private func showBriefMessage(_ text: String) {
         let cam = SceneLayout.makeCamera(scene: self)
-        let lbl = DLOFont.terminalLabel(text: text, size: 10)
+        let lbl = DLOFont.terminalLabel(text: text, size: 11 * GameState.shared.textSizeMultiplier)
         lbl.horizontalAlignmentMode = .center
         lbl.fontColor = DLOColor.danger
         lbl.position = CGPoint(x: cam.midX, y: cam.midY + 30)
@@ -1605,7 +1790,13 @@ console login acknowledgement.
 
             // Pause button works regardless of game state
             if pauseButtonRect.contains(camPos) {
-                if isGamePaused { hidePauseMenu() } else { showPauseMenu() }
+                if isGamePaused && pauseMenuNode != nil { hidePauseMenu() }
+                else if !isGamePaused { showPauseMenu() }
+                return
+            }
+
+            if notebookButtonRect.contains(camPos) && activePanel == nil {
+                showNotebook()
                 return
             }
 
@@ -1644,7 +1835,7 @@ console login acknowledgement.
 
         let cam = SceneLayout.makeCamera(scene: self)
         let panelW = min(cam.w * 0.68, 380)
-        let panelH = min(cam.h * 0.72, 320)
+        let panelH = min(cam.h * 0.82, 380)
 
         let panel = SKNode()
         panel.zPosition = 3000
@@ -1681,7 +1872,13 @@ console login acknowledgement.
                 self?.hidePauseMenu()
                 SceneManager.shared.transition(to: .mainMenu, from: self!) }),
             ("[ SETTINGS ]",                { [weak self] in
-                SceneManager.shared.transition(to: .settings, from: self!) })
+                guard let self = self else { return }
+                GameState.shared.setSettingsReturn(
+                    .platform(levelID: self.levelID, spawn: self.mara.position))
+                SceneManager.shared.transition(to: .settings, from: self) }),
+            ("[ NOTEBOOK ]",                { [weak self] in
+                self?.hidePauseMenu()
+                self?.showNotebook() })
         ]
 
         let btnStep: CGFloat = 52
@@ -1759,6 +1956,8 @@ private final class InteractButtonNode: SKNode {
         case "building_entrance":  lbl.text = "▲  ENTER"
         case "building_exit":      lbl.text = "▲  EXIT"
         case "security_override":  lbl.text = "▲  OVERRIDE"
+        case "ladder":             lbl.text = "▲  CLIMB"
+        case "ladder_active":      lbl.text = "▲  ON LADDER"
         case "npc":                lbl.text = "▲  TALK"
         default:                   lbl.text = "▲  INTERACT"
         }

@@ -6,6 +6,7 @@ final class MaraPlayerNode: SKNode {
     private(set) var isCrouching: Bool = false
     private(set) var isHiding: Bool = false
     private(set) var isGrounded: Bool = false
+    private(set) var isOnLadder: Bool = false
     private(set) var facingRight: Bool = true
 
     private var stunCooldown: TimeInterval = 0
@@ -16,9 +17,10 @@ final class MaraPlayerNode: SKNode {
     private var bodyNode: SKNode!
     private var walkTimer: TimeInterval = 0
 
-    // Physics — tuned for gravity=-700 in PlatformScene
+    // Physics — tuned for gravity=-700 in PlatformScene (cinematic, low apex)
     private let moveSpeed: CGFloat   = 180
-    private let jumpImpulse: CGFloat = 500
+    private let jumpImpulse: CGFloat = 285
+    private let ladderClimbSpeed: CGFloat = 130
     private let worldGravity: CGFloat = 700
     private let crouchScale: CGFloat = 0.6
     private var jumpCount: Int = 0
@@ -27,6 +29,9 @@ final class MaraPlayerNode: SKNode {
     private let bodyHalfH: CGFloat = 25
     private let floorTopY: CGFloat = 40
     private let standCenterY: CGFloat = 66
+    private var ladderRailX: CGFloat = 0
+    private var ladderBottomY: CGFloat = 66
+    private var ladderTopY: CGFloat = 120
 
     override init() {
         super.init()
@@ -94,9 +99,67 @@ final class MaraPlayerNode: SKNode {
         physicsBody = body
     }
 
+    // MARK: - Ladder
+
+    func attachToLadder(railX: CGFloat, bottomY: CGFloat, topY: CGFloat) {
+        isOnLadder = true
+        ladderRailX = railX
+        ladderBottomY = bottomY
+        ladderTopY = topY
+        manualAirborne = false
+        jumpCount = maxJumps
+        position.x = railX
+        if let body = physicsBody {
+            body.velocity = .zero
+            body.affectedByGravity = false
+            body.collisionBitMask &= ~PhysicsCategory.ground
+        }
+    }
+
+    func detachFromLadder(standingY: CGFloat) {
+        isOnLadder = false
+        position.y = standingY
+        if let body = physicsBody {
+            body.velocity = .zero
+            body.affectedByGravity = true
+            body.collisionBitMask |= PhysicsCategory.ground
+        }
+    }
+
+    func applyLadderInput(_ input: VirtualPadNode.Input, delta: TimeInterval) {
+        guard isOnLadder else { return }
+        let dt = CGFloat(delta)
+        var newY = position.y
+
+        if input.movementVector.dy > 0.25 {
+            newY += ladderClimbSpeed * dt
+        } else if input.movementVector.dy < -0.25 || input.crouch {
+            newY -= ladderClimbSpeed * dt
+        }
+
+        if input.left || input.right {
+            if newY >= ladderTopY - 4 {
+                detachFromLadder(standingY: ladderTopY)
+                if input.right { facingRight = true; bodyNode.xScale = abs(bodyNode.xScale) }
+                else { facingRight = false; bodyNode.xScale = -abs(bodyNode.xScale) }
+                return
+            }
+            if newY <= ladderBottomY + 4 {
+                detachFromLadder(standingY: ladderBottomY)
+                if input.right { facingRight = true; bodyNode.xScale = abs(bodyNode.xScale) }
+                else { facingRight = false; bodyNode.xScale = -abs(bodyNode.xScale) }
+                return
+            }
+        }
+
+        newY = min(ladderTopY, max(ladderBottomY, newY))
+        position = CGPoint(x: ladderRailX, y: newY)
+    }
+
     // MARK: - Input
     func applyInput(_ input: VirtualPadNode.Input, delta: TimeInterval = 1.0 / 60.0) {
         guard let body = physicsBody else { return }
+        if isOnLadder { return }
 
         let feetY = position.y - bodyHalfH
         let onFloor = feetY <= floorTopY + 3
