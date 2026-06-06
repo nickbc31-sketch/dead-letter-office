@@ -7,7 +7,7 @@
 **Scope:** Vertical slice — Chapter 1 only  
 **Art authority:** `docs/art/PortraitStyleReference.md` (portraits), `Docs/ArtStyleGuide.md` (all assets)
 
-> **v4.0 note:** Four character portraits are now approved canon. Portrait prompts and settings updated to reflect the approved visual standard. Portrait style reference is now `docs/art/PortraitStyleReference.md` — consult it before generating any character portrait. Approved files live at `assets/assets/Portraits/Approved/`. New generated portraits go to `assets/assets/Portraits/generated/` for review before approval.
+> **v4.0 note:** Seven character portraits are now in catalog (five locked canon + Jun Vale + Elias Venn). Portrait prompts and settings updated to reflect the approved visual standard. Portrait style reference is now `docs/art/PortraitStyleReference.md` — consult it before generating any character portrait. Approved files live at `assets/assets/Portraits/Approved/`. New generated portraits go to `assets/assets/Portraits/generated/` for review before approval.
 
 > **v3.0 note:** All prompts rewritten from v2.0. Previous prompts targeted photorealism (Juggernaut XL).
 
@@ -23,6 +23,7 @@ These portraits are locked. Do not regenerate.
 | Director Calyx | `assets/assets/Portraits/Approved/calyx_v1_approved.png` | 2026-06-01 |
 | Saint Orra | `assets/assets/Portraits/Approved/saint_orra_v1_approved.png` | 2026-06-01 |
 | PMCA Director | `assets/assets/Portraits/Approved/pmca_director_v1_approved.png` | 2026-06-01 |
+| Elias Venn | `assets/assets/Portraits/Approved/elias_venn_v1_approved.png` | 2026-06-05 |
 
 Record seeds and generation settings in `docs/art/ApprovedPortraitSettings.md`.
 
@@ -221,6 +222,7 @@ Read `Docs/ArtStyleGuide.md` for the full post-processing workflow that must fol
 | P-003 | portrait_calyx | `calyx_v1_approved.png` ✓ |
 | P-005 | portrait_saint_orra | `saint_orra_v1_approved.png` ✓ |
 | P-007 | portrait_pmca_director | `pmca_director_v1_approved.png` ✓ |
+| P-006 | portrait_elias_venn | `elias_venn_v1_approved.png` ✓ |
 
 ### Next portrait priority
 
@@ -230,8 +232,6 @@ Generate these in order. Use `docs/art/PortraitStyleReference.md` as the generat
 |---|---|---|---|
 | 1 | P-004 | portrait_jun_vale | Key Ch1 character — civilian/resistance clothing, style consistency test |
 | 2 | P-002 | portrait_audit_voice | Unique non-human challenge — no face |
-| 3 | P-006 | portrait_elias_venn | Sibling resemblance test — use Mara as img2img base |
-
 ### Remaining first-pass batch (backgrounds + sprite)
 
 Complete portrait approvals above before starting these.
@@ -489,21 +489,16 @@ halo, wings, supernatural glow, saintly imagery, religious symbols, cheerful, so
 | **Batch count** | 8 |
 | **Img2Img** | Yes — use portrait_mara as input at 0.20 strength for sibling resemblance |
 | **Img2Img strength** | 0.20 |
-| **Status** | Missing |
+| **Status** | **Approved** — `elias_venn_v1_approved.png` |
 
-**Prompt:**
+> **Approved portrait is canon.** Do not regenerate. Catalog: `portrait_elias_venn.imageset`. Record seed in `docs/Art/ApprovedPortraitSettings.md`.
+
+**Prompt (for reference / revision only):**
 ```
 flat shading portrait, young East Asian man mid-twenties, similar angular features to his sister, short dark hair, intelligent eyes carrying fear and confusion, plain dark collar shirt, slightly desaturated skin tones suggesting a digital transmission artifact, ghostly quality to the image, hard faint teal rim from upper left, very dark near-black background almost blending with figure, [GSL], 8-colour limited palette, Papers Please character portrait quality
 ```
 
-**Asset-specific negative prompt:**
-```
-zombie, horror, gore, solid fully-opaque appearance, cheerful, colourful background, young girl, female
-```
-
-**Post-processing:** After posterize, reduce overall opacity of the figure to approximately 85% in Pixelmator to give ghostly quality. Background must be near-pure black.
-
-**Xcode integration:** `portrait_elias_venn.imageset`, 2x slot.
+**Xcode integration:** `portrait_elias_venn.imageset`, 1x slot (`portrait_elias_venn.png`).
 
 ---
 
@@ -1191,7 +1186,7 @@ Generate once all T1/T2 art is approved and the style is fully locked.
 | P-003 | portrait_calyx@2x.png | T1 | **Approved** — `calyx_v1_approved.png` |
 | P-004 | portrait_jun_vale@2x.png | T1 | Missing |
 | P-005 | portrait_saint_orra@2x.png | T2 | **Approved** — `saint_orra_v1_approved.png` |
-| P-006 | portrait_elias_venn@2x.png | T2 | Missing |
+| P-006 | portrait_elias_venn@2x.png | T2 | **Approved** — `elias_venn_v1_approved.png` |
 | P-007 | portrait_pmca_director@2x.png | T1 | **Approved** — `pmca_director_v1_approved.png` |
 | BG-001 | bg_desk_office@2x.png | T1 | Missing |
 | BG-002 | bg_main_menu@2x.png | T1 | Missing |

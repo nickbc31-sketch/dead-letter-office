@@ -96,7 +96,7 @@ CaseFile, CaseDocument (DocumentModel), Contradiction, CaseAction, ConsequenceMa
 | PMCA Director | `portrait_pmca_director` | `pmca_director_v1_approved.png` | ✅ In Assets.car — **do not regenerate** |
 | Jun Vale | `portrait_jun_vale` | `portrait_jun_vale` (separate file) | ⚠️ In Assets.car but not wired to any dialogue; pending formal v1 confirmation |
 | The Audit Voice | `portrait_audit_voice` | — | ❌ Missing — geometric amber-slit mask; non-human |
-| Elias Venn | `portrait_elias_venn` | — | ❌ Missing — img2img from `portrait_mara` at 0.20 strength |
+| Elias Venn | `portrait_elias_venn` | `elias_venn_v1_approved.png` | ✅ In Assets.car — **do not regenerate**; not yet wired to dialogue JSON |
 
 **Portrait visual notes (locked — do not deviate):**
 - Mara: East Asian woman, late twenties, dark updo, PMCA uniform, blue-grey background
@@ -180,7 +180,7 @@ CaseFile, CaseDocument (DocumentModel), Contradiction, CaseAction, ConsequenceMa
 
 | Category | Required | In catalog | Missing |
 |---|---|---|---|
-| Character portraits | 7 | 5 (4 approved + Jun Vale unconfirmed) | portrait_audit_voice, portrait_elias_venn |
+| Character portraits | 7 | 7 in catalog (5 locked + Jun Vale + Elias Venn) | None — all core portraits present |
 | Scene backgrounds | 9 | 0 | All (bg_desk_office, bg_main_menu, bg_chapter_complete, 3 × endings, bg_boot_screen) |
 | Platform parallax layers | 3 | 0 | bg_city_far, bg_facility_mid, bg_facility_near |
 | Player/enemy sprites | 2 | 0 | mara_silhouette, sprite_security_drone |
@@ -190,7 +190,7 @@ CaseFile, CaseDocument (DocumentModel), Contradiction, CaseAction, ConsequenceMa
 
 ### Generation Priority Order
 1. `portrait_audit_voice` (P-002) — T1, needed for any Ch1 dialogue polish
-2. `portrait_elias_venn` (P-006) — T2, use portrait_mara as img2img at 0.20 strength
+2. ~~`portrait_elias_venn` (P-006)~~ — **Approved** 2026-06-05
 3. `bg_desk_office` (BG-001) — T1, visible throughout entire game
 4. `bg_main_menu` (BG-002) — T1, first impression
 5. `bg_city_far` (PL-001) — T1, 6144 × 800 px strip, same seed family as PL-002 and PL-003
@@ -343,7 +343,7 @@ Listed in priority order. Do not skip phases.
 - Chapters 6–8 content (C18–C24, intros, platform levels P06–P08)
 - Timed door mechanic for P06 Black Mail Train
 - C13 mechanic: stamp buttons locked until all 6 documents examined (small DeskScene code addition)
-- Generate portrait_elias_venn (img2img from portrait_mara at 0.20 strength)
+- ~~Generate portrait_elias_venn~~ — done; wire into Ch5+ dialogue JSON when content ships
 - All audio (10 files, AudioManager already wired)
 - All stamp icons and remaining UI assets
 - Full playthrough testing (all 3 endings)

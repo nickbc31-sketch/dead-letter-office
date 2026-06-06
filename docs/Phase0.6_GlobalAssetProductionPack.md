@@ -216,8 +216,8 @@ weapons visible, combat gear, cheerful expression, government uniform, soft back
 | **Purpose** | Mara's missing brother — Ch5–8 Elias thread |
 | **Target dimensions** | 392 × 392 px |
 | **Folder location** | `DeadLetterOffice/Assets.xcassets/Portraits/portrait_elias_venn.imageset/` |
-| **Placeholder currently used** | Procedural colour-hash placeholder |
-| **Production method** | ComfyUI generated (img2img from Mara) → manually edited |
+| **Placeholder currently used** | Was procedural colour-hash — **now in catalog** |
+| **Production method** | **Approved — locked** (imported 2026-06-05) |
 
 **Character summary:** Elias Venn — East Asian man, mid-twenties, network engineer. Officially declared dead 2142. Sibling resemblance to Mara.
 
@@ -1055,7 +1055,7 @@ Work top-to-bottom within each phase. Do not start Chapter 4 engineering until *
 | A10 | `drone_alert.wav` | Epidemic Sound | Platform threat feedback |
 | A11 | `sfx_scanner_flag.wav` | Epidemic Sound | Ch4 Ghost Audit scanner |
 | A12 | `terminal_beep.wav` | Epidemic Sound | Platform terminal interact |
-| A13 | `portrait_elias_venn` | ComfyUI | P0 — needed before Ch5; start if portrait batch running |
+| A13 | ~~`portrait_elias_venn`~~ | — | **Done** — imported to catalog 2026-06-05 |
 | A14 | `glitch_im_not_dead.wav` | Epidemic Sound + edit | C05 still in Ch1 — high narrative value |
 
 **Phase A gate (from audit):** Session 1 audio ✓ · desk art decision ✓ · parallax decision ✓ · Ch4 tension/SFX ✓ → **approve Ch4 engineering**.
@@ -1127,7 +1127,7 @@ Deferred until content complete or explicit polish pass. (P2+ in audit — liste
 
 | Session | Assets | Aligns with |
 |---------|--------|-------------|
-| **1** | `portrait_elias_venn` (img2img from Mara) | Phase A |
+| **1** | ~~`portrait_elias_venn`~~ | Done — catalog import |
 | **2** | `bg_desk_office` OR QA `bg_terminal_wallpaper` | Phase A |
 | **3** | `bg_city_far` + `bg_facility_mid` + `bg_facility_near` (shared seed family) | Phase A/B |
 | **4** | `bg_housing_mid` + `bg_housing_near` | Phase C Ch3 |

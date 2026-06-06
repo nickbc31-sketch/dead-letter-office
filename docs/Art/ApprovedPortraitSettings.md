@@ -2,7 +2,7 @@
 
 **Purpose:** Records the exact generation parameters for every approved character portrait. These settings are the ground truth for recreating or revising a portrait. Never generate a replacement portrait without consulting this record first.
 
-**Last updated:** 2026-06-01
+**Last updated:** 2026-06-05
 
 ---
 
@@ -106,6 +106,28 @@ If a portrait needs revision or a new version needs to be generated to match an 
 
 ---
 
+### Elias Venn
+
+| Field | Value |
+|---|---|
+| **Character** | Elias Venn |
+| **Role** | Mara's brother — officially declared dead |
+| **Approved file** | `assets/assets/Portraits/Approved/elias_venn_v1_approved.png` |
+| **Catalog file** | `DeadLetterOffice/Assets.xcassets/portrait_elias_venn.imageset/portrait_elias_venn.png` |
+| **Version** | v1 |
+| **Approval date** | 2026-06-05 |
+| **Model** | DreamShaper XL Turbo |
+| **Seed** | [TO BE RECORDED] |
+| **Steps** | [TO BE RECORDED] |
+| **CFG** | [TO BE RECORDED] |
+| **Sampler** | [TO BE RECORDED] |
+| **Scheduler** | [TO BE RECORDED] |
+| **Generation date** | [TO BE RECORDED] |
+| **Img2Img** | Yes — `portrait_mara` at ~0.20 strength (sibling resemblance) |
+| **Notes** | Young East Asian man, angular features resembling Mara. Ghostly quality (~85% opacity in post). Very dark near-black background. Imported to catalog at 512×512 to match other portrait imagesets. **Do not regenerate.** |
+
+---
+
 ## Pending Portrait Records
 
 The following characters have planned entries but have not yet been generated and approved. Record settings here as each portrait is completed.
@@ -149,26 +171,6 @@ The following characters have planned entries but have not yet been generated an
 | **Scheduler** | [TO BE RECORDED] |
 | **Generation date** | [TO BE RECORDED] |
 | **Notes** | Near-frontal or slight three-quarter. Civilian/resistance clothing. Must be visually distinct from all four approved portraits. Check silhouette first. |
-
----
-
-### Elias Venn
-
-| Field | Value |
-|---|---|
-| **Character** | Elias Venn |
-| **Role** | Mara's brother — officially declared dead |
-| **Target file** | `assets/assets/Portraits/Approved/portrait_elias_venn_v1_approved.png` |
-| **Version** | v1 — pending |
-| **Approval date** | [NOT YET APPROVED] |
-| **Model** | [TO BE RECORDED] |
-| **Seed** | [TO BE RECORDED] |
-| **Steps** | [TO BE RECORDED] |
-| **CFG** | [TO BE RECORDED] |
-| **Sampler** | [TO BE RECORDED] |
-| **Scheduler** | [TO BE RECORDED] |
-| **Generation date** | [TO BE RECORDED] |
-| **Notes** | Consider using Mara's approved portrait as Img2Img base at 0.15–0.20 strength to suggest sibling resemblance while generating a distinct face. Male, younger-looking. Slightly desaturated or ghostly quality — this character exists in uncertain living status. |
 
 ---
 

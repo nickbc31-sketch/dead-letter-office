@@ -50,11 +50,11 @@ Standard: **392×392 px @2x**, 1:1. Authority: `ArtStyleGuide.md`, `PortraitStyl
 | `portrait_pmca_director` | PMCA Director | Authority Ch4–6 | 392×392, 1:1 | P1 | **Locked** — in catalog |
 | `portrait_jun_vale` | Jun Vale | Resistance Ch2+ / Ch7–8 | 392×392, 1:1 | P0 | **In catalog** |
 | `portrait_saint_orra` | Saint Orra | Ch6, Ch8 C24 | 392×392, 1:1 | P1 | **Locked** — in catalog |
-| `portrait_elias_venn` | Elias Venn | Ch5–8 Elias thread | 392×392, 1:1 | P0 | **Must create** |
+| `portrait_elias_venn` | Elias Venn | Ch5–8 Elias thread | 392×392, 1:1 | P0 | **Locked** — in catalog (`elias_venn_v1_approved.png`) |
 
 Case-only senders: **Procedural OK** (colour-hash placeholder).
 
-**Completion: 6/7 in catalog; 1 must create.**
+**Completion: 7/7 in catalog.**
 
 ---
 
@@ -177,7 +177,7 @@ Virtual pad, thumbstick, CRT: **procedural — no assets**.
 - Optional `bg_annex_mid` — P2
 
 ### Ch5 — Afterlife Premium
-- `portrait_elias_venn` — **P0 must create**
+- `portrait_elias_venn` — **In catalog** (locked)
 - `bg_meridian_mid` — P1 must create
 - `ambient_meridian.mp3` — P1
 
@@ -188,7 +188,7 @@ Virtual pad, thumbstick, CRT: **procedural — no assets**.
 
 ### Ch7 — Choir Beneath (dialogue-heavy)
 - `ambient_choir.mp3` — **P0 must create**
-- `portrait_jun_vale`, `portrait_elias_venn` — P0
+- `portrait_jun_vale`, `portrait_elias_venn` — in catalog (wire in dialogue when Ch5–7 content ships)
 - `bg_undercity_mid` — P1
 - Platform minimal (~2,500–3,500 pt)
 
