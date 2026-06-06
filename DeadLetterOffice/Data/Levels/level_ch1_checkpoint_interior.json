@@ -1,0 +1,64 @@
+{
+  "id": "level_ch1_checkpoint_interior",
+  "chapter": "ch1",
+  "displayName": "PMCA CHECKPOINT — RESTRICTED ACCESS",
+  "tileMapName": null,
+  "parentLevelID": "level_ch1",
+  "returnSpawnPoint": [2040, 60],
+  "isInterior": true,
+  "backgroundLayers": [
+    {
+      "imageName": "bg_facility_mid",
+      "zPosition": -20,
+      "scrollFactor": 0,
+      "yOffset": 0
+    }
+  ],
+  "spawnPoint": [90, 60],
+  "exits": [
+    {
+      "type": "platform_end",
+      "x": "480",
+      "y": "60",
+      "requiredFlag": "ch1_checkpoint_unlocked",
+      "dialogueID": "dialogue_ch1_platform_end"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "checkpoint_code_door",
+      "type": "door",
+      "position": [300, 68],
+      "requiredFlag": "ch1_relay_credential",
+      "setsFlag": "ch1_checkpoint_unlocked",
+      "requiredCode": "4471",
+      "displayText": "INNER CHECKPOINT — ACCESS CODE REQUIRED",
+      "cartridgeData": null,
+      "linkedDialogueID": null,
+      "linkedLevelID": null
+    },
+    {
+      "id": "checkpoint_building_exit",
+      "type": "building_exit",
+      "position": [120, 68],
+      "requiredFlag": null,
+      "setsFlag": null,
+      "requiredCode": null,
+      "displayText": null,
+      "cartridgeData": null,
+      "linkedDialogueID": null,
+      "linkedLevelID": null
+    }
+  ],
+  "patrols": [],
+  "pickups": [],
+  "environmentalTextNodes": [
+    {"x": "300", "y": "110", "text": "SECTOR 12 INNER CHECKPOINT — CLEARANCE LEVEL 3"},
+    {"x": "420", "y": "90", "text": "ARCHIVE RELAY ACCESS — AUTHORISED PERSONNEL ONLY"}
+  ],
+  "objectiveText": "ENTER CHECKPOINT CODE — COMPLETE TRANSIT",
+  "ambientMusicTrack": "ambient_platform",
+  "platformNodes": [],
+  "levelWidth": 560,
+  "levelHeight": 280
+}

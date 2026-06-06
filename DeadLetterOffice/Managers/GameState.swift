@@ -21,6 +21,10 @@ final class GameState {
     var activeFlags: Set<String> = []
     var caseDecisions: [String: String] = [:]   // caseID -> actionID
 
+    // Transient platform transition (not persisted)
+    var platformSpawnOverride: CGPoint?
+    var platformSpawnOverrideLevelID: String?
+
     // Settings
     var subtitlesEnabled: Bool = true
     var reducedFlashingEnabled: Bool = false
@@ -53,6 +57,18 @@ final class GameState {
 
     func recordLevelComplete(_ levelID: String) {
         completedLevelIDs.insert(levelID)
+    }
+
+    func consumePlatformSpawnOverride(for levelID: String) -> CGPoint? {
+        guard platformSpawnOverrideLevelID == levelID, let pt = platformSpawnOverride else { return nil }
+        platformSpawnOverride = nil
+        platformSpawnOverrideLevelID = nil
+        return pt
+    }
+
+    func setPlatformSpawnOverride(levelID: String, point: CGPoint) {
+        platformSpawnOverrideLevelID = levelID
+        platformSpawnOverride = point
     }
 
     private func loadFromSave() {

@@ -36,23 +36,30 @@ final class DroneEnemyNode: SKNode {
     required init?(coder: NSCoder) { fatalError() }
 
     private func buildSprite() {
-        // Drone body
-        let bodySize = CGSize(width: 36, height: 18)
-        let bg = SKSpriteNode(color: DLOColor.platformSilhouette, size: bodySize)
-        addChild(bg)
-
-        // Teal accent lights
-        for xOff: CGFloat in [-12, 12] {
-            let light = SKShapeNode(circleOfRadius: 3)
-            light.fillColor = DLOColor.teal
-            light.strokeColor = .clear
-            light.position = CGPoint(x: xOff, y: 0)
-            bg.addChild(light)
-            light.run(SKAction.repeatForever(SKAction.sequence([
-                SKAction.fadeAlpha(to: 0.3, duration: 0.4),
-                SKAction.fadeAlpha(to: 1.0, duration: 0.4)
-            ])))
+        let body: SKSpriteNode
+        if UIImage(named: "pmca_drone_v1") != nil {
+            let sprite = SKSpriteNode(imageNamed: "pmca_drone_v1")
+            sprite.texture?.filteringMode = .linear
+            sprite.size = CGSize(width: 44, height: 29)
+            sprite.anchorPoint = CGPoint(x: 0.5, y: 0.58)
+            body = sprite
+        } else {
+            let bodySize = CGSize(width: 36, height: 18)
+            let placeholder = SKSpriteNode(color: DLOColor.platformSilhouette, size: bodySize)
+            for xOff: CGFloat in [-12, 12] {
+                let light = SKShapeNode(circleOfRadius: 3)
+                light.fillColor = DLOColor.teal
+                light.strokeColor = .clear
+                light.position = CGPoint(x: xOff, y: 0)
+                placeholder.addChild(light)
+                light.run(SKAction.repeatForever(SKAction.sequence([
+                    SKAction.fadeAlpha(to: 0.3, duration: 0.4),
+                    SKAction.fadeAlpha(to: 1.0, duration: 0.4)
+                ])))
+            }
+            body = placeholder
         }
+        addChild(body)
 
         // Scan cone (points downward)
         let scanPath = CGMutablePath()
@@ -76,7 +83,7 @@ final class DroneEnemyNode: SKNode {
         alertIndicator.alpha = 0
         addChild(alertIndicator)
 
-        bodySprite = bg
+        bodySprite = body
     }
 
     // MARK: - Guard Sprite (human security guard silhouette)

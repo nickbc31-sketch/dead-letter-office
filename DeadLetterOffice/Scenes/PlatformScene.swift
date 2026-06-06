@@ -49,10 +49,11 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.gravity = CGVector(dx: 0, dy: -700)  // tuned for jumpImpulse=500
         physicsWorld.contactDelegate = self
 
-        guard let data = LevelData.load(id: levelID) else {
+        guard let raw = LevelData.load(id: levelID) else {
             SceneManager.shared.transition(to: .desk(chapterID: "ch1"), from: self)
             return
         }
+        let data = raw.composed(screenWidth: size.width)
         levelData = data
         buildLevel(data)
         buildHUD()
@@ -76,11 +77,20 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         }
 
         buildFloor(width: data.levelWidth, height: data.levelHeight)
+        if data.isInterior == true {
+            buildInteriorShell(width: data.levelWidth, height: data.levelHeight)
+        }
+        buildPlatforms(data)
 
-        let spawn = CGPoint(x: data.spawnPoint[0], y: data.spawnPoint[1])
+        let spawnXY: CGPoint
+        if let override = GameState.shared.consumePlatformSpawnOverride(for: levelID) {
+            spawnXY = override
+        } else {
+            spawnXY = CGPoint(x: data.spawnPoint[0], y: data.spawnPoint[1])
+        }
         mara = MaraPlayerNode()
         // Feet rest on floor top (y=40); physics body is 50pt tall centred on node.
-        mara.position = CGPoint(x: spawn.x, y: max(spawn.y, 66))
+        mara.position = CGPoint(x: spawnXY.x, y: max(spawnXY.y, 66))
         mara.zPosition = 50
         addChild(mara)
 
@@ -90,8 +100,8 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         // Start camera at the steady-state target so there is no initial rush that
         // makes Mara appear to slide backwards while the camera catches up.
         let halfW = size.width / 2
-        let clampedX = max(halfW, min(spawn.x, CGFloat(data.levelWidth) - halfW))
-        cameraNode.position = CGPoint(x: clampedX, y: spawn.y + size.height * 0.25)
+        let clampedX = max(halfW, min(spawnXY.x, CGFloat(data.levelWidth) - halfW))
+        cameraNode.position = CGPoint(x: clampedX, y: spawnXY.y + size.height * 0.25)
         updateParallaxTileWrapping()
 
         for inter in data.interactables        { buildInteractable(inter) }
@@ -116,6 +126,8 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
                 levelWidth: levelWidth,
                 levelHeight: levelHeight,
                 yOffset: layer.yOffset)
+            let kind = ParallaxLayerKind.from(imageName: layer.imageName)
+            tiles.alpha = kind.layerAlpha
             node.addChild(tiles)
         } else {
             node.addChild(buildProceduralBackground(layer: layer,
@@ -124,7 +136,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         return node
     }
 
-    // MARK: - Parallax blend profiles (vertical composite + seam hiding)
+    // MARK: - Parallax blend profiles (full-screen atmospheric stack + seam hiding)
 
     private enum ParallaxLayerKind {
         case far, mid, near
@@ -138,15 +150,23 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
             }
         }
 
-        /// (height fraction from bottom, alpha) — soft vertical composite.
+        /// Soft top feather for near only; far/mid render full-frame underneath.
         var verticalStops: [(CGFloat, CGFloat)] {
             switch self {
-            case .far:
-                return [(0, 0), (0.50, 0), (0.56, 0.35), (0.60, 1), (1, 1)]
-            case .mid:
-                return [(0, 0), (0.26, 0), (0.30, 0.9), (0.55, 1), (0.60, 0.55), (0.66, 0), (1, 0)]
+            case .far, .mid:
+                return [(0, 1), (1, 1)]
             case .near:
-                return [(0, 1), (0.28, 1), (0.32, 0.75), (0.40, 0.25), (0.48, 0.04), (0.55, 0), (1, 0)]
+                return [(0, 1), (0.32, 1), (0.48, 0.9), (0.60, 0.68), (0.72, 0.42),
+                        (0.82, 0.2), (0.91, 0.07), (1, 0)]
+            }
+        }
+
+        /// Whole-layer alpha for atmospheric stacking (no band partitioning).
+        var layerAlpha: CGFloat {
+            switch self {
+            case .far: return 1
+            case .mid: return 0.62
+            case .near: return 1
             }
         }
 
@@ -370,49 +390,117 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
 
     private func buildFloor(width: CGFloat, height: CGFloat) {
         let groundH: CGFloat = 40
-
-        // Floor with teal top-edge glow so player can see the ground clearly
-        let ground = SKSpriteNode(color: DLOColor.platformSilhouette,
-                                  size: CGSize(width: width, height: groundH))
-        ground.position = CGPoint(x: width / 2, y: groundH / 2)
-        ground.zPosition = 20
-        // One-way top edge — solid rectangle floor trapped Mara inside the collider.
         let halfW = width / 2
-        let topY  = groundH / 2
-        ground.physicsBody = SKPhysicsBody(edgeFrom: CGPoint(x: -halfW, y: topY),
-                                           to:   CGPoint(x:  halfW, y: topY))
-        ground.physicsBody?.isDynamic = false
-        ground.physicsBody?.restitution = 0
-        ground.physicsBody?.friction = 0
-        ground.physicsBody?.categoryBitMask = PhysicsCategory.ground
-        ground.physicsBody?.collisionBitMask = PhysicsCategory.player
-        ground.physicsBody?.contactTestBitMask = PhysicsCategory.player
-        addChild(ground)
+        let topY = groundH / 2
 
-        let floorEdge = SKSpriteNode(color: DLOColor.teal.withAlphaComponent(0.6),
-                                      size: CGSize(width: width, height: 2))
-        floorEdge.position = CGPoint(x: width / 2, y: groundH)
-        floorEdge.zPosition = 21
-        addChild(floorEdge)
+        let floor = SKNode()
+        floor.position = CGPoint(x: width / 2, y: groundH / 2)
+        floor.zPosition = 20
 
-        // Default floating platforms only used if level JSON has none defined.
-        // Real platforms come from level_chN.json platformNodes field.
-        // This fallback ensures old levels still work.
-        let platforms: [(x: CGFloat, y: CGFloat, w: CGFloat)] = [
-            (400, 120, 180), (700, 170, 140), (1000, 130, 160),
-            (1300, 200, 150), (1600, 150, 180), (1900, 190, 130),
-            (2200, 130, 180), (2500, 170, 160)
-        ]
-        for p in platforms { addPlatform(x: p.x, y: p.y, width: p.w) }
+        if let image = UIImage(named: "ground_industrial_road_v1") {
+            let texture = SKTexture(image: image)
+            texture.filteringMode = .linear
+            let texSize = texture.size()
+            let tileW = texSize.width * (groundH / texSize.height)
+            let tileCount = max(1, Int(ceil(width / tileW)))
+            for i in 0..<tileCount {
+                let tile = SKSpriteNode(texture: texture)
+                tile.size = CGSize(width: tileW, height: groundH)
+                tile.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+                tile.position = CGPoint(x: -halfW + tileW * (CGFloat(i) + 0.5), y: 0)
+                floor.addChild(tile)
+            }
+        } else {
+            let ground = SKSpriteNode(color: DLOColor.platformSilhouette,
+                                      size: CGSize(width: width, height: groundH))
+            floor.addChild(ground)
+        }
+
+        // One-way top edge — solid rectangle floor trapped Mara inside the collider.
+        floor.physicsBody = SKPhysicsBody(edgeFrom: CGPoint(x: -halfW, y: topY),
+                                          to:   CGPoint(x:  halfW, y: topY))
+        floor.physicsBody?.isDynamic = false
+        floor.physicsBody?.restitution = 0
+        floor.physicsBody?.friction = 0
+        floor.physicsBody?.categoryBitMask = PhysicsCategory.ground
+        floor.physicsBody?.collisionBitMask = PhysicsCategory.player
+        floor.physicsBody?.contactTestBitMask = PhysicsCategory.player
+        addChild(floor)
     }
 
-    private func addPlatform(x: CGFloat, y: CGFloat, width: CGFloat) {
-        let plat = SKSpriteNode(color: DLOColor.platformSilhouette.withAlphaComponent(0.9),
-                                size: CGSize(width: width, height: 20))
+    private func buildPlatforms(_ data: LevelData) {
+        let nodes = data.platformNodes ?? defaultPlatformNodes()
+        for node in nodes {
+            addPlatform(x: node.x, y: node.y, width: node.width,
+                        assetName: node.assetName, visualScale: node.visualScale)
+        }
+    }
+
+    private func defaultPlatformNodes() -> [PlatformNode] {
+        [
+            PlatformNode(x: 400, y: 120, width: 180, assetName: nil),
+            PlatformNode(x: 700, y: 170, width: 140, assetName: nil),
+            PlatformNode(x: 1000, y: 130, width: 160, assetName: nil),
+            PlatformNode(x: 1300, y: 200, width: 150, assetName: nil),
+            PlatformNode(x: 1600, y: 150, width: 180, assetName: nil),
+            PlatformNode(x: 1900, y: 190, width: 130, assetName: nil),
+            PlatformNode(x: 2200, y: 130, width: 180, assetName: nil),
+            PlatformNode(x: 2500, y: 170, width: 160, assetName: nil),
+        ]
+    }
+
+    private struct PlatformAssetProfile {
+        let walkSurfaceFromTop: CGFloat
+        let defaultVisualScale: CGFloat
+        let filtering: SKTextureFilteringMode
+    }
+
+    /// Walk-surface alignment and default scale for approved platform art.
+    private func platformAssetProfile(for assetName: String) -> PlatformAssetProfile? {
+        switch assetName {
+        case "platform_gantry_v1":
+            return PlatformAssetProfile(walkSurfaceFromTop: 0.11, defaultVisualScale: 1.75, filtering: .linear)
+        default:
+            return nil
+        }
+    }
+
+    private func addPlatform(x: CGFloat, y: CGFloat, width: CGFloat,
+                             assetName: String? = nil, visualScale: CGFloat? = nil) {
+        let platH: CGFloat = 20
+        let pHalfW = width / 2
+        let pTopY = platH / 2
+
+        let plat = SKNode()
         plat.position = CGPoint(x: x, y: y)
         plat.zPosition = 20
-        let pHalfW = plat.size.width / 2
-        let pTopY  = plat.size.height / 2
+
+        if let assetName,
+           let profile = platformAssetProfile(for: assetName),
+           UIImage(named: assetName) != nil {
+            let texture = SKTexture(imageNamed: assetName)
+            texture.filteringMode = profile.filtering
+            let texSize = texture.size()
+            let scale = visualScale ?? profile.defaultVisualScale
+            let displayW = width * scale
+            let displayH = displayW * (texSize.height / texSize.width)
+            let anchorY = 1.0 - profile.walkSurfaceFromTop
+
+            let sprite = SKSpriteNode(texture: texture)
+            sprite.size = CGSize(width: displayW, height: displayH)
+            sprite.anchorPoint = CGPoint(x: 0.5, y: anchorY)
+            sprite.position = CGPoint(x: 0, y: pTopY)
+            plat.addChild(sprite)
+        } else {
+            let body = SKSpriteNode(color: DLOColor.platformSilhouette.withAlphaComponent(0.9),
+                                    size: CGSize(width: width, height: platH))
+            plat.addChild(body)
+            let edge = SKSpriteNode(color: DLOColor.teal.withAlphaComponent(0.5),
+                                    size: CGSize(width: width, height: 2))
+            edge.position = CGPoint(x: 0, y: 11)
+            plat.addChild(edge)
+        }
+
         plat.physicsBody = SKPhysicsBody(edgeFrom: CGPoint(x: -pHalfW, y: pTopY),
                                          to:   CGPoint(x:  pHalfW, y: pTopY))
         plat.physicsBody?.isDynamic = false
@@ -421,11 +509,25 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         plat.physicsBody?.categoryBitMask = PhysicsCategory.ground
         plat.physicsBody?.collisionBitMask = PhysicsCategory.player
         plat.physicsBody?.contactTestBitMask = PhysicsCategory.player
-        let edge = SKSpriteNode(color: DLOColor.teal.withAlphaComponent(0.5),
-                                size: CGSize(width: width, height: 2))
-        edge.position = CGPoint(x: 0, y: 11)
-        plat.addChild(edge)
         addChild(plat)
+    }
+
+    private func buildInteriorShell(width: CGFloat, height: CGFloat) {
+        let floorH: CGFloat = 40
+        let wallH = max(120, height - floorH - 20)
+        let metal = DLOColor.platformSilhouette
+
+        let back = SKSpriteNode(color: metal.withAlphaComponent(0.92),
+                                 size: CGSize(width: width, height: wallH))
+        back.position = CGPoint(x: width / 2, y: floorH + wallH / 2)
+        back.zPosition = 18
+        addChild(back)
+
+        let ceiling = SKSpriteNode(color: SKColor(red: 0.07, green: 0.10, blue: 0.14, alpha: 1),
+                                   size: CGSize(width: width, height: 14))
+        ceiling.position = CGPoint(x: width / 2, y: floorH + wallH + 6)
+        ceiling.zPosition = 18
+        addChild(ceiling)
     }
 
     // MARK: - Interactable Building
@@ -435,11 +537,17 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
 
         let pos = CGPoint(x: inter.position[0], y: inter.position[1])
 
+        if inter.type == "building_entrance", let visual = inter.buildingVisual {
+            addChild(PlatformBuildingVisuals.build(
+                preset: visual.preset, spec: visual, at: pos, screenWidth: size.width
+            ))
+        }
+
         // Door: physical barrier that blocks movement
         if inter.type == "door" {
             let alreadyOpen = inter.setsFlag.map { GameState.shared.hasFlag($0) } ?? false
             if !alreadyOpen {
-                let barrier = buildDoorBarrier(at: pos)
+                let barrier = buildDoorBarrier(at: pos, visible: true)
                 doorBarriers[inter.id] = barrier
                 addChild(barrier)
             }
@@ -458,9 +566,19 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         sprite.fontColor = color
         sprite.horizontalAlignmentMode = .center
         sprite.verticalAlignmentMode = .center
+        if inter.type == "building_entrance" {
+            let buildingH = inter.buildingVisual?.resolvedSize(screenWidth: size.width).height ?? 74
+            sprite.position = CGPoint(x: 0, y: buildingH * 0.42)
+            sprite.fontSize = 12
+        } else if inter.type == "building_exit" {
+            sprite.position = CGPoint(x: 0, y: 32)
+            sprite.fontSize = 11
+        } else if inter.type == "cabinet" {
+            sprite.position = CGPoint(x: 0, y: 36)
+        }
         node.addChild(sprite)
 
-        if inter.type != "text_sign" {
+        if inter.type != "text_sign" && inter.type != "building_exit" {
             sprite.run(SKAction.repeatForever(SKAction.sequence([
                 SKAction.fadeAlpha(to: 0.5, duration: 1.2),
                 SKAction.fadeAlpha(to: 1.0, duration: 1.2)
@@ -492,34 +610,39 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
-    private func buildDoorBarrier(at pos: CGPoint) -> SKSpriteNode {
+    private func buildDoorBarrier(at pos: CGPoint, visible: Bool = true) -> SKSpriteNode {
         let barrier = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.8),
                                    size: CGSize(width: 16, height: 200))
         // Centre the barrier so it sits on the floor (floor top ≈ y=40)
         barrier.position = CGPoint(x: pos.x, y: 140)
         barrier.zPosition = 22
+        barrier.alpha = visible ? 1 : 0
 
         barrier.physicsBody = SKPhysicsBody(rectangleOf: barrier.size)
         barrier.physicsBody?.isDynamic = false
         barrier.physicsBody?.categoryBitMask = PhysicsCategory.ground
         barrier.physicsBody?.collisionBitMask = PhysicsCategory.player
 
-        // Teal edge strip
-        let edge = SKSpriteNode(color: DLOColor.teal.withAlphaComponent(0.9),
-                                size: CGSize(width: 3, height: 200))
-        edge.position = CGPoint(x: -6.5, y: 0)
-        barrier.addChild(edge)
+        if visible {
+            let edge = SKSpriteNode(color: DLOColor.teal.withAlphaComponent(0.9),
+                                    size: CGSize(width: 3, height: 200))
+            edge.position = CGPoint(x: -6.5, y: 0)
+            barrier.addChild(edge)
+        }
 
         return barrier
     }
 
     private func iconAndColor(for type: String) -> (String, SKColor) {
         switch type {
-        case "terminal":    return ("▣", DLOColor.teal)
-        case "door":        return ("▪", DLOColor.terminalAmber)
-        case "cartridge":   return ("◈", DLOColor.terminalGreen)
-        case "text_sign":   return ("ℹ", DLOColor.dimText)
-        default:            return ("?", DLOColor.dimText)
+        case "terminal":           return ("▣", DLOColor.teal)
+        case "door":               return ("▪", DLOColor.terminalAmber)
+        case "cartridge":          return ("◈", DLOColor.terminalGreen)
+        case "cabinet":            return ("▤", DLOColor.terminalAmber)
+        case "building_entrance":  return ("⌂", DLOColor.teal)
+        case "building_exit":      return ("⇐", DLOColor.dimText)
+        case "text_sign":          return ("ℹ", DLOColor.dimText)
+        default:                   return ("?", DLOColor.dimText)
         }
     }
 
@@ -855,6 +978,20 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         for exit in data.exits {
             guard let xStr = exit["x"], let yStr = exit["y"],
                   let x = Double(xStr), let y = Double(yStr) else { continue }
+
+            if exit["type"] == "platform_end" {
+                if let req = exit["requiredFlag"], !GameState.shared.hasFlag(req) { continue }
+                if mara.position.distance(to: CGPoint(x: x, y: y)) < 80 {
+                    if let dialogueID = exit["dialogueID"] {
+                        completePlatformSection(dialogueID: dialogueID)
+                    } else {
+                        levelComplete()
+                    }
+                    break
+                }
+                continue
+            }
+
             // Skip exit if player has a flag that disqualifies it (reserved for flag-holders who use a deeper exit)
             if let absentFlag = exit["requiredFlagAbsent"],
                GameState.shared.hasFlag(absentFlag) { continue }
@@ -942,6 +1079,12 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
             activateDoor(inter)
         case "cartridge":
             activateCartridge(inter)
+        case "cabinet":
+            activateCabinet(inter)
+        case "building_entrance":
+            activateBuildingEntrance(inter)
+        case "building_exit":
+            activateBuildingExit(inter)
         case "text_sign":
             if let text = inter.displayText {
                 showBriefMessage(text)
@@ -955,8 +1098,14 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         switch inter.type {
         case "door" where requiredFlag == "terminal01_read":
             return "ACCESS DENIED — READ TERMINAL FIRST"
-        case "door" where requiredFlag == "door01_open":
-            return "ACCESS DENIED — CLEAR INNER CHECKPOINT FIRST"
+        case "door" where requiredFlag == "ch1_relay_credential":
+            return "ACCESS DENIED — RELAY CREDENTIAL REQUIRED"
+        case "building_entrance" where requiredFlag == "ch1_relay_credential":
+            return "ACCESS DENIED — RELAY CREDENTIAL REQUIRED"
+        case "building_exit" where requiredFlag == "ch1_relay_credential":
+            return "EXIT BLOCKED — COLLECT MAINTENANCE CREDENTIAL"
+        case "cabinet" where requiredFlag == "relay_console_read":
+            return "LOCKED — READ RELAY CONSOLE FIRST"
         default:
             return "ACCESS DENIED — REQUIRED CLEARANCE NOT MET"
         }
@@ -986,6 +1135,57 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         showContentPanel(header: "DATA CARTRIDGE", body: body) { [weak node] in
             node?.removeFromParent()
         }
+    }
+
+    private func activateCabinet(_ inter: Interactable) {
+        if let flag = inter.setsFlag, GameState.shared.hasFlag(flag) {
+            showBriefMessage("LOCKER EMPTY — CREDENTIAL ISSUED")
+            return
+        }
+
+        let body = """
+MAINTENANCE CREDENTIAL LOCKER
+Locker ID: MNT-RELAY-07
+
+Relay Node 7 transit credential
+issued to authorised maintenance
+personnel.
+
+— — —
+CREDENTIAL: CH1-RELAY-MAINT-07
+Status: ACTIVE
+— — —
+
+Sign out before exterior transit.
+"""
+        showContentPanel(header: "CREDENTIAL LOCKER", body: body) { [weak self] in
+            guard let self = self else { return }
+            if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
+            GameState.shared.save()
+            self.interactableNodes[inter.id]?.alpha = 0.35
+            AudioManager.shared.playTerminalBeep(on: self)
+        }
+    }
+
+    private func activateBuildingEntrance(_ inter: Interactable) {
+        guard let linked = inter.linkedLevelID else { return }
+        SceneManager.shared.transition(to: .platform(levelID: linked), from: self)
+    }
+
+    private func activateBuildingExit(_ inter: Interactable) {
+        guard let data = levelData,
+              let parentID = data.parentLevelID,
+              let spawn = data.returnSpawnPoint, spawn.count >= 2 else {
+            showBriefMessage("EXIT BLOCKED")
+            return
+        }
+        if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
+        GameState.shared.save()
+        GameState.shared.setPlatformSpawnOverride(
+            levelID: parentID,
+            point: CGPoint(x: spawn[0], y: spawn[1])
+        )
+        SceneManager.shared.transition(to: .platform(levelID: parentID), from: self)
     }
 
     private func openDoor(_ inter: Interactable) {
@@ -1044,6 +1244,22 @@ Citizen VC-[XXXX]-M.
 
 This terminal will be wiped
 upon Director's audit completion.
+"""
+        case "relay_console_01":
+            return """
+PMCA RELAY NODE 7 — UTILITY CONSOLE
+
+Maintenance credential issuance:
+AUTHORISED LOCKER — EAST WALL
+Locker ID: MNT-RELAY-07
+
+Credential must be signed out
+before exterior transit resumes.
+
+— — —
+Note: Locker access requires
+console login acknowledgement.
+— — —
 """
         default:
             return "TERMINAL ACCESS GRANTED.\nNo additional data available."
@@ -1265,6 +1481,35 @@ upon Director's audit completion.
         ]))
     }
 
+    private func completePlatformSection(dialogueID: String) {
+        guard !isLevelComplete else { return }
+        isLevelComplete = true
+        GameState.shared.recordLevelComplete("level_ch1")
+        if let nextID = nextChapterID(from: levelData?.chapter ?? "ch1") {
+            GameState.shared.setFlag("\(nextID)_unlocked")
+        }
+        GameState.shared.save()
+
+        let overlay = SKSpriteNode(color: .black, size: size)
+        overlay.position = .zero
+        overlay.zPosition = 999
+        overlay.alpha = 0
+        cameraNode.addChild(overlay)
+
+        overlay.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0.8),
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                GameState.shared.currentChapterID = "ch2"
+                GameState.shared.save()
+                SceneManager.shared.transition(
+                    to: .dialogue(dialogueID: dialogueID, returnScene: .desk(chapterID: "ch2")),
+                    from: self
+                )
+            }
+        ]))
+    }
+
     private func levelComplete() {
         guard !isLevelComplete else { return }
         isLevelComplete = true
@@ -1457,11 +1702,14 @@ private final class InteractButtonNode: SKNode {
 
     func configure(for type: String) {
         switch type {
-        case "terminal":  lbl.text = "▲  READ TERMINAL"
-        case "door":      lbl.text = "▲  OPEN DOOR"
-        case "cartridge": lbl.text = "▲  RETRIEVE"
-        case "npc":       lbl.text = "▲  TALK"
-        default:          lbl.text = "▲  INTERACT"
+        case "terminal":           lbl.text = "▲  READ TERMINAL"
+        case "door":               lbl.text = "▲  OPEN DOOR"
+        case "cartridge":          lbl.text = "▲  RETRIEVE"
+        case "cabinet":            lbl.text = "▲  OPEN LOCKER"
+        case "building_entrance":  lbl.text = "▲  ENTER"
+        case "building_exit":      lbl.text = "▲  EXIT"
+        case "npc":                lbl.text = "▲  TALK"
+        default:                   lbl.text = "▲  INTERACT"
         }
     }
 }

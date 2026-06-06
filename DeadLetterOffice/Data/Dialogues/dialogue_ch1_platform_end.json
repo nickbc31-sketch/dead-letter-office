@@ -1,0 +1,41 @@
+{
+  "id": "dialogue_ch1_platform_end",
+  "chapter": "ch1",
+  "returnSceneHint": "desk_ch2",
+  "nodes": [
+    {
+      "id": "n0",
+      "lines": [
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Relay credential logged. Inner checkpoint cleared.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Node 7 is routing to a buffer I cannot see from the desk. Whatever Quiet Choir is — it passes through here.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. Return to processing. Your queue has not paused.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Understood.",
+          "voiceFilter": "normal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": ["level_ch1_platform_complete"],
+      "nextID": null
+    }
+  ]
+}

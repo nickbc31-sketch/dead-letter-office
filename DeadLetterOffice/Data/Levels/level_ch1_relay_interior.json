@@ -1,0 +1,68 @@
+{
+  "id": "level_ch1_relay_interior",
+  "chapter": "ch1",
+  "displayName": "PMCA RELAY UTILITY — INTERIOR",
+  "tileMapName": null,
+  "parentLevelID": "level_ch1",
+  "returnSpawnPoint": [920, 60],
+  "isInterior": true,
+  "backgroundLayers": [
+    {
+      "imageName": "bg_facility_mid",
+      "zPosition": -20,
+      "scrollFactor": 0,
+      "yOffset": 0
+    }
+  ],
+  "spawnPoint": [90, 60],
+  "exits": [],
+  "interactables": [
+    {
+      "id": "relay_console_01",
+      "type": "terminal",
+      "position": [280, 68],
+      "requiredFlag": null,
+      "setsFlag": "relay_console_read",
+      "requiredCode": null,
+      "displayText": null,
+      "cartridgeData": null,
+      "linkedDialogueID": null,
+      "linkedLevelID": null
+    },
+    {
+      "id": "relay_cabinet_01",
+      "type": "cabinet",
+      "position": [420, 68],
+      "requiredFlag": "relay_console_read",
+      "setsFlag": "ch1_relay_credential",
+      "requiredCode": null,
+      "displayText": null,
+      "cartridgeData": null,
+      "linkedDialogueID": null,
+      "linkedLevelID": null
+    },
+    {
+      "id": "relay_building_exit",
+      "type": "building_exit",
+      "position": [500, 68],
+      "requiredFlag": "ch1_relay_credential",
+      "setsFlag": "relay_building_exited",
+      "requiredCode": null,
+      "displayText": null,
+      "cartridgeData": null,
+      "linkedDialogueID": null,
+      "linkedLevelID": null
+    }
+  ],
+  "patrols": [],
+  "pickups": [],
+  "environmentalTextNodes": [
+    {"x": "200", "y": "100", "text": "RELAY NODE 7 — UTILITY CONTROL"},
+    {"x": "420", "y": "100", "text": "MAINTENANCE CREDENTIAL LOCKER — AUTHORISED ACCESS ONLY"}
+  ],
+  "objectiveText": "READ RELAY CONSOLE — FIND CREDENTIAL",
+  "ambientMusicTrack": "ambient_platform",
+  "platformNodes": [],
+  "levelWidth": 560,
+  "levelHeight": 280
+}

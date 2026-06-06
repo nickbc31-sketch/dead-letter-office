@@ -18,7 +18,7 @@ struct PatrolRoute: Codable {
 
 struct Interactable: Codable, Identifiable {
     var id: String
-    var type: String            // "terminal", "door", "cartridge", "text_sign", "ladder"
+    var type: String            // terminal, door, cartridge, cabinet, building_entrance, building_exit, text_sign, ladder
     var position: [CGFloat]     // [x, y]
     var requiredFlag: String?
     var setsFlag: String?
@@ -26,6 +26,8 @@ struct Interactable: Codable, Identifiable {
     var displayText: String?    // Environmental text
     var cartridgeData: String?  // JSON content inside a data cartridge
     var linkedDialogueID: String?
+    var linkedLevelID: String?  // building_entrance → interior level id
+    var buildingVisual: BuildingVisualSpec?  // configurable exterior shell (module C)
 }
 
 struct BackgroundLayer: Codable {
@@ -33,6 +35,14 @@ struct BackgroundLayer: Codable {
     var zPosition: CGFloat
     var scrollFactor: CGFloat   // 0 = static, 1 = full scroll
     var yOffset: CGFloat
+}
+
+struct PlatformNode: Codable {
+    var x: CGFloat
+    var y: CGFloat
+    var width: CGFloat
+    var assetName: String?      // e.g. platform_gantry_v1; nil = procedural placeholder
+    var visualScale: CGFloat?   // optional art scale multiplier; collision width unchanged
 }
 
 struct LevelData: Codable, Identifiable {
@@ -50,6 +60,11 @@ struct LevelData: Codable, Identifiable {
     var npcs: [NPCData]?
     var objectiveText: String?
     var ambientMusicTrack: String?
+    var platformNodes: [PlatformNode]?
+    var encounterSequence: [EncounterModule]?  // modular A–F layout; composed at load
+    var parentLevelID: String?      // interior → exterior parent
+    var returnSpawnPoint: [CGFloat]? // interior exit spawn on parent level
+    var isInterior: Bool?            // compact interior room layout
     var levelWidth: CGFloat
     var levelHeight: CGFloat
 

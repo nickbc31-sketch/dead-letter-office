@@ -42,6 +42,9 @@
 		B3A12F047C1D4E9A9F2E5D81 /* intro_ch3.json in Resources */ = {isa = PBXBuildFile; fileRef = C74E8B1A6F3D4A0289B1C392 /* intro_ch3.json */; };
 		B8D0E8624BD45D5DA48D49DB /* DialogueScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D905A3EB27702E0B495318E /* DialogueScene.swift */; };
 		C05816608492AFAED6D64FB3 /* level_ch1.json in Resources */ = {isa = PBXBuildFile; fileRef = 9A9FCC637439B0F8D17B73DB /* level_ch1.json */; };
+		E1A2B3C4D5E6F7081920A3B1 /* level_ch1_relay_interior.json in Resources */ = {isa = PBXBuildFile; fileRef = F2B3C4D5E6F7081920A3B4C2 /* level_ch1_relay_interior.json */; };
+		A3B4C5D6E7F809192A3B4C5 /* level_ch1_checkpoint_interior.json in Resources */ = {isa = PBXBuildFile; fileRef = B4C5D6E7F809192A3B4C5D6 /* level_ch1_checkpoint_interior.json */; };
+		C5D6E7F809192A3B4C5D6E7 /* dialogue_ch1_platform_end.json in Resources */ = {isa = PBXBuildFile; fileRef = D6E7F809192A3B4C5D6E7F80 /* dialogue_ch1_platform_end.json */; };
 		C8246D43F13BE8073541FBEB /* SceneLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7D3E75D6FE4F7F0EBE1614 /* SceneLayout.swift */; };
 		C8F05E0F65580E4F2A6BC370 /* ChapterCompleteScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3E061F31AF79AAE3FB95E2 /* ChapterCompleteScene.swift */; };
 		CD78FE80E6051BE9B0E51475 /* PlatformScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BC13C826FBD0F00E7C8720 /* PlatformScene.swift */; };
@@ -53,6 +56,9 @@
 		DEE5F304C55E0F57015236C3 /* DocumentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C346DE8B275F9450D4085808 /* DocumentModel.swift */; };
 		E1CF96957325407C826AF486 /* cases_ch3.json in Resources */ = {isa = PBXBuildFile; fileRef = EA60AB92D50848108B7217AC /* cases_ch3.json */; };
 		E4CD7FBAF6615A1AB4E9A3CB /* LevelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4ECBC97DE210F67A1BBD8C6 /* LevelData.swift */; };
+		A1B2C3D4E5F60718293A4B5C /* PlatformEncounterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3D4E5F60718293A4B5C6D /* PlatformEncounterModel.swift */; };
+		C3D4E5F60718293A4B5C6D7E /* PlatformEncounterComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E5F60718293A4B5C6D7E8F /* PlatformEncounterComposer.swift */; };
+		E5F60718293A4B5C6D7E8F90 /* PlatformBuildingVisuals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F60718293A4B5C6D7E8F901A /* PlatformBuildingVisuals.swift */; };
 		EB9003ECFFCC64A59FD553A8 /* DocumentNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8370870E1C692EA0A735E7F9 /* DocumentNode.swift */; };
 		FC03C6E8C2282BED6826D5A0 /* PhysicsCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE3AE68DB989367798FAE4BD /* PhysicsCategories.swift */; };
 		FD4528E3D8F5AAD73E944658 /* BootScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC0C852D18DE2CB92FEB9D6 /* BootScene.swift */; };
@@ -96,6 +102,9 @@
 		74BD6BDEF6DC2CF56278C615 /* StampButtonNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StampButtonNode.swift; sourceTree = "<group>"; };
 		8370870E1C692EA0A735E7F9 /* DocumentNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentNode.swift; sourceTree = "<group>"; };
 		9A9FCC637439B0F8D17B73DB /* level_ch1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = level_ch1.json; sourceTree = "<group>"; };
+		F2B3C4D5E6F7081920A3B4C2 /* level_ch1_relay_interior.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = level_ch1_relay_interior.json; sourceTree = "<group>"; };
+		B4C5D6E7F809192A3B4C5D6 /* level_ch1_checkpoint_interior.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = level_ch1_checkpoint_interior.json; sourceTree = "<group>"; };
+		D6E7F809192A3B4C5D6E7F80 /* dialogue_ch1_platform_end.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = dialogue_ch1_platform_end.json; sourceTree = "<group>"; };
 		9D905A3EB27702E0B495318E /* DialogueScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogueScene.swift; sourceTree = "<group>"; };
 		9EE6F7DCAD702227511133C3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		9F7D3E75D6FE4F7F0EBE1614 /* SceneLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneLayout.swift; sourceTree = "<group>"; };
@@ -108,6 +117,9 @@
 		AC8593087CC69F982B0CCC50 /* GameplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameplayKit.framework; path = System/Library/Frameworks/GameplayKit.framework; sourceTree = SDKROOT; };
 		C346DE8B275F9450D4085808 /* DocumentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentModel.swift; sourceTree = "<group>"; };
 		C4ECBC97DE210F67A1BBD8C6 /* LevelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelData.swift; sourceTree = "<group>"; };
+		B2C3D4E5F60718293A4B5C6D /* PlatformEncounterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformEncounterModel.swift; sourceTree = "<group>"; };
+		D4E5F60718293A4B5C6D7E8F /* PlatformEncounterComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformEncounterComposer.swift; sourceTree = "<group>"; };
+		F60718293A4B5C6D7E8F901A /* PlatformBuildingVisuals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformBuildingVisuals.swift; sourceTree = "<group>"; };
 		C74E8B1A6F3D4A0289B1C392 /* intro_ch3.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = intro_ch3.json; sourceTree = "<group>"; };
 		D6678C35C042AD903F06C489 /* DeskScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeskScene.swift; sourceTree = "<group>"; };
 		E1A7B2C30D4F5E6080B1A2C3 /* DebugScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugScene.swift; sourceTree = "<group>"; };
@@ -157,6 +169,7 @@
 		2615BED7BC309B29F698C58F /* Dialogues */ = {
 			isa = PBXGroup;
 			children = (
+				D6E7F809192A3B4C5D6E7F80 /* dialogue_ch1_platform_end.json */,
 				02B3A638CAD25A398A841B74 /* intro_ch1.json */,
 				F09617A82A334EE684424B42 /* intro_ch2.json */,
 				C74E8B1A6F3D4A0289B1C392 /* intro_ch3.json */,
@@ -169,6 +182,7 @@
 			children = (
 				A1318103735222BFB65B41CA /* DroneEnemyNode.swift */,
 				F3BDF9E2E7AD315F4F7C9C75 /* MaraPlayerNode.swift */,
+				F60718293A4B5C6D7E8F901A /* PlatformBuildingVisuals.swift */,
 				EE3AE68DB989367798FAE4BD /* PhysicsCategories.swift */,
 			);
 			path = Platform;
@@ -200,6 +214,7 @@
 				AB59B2903A46E71524324063 /* DialogueModel.swift */,
 				C346DE8B275F9450D4085808 /* DocumentModel.swift */,
 				C4ECBC97DE210F67A1BBD8C6 /* LevelData.swift */,
+				B2C3D4E5F60718293A4B5C6D /* PlatformEncounterModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -209,6 +224,7 @@
 			children = (
 				F5083C106395EB6E0FF810A6 /* AudioManager.swift */,
 				A4B53D746FE64F4186375629 /* GameState.swift */,
+				D4E5F60718293A4B5C6D7E8F /* PlatformEncounterComposer.swift */,
 				38FC24ABAF4B16275755F4C6 /* SaveManager.swift */,
 				4FC22ABA6B3E4591AA62B0AF /* SceneManager.swift */,
 			);
@@ -268,6 +284,8 @@
 			isa = PBXGroup;
 			children = (
 				9A9FCC637439B0F8D17B73DB /* level_ch1.json */,
+				B4C5D6E7F809192A3B4C5D6 /* level_ch1_checkpoint_interior.json */,
+				F2B3C4D5E6F7081920A3B4C2 /* level_ch1_relay_interior.json */,
 				EE1012512D234F50BE16D67C /* level_ch2.json */,
 				A1B29E5C3D7F4018BE4C7A96 /* level_ch3.json */,
 			);
@@ -395,6 +413,9 @@
 				4CE7659FE49B47A6BBF73932 /* intro_ch2.json in Resources */,
 				B3A12F047C1D4E9A9F2E5D81 /* intro_ch3.json in Resources */,
 				C05816608492AFAED6D64FB3 /* level_ch1.json in Resources */,
+				A3B4C5D6E7F809192A3B4C5 /* level_ch1_checkpoint_interior.json in Resources */,
+				E1A2B3C4D5E6F7081920A3B1 /* level_ch1_relay_interior.json in Resources */,
+				C5D6E7F809192A3B4C5D6E7 /* dialogue_ch1_platform_end.json in Resources */,
 				570A7B80279E421B8CA78066 /* level_ch2.json in Resources */,
 				D9F47C2E8B5A4381AE6D0F14 /* level_ch3.json in Resources */,
 			);
@@ -428,6 +449,9 @@
 				6523F73DC4B231B5611A0A14 /* GameState.swift in Sources */,
 				35E5741867EA2FD7F01FCAD8 /* GameViewController.swift in Sources */,
 				E4CD7FBAF6615A1AB4E9A3CB /* LevelData.swift in Sources */,
+				A1B2C3D4E5F60718293A4B5C /* PlatformEncounterModel.swift in Sources */,
+				C3D4E5F60718293A4B5C6D7E /* PlatformEncounterComposer.swift in Sources */,
+				E5F60718293A4B5C6D7E8F90 /* PlatformBuildingVisuals.swift in Sources */,
 				312978CBEB498B8EADF10268 /* MainMenuScene.swift in Sources */,
 				9BC53599F5668D11E8FB49EE /* MaraPlayerNode.swift in Sources */,
 				FC03C6E8C2282BED6826D5A0 /* PhysicsCategories.swift in Sources */,
