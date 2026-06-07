@@ -12,6 +12,11 @@ final class MainMenuScene: SKScene {
     private var cancelRect   = CGRect.zero
     private var awaitingNewShiftConfirm = false
 
+    private var playStylePanel: SKNode?
+    private var classicModeRect = CGRect.zero
+    private var guidedModeRect  = CGRect.zero
+    private var awaitingPlayStyleChoice = false
+
     override func didMove(to view: SKView) {
         SceneManager.shared.view = view
         layout = SceneLayout.make(scene: self)
@@ -32,6 +37,8 @@ final class MainMenuScene: SKScene {
         buttonTargets.removeAll()
         confirmPanel = nil
         awaitingNewShiftConfirm = false
+        playStylePanel = nil
+        awaitingPlayStyleChoice = false
 
         buildBackground()
         buildTitle()
@@ -128,6 +135,13 @@ final class MainMenuScene: SKScene {
             guard let self else { return }
             SceneManager.shared.transition(to: .credits, from: self)
         }))
+
+        #if DEBUG
+        items.append(("> DEBUG FIELD TEST", nil, true, { [weak self] in
+            guard let self else { return }
+            SceneManager.shared.transition(to: .debugFieldTest, from: self)
+        }))
+        #endif
 
         let colW       = layout.w / CGFloat(items.count)
         let btnFontSz: CGFloat = (items.count > 4 ? 11 : 13) * mult
@@ -268,13 +282,106 @@ final class MainMenuScene: SKScene {
     }
 
     private func confirmNewShift() {
-        AudioManager.shared.stopMainMenuMusic()
         awaitingNewShiftConfirm = false
         confirmPanel?.removeFromParent()
         confirmPanel = nil
 
         SaveManager.shared.deleteSave()
         GameState.shared.resetForNewGame()
+
+        if !GameState.shared.hasChosenPlayStyle {
+            showPlayStyleChooser()
+            return
+        }
+        startNewGameIntro()
+    }
+
+    private func showPlayStyleChooser() {
+        guard playStylePanel == nil else { return }
+
+        let panelW = min(layout.w * 0.72, 560)
+        let panelH = layout.h * 0.62
+
+        let panel = SKNode()
+        panel.zPosition = 1000
+        panel.position  = layout.center
+
+        let bg = SKSpriteNode(color: DLOColor.terminalBG,
+                              size: CGSize(width: panelW, height: panelH))
+        let border = SKShapeNode(rectOf: CGSize(width: panelW, height: panelH), cornerRadius: 4)
+        border.strokeColor = DLOColor.terminalAmber
+        border.lineWidth   = 1.5
+        border.fillColor   = .clear
+        bg.addChild(border)
+        panel.addChild(bg)
+
+        let titleLbl = DLOFont.titleLabel(text: "CHOOSE PLAY STYLE", size: 14)
+        titleLbl.horizontalAlignmentMode = .center
+        titleLbl.position = CGPoint(x: 0, y: panelH * 0.30)
+        panel.addChild(titleLbl)
+
+        let classicLbl = DLOFont.terminalLabel(text: "CLASSIC MODE", size: 11)
+        classicLbl.fontColor = DLOColor.terminalAmber
+        classicLbl.horizontalAlignmentMode = .center
+        classicLbl.position = CGPoint(x: 0, y: panelH * 0.12)
+        panel.addChild(classicLbl)
+
+        let classicSub = makeWrappedLabel(
+            text: "Manual PDA notes. Less guidance. Best if you prefer deduction and reading.",
+            width: panelW * 0.82, size: 8, y: panelH * 0.04)
+        panel.addChild(classicSub)
+
+        let guidedLbl = DLOFont.terminalLabel(text: "GUIDED MODE", size: 11)
+        guidedLbl.fontColor = DLOColor.teal
+        guidedLbl.horizontalAlignmentMode = .center
+        guidedLbl.position = CGPoint(x: 0, y: -panelH * 0.10)
+        panel.addChild(guidedLbl)
+
+        let guidedSub = makeWrappedLabel(
+            text: "Field Notes can read aloud automatically. More accessible. Best for a smoother, guided experience.",
+            width: panelW * 0.82, size: 8, y: -panelH * 0.18)
+        panel.addChild(guidedSub)
+
+        addChild(panel)
+        playStylePanel = panel
+
+        let bH: CGFloat = 52
+        let bW = panelW * 0.70
+        classicModeRect = CGRect(x: layout.center.x - bW / 2,
+                                 y: layout.center.y + panelH * 0.08 - bH / 2,
+                                 width: bW, height: bH)
+        guidedModeRect  = CGRect(x: layout.center.x - bW / 2,
+                                 y: layout.center.y - panelH * 0.14 - bH / 2,
+                                 width: bW, height: bH)
+        awaitingPlayStyleChoice = true
+    }
+
+    private func makeWrappedLabel(text: String, width: CGFloat, size: CGFloat, y: CGFloat) -> SKLabelNode {
+        let lbl = SKLabelNode()
+        lbl.fontName = "Menlo"
+        lbl.fontSize = size
+        lbl.fontColor = DLOColor.uiBorder
+        lbl.horizontalAlignmentMode = .center
+        lbl.verticalAlignmentMode = .center
+        lbl.numberOfLines = 0
+        lbl.preferredMaxLayoutWidth = width
+        lbl.text = text
+        lbl.position = CGPoint(x: 0, y: y)
+        return lbl
+    }
+
+    private func applyPlayStyle(guided: Bool) {
+        GameState.shared.autoReadFieldNotes = guided
+        GameState.shared.hasChosenPlayStyle = true
+        GameState.shared.save()
+        awaitingPlayStyleChoice = false
+        playStylePanel?.removeFromParent()
+        playStylePanel = nil
+        startNewGameIntro()
+    }
+
+    private func startNewGameIntro() {
+        AudioManager.shared.stopMainMenuMusic()
 
         if DialogueFile.load(id: "intro_ch1") != nil {
             SceneManager.shared.transition(
@@ -302,6 +409,17 @@ final class MainMenuScene: SKScene {
                 awaitingNewShiftConfirm = false
                 confirmPanel?.removeFromParent()
                 confirmPanel = nil
+            }
+            return
+        }
+
+        if awaitingPlayStyleChoice {
+            if classicModeRect.contains(pos) {
+                AudioManager.shared.playUIClick()
+                applyPlayStyle(guided: false)
+            } else if guidedModeRect.contains(pos) {
+                AudioManager.shared.playUIClick()
+                applyPlayStyle(guided: true)
             }
             return
         }

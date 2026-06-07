@@ -143,6 +143,7 @@ final class DeskScene: SKScene {
         if PDAJournalManager.consumeUpdateNotice() {
             showPDAUpdateToast()
         }
+        notifyFieldNoteIfUpdated()
         if ProcessInfo.processInfo.arguments.contains("--run-touch-test") {
             run(SKAction.wait(forDuration: 0.5)) { [weak self] in self?.runTouchTests() }
         }
@@ -353,6 +354,7 @@ final class DeskScene: SKScene {
             if PDAJournalPanel.handleTap(
                 at: pos, build: currentPDABuild(),
                 currentShift: PDAJournalManager.shiftNumber(from: chapterID),
+                activeCaseID: currentCase?.id,
                 onRebuild: { [weak self] screen in self?.rebuildPDAJournal(screen: screen) },
                 onClose: { [weak self] in self?.hidePDAJournal() }) {
                 return "pda-nav"
@@ -950,7 +952,11 @@ final class DeskScene: SKScene {
             InvestigationManual.onTrainingCaseStart(caseID: currentCase.id)
             showTrainingMaraCommentary(for: currentCase)
         } else if let hook = currentCase.anomalyHook, !hook.isEmpty {
-            PDAJournalManager.addFieldNote(id: "hook_\(currentCase.id)", text: hook)
+            let shift = PDAJournalManager.shiftNumber(from: chapterID)
+            PDAJournalManager.addFieldNote(
+                id: "shift\(shift)_case_\(currentCase.id)_hook",
+                text: hook, caseID: currentCase.id, shift: shift)
+            notifyFieldNoteIfUpdated()
         }
 
         if chapterID == "ch1" && currentCaseIndex == 0 && !GameState.shared.hasFlag("ch1_tutorial_shown") {
@@ -1004,7 +1010,10 @@ final class DeskScene: SKScene {
                 if isTrainingMode {
                     PDAJournalManager.addFieldNote(
                         id: "suspicious_\(caseFile.id)_\(doc.id)",
-                        text: "Something in this record needs a closer look.")
+                        text: "Something in this record needs a closer look.",
+                        caseID: caseFile.id,
+                        shift: PDAJournalManager.shiftNumber(from: caseFile.chapter))
+                    notifyFieldNoteIfUpdated()
                 } else {
                     GameState.shared.logDeduction("\(caseFile.id)_\(doc.id)_suspicious")
                 }
@@ -1159,8 +1168,11 @@ final class DeskScene: SKScene {
         }
 
         for (i, line) in lines.enumerated() {
-            PDAJournalManager.addFieldNote(id: "train_mara_\(caseFile.id)_\(i)", text: line)
+            PDAJournalManager.addFieldNote(
+                id: "train_mara_\(caseFile.id)_\(i)", text: line,
+                caseID: caseFile.id, shift: nil)
         }
+        notifyFieldNoteIfUpdated()
 
         var delay: TimeInterval = 0.6
         for line in lines {
@@ -1666,7 +1678,10 @@ final class DeskScene: SKScene {
         if isTrainingMode {
             PDAJournalManager.addFieldNote(
                 id: "audit_\(caseFile.id)",
-                text: "The anomaly log can help narrow things down.")
+                text: "The anomaly log can help narrow things down.",
+                caseID: caseFile.id,
+                shift: PDAJournalManager.shiftNumber(from: caseFile.chapter))
+            notifyFieldNoteIfUpdated()
         } else {
             GameState.shared.logDeduction("\(caseFile.id)_audit")
         }
@@ -2110,6 +2125,15 @@ final class DeskScene: SKScene {
         } else {
             built.panel.alpha = 1
         }
+
+        notifyFieldNoteIfUpdated()
+
+        if priorScreen != screen, case .section(.fieldNotes, _) = screen {
+            PDAJournalPanel.prepareFieldNotesTab(
+                activeCaseID: currentCase?.id,
+                currentShift: shift,
+                isNewVisit: true)
+        }
     }
 
     private static func shouldFadePDATransition(
@@ -2123,9 +2147,30 @@ final class DeskScene: SKScene {
     private func hidePDAJournal() {
         guard let overlay = pdaOverlay else { return }
         NSLog("[DLO PDA] desk journal closed")
+        FieldNotesSpeechManager.shared.stop()
         clearModalOverlayState()
         overlay.run(SKAction.sequence([
             SKAction.fadeOut(withDuration: 0.1),
+            SKAction.removeFromParent()
+        ]))
+    }
+
+    private func notifyFieldNoteIfUpdated() {
+        guard let message = PDAJournalManager.consumeFieldNoteNotice() else { return }
+        showFieldNoteToast(message)
+    }
+
+    private func showFieldNoteToast(_ message: String) {
+        let toast = DLOFont.terminalLabel(text: message, size: 11 * hudTextMult)
+        toast.fontColor = SKColor(white: 0.95, alpha: 1)
+        toast.position = CGPoint(x: layout.midX, y: layout.bottom + 52)
+        toast.zPosition = 900
+        toast.alpha = 0
+        addChild(toast)
+        toast.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0.15),
+            SKAction.wait(forDuration: 1.4),
+            SKAction.fadeOut(withDuration: 0.35),
             SKAction.removeFromParent()
         ]))
     }

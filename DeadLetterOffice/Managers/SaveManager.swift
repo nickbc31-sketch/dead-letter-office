@@ -15,6 +15,8 @@ struct SaveData: Codable {
     var caseDecisions: [String: String]
     var subtitlesEnabled: Bool
     var reducedFlashingEnabled: Bool
+    var autoReadFieldNotes: Bool?
+    var hasChosenPlayStyle: Bool?
     var textSizeMultiplier: CGFloat
     var musicVolume: Float
     var sfxVolume: Float
@@ -45,6 +47,8 @@ final class SaveManager {
             caseDecisions: state.caseDecisions,
             subtitlesEnabled: state.subtitlesEnabled,
             reducedFlashingEnabled: state.reducedFlashingEnabled,
+            autoReadFieldNotes: state.autoReadFieldNotes,
+            hasChosenPlayStyle: state.hasChosenPlayStyle,
             textSizeMultiplier: state.textSizeMultiplier,
             musicVolume: state.musicVolume,
             sfxVolume: state.sfxVolume,
@@ -76,6 +80,8 @@ final class SaveManager {
         state.caseDecisions          = data.caseDecisions
         state.subtitlesEnabled       = data.subtitlesEnabled
         state.reducedFlashingEnabled = data.reducedFlashingEnabled
+        state.autoReadFieldNotes     = data.autoReadFieldNotes ?? false
+        state.hasChosenPlayStyle     = data.hasChosenPlayStyle ?? false
         state.textSizeMultiplier     = data.textSizeMultiplier
         state.musicVolume            = data.musicVolume
         state.sfxVolume              = data.sfxVolume
@@ -94,4 +100,63 @@ final class SaveManager {
     var hasSave: Bool {
         UserDefaults.standard.data(forKey: saveKey) != nil
     }
+
+    #if DEBUG
+    func snapshot(from state: GameState) -> SaveData {
+        SaveData(
+            complianceScore: state.complianceScore,
+            empathyScore: state.empathyScore,
+            suspicionScore: state.suspicionScore,
+            deductionCount: state.deductionCount,
+            resistanceTrust: state.resistanceTrust,
+            corporateTrust: state.corporateTrust,
+            citizenHarmCount: state.citizenHarmCount,
+            currentChapterID: state.currentChapterID,
+            completedCaseIDs: Array(state.completedCaseIDs),
+            completedLevelIDs: Array(state.completedLevelIDs),
+            activeFlags: Array(state.activeFlags),
+            caseDecisions: state.caseDecisions,
+            subtitlesEnabled: state.subtitlesEnabled,
+            reducedFlashingEnabled: state.reducedFlashingEnabled,
+            autoReadFieldNotes: state.autoReadFieldNotes,
+            hasChosenPlayStyle: state.hasChosenPlayStyle,
+            textSizeMultiplier: state.textSizeMultiplier,
+            musicVolume: state.musicVolume,
+            sfxVolume: state.sfxVolume,
+            notebookUnlockedIDs: Array(state.notebookUnlockedIDs),
+            pdaJournal: state.pdaJournal
+        )
+    }
+
+    func apply(_ data: SaveData, to state: GameState) {
+        state.complianceScore        = data.complianceScore
+        state.empathyScore           = data.empathyScore
+        state.suspicionScore         = data.suspicionScore
+        state.deductionCount         = data.deductionCount ?? 0
+        state.resistanceTrust        = data.resistanceTrust
+        state.corporateTrust         = data.corporateTrust
+        state.citizenHarmCount       = data.citizenHarmCount
+        state.currentChapterID       = data.currentChapterID
+        state.completedCaseIDs       = Set(data.completedCaseIDs)
+        state.completedLevelIDs      = Set(data.completedLevelIDs)
+        state.activeFlags            = Set(data.activeFlags)
+        state.caseDecisions          = data.caseDecisions
+        state.subtitlesEnabled       = data.subtitlesEnabled
+        state.reducedFlashingEnabled = data.reducedFlashingEnabled
+        state.autoReadFieldNotes     = data.autoReadFieldNotes ?? false
+        state.hasChosenPlayStyle     = data.hasChosenPlayStyle ?? false
+        state.textSizeMultiplier     = data.textSizeMultiplier
+        state.musicVolume            = data.musicVolume
+        state.sfxVolume              = data.sfxVolume
+        state.notebookUnlockedIDs    = Set(data.notebookUnlockedIDs ?? [])
+        state.pdaJournal = data.pdaJournal ?? PDAJournalState()
+        NotebookJournalMigration.applyIfNeeded(
+            journal: &state.pdaJournal,
+            legacyNotebookIDs: state.notebookUnlockedIDs
+        )
+        state.platformSpawnOverride = nil
+        state.platformSpawnOverrideLevelID = nil
+        state.settingsReturnDestination = nil
+    }
+    #endif
 }

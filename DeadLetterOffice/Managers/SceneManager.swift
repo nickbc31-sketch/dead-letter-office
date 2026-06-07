@@ -18,6 +18,7 @@ indirect enum SceneType {
     case chapterSelect
     case ending(endingType: EndingType)
     case debug
+    case debugFieldTest
 }
 
 final class SceneManager {
@@ -78,7 +79,11 @@ final class SceneManager {
             s.scaleMode = .resizeFill
             return s
         case .platform(let levelID):
-            let s = PlatformScene(size: size); s.levelID = levelID; s.scaleMode = .resizeFill; return s
+            let s = PlatformScene(size: size); s.levelID = levelID; s.scaleMode = .resizeFill
+            #if DEBUG
+            s.debugFieldTestMode = GameState.shared.isDebugFieldTestSession
+            #endif
+            return s
         case .chapterComplete(let chapterID, let nextScene):
             let s = ChapterCompleteScene(size: size)
             s.chapterID = chapterID
@@ -91,6 +96,12 @@ final class SceneManager {
             let s = EndingScene(size: size); s.endingType = endingType; s.scaleMode = .resizeFill; return s
         case .debug:
             let s = DebugScene(size: size); s.scaleMode = .resizeFill; return s
+        case .debugFieldTest:
+            #if DEBUG
+            let s = DebugFieldTestScene(size: size); s.scaleMode = .resizeFill; return s
+            #else
+            let s = MainMenuScene(size: size); s.scaleMode = .resizeFill; return s
+            #endif
         }
     }
 }

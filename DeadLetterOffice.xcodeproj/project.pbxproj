@@ -50,6 +50,9 @@
 		1NV35T1G4T10NL1NK01 /* InvestigationLinkResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1NV35T1G4T10NL1NK02 /* InvestigationLinkResolver.swift */; };
 		PD4GU1D4NC3R3S01V01 /* PDAGuidanceResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = PD4GU1D4NC3R3S01V02 /* PDAGuidanceResolver.swift */; };
 		INV3ST1G4T10NM4NU4L01 /* InvestigationManual.swift in Sources */ = {isa = PBXBuildFile; fileRef = INV3ST1G4T10NM4NU4L02 /* InvestigationManual.swift */; };
+		D3BUGF13LD735S510N01 /* DebugFieldTestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BUGF13LD735S510N02 /* DebugFieldTestSession.swift */; };
+		F13LDN0T35P33CH01 /* FieldNotesSpeechManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13LDN0T35P33CH02 /* FieldNotesSpeechManager.swift */; };
+		D3BUGF13LD735C3N301 /* DebugFieldTestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BUGF13LD735C3N302 /* DebugFieldTestScene.swift */; };
 		C4S3TR41N1N0J50N01 /* cases_training.json in Resources */ = {isa = PBXBuildFile; fileRef = C4S3TR41N1N0J50N02 /* cases_training.json */; };
 		PD4J0URN4LP4N3L01 /* PDAJournalPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = PD4J0URN4LP4N3L02 /* PDAJournalPanel.swift */; };
 		F1X3DH34DR5CR0LL01 /* FixedHeaderScrollReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1X3DH34DR5CR0LL02 /* FixedHeaderScrollReport.swift */; };
@@ -188,6 +191,9 @@
 		1NV35T1G4T10NL1NK02 /* InvestigationLinkResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestigationLinkResolver.swift; sourceTree = "<group>"; };
 		PD4GU1D4NC3R3S01V02 /* PDAGuidanceResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDAGuidanceResolver.swift; sourceTree = "<group>"; };
 		INV3ST1G4T10NM4NU4L02 /* InvestigationManual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestigationManual.swift; sourceTree = "<group>"; };
+		D3BUGF13LD735S510N02 /* DebugFieldTestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugFieldTestSession.swift; sourceTree = "<group>"; };
+		F13LDN0T35P33CH02 /* FieldNotesSpeechManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldNotesSpeechManager.swift; sourceTree = "<group>"; };
+		D3BUGF13LD735C3N302 /* DebugFieldTestScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugFieldTestScene.swift; sourceTree = "<group>"; };
 		C4S3TR41N1N0J50N02 /* cases_training.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = cases_training.json; sourceTree = "<group>"; };
 		PD4J0URN4LP4N3L02 /* PDAJournalPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDAJournalPanel.swift; sourceTree = "<group>"; };
 		F1X3DH34DR5CR0LL02 /* FixedHeaderScrollReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedHeaderScrollReport.swift; sourceTree = "<group>"; };
@@ -348,6 +354,8 @@
 				1NV35T1G4T10NL1NK02 /* InvestigationLinkResolver.swift */,
 				PD4GU1D4NC3R3S01V02 /* PDAGuidanceResolver.swift */,
 				INV3ST1G4T10NM4NU4L02 /* InvestigationManual.swift */,
+				D3BUGF13LD735S510N02 /* DebugFieldTestSession.swift */,
+				F13LDN0T35P33CH02 /* FieldNotesSpeechManager.swift */,
 				F13LD1NV35T1G4RUL35F1L02 /* FieldInvestigationDesignRules.swift */,
 				H4CK1NG5Y5T3M1N4G3F1L02 /* HackingSystem.swift */,
 				H4CKPUZZL3M0D3L1N0D3F02 /* HackPuzzleModels.swift */,
@@ -472,6 +480,7 @@
 				254262DB820B5E13A4B4D93B /* ChapterSelectScene.swift */,
 				5E9C77EE836100F7DF39DC9C /* CreditsScene.swift */,
 				E1A7B2C30D4F5E6080B1A2C3 /* DebugScene.swift */,
+				D3BUGF13LD735C3N302 /* DebugFieldTestScene.swift */,
 				H4CKPUZZL3T3ST1N0D3F02 /* HackPuzzleTestScene.swift */,
 				D6678C35C042AD903F06C489 /* DeskScene.swift */,
 				9D905A3EB27702E0B495318E /* DialogueScene.swift */,
@@ -663,6 +672,9 @@
 				FC03C6E8C2282BED6826D5A0 /* PhysicsCategories.swift in Sources */,
 				CD78FE80E6051BE9B0E51475 /* PlatformScene.swift in Sources */,
 				F2B8C3D41E5A6F7091A2B3C4 /* DebugScene.swift in Sources */,
+				D3BUGF13LD735C3N301 /* DebugFieldTestScene.swift in Sources */,
+				D3BUGF13LD735S510N01 /* DebugFieldTestSession.swift in Sources */,
+				F13LDN0T35P33CH01 /* FieldNotesSpeechManager.swift in Sources */,
 				77940AF311E29502366D03DA /* SaveManager.swift in Sources */,
 				5F85EBD238E5B1CDEAAC387D /* SceneDelegate.swift in Sources */,
 				C8246D43F13BE8073541FBEB /* SceneLayout.swift in Sources */,

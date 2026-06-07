@@ -76,6 +76,21 @@ class GameViewController: UIViewController {
             sv.presentScene(s); return
         }
         #if DEBUG
+        if args.contains("--start-at-debug-field") {
+            let s = DebugFieldTestScene(size: sz); s.scaleMode = .resizeFill
+            sv.presentScene(s); return
+        }
+        if let shiftArg = args.first(where: { $0.hasPrefix("--debug-field-shift=") }),
+           let shift = Int(shiftArg.split(separator: "=").last ?? ""),
+           (1...8).contains(shift) {
+            DebugFieldTestSession.prepareShift(shift)
+            let s = PlatformScene(size: sz)
+            s.levelID = "level_ch\(shift)"
+            s.debugFieldTestMode = true
+            s.scaleMode = .resizeFill
+            NSLog("[DLO DebugField] launch arg — level_ch%d", shift)
+            sv.presentScene(s); return
+        }
         if args.contains("-DLOTestHackPuzzles") {
             let s = HackPuzzleTestScene(size: sz); s.scaleMode = .resizeFill
             sv.presentScene(s); return

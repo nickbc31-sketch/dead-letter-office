@@ -35,6 +35,8 @@ enum PDAJournalPanel {
     private static let pdaBorder = SKColor(red: 0.38, green: 0.48, blue: 0.42, alpha: 1)
     private static let pdaBG = SKColor(red: 0.10, green: 0.11, blue: 0.14, alpha: 1)
     private static let pdaText = SKColor(red: 0.78, green: 0.84, blue: 0.74, alpha: 1)
+    private static let fieldNoteUnread = SKColor(white: 1.0, alpha: 0.95)
+    private static let fieldNoteRead = SKColor(red: 0.38, green: 0.95, blue: 0.48, alpha: 1)
 
     // MARK: - Build
 
@@ -189,7 +191,7 @@ enum PDAJournalPanel {
             bodyText = PDAJournalManager.discoveriesBody(forShift: shift)
         case .fieldNotes:
             header = "FIELD NOTES"
-            bodyText = PDAJournalManager.fieldNotesBody()
+            bodyText = ""
         case .manual:
             header = "MANUAL"
             bodyText = PDAJournalManager.manualBody()
@@ -203,16 +205,13 @@ enum PDAJournalPanel {
                              textMultiplier: textMultiplier, regions: &regions)
         }
 
-        let footerH: CGFloat = 88
+        let hasPlayNote = section == .fieldNotes
+        let footerH: CGFloat = hasPlayNote ? 118 : 88
         let headerH: CGFloat = 72
         let shiftBarH: CGFloat = usesShiftBar ? 34 : 0
         let bodyW = panelSize.width - 28
         let bodyH = panelSize.height - headerH - shiftBarH - footerH
         let bodyTop = panelSize.height / 2 - headerH - shiftBarH
-
-        let bodyLbl = makeBodyLabel(text: bodyText, width: bodyW, size: 11.5 * textMultiplier)
-        bodyLbl.horizontalAlignmentMode = .left
-        bodyLbl.verticalAlignmentMode = .top
 
         let clip = SKCropNode()
         let mask = SKSpriteNode(color: .white, size: CGSize(width: bodyW, height: bodyH))
@@ -220,8 +219,19 @@ enum PDAJournalPanel {
         clip.maskNode = mask
 
         let content = SKNode()
-        bodyLbl.position = CGPoint(x: -bodyW / 2, y: bodyH / 2)
-        content.addChild(bodyLbl)
+        let bodyLbl: SKLabelNode
+        if section == .fieldNotes {
+            bodyLbl = buildFieldNotesContent(
+                into: content, width: bodyW, height: bodyH,
+                textMultiplier: textMultiplier,
+                activeCaseID: activeCaseID, currentShift: shift)
+        } else {
+            bodyLbl = makeBodyLabel(text: bodyText, width: bodyW, size: 11.5 * textMultiplier)
+            bodyLbl.horizontalAlignmentMode = .left
+            bodyLbl.verticalAlignmentMode = .top
+            bodyLbl.position = CGPoint(x: -bodyW / 2, y: bodyH / 2)
+            content.addChild(bodyLbl)
+        }
         clip.addChild(content)
         panel.addChild(clip)
 
@@ -248,11 +258,95 @@ enum PDAJournalPanel {
         backLbl.position = CGPoint(x: -panelSize.width / 2 + 16, y: -panelSize.height / 2 + 20)
         panel.addChild(backLbl)
 
+        if hasPlayNote {
+            addFieldNotesPlayButton(
+                to: panel, panelSize: panelSize, center: center,
+                textMultiplier: textMultiplier, regions: &regions)
+        }
+
         regions.close = closeRect(panelSize: panelSize, center: center, labelSize: 11 * textMultiplier)
         addCloseButton(to: panel, panelSize: panelSize, size: 11 * textMultiplier)
 
         return BuildResult(panel: panel, scrollState: scrollState, regions: regions,
                            screen: .section(section, shift: shift))
+    }
+
+    private static func addFieldNotesPlayButton(
+        to panel: SKNode,
+        panelSize: CGSize,
+        center: CGPoint,
+        textMultiplier: CGFloat,
+        regions: inout HitRegions
+    ) {
+        let speaking = FieldNotesSpeechManager.shared.isSpeaking
+        let label = speaking ? "[ STOP NOTE ]" : "[ PLAY NOTE ]"
+        let action = speaking ? "stop_field_note" : "play_field_note"
+        let btnW: CGFloat = min(panelSize.width * 0.55, 200)
+        let btnH: CGFloat = max(32, 28 * textMultiplier)
+        let localY: CGFloat = -panelSize.height / 2 + 58
+        let btn = makeButton(label: label, width: btnW, size: 11 * textMultiplier)
+        btn.position = CGPoint(x: 0, y: localY)
+        panel.addChild(btn)
+        regions.buttons.append((buttonHitRect(center: center, width: btnW, height: btnH, localY: localY), action))
+    }
+
+    /// Prepare Field Notes tab — Classic marks relevant unread as viewed; Guided speaks new notes only.
+    static func prepareFieldNotesTab(
+        activeCaseID: String?,
+        currentShift: Int,
+        isNewVisit: Bool
+    ) {
+        guard isNewVisit else { return }
+        if GameState.shared.autoReadFieldNotes {
+            guard let payload = PDAJournalManager.fieldNotesAutoReadSpeechText(
+                activeCaseID: activeCaseID, currentShift: currentShift) else { return }
+            PDAJournalManager.markFieldNotesRead(ids: payload.noteIDs)
+            FieldNotesSpeechManager.shared.speak(payload.text)
+        } else {
+            PDAJournalManager.markRelevantFieldNotesViewed(
+                activeCaseID: activeCaseID, currentShift: currentShift)
+        }
+    }
+
+    private static func buildFieldNotesContent(
+        into content: SKNode,
+        width bodyW: CGFloat,
+        height bodyH: CGFloat,
+        textMultiplier: CGFloat,
+        activeCaseID: String?,
+        currentShift: Int
+    ) -> SKLabelNode {
+        let lines = PDAJournalManager.fieldNotesBody(
+            activeCaseID: activeCaseID, currentShift: currentShift)
+        let fontSize = 11.5 * textMultiplier
+        let lineH = fontSize * 1.38
+        var y = bodyH / 2
+        var measureLines: [String] = []
+
+        for (text, isRead) in lines {
+            guard !text.isEmpty else {
+                y -= lineH * 0.45
+                measureLines.append("")
+                continue
+            }
+            let lbl = makeBodyLabel(text: text, width: bodyW, size: fontSize)
+            lbl.horizontalAlignmentMode = .left
+            lbl.verticalAlignmentMode = .top
+            if text.hasPrefix("•") {
+                lbl.fontColor = isRead ? fieldNoteRead : fieldNoteUnread
+            } else {
+                lbl.fontColor = pdaText.withAlphaComponent(isRead ? 0.72 : 0.95)
+            }
+            lbl.position = CGPoint(x: -bodyW / 2, y: y)
+            content.addChild(lbl)
+            y -= lineH
+            measureLines.append(text)
+        }
+
+        let measure = makeBodyLabel(text: measureLines.joined(separator: "\n"), width: bodyW, size: fontSize)
+        measure.alpha = 0
+        content.addChild(measure)
+        return measure
     }
 
     // MARK: - Touch routing
@@ -261,10 +355,12 @@ enum PDAJournalPanel {
         at scenePos: CGPoint,
         build: BuildResult,
         currentShift: Int,
+        activeCaseID: String? = nil,
         onRebuild: @escaping (Screen) -> Void,
         onClose: @escaping () -> Void
     ) -> Bool {
         if build.regions.close.contains(scenePos) {
+            FieldNotesSpeechManager.shared.stop()
             onClose()
             return true
         }
@@ -275,6 +371,7 @@ enum PDAJournalPanel {
            let tappedShift = shiftAtTap(scenePos, shiftBar: build.regions.shiftBar,
                                         in: build.regions.buttons) {
             if tappedShift != viewingShift {
+                FieldNotesSpeechManager.shared.stop()
                 onRebuild(.section(section, shift: tappedShift))
             }
             return true
@@ -284,20 +381,39 @@ enum PDAJournalPanel {
             guard !action.hasPrefix("shift_") else { continue }
             guard rect.contains(scenePos) else { continue }
             switch action {
+            case "play_field_note":
+                FieldNotesSpeechManager.shared.speak(
+                    PDAJournalManager.fieldNotesPlaySpeechText(
+                        activeCaseID: activeCaseID, currentShift: currentShift))
+                if case .section(let section, let shift) = build.screen {
+                    onRebuild(.section(section, shift: shift))
+                }
+            case "stop_field_note":
+                FieldNotesSpeechManager.shared.stop()
+                if case .section(let section, let shift) = build.screen {
+                    onRebuild(.section(section, shift: shift))
+                }
             case "open_pda":
+                FieldNotesSpeechManager.shared.stop()
                 PDAJournalManager.markBootSeen()
                 onRebuild(.hub)
             case "section_journal":
+                FieldNotesSpeechManager.shared.stop()
                 onRebuild(.section(.journal, shift: currentShift))
             case "section_objectives":
+                FieldNotesSpeechManager.shared.stop()
                 onRebuild(.section(.objectives, shift: currentShift))
             case "section_discoveries":
+                FieldNotesSpeechManager.shared.stop()
                 onRebuild(.section(.discoveries, shift: currentShift))
             case "section_fieldnotes":
+                FieldNotesSpeechManager.shared.stop()
                 onRebuild(.section(.fieldNotes, shift: currentShift))
             case "section_manual":
+                FieldNotesSpeechManager.shared.stop()
                 onRebuild(.section(.manual, shift: currentShift))
             case "back":
+                FieldNotesSpeechManager.shared.stop()
                 onRebuild(.hub)
             default:
                 break

@@ -86,6 +86,13 @@ final class SettingsScene: SKScene {
         }
         yPos -= rowStep
 
+        addToggle(label: "AUTO-READ FIELD NOTES", value: state.autoReadFieldNotes, y: yPos) { val in
+            GameState.shared.autoReadFieldNotes = val
+            GameState.shared.hasChosenPlayStyle = true
+            GameState.shared.save()
+        }
+        yPos -= rowStep
+
         addSlider(label: "MUSIC VOLUME", value: CGFloat(state.musicVolume), y: yPos) { val in
             GameState.shared.musicVolume = Float(val)
             AudioManager.shared.setMusicVolume(Float(val))

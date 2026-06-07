@@ -44,12 +44,19 @@ final class GameState {
     // Settings
     var subtitlesEnabled: Bool = true
     var reducedFlashingEnabled: Bool = false
+    var autoReadFieldNotes: Bool = false
+    var hasChosenPlayStyle: Bool = false
     var textSizeMultiplier: CGFloat = 1.0
     var musicVolume: Float = 0.6
     var sfxVolume: Float = 0.8
 
     // Convenience
     var isMaraScheduledForDeath: Bool { activeFlags.contains("mara_death_scheduled") }
+
+    #if DEBUG
+    /// True while a debug field test session is active — not persisted.
+    var isDebugFieldTestSession = false
+    #endif
 
     func setFlag(_ flag: String) { activeFlags.insert(flag) }
     func clearFlag(_ flag: String) { activeFlags.remove(flag) }
@@ -138,7 +145,7 @@ final class GameState {
         caseDecisions    = [:]
         notebookUnlockedIDs = []
         pdaJournal = PDAJournalState()
-        // Settings (subtitlesEnabled, reducedFlashingEnabled, textSizeMultiplier,
-        // musicVolume, sfxVolume) are preserved across new game starts.
+        // Settings (subtitles, flashing, guidance, text size, volumes) preserved across new game starts.
+        hasChosenPlayStyle = false
     }
 }

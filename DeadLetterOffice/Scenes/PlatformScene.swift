@@ -12,6 +12,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     private var isLevelReady = false
     #if DEBUG
     var debugValidationMode = false
+    var debugFieldTestMode = false
     private var debugValidationElapsed: TimeInterval = 0
     private var debugValidationComplete = false
     #endif
@@ -1873,9 +1874,11 @@ Return to authorised sector immediately.
             let observation = inter.maraObservation ?? self.maraObservationForTerminal(id: inter.id)
             let fullBody = self.appendMaraObservation(body, observation: observation)
             if let observation {
+                let shift = PDAJournalManager.shiftNumber(from: self.levelData?.chapter ?? "ch1")
                 PDAJournalManager.addFieldNote(
-                    id: "terminal_\(inter.id)",
-                    text: PDAGuidanceResolver.clampMara(observation))
+                    id: "shift\(shift)_terminal_\(inter.id)",
+                    text: PDAGuidanceResolver.clampMara(observation),
+                    shift: shift)
             }
             GameState.shared.logDeduction("terminal_\(inter.id)")
             self.notifyPDAIfUpdated()
@@ -2062,6 +2065,7 @@ Sign-out required.
     // MARK: - Content Panel
 
     private func dismissActivePanel(onClose: (() -> Void)? = nil) {
+        FieldNotesSpeechManager.shared.stop()
         activePanel?.removeFromParent()
         clearPDAJournalState()
         panelScrollBodyRect = .zero
@@ -2378,6 +2382,16 @@ Sign-out required.
         pdaJournalRegions = built.regions
         panelScrollState = built.scrollState
         cameraNode?.addChild(built.panel)
+
+        notifyFieldNoteIfUpdated()
+
+        if priorScreen != screen, case .section(.fieldNotes, _) = screen {
+            let shift = PDAJournalManager.shiftNumber(from: levelData?.chapter ?? "ch1")
+            PDAJournalPanel.prepareFieldNotesTab(
+                activeCaseID: nil,
+                currentShift: shift,
+                isNewVisit: true)
+        }
     }
 
     private static func shouldFadePDATransition(
@@ -2392,6 +2406,28 @@ Sign-out required.
         if PDAJournalManager.consumeUpdateNotice() {
             showPDAToast()
         }
+        notifyFieldNoteIfUpdated()
+    }
+
+    private func notifyFieldNoteIfUpdated() {
+        guard let message = PDAJournalManager.consumeFieldNoteNotice() else { return }
+        showFieldNoteToast(message)
+    }
+
+    private func showFieldNoteToast(_ message: String) {
+        let cam = SceneLayout.makeCamera(scene: self)
+        let lbl = DLOFont.terminalLabel(text: message, size: 10 * GameState.shared.textSizeMultiplier)
+        lbl.horizontalAlignmentMode = .center
+        lbl.fontColor = SKColor(white: 0.95, alpha: 1)
+        lbl.position = CGPoint(x: cam.midX, y: cam.bottom + 60)
+        lbl.zPosition = 2000
+        overlayNode?.addChild(lbl)
+        lbl.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0.12),
+            SKAction.wait(forDuration: 1.4),
+            SKAction.fadeOut(withDuration: 0.3),
+            SKAction.removeFromParent()
+        ]))
     }
 
     private func showPDAToast() {
@@ -2467,6 +2503,12 @@ Sign-out required.
     private func completePlatformSection(dialogueID: String) {
         guard !isLevelComplete else { return }
         isLevelComplete = true
+        #if DEBUG
+        if debugFieldTestMode || GameState.shared.isDebugFieldTestSession {
+            finishDebugFieldTestTransition()
+            return
+        }
+        #endif
         let chapterID = levelData?.chapter ?? "ch1"
         GameState.shared.recordLevelComplete(levelID)
         if let nextID = nextChapterID(from: chapterID) {
@@ -2500,6 +2542,12 @@ Sign-out required.
     private func levelComplete() {
         guard !isLevelComplete else { return }
         isLevelComplete = true
+        #if DEBUG
+        if debugFieldTestMode || GameState.shared.isDebugFieldTestSession {
+            finishDebugFieldTestTransition()
+            return
+        }
+        #endif
         GameState.shared.recordLevelComplete(levelID)
 
         // Set the unlock flag for the next chapter so it appears unlocked in Chapter Select.
@@ -2607,6 +2655,7 @@ Sign-out required.
                         panel: panel, scrollState: panelScrollState,
                         regions: pdaJournalRegions, screen: pdaJournalScreen),
                     currentShift: shift,
+                    activeCaseID: nil,
                     onRebuild: { [weak self] screen in self?.rebuildFieldPDAJournal(screen: screen) },
                     onClose: { [weak self] in
                         self?.isGamePaused = false
@@ -2668,15 +2717,40 @@ Sign-out required.
         div.position = CGPoint(x: 0, y: panelH / 2 - 44 * mult)
         panel.addChild(div)
 
-        let btnLabels: [(String, () -> Void)] = [
+        var btnLabels: [(String, () -> Void)] = [
             ("[ RESUME ]",                  { [weak self] in self?.hidePauseMenu() }),
+        ]
+        #if DEBUG
+        if debugFieldTestMode || GameState.shared.isDebugFieldTestSession {
+            btnLabels.append(("[ RETURN TO FIELD TEST ]", { [weak self] in
+                guard let self else { return }
+                self.hidePauseMenu()
+                DebugFieldTestSession.returnToPicker(from: self)
+            }))
+        }
+        #endif
+        btnLabels += [
             ("[ SAVE + RETURN TO MENU ]",   { [weak self] in
                 guard let self else { return }
+                #if DEBUG
+                if self.debugFieldTestMode || GameState.shared.isDebugFieldTestSession {
+                    self.hidePauseMenu()
+                    DebugFieldTestSession.endAndReturnToMainMenu(from: self)
+                    return
+                }
+                #endif
                 GameState.shared.save()
                 self.hidePauseMenu()
                 SceneManager.shared.transition(to: .mainMenu, from: self) }),
             ("[ RETURN WITHOUT SAVING ]",   { [weak self] in
                 guard let self else { return }
+                #if DEBUG
+                if self.debugFieldTestMode || GameState.shared.isDebugFieldTestSession {
+                    self.hidePauseMenu()
+                    DebugFieldTestSession.endAndReturnToMainMenu(from: self)
+                    return
+                }
+                #endif
                 self.hidePauseMenu()
                 SceneManager.shared.transition(to: .mainMenu, from: self) }),
             ("[ SETTINGS ]",                { [weak self] in
@@ -2711,6 +2785,24 @@ Sign-out required.
         pauseMenuNode = nil
         releaseModalLock()
     }
+
+    #if DEBUG
+    private func finishDebugFieldTestTransition() {
+        let overlay = SKSpriteNode(color: .black, size: size)
+        overlay.position = .zero
+        overlay.zPosition = 999
+        overlay.alpha = 0
+        cameraNode?.addChild(overlay)
+        overlay.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0.5),
+            SKAction.wait(forDuration: 0.4),
+            SKAction.run { [weak self] in
+                guard let self else { return }
+                DebugFieldTestSession.returnToPicker(from: self)
+            },
+        ]))
+    }
+    #endif
 }
 
 // MARK: - CGPoint distance
