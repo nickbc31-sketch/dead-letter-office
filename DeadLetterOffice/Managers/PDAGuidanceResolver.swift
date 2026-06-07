@@ -178,6 +178,20 @@ enum PDAGuidanceResolver {
             "No citizen ID on the certificate.",
             "Compare the death record with the message origin.",
         ],
+        "case_training_a": [
+            "Check each document tab before stamping.",
+            "Timestamps should agree across records.",
+        ],
+        "case_training_b": [
+            "Let's compare these records.",
+            "The dates don't match.",
+            "The anomaly log can help narrow things down.",
+        ],
+        "case_training_c": [
+            "Review all three documents.",
+            "Status lines may not agree across records.",
+            "The PDA stores useful observations.",
+        ],
     ]
 
     private static func genericEscalation(caseFile: CaseFile, level: Int) -> String {

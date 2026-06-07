@@ -1,0 +1,491 @@
+[
+  {
+    "id": "case_training_a",
+    "chapter": "training",
+    "senderName": "R. Kess",
+    "senderStatus": "Deceased",
+    "senderCitizenID": "VC-9001-M",
+    "recipientName": "T. Kess",
+    "recipientCitizenID": "VC-9002-F",
+    "messageText": "T. — the garden key is under the loose tile. Do not let them clear the unit before you arrive.",
+    "documents": [
+      {
+        "id": "doc_train_a_death",
+        "title": "DEATH CERTIFICATE",
+        "type": "death_certificate",
+        "issuer": "Veyr City Authority",
+        "issueDate": "2147.01.10",
+        "referenceNumber": "VCA-DC-900101",
+        "fields": [
+          {
+            "key": "Citizen",
+            "value": "Kess, R.",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Citizen ID",
+            "value": "VC-9001-M",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Date of Death",
+            "value": "2147.01.08 — 11:40",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Cause",
+            "value": "Medical failure — respiratory",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
+        ],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [
+          {
+            "text": "CERTIFIED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.01.10",
+            "appliedBy": "Registry Auto-Seal"
+          }
+        ],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_train_a_transit",
+        "title": "TRANSIT MANIFEST",
+        "type": "incident_report",
+        "issuer": "Ministry of Transit",
+        "issueDate": "2147.01.08",
+        "referenceNumber": "MoT-MF-00412",
+        "fields": [
+          {
+            "key": "Route",
+            "value": "Line 3 — Sector 2 shuttle",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Departure",
+            "value": "2147.01.08 — 09:15",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Arrival",
+            "value": "2147.01.08 — 11:55",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Passenger VC-9001-M",
+            "value": "Confirmed — disembarked 11:52",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
+        ],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [],
+    "availableActions": [
+      {
+        "id": "approve",
+        "label": "APPROVE DELIVERY",
+        "shortLabel": "APPROVED",
+        "color": "#1A5C1A",
+        "auditResponse": "Training record: delivery approved. Timestamps consistent.",
+        "consequences": {},
+        "resultText": "Training Case A complete. Records align — delivery approved.",
+        "isIllegal": false
+      },
+      {
+        "id": "reject",
+        "label": "REJECT DELIVERY",
+        "shortLabel": "REJECTED",
+        "color": "#1A3A5C",
+        "auditResponse": "Training record: delivery rejected without anomaly basis.",
+        "consequences": {},
+        "resultText": "Delivery rejected. Review timestamps — records appear consistent.",
+        "isIllegal": false
+      },
+      {
+        "id": "flag_anomaly",
+        "label": "FLAG ANOMALY",
+        "shortLabel": "FLAGGED",
+        "color": "#8B6914",
+        "auditResponse": "Training record: anomaly flagged without supporting discrepancy.",
+        "consequences": {},
+        "resultText": "Anomaly flagged. No contradictions detected in this packet.",
+        "isIllegal": false
+      }
+    ],
+    "correctLegalActionID": "approve",
+    "followUpFlags": null,
+    "requiredFlags": null,
+    "investigationCategories": [
+      {
+        "category": "DEATH RECORD",
+        "fact": "Date of Death: 2147.01.08 — 11:40"
+      },
+      {
+        "category": "TRANSIT",
+        "fact": "Arrival: 2147.01.08 — 11:55"
+      }
+    ],
+    "anomalyHook": null
+  },
+  {
+    "id": "case_training_b",
+    "chapter": "training",
+    "senderName": "P. Venn",
+    "senderStatus": "Deceased",
+    "senderCitizenID": "VC-9010-F",
+    "recipientName": "S. Venn",
+    "recipientCitizenID": "VC-9011-M",
+    "messageText": "S. — I made it off the platform. Do not sign anything from Housing until you hear from me.",
+    "documents": [
+      {
+        "id": "doc_train_b_death",
+        "title": "DEATH CERTIFICATE",
+        "type": "death_certificate",
+        "issuer": "Veyr City Authority",
+        "issueDate": "2147.02.14",
+        "referenceNumber": "VCA-DC-901402",
+        "fields": [
+          {
+            "key": "Citizen",
+            "value": "Venn, P.",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Citizen ID",
+            "value": "VC-9010-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Date of Death",
+            "value": "2147.02.12 — 08:30",
+            "isSuspicious": true,
+            "suspicionNote": "Check timing against related records."
+          },
+          {
+            "key": "Cause",
+            "value": "Transit accident — Line 5 collision",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
+        ],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [
+          {
+            "text": "CERTIFIED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.02.14",
+            "appliedBy": "Registry Auto-Seal"
+          }
+        ],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_train_b_transit",
+        "title": "TRANSIT INCIDENT REPORT",
+        "type": "incident_report",
+        "issuer": "Ministry of Transit",
+        "issueDate": "2147.02.12",
+        "referenceNumber": "MoT-IR-00501-L5",
+        "fields": [
+          {
+            "key": "Incident",
+            "value": "Line 5 collision — Platform C",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Report Filed",
+            "value": "2147.02.12 — 09:18",
+            "isSuspicious": true,
+            "suspicionNote": "Check timing against related records."
+          },
+          {
+            "key": "Casualties confirmed",
+            "value": "2 fatalities",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Citizen VC-9010-F",
+            "value": "Listed on manifest",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
+        ],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [
+      {
+        "fieldA": "Date of Death",
+        "fieldB": "Report Filed",
+        "description": "Death logged before incident report was filed.",
+        "isCritical": true
+      }
+    ],
+    "availableActions": [
+      {
+        "id": "approve",
+        "label": "APPROVE DELIVERY",
+        "shortLabel": "APPROVED",
+        "color": "#1A5C1A",
+        "auditResponse": "Training record: delivery approved despite timing discrepancy.",
+        "consequences": {},
+        "resultText": "Delivery approved. Review the anomaly log — timestamps may not align.",
+        "isIllegal": false
+      },
+      {
+        "id": "reject",
+        "label": "REJECT DELIVERY",
+        "shortLabel": "REJECTED",
+        "color": "#1A3A5C",
+        "auditResponse": "Training record: delivery rejected.",
+        "consequences": {},
+        "resultText": "Delivery rejected. Anomaly noted but not formally flagged.",
+        "isIllegal": false
+      },
+      {
+        "id": "flag_anomaly",
+        "label": "FLAG ANOMALY",
+        "shortLabel": "FLAGGED",
+        "color": "#8B6914",
+        "auditResponse": "Training record: anomaly flagged. Timing discrepancy logged.",
+        "consequences": {},
+        "resultText": "Anomaly flagged. Death logged before the incident report was filed.",
+        "isIllegal": false
+      }
+    ],
+    "correctLegalActionID": "flag_anomaly",
+    "followUpFlags": null,
+    "requiredFlags": null,
+    "investigationCategories": [
+      {
+        "category": "DEATH RECORD",
+        "fact": "Date of Death: 2147.02.12 — 08:30"
+      },
+      {
+        "category": "TRANSIT",
+        "fact": "Report Filed: 2147.02.12 — 09:18"
+      }
+    ],
+    "anomalyHook": "The dates don't match."
+  },
+  {
+    "id": "case_training_c",
+    "chapter": "training",
+    "senderName": "J. Orte",
+    "senderStatus": "Deceased",
+    "senderCitizenID": "VC-9020-M",
+    "recipientName": "L. Orte",
+    "recipientCitizenID": "VC-9021-F",
+    "messageText": "L. — they cleared my desk already. Check Housing Block 12 before they seal the unit.",
+    "documents": [
+      {
+        "id": "doc_train_c_death",
+        "title": "DEATH CERTIFICATE",
+        "type": "death_certificate",
+        "issuer": "Veyr City Authority",
+        "issueDate": "2147.03.01",
+        "referenceNumber": "VCA-DC-903001",
+        "fields": [
+          {
+            "key": "Citizen",
+            "value": "Orte, J.",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Date of Death",
+            "value": "2147.02.28 — 16:00",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Cause",
+            "value": "Workplace accident — service sector",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
+        ],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [
+          {
+            "text": "CERTIFIED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.03.01",
+            "appliedBy": "Registry Auto-Seal"
+          }
+        ],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_train_c_housing",
+        "title": "RELOCATION NOTICE",
+        "type": "housing_relocation",
+        "issuer": "Veyr Housing Authority",
+        "issueDate": "2147.02.27",
+        "referenceNumber": "VHA-RL-12044",
+        "fields": [
+          {
+            "key": "Unit",
+            "value": "Block 12 — Unit 408",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Occupant",
+            "value": "Orte, J. — VC-9020-M",
+            "isSuspicious": true,
+            "suspicionNote": "Check status against death record."
+          },
+          {
+            "key": "Relocation Deadline",
+            "value": "2147.03.05",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Status",
+            "value": "ACTIVE — eviction pending",
+            "isSuspicious": true,
+            "suspicionNote": "Check status against death record."
+          }
+        ],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_train_c_employment",
+        "title": "EMPLOYMENT TERMINATION",
+        "type": "corporate_notice",
+        "issuer": "Civic Services Bureau",
+        "issueDate": "2147.02.28",
+        "referenceNumber": "CSB-ET-8820",
+        "fields": [
+          {
+            "key": "Employee",
+            "value": "Orte, J. — VC-9020-M",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Termination Date",
+            "value": "2147.02.28 — 17:30",
+            "isSuspicious": true,
+            "suspicionNote": "Compare with death certificate timing."
+          },
+          {
+            "key": "Reason",
+            "value": "Absence — unexcused",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Status",
+            "value": "ACTIVE DUTY — final pay pending",
+            "isSuspicious": true,
+            "suspicionNote": "Compare with death certificate."
+          }
+        ],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [
+      {
+        "fieldA": "Date of Death",
+        "fieldB": "Status",
+        "description": "Housing lists occupant active after death date.",
+        "isCritical": true
+      },
+      {
+        "fieldA": "Date of Death",
+        "fieldB": "Termination Date",
+        "description": "Employment termination filed after death but cites active duty.",
+        "isCritical": false
+      }
+    ],
+    "availableActions": [
+      {
+        "id": "approve",
+        "label": "APPROVE DELIVERY",
+        "shortLabel": "APPROVED",
+        "color": "#1A5C1A",
+        "auditResponse": "Training record: delivery approved despite cross-record conflicts.",
+        "consequences": {},
+        "resultText": "Delivery approved. Housing and employment records may need another look.",
+        "isIllegal": false
+      },
+      {
+        "id": "reject",
+        "label": "REJECT DELIVERY",
+        "shortLabel": "REJECTED",
+        "color": "#1A3A5C",
+        "auditResponse": "Training record: delivery rejected.",
+        "consequences": {},
+        "resultText": "Delivery rejected. Cross-record conflicts noted.",
+        "isIllegal": false
+      },
+      {
+        "id": "flag_anomaly",
+        "label": "FLAG ANOMALY",
+        "shortLabel": "FLAGGED",
+        "color": "#8B6914",
+        "auditResponse": "Training record: anomaly flagged across housing and employment records.",
+        "consequences": {},
+        "resultText": "Anomaly flagged. Housing and employment status conflict with the death record.",
+        "isIllegal": false
+      }
+    ],
+    "correctLegalActionID": "flag_anomaly",
+    "followUpFlags": null,
+    "requiredFlags": null,
+    "investigationCategories": [
+      {
+        "category": "DEATH RECORD",
+        "fact": "Date of Death: 2147.02.28 — 16:00"
+      },
+      {
+        "category": "HOUSING",
+        "fact": "Status: ACTIVE — eviction pending"
+      },
+      {
+        "category": "EMPLOYMENT",
+        "fact": "Status: ACTIVE DUTY — final pay pending"
+      }
+    ],
+    "anomalyHook": "Status lines don't agree across records."
+  }
+]

@@ -74,7 +74,7 @@ struct CaseFile: Codable, Identifiable {
 
     static func load(id: String) -> CaseFile? {
         // Search all chapter case files
-        for ch in ["ch1","ch2","ch3","ch4","ch5","ch6","ch7","ch8"] {
+        for ch in ["training","ch1","ch2","ch3","ch4","ch5","ch6","ch7","ch8"] {
             let cases = loadCases(forChapter: ch)
             if let found = cases.first(where: { $0.id == id }) { return found }
         }

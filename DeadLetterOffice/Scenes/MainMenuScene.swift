@@ -114,6 +114,11 @@ final class MainMenuScene: SKScene {
                            SceneManager.shared.transition(to: .chapterSelect, from: self)
                        }))
 
+        items.append(("> PMCA TRAINING", nil, true, { [weak self] in
+            guard let self else { return }
+            SceneManager.shared.transition(to: .desk(chapterID: "training"), from: self)
+        }))
+
         items.append(("> SETTINGS", nil, true, { [weak self] in
             guard let self else { return }
             SceneManager.shared.transition(to: .settings, from: self)

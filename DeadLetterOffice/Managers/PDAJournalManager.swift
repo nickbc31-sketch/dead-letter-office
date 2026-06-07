@@ -36,6 +36,9 @@ struct PDAJournalState: Codable {
     var bootScreenSeen: Bool = false
     var pendingUpdateNotice: Bool = false
     var deskCasePDAOpenCounts: [String: Int] = [:]
+    var fieldNoteIDs: Set<String> = []
+    var fieldNotes: [String] = []
+    var unlockedManualSectionIDs: Set<String> = []
 }
 
 // MARK: - Legacy migration (no GameState / PDAJournalManager dependency)
@@ -931,10 +934,54 @@ enum PDAJournalManager {
 
     static func onShiftStart(chapterID: String) {
         migrateFromLegacyNotebookIfNeeded()
+        if chapterID == "training" {
+            InvestigationManual.unlockTrainingBasics()
+            GameState.shared.save()
+            return
+        }
+        InvestigationManual.onShiftStart(chapterID: chapterID)
         let shift = shiftNumber(from: chapterID)
         unlockShift(shift)
         shiftInvestigationSeeds[shift]?.forEach { unlock($0, notify: false) }
         GameState.shared.save()
+    }
+
+    // MARK: - Field Notes
+
+    @discardableResult
+    static func addFieldNote(id: String, text: String, notify: Bool = false) -> Bool {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return false }
+        var s = state
+        guard !s.fieldNoteIDs.contains(id) else { return false }
+        s.fieldNoteIDs.insert(id)
+        s.fieldNotes.append(trimmed)
+        if s.fieldNotes.count > 20 { s.fieldNotes.removeFirst(s.fieldNotes.count - 20) }
+        if notify { s.pendingUpdateNotice = true }
+        state = s
+        GameState.shared.save()
+        return true
+    }
+
+    static func fieldNotesBody() -> String {
+        var lines = [
+            "FIELD NOTES",
+            "Mara's active observations — not evidence.",
+            "",
+        ]
+        if state.fieldNotes.isEmpty {
+            lines.append("No observations logged yet.")
+            lines.append("Open documents, review anomalies, or revisit cases to build notes.")
+        } else {
+            for note in state.fieldNotes {
+                lines.append("• \(note)")
+            }
+        }
+        return lines.joined(separator: "\n")
+    }
+
+    static func manualBody() -> String {
+        InvestigationManual.bodyText()
     }
 
     static func onShiftComplete(chapterID: String) {
@@ -1284,6 +1331,7 @@ enum PDAJournalManager {
         var lines = PDAGuidanceResolver.currentInvestigationLines(caseFile: caseFile)
         let openCount = deskPDAOpenCount(caseID: caseFile.id)
         if let hint = PDAGuidanceResolver.escalatingDeskHint(caseFile: caseFile, openCount: openCount) {
+            addFieldNote(id: "desk_hint_\(caseFile.id)_\(openCount)", text: hint)
             lines.append("")
             lines.append("MARA'S THOUGHTS")
             lines.append(hint)

@@ -49,6 +49,8 @@
 		PD4J0URN4LM4N4G3R01 /* PDAJournalManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = PD4J0URN4LM4N4G3R02 /* PDAJournalManager.swift */; };
 		1NV35T1G4T10NL1NK01 /* InvestigationLinkResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1NV35T1G4T10NL1NK02 /* InvestigationLinkResolver.swift */; };
 		PD4GU1D4NC3R3S01V01 /* PDAGuidanceResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = PD4GU1D4NC3R3S01V02 /* PDAGuidanceResolver.swift */; };
+		INV3ST1G4T10NM4NU4L01 /* InvestigationManual.swift in Sources */ = {isa = PBXBuildFile; fileRef = INV3ST1G4T10NM4NU4L02 /* InvestigationManual.swift */; };
+		C4S3TR41N1N0J50N01 /* cases_training.json in Resources */ = {isa = PBXBuildFile; fileRef = C4S3TR41N1N0J50N02 /* cases_training.json */; };
 		PD4J0URN4LP4N3L01 /* PDAJournalPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = PD4J0URN4LP4N3L02 /* PDAJournalPanel.swift */; };
 		F1X3DH34DR5CR0LL01 /* FixedHeaderScrollReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1X3DH34DR5CR0LL02 /* FixedHeaderScrollReport.swift */; };
 		70511D3E4CDB9030C6549C77 /* ChapterData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8BF1EF717B584A6DFF3FBBA /* ChapterData.swift */; };
@@ -185,6 +187,8 @@
 		PD4J0URN4LM4N4G3R02 /* PDAJournalManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDAJournalManager.swift; sourceTree = "<group>"; };
 		1NV35T1G4T10NL1NK02 /* InvestigationLinkResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestigationLinkResolver.swift; sourceTree = "<group>"; };
 		PD4GU1D4NC3R3S01V02 /* PDAGuidanceResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDAGuidanceResolver.swift; sourceTree = "<group>"; };
+		INV3ST1G4T10NM4NU4L02 /* InvestigationManual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvestigationManual.swift; sourceTree = "<group>"; };
+		C4S3TR41N1N0J50N02 /* cases_training.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = cases_training.json; sourceTree = "<group>"; };
 		PD4J0URN4LP4N3L02 /* PDAJournalPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDAJournalPanel.swift; sourceTree = "<group>"; };
 		F1X3DH34DR5CR0LL02 /* FixedHeaderScrollReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixedHeaderScrollReport.swift; sourceTree = "<group>"; };
 		A8BF1EF717B584A6DFF3FBBA /* ChapterData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterData.swift; sourceTree = "<group>"; };
@@ -343,6 +347,7 @@
 				PD4J0URN4LM4N4G3R02 /* PDAJournalManager.swift */,
 				1NV35T1G4T10NL1NK02 /* InvestigationLinkResolver.swift */,
 				PD4GU1D4NC3R3S01V02 /* PDAGuidanceResolver.swift */,
+				INV3ST1G4T10NM4NU4L02 /* InvestigationManual.swift */,
 				F13LD1NV35T1G4RUL35F1L02 /* FieldInvestigationDesignRules.swift */,
 				H4CK1NG5Y5T3M1N4G3F1L02 /* HackingSystem.swift */,
 				H4CKPUZZL3M0D3L1N0D3F02 /* HackPuzzleModels.swift */,
@@ -374,6 +379,7 @@
 				C4S3CH6J50N1N0D3F1L06 /* cases_ch6.json */,
 				C4S3CH7J50N1N0D3F1L07 /* cases_ch7.json */,
 				C4S3CH8J50N1N0D3F1L08 /* cases_ch8.json */,
+				C4S3TR41N1N0J50N02 /* cases_training.json */,
 			);
 			path = Cases;
 			sourceTree = "<group>";
@@ -567,6 +573,7 @@
 				C4S3CH6J50N1N5RC3S01 /* cases_ch6.json in Resources */,
 				C4S3CH7J50N1N5RC3S01 /* cases_ch7.json in Resources */,
 				C4S3CH8J50N1N5RC3S01 /* cases_ch8.json in Resources */,
+				C4S3TR41N1N0J50N01 /* cases_training.json in Resources */,
 				8E6D8C9F305C4141CE1C029A /* chapters.json in Resources */,
 				50098DA5316FBD5256F1C77D /* intro_ch1.json in Resources */,
 				4CE7659FE49B47A6BBF73932 /* intro_ch2.json in Resources */,
@@ -630,6 +637,7 @@
 				PD4J0URN4LM4N4G3R01 /* PDAJournalManager.swift in Sources */,
 				1NV35T1G4T10NL1NK01 /* InvestigationLinkResolver.swift in Sources */,
 				PD4GU1D4NC3R3S01V01 /* PDAGuidanceResolver.swift in Sources */,
+				INV3ST1G4T10NM4NU4L01 /* InvestigationManual.swift in Sources */,
 				PD4J0URN4LP4N3L01 /* PDAJournalPanel.swift in Sources */,
 				F1X3DH34DR5CR0LL01 /* FixedHeaderScrollReport.swift in Sources */,
 				F13LD1NV35T1G4RUL35RC01 /* FieldInvestigationDesignRules.swift in Sources */,

@@ -1872,6 +1872,11 @@ Return to authorised sector immediately.
             let body = self.terminalContent(for: inter.id, displayText: inter.displayText)
             let observation = inter.maraObservation ?? self.maraObservationForTerminal(id: inter.id)
             let fullBody = self.appendMaraObservation(body, observation: observation)
+            if let observation {
+                PDAJournalManager.addFieldNote(
+                    id: "terminal_\(inter.id)",
+                    text: PDAGuidanceResolver.clampMara(observation))
+            }
             GameState.shared.logDeduction("terminal_\(inter.id)")
             self.notifyPDAIfUpdated()
             self.showContentPanel(header: "TERMINAL — \(inter.id.uppercased())", body: fullBody) { }

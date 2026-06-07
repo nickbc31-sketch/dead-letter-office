@@ -13,6 +13,8 @@ enum PDAJournalPanel {
         case journal
         case objectives
         case discoveries
+        case fieldNotes
+        case manual
     }
 
     struct HitRegions {
@@ -133,6 +135,8 @@ enum PDAJournalPanel {
             ("[ JOURNAL ]", "section_journal"),
             ("[ OBJECTIVES ]", "section_objectives"),
             ("[ DISCOVERIES ]", "section_discoveries"),
+            ("[ FIELD NOTES ]", "section_fieldnotes"),
+            ("[ MANUAL ]", "section_manual"),
         ]
         for (label, action) in items {
             let btn = makeButton(label: label, width: btnW, size: 12 * textMultiplier)
@@ -183,16 +187,25 @@ enum PDAJournalPanel {
         case .discoveries:
             header = "DISCOVERIES"
             bodyText = PDAJournalManager.discoveriesBody(forShift: shift)
+        case .fieldNotes:
+            header = "FIELD NOTES"
+            bodyText = PDAJournalManager.fieldNotesBody()
+        case .manual:
+            header = "MANUAL"
+            bodyText = PDAJournalManager.manualBody()
         }
 
         addChrome(to: panel, size: panelSize, header: header)
-        addShiftSelector(to: panel, panelSize: panelSize, center: center,
-                         section: section, viewingShift: shift,
-                         textMultiplier: textMultiplier, regions: &regions)
+        let usesShiftBar = section == .journal || section == .objectives || section == .discoveries
+        if usesShiftBar {
+            addShiftSelector(to: panel, panelSize: panelSize, center: center,
+                             section: section, viewingShift: shift,
+                             textMultiplier: textMultiplier, regions: &regions)
+        }
 
         let footerH: CGFloat = 88
         let headerH: CGFloat = 72
-        let shiftBarH: CGFloat = 34
+        let shiftBarH: CGFloat = usesShiftBar ? 34 : 0
         let bodyW = panelSize.width - 28
         let bodyH = panelSize.height - headerH - shiftBarH - footerH
         let bodyTop = panelSize.height / 2 - headerH - shiftBarH
@@ -280,6 +293,10 @@ enum PDAJournalPanel {
                 onRebuild(.section(.objectives, shift: currentShift))
             case "section_discoveries":
                 onRebuild(.section(.discoveries, shift: currentShift))
+            case "section_fieldnotes":
+                onRebuild(.section(.fieldNotes, shift: currentShift))
+            case "section_manual":
+                onRebuild(.section(.manual, shift: currentShift))
             case "back":
                 onRebuild(.hub)
             default:

@@ -4,6 +4,8 @@ final class DeskScene: SKScene {
 
     var chapterID: String = "ch1"
 
+    private var isTrainingMode: Bool { chapterID == "training" }
+
     // Game data
     private var cases: [CaseFile] = []
     private var currentCaseIndex: Int = 0
@@ -110,7 +112,7 @@ final class DeskScene: SKScene {
 
         // Fire chapter intro dialogue the first time a chapter is entered (Ch1 is handled by
         // MainMenuScene; all other chapters trigger here so each intro plays exactly once).
-        if chapterID != "ch1" {
+        if chapterID != "ch1", chapterID != "training" {
             let introFlag = "\(chapterID)_intro_complete"
             if !GameState.shared.hasFlag(introFlag),
                DialogueFile.load(id: "intro_\(chapterID)") != nil {
@@ -671,6 +673,11 @@ final class DeskScene: SKScene {
     // MARK: - Data Loading
 
     private func loadCases() {
+        if isTrainingMode {
+            cases = CaseFile.loadCases(forChapter: "training")
+            currentCaseIndex = 0
+            return
+        }
         let state = GameState.shared
         cases = CaseFile.loadCases(forChapter: chapterID)
             .filter { !state.completedCaseIDs.contains($0.id) }
@@ -823,6 +830,12 @@ final class DeskScene: SKScene {
 
     private func deskStatusText() -> String {
         let statusAvailW = layout.w - kHudRightReserved
+        if isTrainingMode {
+            if statusAvailW >= 220 {
+                return "PMCA TRAINING SIMULATION  |  MARA VENN  |  CERTIFICATION"
+            }
+            return "TRAINING  |  MARA VENN"
+        }
         let shiftNum = chapterID.replacingOccurrences(of: "ch", with: "")
         if statusAvailW >= 220 {
             return "PMCA CLERK TERMINAL  |  MARA VENN  |  SHIFT \(shiftNum)"
@@ -933,6 +946,13 @@ final class DeskScene: SKScene {
             first.run(SKAction.fadeIn(withDuration: 0.25))
         }
 
+        if isTrainingMode {
+            InvestigationManual.onTrainingCaseStart(caseID: currentCase.id)
+            showTrainingMaraCommentary(for: currentCase)
+        } else if let hook = currentCase.anomalyHook, !hook.isEmpty {
+            PDAJournalManager.addFieldNote(id: "hook_\(currentCase.id)", text: hook)
+        }
+
         if chapterID == "ch1" && currentCaseIndex == 0 && !GameState.shared.hasFlag("ch1_tutorial_shown") {
             GameState.shared.setFlag("ch1_tutorial_shown")
             GameState.shared.save()
@@ -979,8 +999,15 @@ final class DeskScene: SKScene {
             let doc = caseFile.documents[index]
             NotebookManager.onDeskDocumentOpened(
                 documentID: doc.id, caseID: caseFile.id)
+            InvestigationManual.onDocumentOpened(type: doc.type, caseID: caseFile.id)
             if doc.fields.contains(where: { $0.isSuspicious }) {
-                GameState.shared.logDeduction("\(caseFile.id)_\(doc.id)_suspicious")
+                if isTrainingMode {
+                    PDAJournalManager.addFieldNote(
+                        id: "suspicious_\(caseFile.id)_\(doc.id)",
+                        text: "Something in this record needs a closer look.")
+                } else {
+                    GameState.shared.logDeduction("\(caseFile.id)_\(doc.id)_suspicious")
+                }
             }
             buildDocumentTabs(caseFile)
         }
@@ -1107,6 +1134,60 @@ final class DeskScene: SKScene {
 
     // MARK: - Tutorial
 
+    private func showTrainingMaraCommentary(for caseFile: CaseFile) {
+        let lines: [String]
+        switch caseFile.id {
+        case "case_training_a":
+            lines = [
+                "Open each document tab.",
+                "Read the timestamps before you decide.",
+            ]
+        case "case_training_b":
+            lines = [
+                "Let's compare these records.",
+                "The dates don't match.",
+                "The anomaly log can help narrow things down.",
+            ]
+        case "case_training_c":
+            lines = [
+                "Review all three documents.",
+                "The PDA stores useful observations.",
+                "Choose the action that fits what you found.",
+            ]
+        default:
+            return
+        }
+
+        for (i, line) in lines.enumerated() {
+            PDAJournalManager.addFieldNote(id: "train_mara_\(caseFile.id)_\(i)", text: line)
+        }
+
+        var delay: TimeInterval = 0.6
+        for line in lines {
+            let panel = SKNode()
+            panel.zPosition = 55
+            let bg = SKSpriteNode(color: .black.withAlphaComponent(0.72),
+                                  size: CGSize(width: kMsgW, height: 44))
+            bg.position = CGPoint(x: kSplitX + 8 + kMsgW / 2, y: layout.y(0.62))
+            panel.addChild(bg)
+            let lbl = DLOFont.terminalLabel(text: "MARA: \(line)", size: 9)
+            lbl.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.9)
+            lbl.horizontalAlignmentMode = .center
+            lbl.position = bg.position
+            panel.addChild(lbl)
+            panel.alpha = 0
+            addChild(panel)
+            panel.run(SKAction.sequence([
+                SKAction.wait(forDuration: delay),
+                SKAction.fadeIn(withDuration: 0.25),
+                SKAction.wait(forDuration: 2.8),
+                SKAction.fadeOut(withDuration: 0.35),
+                SKAction.removeFromParent(),
+            ]))
+            delay += 3.4
+        }
+    }
+
     private func showTutorialHint() {
         let hints = [
             "READ EACH DOCUMENT TAB",
@@ -1139,6 +1220,18 @@ final class DeskScene: SKScene {
         guard !hasStamped else { return }
         hasStamped = true
 
+        if isTrainingMode {
+            NSLog("[DLO Training] case=%@ action=%@", caseFile.id, action.id)
+            playStampAnimation(label: action.shortLabel, color: .fromHex(action.color))
+            AudioManager.shared.playStamp(on: self)
+            let nextAction: () -> Void = { [weak self] in self?.advanceCase() }
+            showActionResultPanel(text: action.resultText,
+                                  color: .fromHex(action.color),
+                                  auditResponse: action.auditResponse,
+                                  onContinue: nextAction)
+            return
+        }
+
         GameState.shared.applyConsequences(action.consequences)
         caseFile.followUpFlags?.forEach { GameState.shared.setFlag($0) }
         GameState.shared.recordDecision(caseID: caseFile.id, actionID: action.id)
@@ -1159,8 +1252,6 @@ final class DeskScene: SKScene {
             ? { [weak self] in self?.playChapterCulminationGlitch() }
             : { [weak self] in self?.continueAfterCaseAction(caseFile: caseFile, action: action) }
 
-        // Show result as a readable overlay over the document area instead of the
-        // right panel — cleaner, not obscured by stamp buttons or Next Case.
         showActionResultPanel(text: action.resultText,
                               color: .fromHex(action.color),
                               auditResponse: action.auditResponse,
@@ -1572,7 +1663,13 @@ final class DeskScene: SKScene {
 
     private func showAuditOverlay(for caseFile: CaseFile) {
         guard auditOverlay == nil else { return }
-        GameState.shared.logDeduction("\(caseFile.id)_audit")
+        if isTrainingMode {
+            PDAJournalManager.addFieldNote(
+                id: "audit_\(caseFile.id)",
+                text: "The anomaly log can help narrow things down.")
+        } else {
+            GameState.shared.logDeduction("\(caseFile.id)_audit")
+        }
 
         let overlay = SKNode()
         overlay.zPosition = 700
@@ -1891,6 +1988,10 @@ final class DeskScene: SKScene {
 
     private func allCasesDone() {
         clearDeskContent()
+        if isTrainingMode {
+            showTrainingCompleteAndExit()
+            return
+        }
         GameState.shared.save()
 
         run(SKAction.sequence([
@@ -1902,6 +2003,41 @@ final class DeskScene: SKScene {
                     to: .chapterComplete(chapterID: self.chapterID, nextScene: nextScene),
                     from: self)
             }
+        ]))
+    }
+
+    private func showTrainingCompleteAndExit() {
+        let overlay = SKNode()
+        overlay.zPosition = 500
+        let dim = SKSpriteNode(color: .black.withAlphaComponent(0.75), size: size)
+        dim.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        overlay.addChild(dim)
+
+        let lines = [
+            "PMCA CLERK CERTIFICATION",
+            "",
+            "Training simulation complete.",
+            "Desk workflow, anomaly review, and PDA use demonstrated.",
+            "",
+            "Returning to main menu...",
+        ]
+        let lbl = DLOFont.terminalLabel(text: lines.joined(separator: "\n"), size: 12)
+        lbl.fontColor = DLOColor.terminalAmber
+        lbl.numberOfLines = 0
+        lbl.horizontalAlignmentMode = .center
+        lbl.verticalAlignmentMode = .center
+        lbl.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        overlay.addChild(lbl)
+        overlay.alpha = 0
+        addChild(overlay)
+
+        overlay.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0.4),
+            SKAction.wait(forDuration: 2.8),
+            SKAction.run { [weak self] in
+                guard let self else { return }
+                SceneManager.shared.transition(to: .mainMenu, from: self)
+            },
         ]))
     }
 
