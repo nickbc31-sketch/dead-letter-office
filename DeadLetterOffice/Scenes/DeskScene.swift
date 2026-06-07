@@ -59,6 +59,9 @@ final class DeskScene: SKScene {
     private var pdaScrollTouch: UITouch?
     private var pdaUpdateToastNode: SKNode?
 
+    // Mara confidence reaction (brief beat after stamp)
+    private var maraReactionPanel: SKNode?
+
     // Action result overlay (shown after stamp, over doc area)
     private var resultPanel:        SKNode?
     private var resultContinueRect: CGRect = .zero
@@ -1232,28 +1235,38 @@ final class DeskScene: SKScene {
         guard !hasStamped else { return }
         hasStamped = true
 
+        let confidence = MaraConfidenceAssessor.assess(
+            caseFile: caseFile,
+            actionID: action.id,
+            flags: GameState.shared.activeFlags)
+        let reaction = MaraConfidenceAssessor.reaction(for: confidence, caseID: caseFile.id)
+
         if isTrainingMode {
-            NSLog("[DLO Training] case=%@ action=%@", caseFile.id, action.id)
+            NSLog("[DLO Training] case=%@ action=%@ confidence=%@",
+                  caseFile.id, action.id, confidence.rawValue)
             playStampAnimation(label: action.shortLabel, color: .fromHex(action.color))
             AudioManager.shared.playStamp(on: self)
             let nextAction: () -> Void = { [weak self] in self?.advanceCase() }
-            showActionResultPanel(text: action.resultText,
-                                  color: .fromHex(action.color),
-                                  auditResponse: action.auditResponse,
-                                  onContinue: nextAction)
+            presentDecisionFeedback(
+                reaction: reaction,
+                resultText: action.resultText,
+                color: .fromHex(action.color),
+                auditResponse: action.auditResponse,
+                onContinue: nextAction)
             return
         }
 
         GameState.shared.applyConsequences(action.consequences)
         caseFile.followUpFlags?.forEach { GameState.shared.setFlag($0) }
         GameState.shared.recordDecision(caseID: caseFile.id, actionID: action.id)
+        GameState.shared.recordConfidence(caseID: caseFile.id, level: confidence)
         PDAJournalManager.onCaseDecision(caseID: caseFile.id, actionID: action.id)
         if action.id == "flag_anomaly" {
             GameState.shared.logDeduction("\(caseFile.id)_flagged")
         }
         GameState.shared.save()
         showPDAUpdateToast()
-        NSLog("[DLO State] case=\(caseFile.id) action=\(action.id) compliance=\(GameState.shared.complianceScore) suspicion=\(GameState.shared.suspicionScore)")
+        NSLog("[DLO State] case=\(caseFile.id) action=\(action.id) confidence=\(confidence.rawValue) compliance=\(GameState.shared.complianceScore) suspicion=\(GameState.shared.suspicionScore)")
 
         playStampAnimation(label: action.shortLabel, color: .fromHex(action.color))
         AudioManager.shared.playStamp(on: self)
@@ -1264,10 +1277,112 @@ final class DeskScene: SKScene {
             ? { [weak self] in self?.playChapterCulminationGlitch() }
             : { [weak self] in self?.continueAfterCaseAction(caseFile: caseFile, action: action) }
 
-        showActionResultPanel(text: action.resultText,
-                              color: .fromHex(action.color),
-                              auditResponse: action.auditResponse,
-                              onContinue: nextAction)
+        presentDecisionFeedback(
+            reaction: reaction,
+            resultText: action.resultText,
+            color: .fromHex(action.color),
+            auditResponse: action.auditResponse,
+            onContinue: nextAction)
+    }
+
+    private func presentDecisionFeedback(
+        reaction: String,
+        resultText: String,
+        color: SKColor,
+        auditResponse: String?,
+        onContinue: @escaping () -> Void
+    ) {
+        showMaraReactionPanel(reaction: reaction) { [weak self] in
+            self?.showActionResultPanel(
+                text: resultText,
+                color: color,
+                auditResponse: auditResponse,
+                onContinue: onContinue)
+        }
+    }
+
+    private func showMaraReactionPanel(reaction: String, onComplete: @escaping () -> Void) {
+        maraReactionPanel?.removeAllActions()
+        maraReactionPanel?.removeFromParent()
+
+        let mult = GameState.shared.textSizeMultiplier
+        let panelW = min(layout.w * 0.44, 360)
+        let panelH: CGFloat = max(128, 118 * mult)
+        let panelX = layout.right - panelW / 2 - 10
+        let panelY = layout.midY + 12
+
+        let panel = SKNode()
+        panel.position = CGPoint(x: panelX, y: panelY)
+        panel.zPosition = 320
+        panel.alpha = 0
+
+        let bg = SKSpriteNode(
+            color: DLOColor.terminalBG.withAlphaComponent(0.96),
+            size: CGSize(width: panelW, height: panelH))
+        panel.addChild(bg)
+
+        let border = SKShapeNode(rectOf: CGSize(width: panelW - 2, height: panelH - 2), cornerRadius: 5)
+        border.strokeColor = SKColor(red: 0.52, green: 0.74, blue: 0.62, alpha: 0.85)
+        border.lineWidth = 1.4
+        border.fillColor = .clear
+        panel.addChild(border)
+
+        let portraitSize: CGFloat = min(64, panelH - 24)
+        let portraitX = -panelW / 2 + portraitSize / 2 + 14
+        let textX = portraitX + portraitSize / 2 + 12
+        let textW = panelW - (portraitSize + 36)
+
+        let portraitFrame = SKShapeNode(
+            rectOf: CGSize(width: portraitSize, height: portraitSize),
+            cornerRadius: 3)
+        portraitFrame.strokeColor = DLOColor.uiBorder
+        portraitFrame.lineWidth = 1.2
+        portraitFrame.fillColor = DLOColor.terminalBG
+        portraitFrame.position = CGPoint(x: portraitX, y: 4)
+        panel.addChild(portraitFrame)
+
+        let portrait = SKSpriteNode(imageNamed: "portrait_mara")
+        if portrait.size.width > 1 {
+            portrait.size = CGSize(width: portraitSize - 4, height: portraitSize - 4)
+            portrait.position = portraitFrame.position
+            panel.addChild(portrait)
+        }
+
+        let header = DLOFont.terminalLabel(text: "CASE PROCESSED", size: 9 * mult)
+        header.horizontalAlignmentMode = .left
+        header.fontColor = SKColor(red: 0.52, green: 0.74, blue: 0.62, alpha: 1)
+        header.position = CGPoint(x: textX, y: panelH / 2 - 22)
+        panel.addChild(header)
+
+        let nameLbl = DLOFont.terminalLabel(text: "MARA:", size: 8.5 * mult)
+        nameLbl.horizontalAlignmentMode = .left
+        nameLbl.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.65)
+        nameLbl.position = CGPoint(x: textX, y: panelH / 2 - 40)
+        panel.addChild(nameLbl)
+
+        let reactionLbl = DLOFont.terminalLabel(text: "\"\(reaction)\"", size: 11 * mult)
+        reactionLbl.horizontalAlignmentMode = .left
+        reactionLbl.verticalAlignmentMode = .top
+        reactionLbl.fontColor = SKColor(white: 0.95, alpha: 0.95)
+        reactionLbl.numberOfLines = 0
+        reactionLbl.preferredMaxLayoutWidth = textW
+        reactionLbl.lineBreakMode = .byWordWrapping
+        reactionLbl.position = CGPoint(x: textX, y: panelH / 2 - 52)
+        panel.addChild(reactionLbl)
+
+        addChild(panel)
+        maraReactionPanel = panel
+
+        panel.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0.18),
+            SKAction.wait(forDuration: 1.55),
+            SKAction.fadeOut(withDuration: 0.22),
+            SKAction.run { [weak self] in
+                self?.maraReactionPanel?.removeFromParent()
+                self?.maraReactionPanel = nil
+                onComplete()
+            },
+        ]))
     }
 
     private struct PendingDeskDialogue {

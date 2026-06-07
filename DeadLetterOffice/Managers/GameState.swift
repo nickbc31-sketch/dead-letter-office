@@ -27,6 +27,7 @@ final class GameState {
     var completedLevelIDs: Set<String> = []
     var activeFlags: Set<String> = []
     var caseDecisions: [String: String] = [:]   // caseID -> actionID
+    var caseConfidence: [String: CaseConfidenceLevel] = [:]
 
     // Transient platform transition (not persisted)
     var platformSpawnOverride: CGPoint?
@@ -87,6 +88,10 @@ final class GameState {
         completedCaseIDs.insert(caseID)
     }
 
+    func recordConfidence(caseID: String, level: CaseConfidenceLevel) {
+        caseConfidence[caseID] = level
+    }
+
     func recordLevelComplete(_ levelID: String) {
         completedLevelIDs.insert(levelID)
     }
@@ -143,6 +148,7 @@ final class GameState {
         completedLevelIDs = []
         activeFlags      = []
         caseDecisions    = [:]
+        caseConfidence   = [:]
         notebookUnlockedIDs = []
         pdaJournal = PDAJournalState()
         // Settings (subtitles, flashing, guidance, text size, volumes) preserved across new game starts.

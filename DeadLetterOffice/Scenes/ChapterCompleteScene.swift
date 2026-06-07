@@ -103,17 +103,40 @@ final class ChapterCompleteScene: SKScene {
 
     private func buildShiftEvaluation(chapterID: String) -> [String] {
         let cases = CaseFile.loadCases(forChapter: chapterID)
-        let decisions = GameState.shared.caseDecisions
+        let state = GameState.shared
         var lines: [String] = []
 
         for c in cases {
-            guard let actionID = decisions[c.id] else { continue }
+            guard let actionID = state.caseDecisions[c.id] else { continue }
             guard let action = c.availableActions.first(where: { $0.id == actionID }) else { continue }
-            let audit = action.auditResponse.map { " \($0)" } ?? ""
-            lines.append("CASE \(c.id.uppercased()) — \(action.shortLabel.uppercased()).\(audit)")
+            let label = MaraConfidenceAssessor.shortCaseLabel(for: c)
+            let confidence = state.caseConfidence[c.id]
+                ?? MaraConfidenceAssessor.assess(
+                    caseFile: c, actionID: actionID, flags: state.activeFlags)
+
+            lines.append("CASE \(label)")
+            lines.append("Decision: \(action.shortLabel.uppercased())")
+            lines.append("PMCA Assessment: \(MaraConfidenceAssessor.pmcaAssessment(for: action))")
+            lines.append("Mara Assessment: \(MaraConfidenceAssessor.maraShiftAssessment(for: confidence))")
+            lines.append("Citizen Impact: \(MaraConfidenceAssessor.citizenImpact(for: action))")
+            lines.append("")
         }
 
-        let state = GameState.shared
+        if !lines.isEmpty { lines.append("—") }
+
+        let summary = MaraConfidenceAssessor.confidenceSummary(from: state.caseConfidence)
+        if summary.correct + summary.partial + summary.incorrect > 0 {
+            lines.append("SHIFT RECORD")
+            lines.append("Cases investigated: \(summary.correct + summary.partial + summary.incorrect)")
+            if summary.partial > 0 {
+                lines.append("Cases with unresolved questions: \(summary.partial)")
+            }
+            if summary.incorrect > 0 {
+                lines.append("Cases overlooked: \(summary.incorrect)")
+            }
+            lines.append("")
+        }
+
         if state.complianceScore != 0 || state.suspicionScore != 0 || state.citizenHarmCount != 0 {
             lines.append("—")
             lines.append("COMPLIANCE INDEX: \(state.complianceScore)")

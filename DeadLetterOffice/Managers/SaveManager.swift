@@ -13,6 +13,7 @@ struct SaveData: Codable {
     var completedLevelIDs: [String]
     var activeFlags: [String]
     var caseDecisions: [String: String]
+    var caseConfidence: [String: String]?
     var subtitlesEnabled: Bool
     var reducedFlashingEnabled: Bool
     var autoReadFieldNotes: Bool?
@@ -45,6 +46,7 @@ final class SaveManager {
             completedLevelIDs: Array(state.completedLevelIDs),
             activeFlags: Array(state.activeFlags),
             caseDecisions: state.caseDecisions,
+            caseConfidence: Dictionary(uniqueKeysWithValues: state.caseConfidence.map { ($0.key, $0.value.rawValue) }),
             subtitlesEnabled: state.subtitlesEnabled,
             reducedFlashingEnabled: state.reducedFlashingEnabled,
             autoReadFieldNotes: state.autoReadFieldNotes,
@@ -78,6 +80,7 @@ final class SaveManager {
         state.completedLevelIDs      = Set(data.completedLevelIDs)
         state.activeFlags            = Set(data.activeFlags)
         state.caseDecisions          = data.caseDecisions
+        state.caseConfidence = (data.caseConfidence ?? [:]).compactMapValues { CaseConfidenceLevel(rawValue: $0) }
         state.subtitlesEnabled       = data.subtitlesEnabled
         state.reducedFlashingEnabled = data.reducedFlashingEnabled
         state.autoReadFieldNotes     = data.autoReadFieldNotes ?? false
@@ -116,6 +119,7 @@ final class SaveManager {
             completedLevelIDs: Array(state.completedLevelIDs),
             activeFlags: Array(state.activeFlags),
             caseDecisions: state.caseDecisions,
+            caseConfidence: Dictionary(uniqueKeysWithValues: state.caseConfidence.map { ($0.key, $0.value.rawValue) }),
             subtitlesEnabled: state.subtitlesEnabled,
             reducedFlashingEnabled: state.reducedFlashingEnabled,
             autoReadFieldNotes: state.autoReadFieldNotes,
@@ -141,6 +145,7 @@ final class SaveManager {
         state.completedLevelIDs      = Set(data.completedLevelIDs)
         state.activeFlags            = Set(data.activeFlags)
         state.caseDecisions          = data.caseDecisions
+        state.caseConfidence = (data.caseConfidence ?? [:]).compactMapValues { CaseConfidenceLevel(rawValue: $0) }
         state.subtitlesEnabled       = data.subtitlesEnabled
         state.reducedFlashingEnabled = data.reducedFlashingEnabled
         state.autoReadFieldNotes     = data.autoReadFieldNotes ?? false
