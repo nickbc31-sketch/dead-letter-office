@@ -358,6 +358,7 @@ final class DeskScene: SKScene {
                 at: pos, build: currentPDABuild(),
                 currentShift: PDAJournalManager.shiftNumber(from: chapterID),
                 activeCaseID: currentCase?.id,
+                levelID: nil,
                 onRebuild: { [weak self] screen in self?.rebuildPDAJournal(screen: screen) },
                 onClose: { [weak self] in self?.hidePDAJournal() }) {
                 return "pda-nav"
@@ -2224,6 +2225,7 @@ final class DeskScene: SKScene {
             chapterID: chapterID,
             fieldObjective: nil,
             activeCaseID: currentCase?.id,
+            levelID: nil,
             onRebuild: { [weak self] newScreen in self?.rebuildPDAJournal(screen: newScreen) },
             onClose: { [weak self] in self?.hidePDAJournal() })
 
@@ -2247,6 +2249,7 @@ final class DeskScene: SKScene {
             PDAJournalPanel.prepareFieldNotesTab(
                 activeCaseID: currentCase?.id,
                 currentShift: shift,
+                levelID: nil,
                 isNewVisit: true)
         }
     }

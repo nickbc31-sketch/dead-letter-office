@@ -16,7 +16,9 @@ This is optional. The game works without it.
 """
 
     static let settingsHint = """
-Uses your iPhone's built-in speech voices. Enhanced voices are optional.
+Dead Letter Office uses your iPhone's built-in speech voices.
+For better spoken Field Notes, install an enhanced iOS voice.
+This is optional.
 """
 
     static let linkLabel = "VOICE QUALITY HELP"
@@ -26,15 +28,10 @@ Uses your iPhone's built-in speech voices. Enhanced voices are optional.
     static let modalBody = """
 Dead Letter Office uses your iPhone's built-in speech voices.
 
-For a better spoken-notes voice:
-1. Open iPhone Settings.
-2. Go to Accessibility.
-3. Tap Spoken Content.
-4. Tap Voices.
-5. Choose English.
-6. Download an enhanced or premium voice if available.
+For better spoken Field Notes, install an enhanced iOS voice:
+Settings → Accessibility → Spoken Content → Voices → English.
 
-This is optional and can be changed later.
+This is optional.
 """
 
     static func showModal(

@@ -49,6 +49,7 @@ enum PDAJournalPanel {
         chapterID: String? = nil,
         fieldObjective: String? = nil,
         activeCaseID: String? = nil,
+        levelID: String? = nil,
         onRebuild: @escaping (Screen) -> Void,
         onClose: @escaping () -> Void
     ) -> BuildResult {
@@ -64,8 +65,13 @@ enum PDAJournalPanel {
                                 panelSize: panelSize, center: center,
                                 textMultiplier: textMultiplier, chapterID: chapterID,
                                 fieldObjective: fieldObjective, activeCaseID: activeCaseID,
+                                levelID: levelID,
                                 onRebuild: onRebuild, onClose: onClose)
         }
+    }
+
+    private static func contentTopPadding(textMultiplier: CGFloat) -> CGFloat {
+        max(16, 14 * textMultiplier)
     }
 
     static func initialScreen(currentShift: Int, skipBoot: Bool) -> Screen {
@@ -129,10 +135,11 @@ enum PDAJournalPanel {
 
         addChrome(to: panel, size: panelSize, header: "MARA PDA")
 
+        let footerReserve: CGFloat = max(56, 50 * textMultiplier)
         let btnW: CGFloat = min(panelSize.width * 0.55, 220)
-        let btnH: CGFloat = max(36, 30 * textMultiplier)
-        let btnGap: CGFloat = max(12, 8 * textMultiplier)
-        var y = panelSize.height / 2 - 96
+        let btnH: CGFloat = max(34, 28 * textMultiplier)
+        let btnGap: CGFloat = max(10, 7 * textMultiplier)
+        let step = btnH + btnGap
         let items: [(String, String)] = [
             ("[ JOURNAL ]", "section_journal"),
             ("[ OBJECTIVES ]", "section_objectives"),
@@ -140,6 +147,11 @@ enum PDAJournalPanel {
             ("[ FIELD NOTES ]", "section_fieldnotes"),
             ("[ MANUAL ]", "section_manual"),
         ]
+        let menuFloor = -panelSize.height / 2 + footerReserve
+        let firstY = max(
+            panelSize.height / 2 - 88,
+            menuFloor + btnH / 2 + CGFloat(items.count - 1) * step)
+        var y = firstY
         for (label, action) in items {
             let btn = makeButton(label: label, width: btnW, size: 12 * textMultiplier)
             btn.position = CGPoint(x: 0, y: y)
@@ -148,8 +160,9 @@ enum PDAJournalPanel {
             y -= btnH + btnGap
         }
 
-        regions.close = closeRect(panelSize: panelSize, center: center, labelSize: 11 * textMultiplier)
-        addCloseButton(to: panel, panelSize: panelSize, size: 11 * textMultiplier)
+        let closeSize = 11 * textMultiplier
+        regions.close = hubCloseRect(panelSize: panelSize, center: center, labelSize: closeSize)
+        addHubCloseButton(to: panel, panelSize: panelSize, size: closeSize)
 
         return BuildResult(panel: panel, scrollState: nil, regions: regions, screen: .hub)
     }
@@ -166,6 +179,7 @@ enum PDAJournalPanel {
         chapterID: String?,
         fieldObjective: String?,
         activeCaseID: String?,
+        levelID: String?,
         onRebuild: @escaping (Screen) -> Void,
         onClose: @escaping () -> Void
     ) -> BuildResult {
@@ -209,9 +223,11 @@ enum PDAJournalPanel {
         let footerH: CGFloat = hasPlayNote ? 118 : 88
         let headerH: CGFloat = 72
         let shiftBarH: CGFloat = usesShiftBar ? 34 : 0
+        let shiftBodyGap: CGFloat = usesShiftBar ? max(10, 8 * textMultiplier) : 0
+        let topPad = contentTopPadding(textMultiplier: textMultiplier)
         let bodyW = panelSize.width - 28
-        let bodyH = panelSize.height - headerH - shiftBarH - footerH
-        let bodyTop = panelSize.height / 2 - headerH - shiftBarH
+        let bodyH = panelSize.height - headerH - shiftBarH - shiftBodyGap - footerH
+        let bodyTop = panelSize.height / 2 - headerH - shiftBarH - shiftBodyGap
 
         let clip = SKCropNode()
         let mask = SKSpriteNode(color: .white, size: CGSize(width: bodyW, height: bodyH))
@@ -223,13 +239,13 @@ enum PDAJournalPanel {
         if section == .fieldNotes {
             bodyLbl = buildFieldNotesContent(
                 into: content, width: bodyW, height: bodyH,
-                textMultiplier: textMultiplier,
-                activeCaseID: activeCaseID, currentShift: shift)
+                textMultiplier: textMultiplier, topPad: topPad,
+                activeCaseID: activeCaseID, currentShift: shift, levelID: levelID)
         } else {
             bodyLbl = makeBodyLabel(text: bodyText, width: bodyW, size: 11.5 * textMultiplier)
             bodyLbl.horizontalAlignmentMode = .left
             bodyLbl.verticalAlignmentMode = .top
-            bodyLbl.position = CGPoint(x: -bodyW / 2, y: bodyH / 2)
+            bodyLbl.position = CGPoint(x: -bodyW / 2, y: bodyH / 2 - topPad)
             content.addChild(bodyLbl)
         }
         clip.addChild(content)
@@ -294,17 +310,18 @@ enum PDAJournalPanel {
     static func prepareFieldNotesTab(
         activeCaseID: String?,
         currentShift: Int,
+        levelID: String? = nil,
         isNewVisit: Bool
     ) {
         guard isNewVisit else { return }
         if GameState.shared.autoReadFieldNotes {
             guard let payload = PDAJournalManager.fieldNotesAutoReadSpeechText(
-                activeCaseID: activeCaseID, currentShift: currentShift) else { return }
+                activeCaseID: activeCaseID, currentShift: currentShift, levelID: levelID) else { return }
             PDAJournalManager.markFieldNotesRead(ids: payload.noteIDs)
             FieldNotesSpeechManager.shared.speak(payload.text)
         } else {
             PDAJournalManager.markRelevantFieldNotesViewed(
-                activeCaseID: activeCaseID, currentShift: currentShift)
+                activeCaseID: activeCaseID, currentShift: currentShift, levelID: levelID)
         }
     }
 
@@ -313,14 +330,16 @@ enum PDAJournalPanel {
         width bodyW: CGFloat,
         height bodyH: CGFloat,
         textMultiplier: CGFloat,
+        topPad: CGFloat,
         activeCaseID: String?,
-        currentShift: Int
+        currentShift: Int,
+        levelID: String?
     ) -> SKLabelNode {
         let lines = PDAJournalManager.fieldNotesBody(
-            activeCaseID: activeCaseID, currentShift: currentShift)
+            activeCaseID: activeCaseID, currentShift: currentShift, levelID: levelID)
         let fontSize = 11.5 * textMultiplier
         let lineH = fontSize * 1.38
-        var y = bodyH / 2
+        var y = bodyH / 2 - topPad
         var measureLines: [String] = []
 
         for (text, isRead) in lines {
@@ -356,6 +375,7 @@ enum PDAJournalPanel {
         build: BuildResult,
         currentShift: Int,
         activeCaseID: String? = nil,
+        levelID: String? = nil,
         onRebuild: @escaping (Screen) -> Void,
         onClose: @escaping () -> Void
     ) -> Bool {
@@ -384,7 +404,7 @@ enum PDAJournalPanel {
             case "play_field_note":
                 FieldNotesSpeechManager.shared.speak(
                     PDAJournalManager.fieldNotesPlaySpeechText(
-                        activeCaseID: activeCaseID, currentShift: currentShift))
+                        activeCaseID: activeCaseID, currentShift: currentShift, levelID: levelID))
                 if case .section(let section, let shift) = build.screen {
                     onRebuild(.section(section, shift: shift))
                 }
@@ -541,6 +561,27 @@ enum PDAJournalPanel {
         lbl.position = CGPoint(x: 0, y: -panelSize.height / 2 + 26)
         lbl.zPosition = 5
         panel.addChild(lbl)
+    }
+
+    private static func addHubCloseButton(to panel: SKNode, panelSize: CGSize, size: CGFloat) {
+        let lbl = DLOFont.terminalLabel(text: "[ CLOSE ]", size: size)
+        lbl.fontColor = pdaTeal
+        lbl.horizontalAlignmentMode = .right
+        lbl.verticalAlignmentMode = .center
+        lbl.position = CGPoint(x: panelSize.width / 2 - 18, y: -panelSize.height / 2 + 28)
+        lbl.zPosition = 5
+        panel.addChild(lbl)
+    }
+
+    private static func hubCloseRect(panelSize: CGSize, center: CGPoint, labelSize: CGFloat) -> CGRect {
+        let labelW = estimatedLabelWidth(text: "[ CLOSE ]", fontSize: labelSize)
+        let w = max(120, labelW + 36)
+        let h = max(44, labelSize + 28)
+        return CGRect(
+            x: center.x + panelSize.width / 2 - w - 8,
+            y: center.y - panelSize.height / 2 + 4,
+            width: w,
+            height: h)
     }
 
     private static func closeRect(panelSize: CGSize, center: CGPoint, labelSize: CGFloat) -> CGRect {

@@ -95,8 +95,9 @@ final class SettingsScene: SKScene {
             GameState.shared.hasChosenPlayStyle = true
             GameState.shared.save()
         }
-        addFieldNotesVoiceHint(y: yPos - rowStep * 0.52)
-        yPos -= rowStep
+        yPos -= rowStep * 0.55
+        addFieldNotesVoiceHint(y: yPos)
+        yPos -= rowStep * 1.05
 
         addSlider(label: "MUSIC VOLUME", value: CGFloat(state.musicVolume), y: yPos) { val in
             GameState.shared.musicVolume = Float(val)
@@ -134,30 +135,31 @@ final class SettingsScene: SKScene {
     }
 
     private func addFieldNotesVoiceHint(y: CGFloat) {
-        let rowWidth = layout.w * 0.6
+        let rowWidth = layout.w * 0.62
+        let mult = GameState.shared.textSizeMultiplier
         let hint = SKLabelNode()
         hint.fontName = "Menlo"
-        hint.fontSize = 8
-        hint.fontColor = DLOColor.uiBorder.withAlphaComponent(0.7)
+        hint.fontSize = 9.5 * mult
+        hint.fontColor = DLOColor.teal.withAlphaComponent(0.82)
         hint.horizontalAlignmentMode = .left
-        hint.verticalAlignmentMode = .center
+        hint.verticalAlignmentMode = .top
         hint.numberOfLines = 0
-        hint.preferredMaxLayoutWidth = rowWidth * 0.88
+        hint.preferredMaxLayoutWidth = rowWidth * 0.92
         hint.text = FieldNotesVoiceHelp.settingsHint
-        hint.position = CGPoint(x: layout.midX - rowWidth / 2 + 10, y: y + 6)
+        hint.position = CGPoint(x: layout.midX - rowWidth / 2 + 10, y: y + 10)
         addChild(hint)
 
-        let link = DLOFont.terminalLabel(text: FieldNotesVoiceHelp.linkLabel, size: 9)
-        link.fontColor = DLOColor.teal.withAlphaComponent(0.9)
+        let link = DLOFont.terminalLabel(text: "> \(FieldNotesVoiceHelp.linkLabel)", size: 10.5 * mult)
+        link.fontColor = DLOColor.teal
         link.horizontalAlignmentMode = .left
-        link.position = CGPoint(x: layout.midX - rowWidth / 2 + 10, y: y - 14)
+        link.position = CGPoint(x: layout.midX - rowWidth / 2 + 10, y: y - 30)
         addChild(link)
 
         voiceQualityHelpRect = CGRect(
             x: layout.midX - rowWidth / 2,
-            y: y - 28,
+            y: y - 44,
             width: rowWidth,
-            height: 36)
+            height: 52)
     }
 
     private func showVoiceQualityHelp() {

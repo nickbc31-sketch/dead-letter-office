@@ -34,6 +34,7 @@ struct FieldNoteEntry: Codable, Equatable, Identifiable {
     let text: String
     var caseID: String?
     var shift: Int?
+    var levelID: String?
 }
 
 struct PDAJournalState: Codable {
@@ -981,6 +982,7 @@ enum PDAJournalManager {
         text: String,
         caseID: String? = nil,
         shift: Int? = nil,
+        levelID: String? = nil,
         notify: Bool = false
     ) -> Bool {
         migrateFieldNotesIfNeeded()
@@ -988,7 +990,8 @@ enum PDAJournalManager {
         guard !trimmed.isEmpty else { return false }
         var s = state
         guard !s.fieldNoteEntries.contains(where: { $0.id == id }) else { return false }
-        s.fieldNoteEntries.append(FieldNoteEntry(id: id, text: trimmed, caseID: caseID, shift: shift))
+        s.fieldNoteEntries.append(FieldNoteEntry(
+            id: id, text: trimmed, caseID: caseID, shift: shift, levelID: levelID))
         if s.fieldNoteEntries.count > maxFieldNotes {
             let removed = s.fieldNoteEntries.removeFirst()
             s.fieldNoteReadIDs.remove(removed.id)
@@ -1027,60 +1030,73 @@ enum PDAJournalManager {
         return true
     }
 
-    /// All notes shown in the Field Notes tab.
+    /// Notes visible in the Field Notes tab for the current desk case or field context.
     static func visibleFieldNoteEntries(
         activeCaseID: String? = nil,
-        currentShift: Int? = nil
+        currentShift: Int? = nil,
+        levelID: String? = nil
     ) -> [FieldNoteEntry] {
         migrateFieldNotesIfNeeded()
-        _ = activeCaseID
-        _ = currentShift
-        return state.fieldNoteEntries
+        return state.fieldNoteEntries.filter {
+            matchesFieldNoteContext($0, activeCaseID: activeCaseID,
+                                    currentShift: currentShift, levelID: levelID)
+        }
     }
 
-    /// Unread notes relevant to the current desk case or field shift.
-    private static func isFieldNoteRelevant(
+    private static func matchesFieldNoteContext(
         _ entry: FieldNoteEntry,
         activeCaseID: String?,
-        currentShift: Int?
+        currentShift: Int?,
+        levelID: String?
     ) -> Bool {
-        if let cid = entry.caseID {
-            guard let active = activeCaseID else { return false }
-            return cid == active
+        if let activeCase = activeCaseID {
+            guard let cid = entry.caseID else { return false }
+            return cid == activeCase
         }
-        if let noteShift = entry.shift {
-            guard let current = currentShift else { return true }
-            return noteShift == current
+        if let level = levelID {
+            if let noteLevel = entry.levelID { return noteLevel == level }
+            if entry.caseID != nil { return false }
+            if let noteShift = entry.shift, let current = currentShift {
+                return noteShift == current
+            }
+            return false
         }
-        return true
+        if let noteShift = entry.shift, let current = currentShift {
+            return entry.caseID == nil && noteShift == current
+        }
+        return false
     }
 
     static func unreadRelevantFieldNotes(
         activeCaseID: String? = nil,
-        currentShift: Int? = nil
+        currentShift: Int? = nil,
+        levelID: String? = nil
     ) -> [FieldNoteEntry] {
         migrateFieldNotesIfNeeded()
-        return state.fieldNoteEntries.filter {
-            !isFieldNoteRead(id: $0.id)
-                && isFieldNoteRelevant($0, activeCaseID: activeCaseID, currentShift: currentShift)
-        }
+        return visibleFieldNoteEntries(
+            activeCaseID: activeCaseID, currentShift: currentShift, levelID: levelID
+        ).filter { !isFieldNoteRead(id: $0.id) }
     }
 
     /// Classic mode — mark visible unread notes as viewed when the tab opens.
     static func markRelevantFieldNotesViewed(
         activeCaseID: String? = nil,
-        currentShift: Int? = nil
+        currentShift: Int? = nil,
+        levelID: String? = nil
     ) {
-        let ids = Set(unreadRelevantFieldNotes(activeCaseID: activeCaseID, currentShift: currentShift).map(\.id))
+        let ids = Set(unreadRelevantFieldNotes(
+            activeCaseID: activeCaseID, currentShift: currentShift, levelID: levelID).map(\.id))
         markFieldNotesRead(ids: ids)
     }
 
     /// Guided auto-read — only new relevant notes; silent when none.
     static func fieldNotesAutoReadSpeechText(
         activeCaseID: String? = nil,
-        currentShift: Int? = nil
+        currentShift: Int? = nil,
+        levelID: String? = nil
     ) -> (text: String, noteIDs: Set<String>)? {
-        let unread = unreadRelevantFieldNotes(activeCaseID: activeCaseID, currentShift: currentShift)
+        let unread = unreadRelevantFieldNotes(
+            activeCaseID: activeCaseID, currentShift: currentShift, levelID: levelID)
         guard !unread.isEmpty else { return nil }
         let body = unread.map(\.text).joined(separator: ". ")
         return ("Field Notes. \(body)", Set(unread.map(\.id)))
@@ -1089,18 +1105,21 @@ enum PDAJournalManager {
     /// PLAY NOTE — all visible notes (read and unread).
     static func fieldNotesPlaySpeechText(
         activeCaseID: String? = nil,
-        currentShift: Int? = nil
+        currentShift: Int? = nil,
+        levelID: String? = nil
     ) -> String {
-        let visible = visibleFieldNoteEntries(activeCaseID: activeCaseID, currentShift: currentShift)
+        let visible = visibleFieldNoteEntries(
+            activeCaseID: activeCaseID, currentShift: currentShift, levelID: levelID)
         guard !visible.isEmpty else {
-            return "No observations logged yet."
+            return "No current field notes."
         }
         return visible.map(\.text).joined(separator: ". ")
     }
 
     static func fieldNotesBody(
         activeCaseID: String? = nil,
-        currentShift: Int? = nil
+        currentShift: Int? = nil,
+        levelID: String? = nil
     ) -> [(text: String, isRead: Bool)] {
         migrateFieldNotesIfNeeded()
         var lines: [(String, Bool)] = [
@@ -1108,9 +1127,10 @@ enum PDAJournalManager {
             ("Mara's active observations — not evidence.", true),
             ("", true),
         ]
-        let visible = visibleFieldNoteEntries(activeCaseID: activeCaseID, currentShift: currentShift)
+        let visible = visibleFieldNoteEntries(
+            activeCaseID: activeCaseID, currentShift: currentShift, levelID: levelID)
         if visible.isEmpty {
-            lines.append(("No observations logged yet.", true))
+            lines.append(("No current field notes.", true))
             lines.append(("Open documents, review anomalies, or revisit cases to build notes.", true))
         } else {
             for entry in visible {

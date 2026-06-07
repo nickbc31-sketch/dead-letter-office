@@ -453,7 +453,7 @@
       "asset": "housing_block",
       "x": 2400,
       "y": 0,
-      "scale": 1.0
+      "scale": 0.5
     }
   ],
   "levelWidth": 4800,

@@ -1878,7 +1878,8 @@ Return to authorised sector immediately.
                 PDAJournalManager.addFieldNote(
                     id: "shift\(shift)_terminal_\(inter.id)",
                     text: PDAGuidanceResolver.clampMara(observation),
-                    shift: shift)
+                    shift: shift,
+                    levelID: self.levelID)
             }
             GameState.shared.logDeduction("terminal_\(inter.id)")
             self.notifyPDAIfUpdated()
@@ -2364,6 +2365,7 @@ Sign-out required.
             chapterID: levelData?.chapter,
             fieldObjective: levelData?.objectiveText,
             activeCaseID: nil,
+            levelID: levelID,
             onRebuild: { [weak self] newScreen in self?.rebuildFieldPDAJournal(screen: newScreen) },
             onClose: { [weak self] in
                 self?.isGamePaused = false
@@ -2390,6 +2392,7 @@ Sign-out required.
             PDAJournalPanel.prepareFieldNotesTab(
                 activeCaseID: nil,
                 currentShift: shift,
+                levelID: levelID,
                 isNewVisit: true)
         }
     }
@@ -2656,6 +2659,7 @@ Sign-out required.
                         regions: pdaJournalRegions, screen: pdaJournalScreen),
                     currentShift: shift,
                     activeCaseID: nil,
+                    levelID: levelID,
                     onRebuild: { [weak self] screen in self?.rebuildFieldPDAJournal(screen: screen) },
                     onClose: { [weak self] in
                         self?.isGamePaused = false
