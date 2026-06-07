@@ -4,10 +4,23 @@
   "displayName": "ARCHIVE ANNEX — P04 SECTOR",
   "tileMapName": null,
   "backgroundLayers": [
-    {"imageName": "bg_facility_mid", "zPosition": -20, "scrollFactor": 0.4, "yOffset": 0},
-    {"imageName": "bg_facility_near", "zPosition": -10, "scrollFactor": 0.7, "yOffset": 0}
+    {
+      "imageName": "bg_facility_mid",
+      "zPosition": -20,
+      "scrollFactor": 0.4,
+      "yOffset": 0
+    },
+    {
+      "imageName": "bg_facility_near",
+      "zPosition": -10,
+      "scrollFactor": 0.7,
+      "yOffset": 0
+    }
   ],
-  "spawnPoint": [180, 60],
+  "spawnPoint": [
+    180,
+    60
+  ],
   "exits": [
     {
       "type": "platform_end",
@@ -22,7 +35,10 @@
   "securityCameras": [
     {
       "id": "ch4_annex_cam_a",
-      "position": [2100, 68],
+      "position": [
+        2100,
+        68
+      ],
       "coneLength": 125,
       "coneAngle": 36,
       "scanAmplitude": 14,
@@ -31,7 +47,10 @@
     },
     {
       "id": "ch4_annex_cam_b",
-      "position": [3400, 68],
+      "position": [
+        3400,
+        68
+      ],
       "coneLength": 110,
       "coneAngle": 34,
       "scanAmplitude": 10,
@@ -46,7 +65,7 @@
       "environmental": {
         "x": 220,
         "y": 90,
-        "text": "PMCA RECORDS ANNEX — P04 SECTOR\nAUTHORISED ACCESS ONLY"
+        "text": "PMCA RECORDS ANNEX — P04 SECTOR"
       }
     },
     {
@@ -54,9 +73,24 @@
       "id": "ch4_d_ghost_audit_terminal",
       "terminal": {
         "id": "terminal_ghost_audit",
-        "position": [400, 68],
+        "position": [
+          400,
+          68
+        ],
         "setsFlag": "ch4_ghost_audit_read",
-        "displayText": "GHOST AUDIT — CUMULATIVE SCORE\nClerk 1147-F — updated 2147.04.28\n\nEmpathy index: 2.3σ above baseline\nIllegal forward count: ELEVATED\nPersonal conflict cases: 2\n\nRECOMMENDATION:\nSCHEDULED MORTALITY — Order 66-C\nEffective: 2147.05.01 at 09:00\n\nAuthorised by: Director Calyx\n\n[Note: Score calculated before\nC12 case filing — see predictive\nassessment C14]"
+        "displayText": "GHOST AUDIT — CUMULATIVE SCORE\nClerk 1147-F — updated 2147.04.28\nEmpathy index: 2.3σ above baseline\nIllegal forward count: ELEVATED"
+      }
+    },
+    {
+      "module": "environmental_story",
+      "id": "ch4_f_abandoned_unit",
+      "environmental": {
+        "x": 900,
+        "y": 90,
+        "text": "UNIT 7C — VACANT SINCE RELOCATION",
+        "requiredFlag": "c02_rejected",
+        "kind": "sign",
+        "signID": "sign_ch4_abandoned"
       }
     },
     {
@@ -65,7 +99,16 @@
       "anchorX": 520,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[420, 130], [620, 130]],
+        "points": [
+          [
+            420,
+            130
+          ],
+          [
+            620,
+            130
+          ]
+        ],
         "speed": 50,
         "pauseDuration": 2.5
       }
@@ -76,7 +119,7 @@
       "environmental": {
         "x": 680,
         "y": 68,
-        "text": "ARCHIVE STUB INDEX — ORPHAN TAGS\nEVN-ROUTING-0442 — STUB ONLY\nStatus: OPEN since 2142",
+        "text": "ARCHIVE STUB INDEX — ORPHAN TAGS",
         "kind": "sign",
         "signID": "sign_stub_index"
       }
@@ -86,10 +129,13 @@
       "id": "ch4_d_stub_terminal",
       "terminal": {
         "id": "terminal_stub_index",
-        "position": [900, 68],
+        "position": [
+          900,
+          68
+        ],
         "requiredFlag": "c13_processed",
         "setsFlag": "ch4_stub_index_read",
-        "displayText": "ARCHIVE STUB — VC-0442-M\nVenn, Elias — declared 2142.07.14\n\nBody recovery: NOT RECORDED\nDead Letter: NONE\nRouting tag: EVN-ROUTING-0442\nAudit status: CLOSED same day\n\nAdministrative interest:\nHelix Meridian Memory Division\nTrial classification: TRIAL-0442\n\n[Predictive risk C14:\n'Elias archive stub must not\nreach clerk 1147-F terminal']"
+        "displayText": "ARCHIVE STUB — VC-0442-M\nVenn, Elias — declared 2142.07.14\nBody recovery: NOT RECORDED\nDead Letter: NONE"
       }
     },
     {
@@ -107,7 +153,16 @@
       "anchorX": 1500,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[1100, 130], [1450, 130]],
+        "points": [
+          [
+            1100,
+            130
+          ],
+          [
+            1450,
+            130
+          ]
+        ],
         "speed": 58,
         "pauseDuration": 1.8
       }
@@ -117,10 +172,13 @@
       "id": "ch4_d_calyx_terminal",
       "terminal": {
         "id": "terminal_calyx_memo",
-        "position": [1750, 68],
+        "position": [
+          1750,
+          68
+        ],
         "requiredFlag": "c14_processed",
         "setsFlag": "ch4_calyx_memo_read",
-        "displayText": "DIRECTORATE RISK MEMO — EXPOSURE LOG\nCase C14-RISK-001\n\nAuthor: Director Calyx\nSubject: Clerk 1147-F\n\n'Empathy trajectory predicts C12\nanomaly within 2 shifts.'\n\nAssessment date: 2147.04.20\nC12 filed: 2147.04.28\n\nRouting error delivered memo to\nsubject clerk's queue.\n\n[Correction status: NONE]"
+        "displayText": "DIRECTORATE RISK MEMO — EXPOSURE LOG\nCase C14-RISK-001\nAuthor: Director Calyx\nSubject: Clerk 1147-F"
       }
     },
     {
@@ -128,7 +186,10 @@
       "id": "ch4_e_archivist",
       "npc": {
         "id": "archivist_p04",
-        "position": [2200, 68],
+        "position": [
+          2200,
+          68
+        ],
         "displayName": "ARCHIVIST — P04",
         "dialogue": [
           "The annex doesn't show on clerk maps. We file what the desk destroys.",
@@ -145,7 +206,16 @@
       "anchorX": 2800,
       "patrol": {
         "enemyType": "security_guard",
-        "points": [[2400, 68], [2750, 68]],
+        "points": [
+          [
+            2400,
+            68
+          ],
+          [
+            2750,
+            68
+          ]
+        ],
         "speed": 42,
         "pauseDuration": 3.0
       }
@@ -155,10 +225,14 @@
       "id": "ch4_d_vault_terminal",
       "terminal": {
         "id": "terminal_restricted_vault",
-        "position": [3100, 68],
+        "position": [
+          3100,
+          68
+        ],
         "requiredFlag": "ch4_archive_override_used",
         "setsFlag": "ch4_vault_read",
-        "displayText": "RESTRICTED VAULT — LIVING SENDER INDEX\nUpdated: 2147.04.28\n\nMARR, LINA — VC-4472-F\nRegistry: DECEASED 2147.03.18\nRelay verification: ACTIVE 2147.04.28\nLocation: Block P03 maintenance\n\nVENN, ELIAS — VC-0442-M\nRegistry: DECEASED 2142.07.14\nWaveform: LIVE composition 2147.05.02\nTrial: TRIAL-0442 — memory deletion\n\n[Clerk 1147-F appears in 4 cross-\nreference fields on this terminal.]"
+        "displayText": "RESTRICTED VAULT — LIVING SENDER INDEX\nUpdated: 2147.04.28\nMARR, LINA — VC-4472-F\nRegistry: DECEASED 2147.03.18",
+        "maraObservation": "Coordinates hidden in the waveform. Map doesn't match death location."
       }
     },
     {
@@ -167,7 +241,16 @@
       "anchorX": 4000,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[3700, 130], [4100, 130]],
+        "points": [
+          [
+            3700,
+            130
+          ],
+          [
+            4100,
+            130
+          ]
+        ],
         "speed": 62,
         "pauseDuration": 2.0
       }
@@ -186,17 +269,23 @@
     {
       "id": "ch4_archive_override",
       "type": "security_override",
-      "position": [2550, 68],
+      "position": [
+        2550,
+        68
+      ],
       "requiredFlag": "c14_processed",
       "setsFlag": "ch4_archive_override_used",
       "hackPuzzleID": "ch4_archive_credential",
-      "displayText": "ARCHIVE VAULT — CREDENTIAL LOCK\nRestricted vault P04-VAULT-7\n\nPMCA archive credential required.\nConnect PDA to inject verified\naccess fragments.\n\nApply override?",
+      "displayText": "ARCHIVE VAULT — CREDENTIAL LOCK\nRestricted vault P04-VAULT-7\n",
       "linkedInteractableID": "ch4_vault_door"
     },
     {
       "id": "ch4_vault_door",
       "type": "door",
-      "position": [2680, 68],
+      "position": [
+        2680,
+        68
+      ],
       "requiredFlag": "ch4_archive_override_used",
       "setsFlag": "ch4_vault_open",
       "displayText": "RESTRICTED VAULT — [SEALED]\nARCHIVE CREDENTIAL REQUIRED"
@@ -204,18 +293,41 @@
     {
       "id": "cartridge_calyx_predictive",
       "type": "cartridge",
-      "position": [3850, 68],
+      "position": [
+        3850,
+        68
+      ],
       "nodeLabel": "FILE",
       "setsFlag": "ch4_field_complete",
-      "cartridgeData": "PREDICTIVE ASSESSMENT — LEAKED\nClerk 1147-F — dated 2147.04.20\n\n'Will exceed acceptable variance\nwithin two shifts.'\n\n'Empathy trajectory predicts\nanomaly flag on case C12.'\n\n'Schedule mortality before Elias\narchive stub reaches her queue.'\n\nAssessment predates:\n- C12 filing (2147.04.28)\n- C13 death notice (2147.04.28)\n- C14 memo routing (2147.04.28)\n\nSomeone wrote the future.\nThen routed it to the person\nit described."
+      "cartridgeData": "PREDICTIVE ASSESSMENT — LEAKED\nClerk 1147-F — dated 2147.04.20\n'Will exceed acceptable variance\nwithin two shifts.'\n'Empathy trajectory predicts"
     }
   ],
   "patrols": [],
   "pickups": [
-    {"id": "ch4_pickup_01", "x": "320", "y": "68", "setsFlag": "ch4_pickup01_collected"},
-    {"id": "ch4_pickup_02", "x": "1050", "y": "68", "setsFlag": "ch4_pickup02_collected"},
-    {"id": "ch4_pickup_03", "x": "1950", "y": "68", "setsFlag": "ch4_pickup03_collected"},
-    {"id": "ch4_pickup_04", "x": "3600", "y": "68", "setsFlag": "ch4_pickup04_collected"}
+    {
+      "id": "ch4_pickup_01",
+      "x": "320",
+      "y": "68",
+      "setsFlag": "ch4_pickup01_collected"
+    },
+    {
+      "id": "ch4_pickup_02",
+      "x": "1050",
+      "y": "68",
+      "setsFlag": "ch4_pickup02_collected"
+    },
+    {
+      "id": "ch4_pickup_03",
+      "x": "1950",
+      "y": "68",
+      "setsFlag": "ch4_pickup03_collected"
+    },
+    {
+      "id": "ch4_pickup_04",
+      "x": "3600",
+      "y": "68",
+      "setsFlag": "ch4_pickup04_collected"
+    }
   ],
   "environmentalTextNodes": [],
   "npcs": [],
@@ -223,7 +335,12 @@
   "ambientMusicTrack": "ambient_platform",
   "platformNodes": [],
   "buildingNodes": [
-    {"asset": "archive_annex", "x": 2000, "y": 0, "scale": 1.0}
+    {
+      "asset": "archive_annex",
+      "x": 2000,
+      "y": 0,
+      "scale": 1.0
+    }
   ],
   "levelWidth": 4500,
   "levelHeight": 400

@@ -23,7 +23,10 @@
       "yOffset": 0
     }
   ],
-  "spawnPoint": [120, 60],
+  "spawnPoint": [
+    120,
+    60
+  ],
   "exits": [
     {
       "type": "level_end",
@@ -45,7 +48,10 @@
   "securityCameras": [
     {
       "id": "ch2_restricted_cam",
-      "position": [3180, 68],
+      "position": [
+        3180,
+        68
+      ],
       "coneLength": 130,
       "coneAngle": 40,
       "scanAmplitude": 14,
@@ -68,9 +74,24 @@
       "id": "ch2_d_queue_terminal",
       "terminal": {
         "id": "terminal_queue",
-        "position": [340, 68],
+        "position": [
+          340,
+          68
+        ],
         "setsFlag": "terminal_queue_read",
-        "displayText": "PMCA SORTING CENTRE — QUEUE STATUS\n\n14,847 messages awaiting review.\n12 clerks assigned.\nCurrent throughput: 94.2%\n\nConveyor A-9: INCINERATION PATHWAY\nCurrent load: 312 cases."
+        "displayText": "PMCA SORTING CENTRE — QUEUE STATUS\n14,847 messages awaiting review.\n12 clerks assigned.\nCurrent throughput: 94.2%",
+        "maraObservation": "Three hundred twelve cases on the incineration conveyor. Desk can't see the pathway."
+      }
+    },
+    {
+      "module": "environmental_story",
+      "id": "ch2_f_hidden_jv",
+      "environmental": {
+        "x": 2400,
+        "y": 125,
+        "text": "MAINT GRAFFITI — J.V. WAS HERE",
+        "kind": "sign",
+        "signID": "sign_ch2_hidden_jv"
       }
     },
     {
@@ -79,7 +100,16 @@
       "anchorX": 480,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[480, 130], [680, 130]],
+        "points": [
+          [
+            480,
+            130
+          ],
+          [
+            680,
+            130
+          ]
+        ],
         "speed": 55,
         "pauseDuration": 2.0
       }
@@ -110,7 +140,7 @@
       "environmental": {
         "x": 680,
         "y": 68,
-        "text": "GRIEF — TIER 2 PREMIUM — HELIX MERIDIAN PARTNERS",
+        "text": "GRIEF — TIER 2 PREMIUM — HELIX MERIDIAN PART",
         "kind": "sign",
         "signID": "sign_tier2"
       }
@@ -120,9 +150,13 @@
       "id": "ch2_d_maintenance_terminal",
       "terminal": {
         "id": "terminal_maintenance",
-        "position": [950, 68],
+        "position": [
+          950,
+          68
+        ],
         "setsFlag": "jun_override_log_read",
-        "displayText": "SECTOR 12 MAINTENANCE LOG\n\nLast entry: SVC-19-4A\nSector 12, eastern corridor — 06:45\n\nStatus at 12:00 check-in: ABSENT\nReason: death notification\nreceived from Sector 7.\n\nDiscrepancy flag generated: 12:03\nSupervisor response: NONE LOGGED\nFlag status: OPEN\n\n— — —\nOVERRIDE LOG — 2147.04.08 22:17\nAuthorisation: J.V.\nSector 12 eastern corridor —\nmaintenance layer access\nPERSONNEL FILE: NOT FOUND\nRegistry cross-check: FAILED"
+        "displayText": "SECTOR 12 MAINTENANCE LOG\nLast entry: SVC-19-4A\nSector 12, eastern corridor — 06:45\nStatus at 12:00 check-in: ABSENT",
+        "maraObservation": "Credentials exist. No personnel file. Ghost identity."
       }
     },
     {
@@ -130,7 +164,10 @@
       "id": "ch2_e_maint_worker",
       "npc": {
         "id": "maint_worker_12",
-        "position": [1280, 68],
+        "position": [
+          1280,
+          68
+        ],
         "displayName": "MAINTENANCE — SECTOR 12",
         "dialogue": [
           "You're not supposed to be on this floor after shift end. Neither am I, technically.",
@@ -159,7 +196,7 @@
       "environmental": {
         "x": 1500,
         "y": 68,
-        "text": "CASES CLOSED THIS WEEK — INCINERATION:\nSEN, G. / BRENT, A. (MINOR) / ORVIN, K.\nHARROW, L. / DAIN, F. / VOSS, N.\n[...and 841 others]\n\nOLDEST UNDELIVERABLE ON RECORD:\nORRA [2130] — STATUS: ARCHIVED",
+        "text": "CASES CLOSED THIS WEEK — INCINERATION:",
         "kind": "sign",
         "signID": "sign_names"
       }
@@ -169,9 +206,13 @@
       "id": "ch2_d_incineration_terminal",
       "terminal": {
         "id": "terminal_incineration",
-        "position": [1780, 68],
+        "position": [
+          1780,
+          68
+        ],
         "setsFlag": "terminal_incineration_read",
-        "displayText": "INCINERATION SCHEDULE\nWeek of 2147.04.11\n\nCases scheduled: 847\nEstimated completion: 2147.04.15\n\nSection 19.4 overrides processed\nthis week: 3\n\nAverage time from death\nto incineration: 4.2 days"
+        "displayText": "INCINERATION SCHEDULE\nWeek of 2147.04.11\nCases scheduled: 847\nEstimated completion: 2147.04.15",
+        "maraObservation": "Eight hundred forty-seven scheduled this week. Three override flags already processed."
       }
     },
     {
@@ -180,7 +221,16 @@
       "anchorX": 1600,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[1500, 130], [1850, 130]],
+        "points": [
+          [
+            1500,
+            130
+          ],
+          [
+            1850,
+            130
+          ]
+        ],
         "speed": 60,
         "pauseDuration": 1.5
       }
@@ -191,7 +241,7 @@
       "environmental": {
         "x": 2100,
         "y": 68,
-        "text": "CLERK PROCESSING TARGETS — Q2\nTARGET: 15,000\nACTUAL: 12,847\nVARIANCE: -2,153\nACTION: QUEUE EXPANSION APPROVED",
+        "text": "CLERK PROCESSING TARGETS — Q2",
         "kind": "sign",
         "signID": "sign_processing"
       }
@@ -202,7 +252,7 @@
       "environmental": {
         "x": 2400,
         "y": 68,
-        "text": "[PA SYSTEM — LOOPING]\n'On behalf of all citizens of Veyr,\nwe extend our deepest condolences\nand assure you that your loved\none's final message will be handled\nwith care and dignity.'",
+        "text": "[PA SYSTEM — LOOPING]",
         "kind": "sign",
         "signID": "sign_pa"
       }
@@ -213,7 +263,16 @@
       "anchorX": 3000,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[2700, 130], [3050, 130]],
+        "points": [
+          [
+            2700,
+            130
+          ],
+          [
+            3050,
+            130
+          ]
+        ],
         "speed": 65,
         "pauseDuration": 2.0
       }
@@ -223,9 +282,13 @@
       "id": "ch2_d_buffer_terminal",
       "terminal": {
         "id": "terminal_buffer",
-        "position": [3650, 68],
+        "position": [
+          3650,
+          68
+        ],
         "setsFlag": "ch2_buffer_senders_found",
-        "displayText": "PMCA RELAY BUFFER — EAST TRANSIT NODE\n\nUnregistered senders in transit: 47\nScheduled deletion: 2147.04.15\n\nSecondary routing class: EVN\nOrphan tags logged: 12\nOrigin infrastructure: UNLOGGED\n\nNote: Buffer contents not visible\nfrom clerk processing terminals."
+        "displayText": "PMCA RELAY BUFFER — EAST TRANSIT NODE\nUnregistered senders in transit: 47\nScheduled deletion: 2147.04.15\nSecondary routing class: EVN",
+        "maraObservation": "They're scheduling deletions before clerks see the buffer."
       }
     },
     {
@@ -234,7 +297,16 @@
       "anchorX": 3800,
       "patrol": {
         "enemyType": "security_guard",
-        "points": [[3500, 68], [3900, 68]],
+        "points": [
+          [
+            3500,
+            68
+          ],
+          [
+            3900,
+            68
+          ]
+        ],
         "speed": 50,
         "pauseDuration": 3.0
       }
@@ -245,7 +317,7 @@
       "environmental": {
         "x": 4400,
         "y": 68,
-        "text": "EAST TRANSIT — SECTOR 4 EXIT\nAUTHORISED PERSONNEL ONLY",
+        "text": "EAST TRANSIT — SECTOR 4 EXIT",
         "kind": "sign",
         "signID": "sign_exit"
       }
@@ -255,48 +327,96 @@
     {
       "id": "cabinet_ch2_credential",
       "type": "cabinet",
-      "position": [2280, 68],
+      "position": [
+        2280,
+        68
+      ],
       "setsFlag": "ch2_maintenance_credential",
-      "displayText": "MAINTENANCE CREDENTIAL LOCKER\nLocker ID: MNT-SEC12-E4\n\nSector 12 restricted corridor\ncredential issued to authorised\nmaintenance personnel.\n\n— — —\nCREDENTIAL: CH2-MAINT-SEC12\nStatus: ACTIVE\n— — —\n\nSign out before restricted transit."
+      "displayText": "MAINTENANCE CREDENTIAL LOCKER\nLocker ID: MNT-SEC12-E4\n"
     },
     {
       "id": "ch2_restricted_override",
       "type": "security_override",
-      "position": [3250, 68],
+      "position": [
+        3250,
+        68
+      ],
       "requiredFlag": "ch2_maintenance_credential",
       "setsFlag": "ch2_restricted_override_used",
       "hackPuzzleID": "ch2_restricted_bypass",
-      "displayText": "RESTRICTED SECTOR — PDA OVERRIDE PORT\n\nCredential: CH2-MAINT-SEC12 verified.\nRoute access signal to bypass checkpoint\ncamera sweep and door seal.\n\nBypass logs override to audit trail.",
+      "displayText": "RESTRICTED SECTOR — PDA OVERRIDE PORT\n\nCredential: CH2-MAINT-SEC12 verified.",
       "linkedInteractableID": "door_restricted"
     },
     {
       "id": "door_restricted",
       "type": "door",
-      "position": [3380, 68],
-      "requiredFlagsAny": ["c08_illegal_forward_used", "ch2_maintenance_credential", "ch2_restricted_override_used"],
+      "position": [
+        3380,
+        68
+      ],
+      "requiredFlagsAny": [
+        "c08_illegal_forward_used",
+        "ch2_maintenance_credential",
+        "ch2_restricted_override_used"
+      ],
       "setsFlag": "door_restricted_open",
       "displayText": "RESTRICTED SECTOR — AUTHORISED ACCESS ONLY"
     },
     {
       "id": "cartridge_choir_list",
       "type": "cartridge",
-      "position": [3950, 68],
+      "position": [
+        3950,
+        68
+      ],
       "nodeLabel": "FILE",
       "setsFlag": "c08_cartridge_collected",
-      "cartridgeData": "PMCA PRIORITY MONITORING — CIVIL STATUS AT RISK\nCompiled: unknown. Updated: 2147.04.08.\nClassification: internal.\n\n1. MARR, L. — 29-VL-0034 — ACTIVE MONITORING\n2. SEN, G. — 44-9-T-0811 — DECEASED (2147.04.11)\n3. BRENT, A. — 32-L-0775 — MINOR, GUARDIAN TRANSITION\n4. DAIN, K. — 19-MH-0221 — ACTIVE MONITORING\n5. HARROW, L. — 07-AC-0088 — ACTIVE MONITORING\n6. QUILL, S. — 55-MH-0412 — ACTIVE MONITORING\n7. ORVIN, K. — 38-SV-0091 — ACTIVE MONITORING\n8. [EXPUNGED] — [EXPUNGED] — PRIOR CONTACT, STATUS UNKNOWN"
+      "cartridgeData": "PMCA PRIORITY MONITORING — CIVIL STATUS AT RISK\nCompiled: unknown. Updated: 2147.04.08.\nClassification: internal.\n1. MARR, L. — 29-VL-0034 — ACTIVE MONITORING\n2. SEN, G. — 44-9-T-0811 — DECEASED (2147.04.11)"
     }
   ],
   "patrols": [],
   "pickups": [
-    {"id": "ch2_pickup_01", "x": "300", "y": "68", "setsFlag": "ch2_pickup01_collected"},
-    {"id": "ch2_pickup_02", "x": "1050", "y": "68", "setsFlag": "ch2_pickup02_collected"},
-    {"id": "ch2_pickup_03", "x": "1650", "y": "68", "setsFlag": "ch2_pickup03_collected"},
-    {"id": "ch2_pickup_04", "x": "4100", "y": "68", "setsFlag": "ch2_pickup04_collected"}
+    {
+      "id": "ch2_pickup_01",
+      "x": "300",
+      "y": "68",
+      "setsFlag": "ch2_pickup01_collected"
+    },
+    {
+      "id": "ch2_pickup_02",
+      "x": "1050",
+      "y": "68",
+      "setsFlag": "ch2_pickup02_collected"
+    },
+    {
+      "id": "ch2_pickup_03",
+      "x": "1650",
+      "y": "68",
+      "setsFlag": "ch2_pickup03_collected"
+    },
+    {
+      "id": "ch2_pickup_04",
+      "x": "4100",
+      "y": "68",
+      "setsFlag": "ch2_pickup04_collected"
+    }
   ],
   "environmentalTextNodes": [
-    {"x": "2550", "y": "90", "text": "SECTOR 4 — SHIFT END CHECKPOINT"},
-    {"x": "3100", "y": "90", "text": "RESTRICTED ZONE — CLEARANCE REQUIRED"},
-    {"x": "3800", "y": "90", "text": "SORTING DIVISION — TIER 3 ARCHIVE"}
+    {
+      "x": "2550",
+      "y": "90",
+      "text": "SECTOR 4 — SHIFT END CHECKPOINT"
+    },
+    {
+      "x": "3100",
+      "y": "90",
+      "text": "RESTRICTED ZONE — CLEARANCE REQUIRED"
+    },
+    {
+      "x": "3800",
+      "y": "90",
+      "text": "SORTING DIVISION — TIER 3 ARCHIVE"
+    }
   ],
   "npcs": [],
   "objectiveText": "SHIFT 2 — EAST TRANSIT",

@@ -4,6 +4,7 @@ struct SaveData: Codable {
     var complianceScore: Int
     var empathyScore: Int
     var suspicionScore: Int
+    var deductionCount: Int?
     var resistanceTrust: Int
     var corporateTrust: Int
     var citizenHarmCount: Int
@@ -33,6 +34,7 @@ final class SaveManager {
             complianceScore: state.complianceScore,
             empathyScore: state.empathyScore,
             suspicionScore: state.suspicionScore,
+            deductionCount: state.deductionCount,
             resistanceTrust: state.resistanceTrust,
             corporateTrust: state.corporateTrust,
             citizenHarmCount: state.citizenHarmCount,
@@ -63,6 +65,7 @@ final class SaveManager {
         state.complianceScore        = data.complianceScore
         state.empathyScore           = data.empathyScore
         state.suspicionScore         = data.suspicionScore
+        state.deductionCount         = data.deductionCount ?? 0
         state.resistanceTrust        = data.resistanceTrust
         state.corporateTrust         = data.corporateTrust
         state.citizenHarmCount       = data.citizenHarmCount

@@ -33,6 +33,12 @@ struct Contradiction: Codable {
     var isCritical: Bool
 }
 
+// MARK: - Investigation category (one fact per record type)
+struct InvestigationCategory: Codable {
+    var category: String   // IDENTITY, TRANSIT, HOUSING, DEATH RECORD, etc.
+    var fact: String       // Single deducible fact, e.g. "Declared: 14:22"
+}
+
 // MARK: - CaseFile
 struct CaseFile: Codable, Identifiable {
     var id: String
@@ -49,6 +55,8 @@ struct CaseFile: Codable, Identifiable {
     var correctLegalActionID: String
     var followUpFlags: [String]?
     var requiredFlags: [String]?       // nil means always available
+    var investigationCategories: [InvestigationCategory]?
+    var anomalyHook: String?           // Subtle desk prompt — not the answer
 
     // Load all cases for a chapter from bundled JSON
     static func loadCases(forChapter chapterID: String) -> [CaseFile] {

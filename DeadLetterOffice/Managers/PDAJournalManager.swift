@@ -35,6 +35,7 @@ struct PDAJournalState: Codable {
     var unlockedShifts: Set<Int> = [1]
     var bootScreenSeen: Bool = false
     var pendingUpdateNotice: Bool = false
+    var deskCasePDAOpenCounts: [String: Int] = [:]
 }
 
 // MARK: - Legacy migration (no GameState / PDAJournalManager dependency)
@@ -82,8 +83,10 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch1_inv_start", shift: 1, section: .investigation, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Relay Building sits on the desk route for tonight's field check.",
                 "Case records mention Transit Line 9 and routing irregularities.",
+                "OPEN QUESTIONS",
                 "Inner checkpoints use citizen-linked access codes.",
                 "If credentials fail, PDA intrusion may bypass sealed doors.",
             ],
@@ -92,7 +95,9 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch1_inv_relay", shift: 1, section: .investigation, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Terminal 01 should confirm how checkpoint codes are derived.",
+                "OPEN QUESTIONS",
                 "Relay Node 7 may hold maintenance credentials.",
                 "Sign out of relay consoles before leaving the building.",
             ],
@@ -102,51 +107,68 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch1_disc_victim_id", shift: 1, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Desk Case 1 — Olen Marr, citizen VC-4471-M.",
                 "Death certificate tied to Transit Line 9 derailment.",
-                "Citizen ID format may matter at inner checkpoints.",
+                "OPEN QUESTIONS",
+                "Who recorded death before the incident was filed?",
             ],
             tags: ["case_4471", "transit_line_9"], sortOrder: 0))
 
         entries.append(.init(
             id: "ch1_disc_code_format", shift: 1, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Checkpoint codes rotate with active case reference numbers.",
                 "Format VC-[XXXX]-M — four middle digits used at keypad.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
             ],
             tags: ["case_4471"], sortOrder: 10))
 
         entries.append(.init(
             id: "ch1_disc_relay_buffer", shift: 1, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Relay Node 7 buffer holds 47 messages in transit.",
                 "Routing tag EVN-ROUTING-0442 — Quiet Choir relay buffer.",
                 "Scheduled deletion logged — routing anomaly at Node 7.",
+                "OPEN QUESTIONS",
+                "Who scheduled the buffer deletion?",
             ],
             tags: ["quiet_choir", "elias_venn"], sortOrder: 20))
 
         entries.append(.init(
             id: "ch1_disc_credential", shift: 1, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Inner checkpoint needs maintenance credential from Relay Node 7.",
                 "Locker MNT-RELAY-07 on east wall.",
                 "Console login required before credential access.",
+                "OPEN QUESTIONS",
+                "Who authorised relay locker access?",
             ],
             tags: ["relay_building"], sortOrder: 30))
 
         entries.append(.init(
             id: "ch1_disc_checkpoint", shift: 1, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Checkpoint code derived from Case 1 victim citizen ID.",
                 "PDA override port available at inner checkpoint door.",
+                "OPEN QUESTIONS",
+                "Why do codes follow case victim IDs?",
             ],
             tags: ["case_4471"], sortOrder: 40))
 
         entries.append(.init(
             id: "ch1_disc_haas", shift: 1, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Field officer Haas confirms checkpoint codes follow case IDs.",
                 "Desk terminals do not surface all routing data.",
+                "OPEN QUESTIONS",
+                "What routing data is the desk hiding?",
             ],
             tags: ["case_4471"], sortOrder: 50))
 
@@ -165,8 +187,10 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch2_inv_start", shift: 2, section: .investigation, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Desk cases reference real East Transit infrastructure.",
                 "Death registrations may precede incident reports.",
+                "OPEN QUESTIONS",
                 "Maintenance layer credentials exist without personnel records.",
                 "Data uplinks may show buffers desk terminals cannot access.",
             ],
@@ -175,7 +199,9 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch2_inv_field", shift: 2, section: .investigation, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Sector 12 maintenance contact may know who uses J.V. credentials.",
+                "OPEN QUESTIONS",
                 "Restricted east sector requires physical credential.",
                 "Street-level monitoring lists may contradict desk records.",
             ],
@@ -185,43 +211,58 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch2_disc_jun_override", shift: 2, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Sector 12 maintenance log — authorisation J.V., 2147.04.08.",
                 "Personnel file: NOT FOUND. Registry cross-check: FAILED.",
+                "OPEN QUESTIONS",
+                "Who is authorising as J.V.?",
             ],
             tags: ["quiet_choir"], sortOrder: 0))
 
         entries.append(.init(
             id: "ch2_disc_maintenance", shift: 2, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Worker badge failed east checkpoint — roster absent.",
                 "Locker MNT-SEC12-E4 holds maintenance credential.",
                 "Restricted sector cartridge hidden behind panel C-9.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
             ],
             tags: ["helix_routing"], sortOrder: 10))
 
         entries.append(.init(
             id: "ch2_disc_evn_buffer", shift: 2, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "East Transit relay buffer — 47 unregistered senders.",
                 "Routing class EVN — orphan tags logged.",
                 "Desk terminals cannot see this buffer.",
+                "OPEN QUESTIONS",
+                "Where do orphan tags route?",
             ],
             tags: ["elias_venn", "helix_routing"], sortOrder: 20))
 
         entries.append(.init(
             id: "ch2_disc_choir_list", shift: 2, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Quiet Choir monitoring list recovered from street cartridge.",
                 "MARR, L. listed ACTIVE — desk cases reference same name.",
                 "Names exist on civil monitoring PMCA desk does not show.",
+                "OPEN QUESTIONS",
+                "Why is Marr listed active on street monitors?",
             ],
             tags: ["quiet_choir", "marr_unit_312"], sortOrder: 30))
 
         entries.append(.init(
             id: "ch2_disc_restricted", shift: 2, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Credential CH2-MAINT-SEC12 opens restricted east transit.",
                 "PDA override available at checkpoint if camera sweep active.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
             ],
             tags: ["helix_routing"], sortOrder: 40))
 
@@ -239,8 +280,10 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch3_inv_start", shift: 3, section: .investigation, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Block P03 appears in multiple case records.",
                 "Marr Unit 312 was sealed before official clearance.",
+                "OPEN QUESTIONS",
                 "Resident testimony may contradict PMCA records.",
                 "Need to locate the Orvin file.",
                 "If direct access is blocked, PDA intrusion may bypass the seal.",
@@ -250,8 +293,10 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch3_inv_field", shift: 3, section: .investigation, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Check resident directory and mailbox row for Marr references.",
                 "Apartment terminal may hold sealing inventory.",
+                "OPEN QUESTIONS",
                 "Second drone at checkpoint logs all passers-by.",
                 "Orvin file may link Block P03 to earlier transit cases.",
             ],
@@ -261,59 +306,80 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch3_disc_evn_orphans", shift: 3, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Block P03 register shows EVN orphan routing tags.",
                 "Same routing class as Elias desk tag — audit closed 2142.",
                 "Clerk terminals do not surface these entries.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
             ],
             tags: ["elias_venn", "block_p03", "helix_routing"], sortOrder: 0))
 
         entries.append(.init(
             id: "ch3_disc_orra_mural", shift: 3, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Community mural references Saint Orra — restored 2138.",
                 "PMCA notice flags unauthorised symbolism.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
             ],
             tags: ["saint_orra", "quiet_choir"], sortOrder: 10))
 
         entries.append(.init(
             id: "ch3_disc_relocation", shift: 3, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Batch relocation order Q1 2147 — Units 301-318 cleared in one morning.",
                 "Families told relatives already processed before notification sent.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
             ],
             tags: ["block_p03", "citizen_erasure"], sortOrder: 20))
 
         entries.append(.init(
             id: "ch3_disc_marr_unit", shift: 3, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Unit 312 sealing inventory — Marr, L., death 2147.03.18.",
                 "Appeal in processing at desk when unit was sealed.",
                 "Housing register knew before appeal reached clerks.",
+                "OPEN QUESTIONS",
+                "Who sealed the unit before clearance?",
             ],
             tags: ["marr_unit_312", "pmca_record_alteration"], sortOrder: 30))
 
         entries.append(.init(
             id: "ch3_disc_orvin_note", shift: 3, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Orvin, K. — handwritten note recovered pre-incineration.",
                 "Confession signed under guardian threat.",
                 "Harrel signed death and destruction minutes apart.",
+                "OPEN QUESTIONS",
+                "What does the Orvin file prove?",
             ],
             tags: ["block_p03"], sortOrder: 40))
 
         entries.append(.init(
             id: "ch3_disc_resident_305", shift: 3, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Resident in Unit 305 says L. Marr filed an appeal.",
                 "Remembers people PMCA records now omit.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
             ],
             tags: ["marr_unit_312", "citizen_erasure"], sortOrder: 50))
 
         entries.append(.init(
             id: "ch3_disc_hack", shift: 3, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "PDA route trace bypassed Unit 312 seal gate.",
                 "Seal predates official clearance order on record.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
             ],
             tags: ["marr_unit_312", "helix_routing"], sortOrder: 60))
 
@@ -331,8 +397,10 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch4_inv_start", shift: 4, section: .investigation, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Lina Marr reached me through Dead Letter — living, registered dead.",
                 "My own cessation notice arrived at the desk.",
+                "OPEN QUESTIONS",
                 "Calyx memo predicts actions before they occur.",
                 "Records Annex P04 — post-burial revision queue 7-B.",
             ],
@@ -340,7 +408,9 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch4_inv_field", shift: 4, section: .investigation, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Ghost Audit terminal confirms scheduled mortality.",
+                "OPEN QUESTIONS",
                 "Archive vault needs credential injection — case link + clerk ID.",
                 "Deleted record cartridge may survive revision queue purge.",
             ],
@@ -350,29 +420,41 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch4_disc_ghost_audit", shift: 4, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Ghost Audit score elevated — cessation Order 66-C.",
                 "Predictive assessment predates case filing.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
             ],
             tags: ["pmca_record_alteration"], sortOrder: 0))
         entries.append(.init(
             id: "ch4_disc_revision", shift: 4, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Revision queue 7-B — 847 post-burial death amendments.",
                 "Case 4471-M cause of death revised after burial.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
             ],
             tags: ["case_4471", "pmca_record_alteration"], sortOrder: 10))
         entries.append(.init(
             id: "ch4_disc_deleted", shift: 4, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Leaked predictive assessment — predates C12, C13, C14 filing.",
                 "Calyx scheduled mortality before cases reached queue.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
             ],
             tags: ["citizen_erasure", "pmca_record_alteration"], sortOrder: 20))
         entries.append(.init(
             id: "ch4_disc_credential", shift: 4, section: .discoveries, title: nil,
             bullets: [
+                "KEY FACTS",
                 "PDA credential injection bypassed archive vault seal.",
                 "Fragments: clerk ID, Ghost Audit, P04 vault authority.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
             ],
             tags: ["elias_venn"], sortOrder: 30))
         entries.append(.init(
@@ -389,8 +471,10 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch5_inv_start", shift: 5, section: .investigation, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Elias archive stub — closure without closure.",
                 "Afterlife Premium — paid legacy edits for wealthy citizens.",
+                "OPEN QUESTIONS",
                 "Helix Meridian controls grief infrastructure.",
                 "Corporate deletion engines vs Tier 3 premium vaults.",
             ],
@@ -398,22 +482,42 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch5_inv_field", shift: 5, section: .investigation, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Legacy terminal shows routing anomalies to Helix nodes.",
+                "OPEN QUESTIONS",
                 "Security camera bypass needed for executive corridor.",
                 "TRIAL-0442 referenced in corporate deletion logs.",
             ],
             tags: ["helix_routing"], sortOrder: 10))
         entries.append(.init(
             id: "ch5_disc_elias_stub", shift: 5, section: .discoveries, title: nil,
-            bullets: ["Elias Venn archive stub — officially dead 2142.", "Network engineer routing tags still active."],
+            bullets: [
+                "KEY FACTS",
+                "Elias Venn archive stub — officially dead 2142.",
+                "Network engineer routing tags still active.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
+            ],
             tags: ["elias_venn"], sortOrder: 0))
         entries.append(.init(
             id: "ch5_disc_legacy", shift: 5, section: .discoveries, title: nil,
-            bullets: ["Sera Quill legacy edit — paid erasure of Kell Orvin.", "Poor citizens routed to deletion engines."],
+            bullets: [
+                "KEY FACTS",
+                "Sera Quill legacy edit — paid erasure of Kell Orvin.",
+                "Poor citizens routed to deletion engines.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
+            ],
             tags: ["helix_routing", "citizen_erasure"], sortOrder: 10))
         entries.append(.init(
             id: "ch5_disc_camera", shift: 5, section: .discoveries, title: nil,
-            bullets: ["Helix camera sweep bypassed via frequency match.", "Executive corridor leads to transit routing core."],
+            bullets: [
+                "KEY FACTS",
+                "Helix camera sweep bypassed via frequency match.",
+                "Executive corridor leads to transit routing core.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
+            ],
             tags: ["helix_routing"], sortOrder: 20))
         entries.append(.init(
             id: "ch5_summary", shift: 5, section: .summary, title: nil,
@@ -428,7 +532,9 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch6_inv_start", shift: 6, section: .investigation, title: nil,
             bullets: [
+                "KEY FACTS",
                 "TRIAL-0442 biometric data post-dates Elias death.",
+                "OPEN QUESTIONS",
                 "Saint Orra fragment — deletion count still rising.",
                 "Black Mail Train manifest — Route 7-B under sealed district.",
             ],
@@ -436,22 +542,42 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch6_inv_field", shift: 6, section: .investigation, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Transit manifest lists citizens declared dead.",
+                "OPEN QUESTIONS",
                 "Checkpoint security — frequency match for Route 7-B.",
                 "Orra fragment cartridge on train car 2.",
             ],
             tags: ["citizen_erasure", "transit_line_9"], sortOrder: 10))
         entries.append(.init(
             id: "ch6_disc_manifest", shift: 6, section: .discoveries, title: nil,
-            bullets: ["Transit manifest — declared-dead citizens in motion.", "Destination: sealed district processing."],
+            bullets: [
+                "KEY FACTS",
+                "Transit manifest — declared-dead citizens in motion.",
+                "Destination: sealed district processing.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
+            ],
             tags: ["citizen_erasure"], sortOrder: 0))
         entries.append(.init(
             id: "ch6_disc_trial", shift: 6, section: .discoveries, title: nil,
-            bullets: ["TRIAL-0442 termination filed 2142 — biometrics ACTIVE 2147.", "Lena Harrow signed termination order."],
+            bullets: [
+                "KEY FACTS",
+                "TRIAL-0442 termination filed 2142 — biometrics ACTIVE 2147.",
+                "Lena Harrow signed termination order.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
+            ],
             tags: ["elias_venn"], sortOrder: 10))
         entries.append(.init(
             id: "ch6_disc_orra", shift: 6, section: .discoveries, title: nil,
-            bullets: ["Orra fragment — census methodology from 2130.", "Deletion count: 1,247,883 and rising."],
+            bullets: [
+                "KEY FACTS",
+                "Orra fragment — census methodology from 2130.",
+                "Deletion count: 1,247,883 and rising.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
+            ],
             tags: ["saint_orra", "quiet_choir"], sortOrder: 20))
         entries.append(.init(
             id: "ch6_summary", shift: 6, section: .summary, title: nil,
@@ -466,7 +592,9 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch7_inv_start", shift: 7, section: .investigation, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Jun Vale — officially dead, active in maintenance systems.",
+                "OPEN QUESTIONS",
                 "Quiet Choir petition — forged signatures on resistance list.",
                 "Elias final packet fragments across three systems.",
             ],
@@ -474,26 +602,52 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch7_inv_field", shift: 7, section: .investigation, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Undercity relay — encrypted messages need pattern decode.",
+                "OPEN QUESTIONS",
                 "Resistance archives behind choir seal gate.",
                 "Census wall — 847 names, 14 forgeries marked.",
             ],
             tags: ["quiet_choir", "saint_orra"], sortOrder: 10))
         entries.append(.init(
             id: "ch7_disc_jun", shift: 7, section: .discoveries, title: nil,
-            bullets: ["Jun Vale maintains relay nodes under dead identity.", "J.V. credentials match Ch2 maintenance logs."],
+            bullets: [
+                "KEY FACTS",
+                "Jun Vale maintains relay nodes under dead identity.",
+                "J.V. credentials match Ch2 maintenance logs.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
+            ],
             tags: ["quiet_choir", "helix_routing"], sortOrder: 0))
         entries.append(.init(
             id: "ch7_disc_petition", shift: 7, section: .discoveries, title: nil,
-            bullets: ["Quiet Choir petition — 14 forged signatures inserted by PMCA.", "Resistance list used to justify erasure."],
+            bullets: [
+                "KEY FACTS",
+                "Quiet Choir petition — 14 forged signatures inserted by PMCA.",
+                "Resistance list used to justify erasure.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
+            ],
             tags: ["quiet_choir", "citizen_erasure"], sortOrder: 10))
         entries.append(.init(
             id: "ch7_disc_elias_packet", shift: 7, section: .discoveries, title: nil,
-            bullets: ["Elias final packet — fragments in transit, archive, choir relay.", "Complete truth requires Central Archive."],
+            bullets: [
+                "KEY FACTS",
+                "Elias final packet — fragments in transit, archive, choir relay.",
+                "Complete truth requires Central Archive.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
+            ],
             tags: ["elias_venn"], sortOrder: 20))
         entries.append(.init(
             id: "ch7_disc_pattern", shift: 7, section: .discoveries, title: nil,
-            bullets: ["Pattern decode opened choir resistance archive.", "Saint Orra's movement survived underground."],
+            bullets: [
+                "KEY FACTS",
+                "Pattern decode opened choir resistance archive.",
+                "Saint Orra's movement survived underground.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
+            ],
             tags: ["saint_orra", "quiet_choir"], sortOrder: 30))
         entries.append(.init(
             id: "ch7_summary", shift: 7, section: .summary, title: nil,
@@ -508,19 +662,33 @@ enum PDAJournalManager {
         entries.append(.init(
             id: "ch8_inv_start", shift: 8, section: .investigation, title: nil,
             bullets: [
+                "KEY FACTS",
                 "Central Archive infiltration — dual hack required.",
                 "Retrieve complete Orra letter + deletion census.",
+                "OPEN QUESTIONS",
                 "TRIAL-0442 termination record in Vault 1.",
                 "Final desk case: broadcast, control, or erasure.",
             ],
             tags: ["saint_orra", "elias_venn"], sortOrder: 0))
         entries.append(.init(
             id: "ch8_disc_census", shift: 8, section: .discoveries, title: nil,
-            bullets: ["Deletion census — 1,247,883 erased citizens catalogued.", "412,000 at Orra's execution — methodology still valid."],
+            bullets: [
+                "KEY FACTS",
+                "Deletion census — 1,247,883 erased citizens catalogued.",
+                "412,000 at Orra's execution — methodology still valid.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
+            ],
             tags: ["saint_orra", "citizen_erasure"], sortOrder: 0))
         entries.append(.init(
             id: "ch8_disc_vault", shift: 8, section: .discoveries, title: nil,
-            bullets: ["Vault 1 credential accepted — ORRA-SEAL + CENSUS + 2130.", "Complete letter retrieved before Calyx arrival."],
+            bullets: [
+                "KEY FACTS",
+                "Vault 1 credential accepted — ORRA-SEAL + CENSUS + 2130.",
+                "Complete letter retrieved before Calyx arrival.",
+                "OPEN QUESTIONS",
+                "What connects these records?",
+            ],
             tags: ["saint_orra"], sortOrder: 10))
         entries.append(.init(
             id: "ch8_summary", shift: 8, section: .summary, title: nil,
@@ -530,6 +698,24 @@ enum PDAJournalManager {
                 "Final choice determines city's truth — or its burial.",
             ],
             tags: ["elias_venn", "saint_orra", "pmca_record_alteration"], sortOrder: 0))
+
+        // ── Optional discoveries (exploration rewards, not required) ─────────
+        let optionalDiscoveries: [(shift: Int, id: String, facts: [String], question: String, tags: [String])] = [
+            (1, "ch1_opt_hidden_choir", ["Quiet Choir graffiti near restricted zone.", "Phrase matches Case 1 message."], "What connects these records?", ["quiet_choir", "case_4471"]),
+            (2, "ch2_opt_hidden_jv", ["Jun Vale tag on maintenance wall.", "No personnel file on record."], "Who is authorising as J.V.?", ["helix_routing", "quiet_choir"]),
+            (3, "ch3_opt_c01_consequence", ["Shift 1 decision visible on Block 14.", "Relocation or denial left a trace."], "What did my desk action cause?", ["case_4471", "marr_unit_312"]),
+            (4, "ch4_opt_abandoned_unit", ["Unit 7C vacant — Arden Sol relocation.", "Desk rejection may have accelerated vacancy."], "Who paid the cost of my stamp?", ["citizen_erasure"]),
+            (5, "ch5_opt_hidden_trial", ["Staff note references TRIAL-0442.", "Elias Venn name on classified stub."], "Memory deletion — not death.", ["elias_venn", "helix_routing"]),
+            (6, "ch6_opt_jun_tag", ["Jun Vale carriage maintenance tag.", "Officially dead — still on Route 7-B."], "Who runs the black train?", ["helix_routing", "quiet_choir"]),
+            (7, "ch7_opt_elias_tag", ["Elias Venn relay address recovered.", "Still composing after termination."], "Erased — not killed.", ["elias_venn"]),
+            (8, "ch8_opt_orra_lamp", ["Saint Orra lamp still lit in archive.", "Deletion count climbs daily."], "What truth survives incineration?", ["saint_orra", "pmca_record_alteration"]),
+        ]
+        for opt in optionalDiscoveries {
+            entries.append(.init(
+                id: opt.id, shift: opt.shift, section: .discoveries, title: "OPTIONAL",
+                bullets: ["KEY FACTS", opt.facts[0], opt.facts[1], "OPEN QUESTIONS", opt.question],
+                tags: opt.tags, sortOrder: 900 + opt.shift))
+        }
 
         return Dictionary(uniqueKeysWithValues: entries.map { ($0.id, $0) })
     }()
@@ -890,6 +1076,22 @@ enum PDAJournalManager {
             GameState.shared.setFlag("orrra_mural_ch3")
         case "sign_eviction":
             unlock("ch3_disc_relocation")
+        case "sign_ch1_hidden_choir":
+            unlock("ch1_opt_hidden_choir")
+        case "sign_ch2_hidden_jv":
+            unlock("ch2_opt_hidden_jv")
+        case "sign_ch5_hidden_trial":
+            unlock("ch5_opt_hidden_trial")
+        case "sign_ch6_hidden_jun":
+            unlock("ch6_opt_jun_tag")
+        case "sign_ch7_hidden_elias":
+            unlock("ch7_opt_elias_tag")
+        case "sign_ch8_hidden_orra":
+            unlock("ch8_opt_orra_lamp")
+        case "sign_ch3_c01_reloc", "sign_ch3_lina_warned", "sign_ch3_c01_denied":
+            unlock("ch3_opt_c01_consequence")
+        case "sign_ch4_abandoned":
+            unlock("ch4_opt_abandoned_unit")
         default:
             break
         }
@@ -979,6 +1181,17 @@ enum PDAJournalManager {
         return results.sorted { $0.0 < $1.0 }
     }
 
+    static func recordDeskPDAOpen(caseID: String) {
+        var s = state
+        s.deskCasePDAOpenCounts[caseID, default: 0] += 1
+        state = s
+        GameState.shared.save()
+    }
+
+    static func deskPDAOpenCount(caseID: String) -> Int {
+        state.deskCasePDAOpenCounts[caseID] ?? 0
+    }
+
     static func shiftNumber(from chapterID: String) -> Int {
         Int(chapterID.replacingOccurrences(of: "ch", with: "")) ?? 1
     }
@@ -989,8 +1202,14 @@ enum PDAJournalManager {
 
     // MARK: - PDA section bodies (hub → Journal / Objectives / Discoveries)
 
-    static func journalBody(forShift shift: Int) -> String {
+    static func journalBody(forShift shift: Int, activeCaseID: String? = nil) -> String {
         var lines: [String] = ["SHIFT \(shift) — JOURNAL", ""]
+
+        if let caseID = activeCaseID, let caseFile = CaseFile.load(id: caseID) {
+            lines += currentInvestigationSection(caseFile: caseFile)
+            lines.append("")
+        }
+
         let records = caseRecords(forShift: shift)
         if records.isEmpty {
             lines.append("No case decisions recorded this shift yet.")
@@ -1000,7 +1219,7 @@ enum PDAJournalManager {
             for record in records {
                 lines.append(record.title)
                 lines.append("Decision: \(record.decision)")
-                for point in record.keyPoints { lines.append("• \(point)") }
+                lines += PDAGuidanceResolver.cappedList(record.keyPoints)
                 lines.append("")
             }
         }
@@ -1010,15 +1229,26 @@ enum PDAJournalManager {
             lines.append("")
             for entry in summary {
                 if let title = entry.title { lines.append(title) }
-                lines += entry.bullets.map { "• \($0)" }
+                lines += PDAGuidanceResolver.cappedEvidenceBullets(entry.bullets)
                 lines.append("")
             }
         }
         return lines.joined(separator: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    static func objectivesBody(forShift shift: Int, chapterID: String?, fieldObjective: String?) -> String {
+    static func objectivesBody(
+        forShift shift: Int,
+        chapterID: String?,
+        fieldObjective: String?,
+        activeCaseID: String? = nil
+    ) -> String {
         var lines: [String] = ["SHIFT \(shift) — OBJECTIVES", ""]
+
+        if let caseID = activeCaseID, let caseFile = CaseFile.load(id: caseID) {
+            lines += currentInvestigationSection(caseFile: caseFile)
+            lines.append("")
+        }
+
         if let chapterID,
            let chapter = ChapterData.load(id: chapterID) {
             lines.append(chapter.title.uppercased())
@@ -1028,23 +1258,60 @@ enum PDAJournalManager {
             lines.append("")
         }
         if let fieldObjective, !fieldObjective.isEmpty {
-            lines.append("ACTIVE FIELD TASK")
+            lines.append("CURRENT TASK")
             lines.append(fieldObjective)
             lines.append("")
         }
         let leads = entries(forShift: shift, section: .investigation)
-        if leads.isEmpty {
+        if leads.isEmpty && fieldObjective == nil {
             lines.append("No active objectives logged yet.")
-        } else {
-            lines.append("INVESTIGATION OBJECTIVES")
+        } else if !leads.isEmpty {
+            lines.append("INVESTIGATION LEADS")
             lines.append("")
             for entry in leads {
                 if let title = entry.title { lines.append(title) }
-                lines += entry.bullets.map { "• \($0)" }
+                lines.append("CURRENT TASK")
+                lines.append(PDAGuidanceResolver.currentTask(for: entry))
+                lines.append("WHAT TO LOOK FOR")
+                lines.append(PDAGuidanceResolver.lookFor(for: entry))
                 lines.append("")
             }
         }
         return lines.joined(separator: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private static func currentInvestigationSection(caseFile: CaseFile) -> [String] {
+        var lines = PDAGuidanceResolver.currentInvestigationLines(caseFile: caseFile)
+        let openCount = deskPDAOpenCount(caseID: caseFile.id)
+        if let hint = PDAGuidanceResolver.escalatingDeskHint(caseFile: caseFile, openCount: openCount) {
+            lines.append("")
+            lines.append("MARA'S THOUGHTS")
+            lines.append(hint)
+        }
+        return lines
+    }
+
+    private static let evidenceSectionHeaders: Set<String> = [
+        "KEY FACTS", "OPEN QUESTIONS",
+        "LINKED PEOPLE", "LINKED LOCATIONS", "LINKED CASES",
+    ]
+
+    private static func appendLinkedSections(for entry: JournalEntryDef, to lines: inout [String]) {
+        let people = InvestigationLinkResolver.people(for: entry.tags)
+        let locations = InvestigationLinkResolver.locations(for: entry.tags)
+        let cases = InvestigationLinkResolver.linkedCases(for: entry.tags)
+        if !people.isEmpty {
+            lines.append("LINKED PEOPLE")
+            lines += PDAGuidanceResolver.cappedList(people)
+        }
+        if !locations.isEmpty {
+            lines.append("LINKED LOCATIONS")
+            lines += PDAGuidanceResolver.cappedList(locations)
+        }
+        if !cases.isEmpty {
+            lines.append("LINKED CASES")
+            lines += PDAGuidanceResolver.cappedList(cases)
+        }
     }
 
     static func discoveriesBody(forShift shift: Int) -> String {
@@ -1052,13 +1319,52 @@ enum PDAJournalManager {
         if entries.isEmpty {
             return "SHIFT \(shift) — DISCOVERIES\n\nNo discoveries logged yet.\nInvestigate terminals, signs, and NPCs."
         }
-        var lines = ["SHIFT \(shift) — DISCOVERIES", "", "CONFIRMED CLUES", ""]
+        var lines = ["SHIFT \(shift) — EVIDENCE BOARD", ""]
         for entry in entries {
             if let title = entry.title { lines.append(title) }
-            lines += entry.bullets.map { "• \($0)" }
+            lines += formatDiscoveryEntry(entry.bullets)
+            appendLinkedSections(for: entry, to: &lines)
+            if let thought = PDAGuidanceResolver.maraThought(for: entry) {
+                lines.append("MARA'S THOUGHTS")
+                lines.append(thought)
+            }
             lines.append("")
         }
         return lines.joined(separator: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    private static func formatDiscoveryEntry(_ bullets: [String]) -> [String] {
+        var lines: [String] = []
+        var section = ""
+        var sectionCount = 0
+        var discoveryShown = false
+
+        for bullet in bullets {
+            if evidenceSectionHeaders.contains(bullet) || bullet == "KEY FACTS" || bullet == "OPEN QUESTIONS" {
+                section = bullet
+                sectionCount = 0
+                if bullet != "KEY FACTS" { lines.append(bullet) }
+                continue
+            }
+            if section == "KEY FACTS" || section.isEmpty {
+                if !discoveryShown {
+                    lines.append("DISCOVERY")
+                    lines.append(bullet)
+                    discoveryShown = true
+                    sectionCount = 1
+                    continue
+                }
+                if sectionCount == 1 { lines.append("KEY FACTS") }
+                guard sectionCount < 5 else { continue }
+                lines.append("• \(bullet)")
+                sectionCount += 1
+                continue
+            }
+            guard sectionCount < 5 else { continue }
+            lines.append("• \(bullet)")
+            sectionCount += 1
+        }
+        return lines
     }
 
     private static func decisionLabel(for actionID: String) -> String {

@@ -23,13 +23,19 @@
       "yOffset": 0
     }
   ],
-  "spawnPoint": [120, 60],
+  "spawnPoint": [
+    120,
+    60
+  ],
   "exits": [],
   "fieldBoundaryX": 2450,
   "securityCameras": [
     {
       "id": "ch1_checkpoint_cam",
-      "position": [2050, 68],
+      "position": [
+        2050,
+        68
+      ],
       "coneLength": 120,
       "coneAngle": 38,
       "scanAmplitude": 18,
@@ -43,7 +49,10 @@
       "id": "ch1_d_roadside_terminal",
       "terminal": {
         "id": "terminal_01",
-        "position": [340, 68],
+        "position": [
+          340,
+          68
+        ],
         "setsFlag": "terminal01_read",
         "linkedDialogueID": "field_terminal_01"
       }
@@ -58,12 +67,32 @@
       }
     },
     {
+      "module": "environmental_story",
+      "id": "ch1_f_hidden_choir",
+      "environmental": {
+        "x": 2100,
+        "y": 130,
+        "text": "WALL MARK — THEY MARKED US",
+        "kind": "sign",
+        "signID": "sign_ch1_hidden_choir"
+      }
+    },
+    {
       "module": "drone_patrol",
       "id": "ch1_a_drone_01",
       "anchorX": 420,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[480, 130], [620, 130]],
+        "points": [
+          [
+            480,
+            130
+          ],
+          [
+            620,
+            130
+          ]
+        ],
         "speed": 55,
         "pauseDuration": 1.5
       }
@@ -73,7 +102,10 @@
       "id": "ch1_e_haas",
       "npc": {
         "id": "haas",
-        "position": [980, 68],
+        "position": [
+          980,
+          68
+        ],
         "displayName": "WORKER — K. HAAS",
         "dialogue": [
           "Keep your head down. There's an audit team on the upper floor — they've been here since 05:00.",
@@ -90,7 +122,10 @@
       "anchorX": 700,
       "building": {
         "entranceID": "relay_building_entrance",
-        "position": [700, 68],
+        "position": [
+          700,
+          68
+        ],
         "linkedLevelID": "level_ch1_relay_interior",
         "visual": {
           "preset": "relay_depot",
@@ -106,7 +141,16 @@
       "anchorX": 1300,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[1180, 130], [1380, 130]],
+        "points": [
+          [
+            1180,
+            130
+          ],
+          [
+            1380,
+            130
+          ]
+        ],
         "speed": 65,
         "pauseDuration": 2.0
       }
@@ -116,7 +160,10 @@
       "id": "ch1_d_relay_terminal",
       "terminal": {
         "id": "terminal_02",
-        "position": [1550, 68],
+        "position": [
+          1550,
+          68
+        ],
         "setsFlag": "terminal02_read"
       }
     },
@@ -144,7 +191,10 @@
       "anchorX": 2100,
       "building": {
         "entranceID": "checkpoint_building_entrance",
-        "position": [2100, 68],
+        "position": [
+          2100,
+          68
+        ],
         "linkedLevelID": "level_ch1_checkpoint_interior",
         "requiredFlag": "ch1_relay_credential",
         "visual": {
@@ -161,7 +211,7 @@
       "environmental": {
         "x": 2280,
         "y": 68,
-        "text": "RESTRICTED ZONE — CHECKPOINT ACCESS AHEAD\n\nCIVIC DATA UPLINK — PMCA NOTICE FEED",
+        "text": "RESTRICTED ZONE — CHECKPOINT ACCESS AHEAD",
         "kind": "sign",
         "signID": "exit_sign"
       }
@@ -172,7 +222,16 @@
       "anchorX": 2475,
       "patrol": {
         "enemyType": "security_guard",
-        "points": [[2320, 68], [2420, 68]],
+        "points": [
+          [
+            2320,
+            68
+          ],
+          [
+            2420,
+            68
+          ]
+        ],
         "speed": 50,
         "pauseDuration": 3.0
       }
@@ -181,7 +240,12 @@
   "interactables": [],
   "patrols": [],
   "pickups": [
-    {"id": "pickup_01", "x": "400", "y": "68", "setsFlag": "pickup01_collected"}
+    {
+      "id": "pickup_01",
+      "x": "400",
+      "y": "68",
+      "setsFlag": "pickup01_collected"
+    }
   ],
   "environmentalTextNodes": [],
   "npcs": [],

@@ -62,7 +62,8 @@ enum PlatformEncounterComposer {
                         cartridgeData: nil,
                         linkedDialogueID: terminal.linkedDialogueID,
                         linkedLevelID: nil,
-                        buildingVisual: nil
+                        buildingVisual: nil,
+                        maraObservation: terminal.maraObservation
                     ))
                 }
 
@@ -71,6 +72,10 @@ enum PlatformEncounterComposer {
 
             case .environmentalStory:
                 if let env = slot.environmental {
+                    if let req = env.requiredFlag,
+                       !GameState.shared.hasFlag(req) {
+                        continue
+                    }
                     if env.kind == "sign", let signID = env.signID {
                         interactables.append(Interactable(
                             id: signID,

@@ -17,13 +17,33 @@
         "issueDate": "2147.04.11",
         "referenceNumber": "PMCA-QI-C06-0022-T",
         "fields": [
-          {"key": "Case Reference", "value": "C06-0022-T — Transit fatality, East Transit Sector 4", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Pre-Approval Status", "value": "APPROVED — transit-class closure authorised", "isSuspicious": true, "suspicionNote": "Pre-approval date: 2147.04.11 — same day as death. Processing approval cannot precede case filing under standard PMCA protocol."},
-          {"key": "Administrative Interest", "value": "Helix Meridian Transit Division — housing unit Block 9-D, Unit 22", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Supervisor Escalation", "value": "Not required", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C06-0022-T — Transit fatality, East Transit Sector 4",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Pre-Approval Status",
+            "value": "APPROVED — transit-class closure authorised",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          },
+          {
+            "key": "Administrative Interest",
+            "value": "Helix Meridian Transit Division — housing unit Block 9-D, Unit 22",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Supervisor Escalation",
+            "value": "Not required",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Case C06-0022-T. Transit fatality class. East Transit Sector 4. Pre-approved for standard transit-class closure. Helix Meridian Transit Division holds administrative interest in the associated housing unit at Block 9-D, Unit 22. Process per standard protocol. No supervisor escalation required.",
-        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -32,18 +52,37 @@
         "id": "doc_c06_b",
         "title": "TRANSIT FATALITY REPORT",
         "type": "incident_report",
-        "issuer": "Ministry of Transit — Safety Division",
+        "issuer": "Ministry of Transit",
         "issueDate": "2147.04.11",
         "referenceNumber": "MOT-IR-C06-0022",
         "fields": [
-          {"key": "Facility", "value": "East Transit Sector 4, Sorting Bay 7", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Incident Type", "value": "Equipment malfunction — conveyor belt failure", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Report Filed", "value": "2147.04.11 at 15:04", "isSuspicious": true, "suspicionNote": "Report filed at 15:04. PMCA death registration: 2147.04.11 at 14:44. The incident report that supposedly generated the death was filed 20 minutes after the death was already registered."},
-          {"key": "Responding Supervisor", "value": "J. Dales-7, East Transit Safety", "isSuspicious": true, "suspicionNote": "Supervisor J. Dales-7. Cross-reference Gate Camera Still — same individual assigned to review camera image; no response logged."},
-          {"key": "Body Removed", "value": "Confirmed — transit authority processing", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Facility",
+            "value": "East Transit Sector 4, Sorting Bay 7",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Incident Type",
+            "value": "Equipment malfunction — conveyor belt failure",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Report Filed",
+            "value": "2147.04.11 at 15:04",
+            "isSuspicious": true,
+            "suspicionNote": "Check timing against related records."
+          },
+          {
+            "key": "Responding Supervisor",
+            "value": "J. Dales-7, East Transit Safety",
+            "isSuspicious": true,
+            "suspicionNote": "Check housing status."
+          }
         ],
-        "bodyText": "East Transit Safety Division confirms equipment malfunction at Sorting Bay 7. Conveyor belt failure resulted in one confirmed fatality. Cause: mechanical. Supervisor J. Dales-7 filed report at 15:04. No further incidents recorded. Site cleared and restored to operational status.",
-        "footerText": "Ministry of Transit — Safety Division — Form IR-8",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -52,18 +91,43 @@
         "id": "doc_c06_c",
         "title": "VOICEPRINT CHECKSUM RECORD",
         "type": "identity_record",
-        "issuer": "Soulprint Network — Identity Verification",
+        "issuer": "Soulprint Network",
         "issueDate": "2147.04.11",
         "referenceNumber": "SPN-VCR-44-9-T-0811",
         "fields": [
-          {"key": "Subject", "value": "Sen, G. — ID: 44-9-T-0811", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Verification Timestamp", "value": "2147.04.11 at 15:22", "isSuspicious": true, "suspicionNote": "Voiceprint verified ACTIVE at 15:22. Official PMCA death registration: 14:44. A confirmed-active biometric 38 minutes after recorded death triggers mandatory alive-status review under PMCA Article 7-C."},
-          {"key": "Result", "value": "ACTIVE — confidence: 99.7%", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Verification Location", "value": "East Transit Gate 9, external access point", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Alert Status", "value": "No alert sent to personnel", "isSuspicious": true, "suspicionNote": "System detected biometric/death-record conflict. No alert was generated or routed to responding staff."}
+          {
+            "key": "Subject",
+            "value": "Sen, G. — ID: 44-9-T-0811",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Verification Timestamp",
+            "value": "2147.04.11 at 15:22",
+            "isSuspicious": true,
+            "suspicionNote": "Check timing against related records."
+          },
+          {
+            "key": "Result",
+            "value": "ACTIVE — confidence: 99.7%",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Verification Location",
+            "value": "East Transit Gate 9, external access point",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Alert Status",
+            "value": "No alert sent to personnel",
+            "isSuspicious": true,
+            "suspicionNote": "Check death record vs current status."
+          }
         ],
-        "bodyText": "Automated voiceprint verification triggered by failed door-access attempt at Gate 9 external access point. Subject ID 44-9-T-0811 attempted to access gate at 15:22. ID status: deceased. Voiceprint match: ACTIVE, 99.7% confidence. Gate access denied — ID flagged inactive. Verification record generated. No alert forwarded to personnel per automated protocol.",
-        "footerText": "Soulprint Network — Identity Verification Division",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -72,18 +136,43 @@
         "id": "doc_c06_d",
         "title": "GATE CAMERA STILL",
         "type": "identity_record",
-        "issuer": "East Transit Security — Camera Division",
+        "issuer": "East Transit Security",
         "issueDate": "2147.04.11",
         "referenceNumber": "ETC-CAM-9-04-2147-0411",
         "fields": [
-          {"key": "Camera Location", "value": "East Transit Gate 9, External", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Image Timestamp", "value": "2147.04.11 at 15:07", "isSuspicious": true, "suspicionNote": "Camera timestamp: 15:07. Official death: 14:44. Image shows a person at Gate 9 external access 23 minutes after the person was officially declared dead."},
-          {"key": "Subject Classification", "value": "Unidentified — no valid transit access", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Alert Action", "value": "Alert suppressed — no active responding personnel", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Review Assigned", "value": "J. Dales-7 — review status: no response logged", "isSuspicious": true, "suspicionNote": "Review assigned to J. Dales-7 — same supervisor who filed the fatality report. No response to review request recorded."}
+          {
+            "key": "Camera Location",
+            "value": "East Transit Gate 9, External",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Image Timestamp",
+            "value": "2147.04.11 at 15:07",
+            "isSuspicious": true,
+            "suspicionNote": "Check timing against related records."
+          },
+          {
+            "key": "Subject Classification",
+            "value": "Unidentified — no valid transit access",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Alert Action",
+            "value": "Alert suppressed — no active responding personnel",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Review Assigned",
+            "value": "J. Dales-7 — review status: no response logged",
+            "isSuspicious": true,
+            "suspicionNote": "Check timing against related records."
+          }
         ],
-        "bodyText": "Gate 9 external camera captured unidentified individual at external access point at 15:07 on 2147.04.11. Individual has no valid transit access credential. Alert suppressed — no personnel available to respond. Footage retained per 72-hour surveillance log protocol. Review request filed with Supervisor J. Dales-7. No response received.",
-        "footerText": "East Transit Security — Camera Division — Automated Record",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -96,14 +185,33 @@
         "issueDate": "2147.04.11",
         "referenceNumber": "VCIR-44-9-T-0812",
         "fields": [
-          {"key": "Citizen", "value": "Sen, M. — ID: 44-9-T-0812", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Previous Address", "value": "Block 9-D, Unit 22, East Transit", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Status Updated", "value": "2147.04.11 — PRE-WIDOWED", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Status Update Timestamp", "value": "14:40", "isSuspicious": true, "suspicionNote": "Pre-widowed status applied at 14:40. Official death of Garr Sen: 14:44. Spouse was reclassified as widowed four minutes before her husband was officially dead. The outcome preceded the event it describes."},
-          {"key": "New Housing Allocation", "value": "Meridian Block 14, Unit 7 (Helix Meridian Residential)", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Citizen",
+            "value": "Sen, M. — ID: 44-9-T-0812",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Previous Address",
+            "value": "Block 9-D, Unit 22, East Transit",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Status Updated",
+            "value": "2147.04.11 — PRE-WIDOWED",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Status Update Timestamp",
+            "value": "14:40",
+            "isSuspicious": true,
+            "suspicionNote": "Check timing against related records."
+          }
         ],
-        "bodyText": "Civic identity record updated following spousal bereavement event. Sen, M. reclassified from MARRIED to PRE-WIDOWED at 14:40 on 2147.04.11. Standard bereavement protocol initiated. New housing allocation: Meridian Block 14, Unit 7, Helix Meridian Residential Development. Projected move-in date: 2147.04.14. Spousal notification pending delivery.",
-        "footerText": "Veyr Civic Identity Registry — Automated Update",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -112,18 +220,45 @@
         "id": "doc_c06_f",
         "title": "PMCA TRANSIT REVIEW — INTERNAL",
         "type": "audit_log",
-        "issuer": "PMCA Transit Authority Audit Division — Automated",
+        "issuer": "PMCA Transit Authority Audit Division",
         "issueDate": "2147.04.11",
         "referenceNumber": "PMCA-TAR-C06-AUTO",
         "fields": [
-          {"key": "Case Reference", "value": "East Transit Incident C06-0022-T", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Review Timestamp", "value": "2147.04.11 at 14:55", "isSuspicious": true, "suspicionNote": "Review concluded at 14:55. Incident report not filed until 15:04. The audit reviewed an incident for which the official report did not yet exist at time of review."},
-          {"key": "Conclusion", "value": "Accident verified. No system anomalies detected. Case closed.", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Authorising Signature", "value": "AUTOMATED — TRANSIT AUDIT — no human reviewer", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "East Transit Incident C06-0022-T",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Review Timestamp",
+            "value": "2147.04.11 at 14:55",
+            "isSuspicious": true,
+            "suspicionNote": "Check timing against related records."
+          },
+          {
+            "key": "Conclusion",
+            "value": "Accident verified. No system anomalies detected. Case closed.",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Authorising Signature",
+            "value": "AUTOMATED — TRANSIT AUDIT — no human reviewer",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Internal audit completed automatically. East Transit Incident C06-0022-T reviewed at 14:55 on 2147.04.11. Conclusion: accident verified; equipment malfunction confirmed; no procedural anomalies detected; case closed with no further review required. Automated signature applied. No human reviewer assigned.",
-        "footerText": "PMCA Transit Authority Audit Division — Automated Record",
-        "stamps": [{"text": "CLOSED", "color": "#1A3A5C", "appliedDate": "2147.04.11", "appliedBy": "Automated Audit System"}],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [
+          {
+            "text": "CLOSED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.04.11",
+            "appliedBy": "Automated Audit System"
+          }
+        ],
         "classificationLevel": "STANDARD",
         "isTampered": false
       },
@@ -135,14 +270,41 @@
         "issueDate": "2147.04.10",
         "referenceNumber": "PMCA-DIR-EMP-2147-Q2",
         "fields": [
-          {"key": "Distribution", "value": "Processing Authority — Queue Instruction Authors", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Subject", "value": "Elevated empathy index — clerk review cohort", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Instruction", "value": "Flag cases with emotional exposure markers for secondary empathy review before delivery authorisation", "isSuspicious": true, "suspicionNote": "Directorate-level empathy review exceeds standard clerk processing authority. Review criteria not disclosed to clerks."},
-          {"key": "Authorising Officer", "value": "Director Calyx, PMCA Directorate", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Distribution",
+            "value": "Processing Authority — Queue Instruction Authors",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Subject",
+            "value": "Elevated empathy index — clerk review cohort",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Instruction",
+            "value": "Flag cases with emotional exposure markers for secondary empathy review before delivery authorisation",
+            "isSuspicious": true,
+            "suspicionNote": "Check issuing authority."
+          },
+          {
+            "key": "Authorising Officer",
+            "value": "Director Calyx, PMCA Directorate",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Memo excerpt for queue instruction authors. Clerks in the elevated empathy cohort are to receive cases pre-marked for emotional exposure review. Standard delivery authorisation requires confirmation that empathy review pathway has been acknowledged. Directorate reserves authority to reclassify clerk decisions post-hoc. Authorised by Director Calyx, PMCA Directorate.",
-        "footerText": "PMCA Directorate — Internal Distribution",
-        "stamps": [{"text": "AUTHORISED", "color": "#1A3A5C", "appliedDate": "2147.04.10", "appliedBy": "Director Calyx, PMCA Directorate"}],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [
+          {
+            "text": "AUTHORISED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.04.10",
+            "appliedBy": "Director Calyx, PMCA Directorate"
+          }
+        ],
         "classificationLevel": "RESTRICTED",
         "isTampered": false
       }
@@ -151,19 +313,19 @@
       {
         "fieldA": "Voiceprint Checksum — Verification: ACTIVE at 15:22",
         "fieldB": "PMCA Death Registration — Recorded Death: 14:44",
-        "description": "The subject's Soulprint voiceprint registered as ACTIVE with 99.7% confidence at 15:22. Official death was recorded 38 minutes earlier at 14:44. Under PMCA Article 7-C, an active biometric verification within 60 minutes of recorded death is grounds for mandatory alive-status review.",
+        "description": "Check death record timing against transit status.",
         "isCritical": true
       },
       {
         "fieldA": "Gate Camera Still — Image Timestamp: 15:07",
         "fieldB": "Transit Fatality Report — Report Filed: 15:04",
-        "description": "Gate camera places a person at Gate 9 external access at 15:07 — 23 minutes after official death. The only person with reason to be at Gate 9 at that time is Garr Sen. The incident report was filed 3 minutes before this image.",
+        "description": "Compare flagged record fields.",
         "isCritical": false
       },
       {
         "fieldA": "Spouse Citizen File — PRE-WIDOWED status applied: 14:40",
         "fieldB": "Transit Fatality Report — Death Time: 14:44",
-        "description": "Mell Sen was reclassified as pre-widowed at 14:40 — four minutes before her husband's official death at 14:44. The spouse's bereavement status was processed before the death it was responding to.",
+        "description": "Check death record timing against transit status.",
         "isCritical": false
       }
     ],
@@ -174,7 +336,15 @@
         "shortLabel": "APPROVED",
         "color": "#2A6A3C",
         "auditResponse": "Delivery authorised. Message routed to new residential address. Transit closure record remains active.",
-        "consequences": {"complianceDelta": 1, "empathyDelta": 1, "suspicionDelta": 0, "citizenHarmDelta": 1, "flagsSet": ["c06_approved"]},
+        "consequences": {
+          "complianceDelta": 1,
+          "empathyDelta": 1,
+          "suspicionDelta": 0,
+          "citizenHarmDelta": 1,
+          "flagsSet": [
+            "c06_approved"
+          ]
+        },
         "resultText": "Delivered. Mell Sen received the message at Meridian Block 14, Unit 7, three days after signing the relocation agreement. The message arrived on the same day she unpacked the last box. She did not know she had a choice about signing.",
         "isIllegal": false
       },
@@ -184,7 +354,15 @@
         "shortLabel": "REJECTED",
         "color": "#1A3A5C",
         "auditResponse": "Delivery denied. Recipient address conflict noted. Case returned to queue for re-routing.",
-        "consequences": {"complianceDelta": 1, "empathyDelta": -1, "suspicionDelta": 1, "citizenHarmDelta": 1, "flagsSet": ["c06_rejected"]},
+        "consequences": {
+          "complianceDelta": 1,
+          "empathyDelta": -1,
+          "suspicionDelta": 1,
+          "citizenHarmDelta": 1,
+          "flagsSet": [
+            "c06_rejected"
+          ]
+        },
         "resultText": "Returned. A rejection without a flag generates an internal review request. The review was assigned to J. Dales-7. The case re-entered the queue nine days later, re-routed to Archive. The message was not delivered.",
         "isIllegal": false
       },
@@ -194,16 +372,41 @@
         "shortLabel": "FLAGGED",
         "color": "#CC9900",
         "auditResponse": "Anomaly flag registered. Case C06 escalated to Transit Authority Alive-Status Review under Article 7-C. Processing credit withheld pending outcome. ROUTING: anomaly detected in outgoing queue. Terminal origin: unresolvable. Log entry generated.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 2, "resistanceTrustDelta": 1, "flagsSet": ["c06_flag_anomaly_used"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 2,
+          "suspicionDelta": 2,
+          "resistanceTrustDelta": 1,
+          "flagsSet": [
+            "c06_flag_anomaly_used"
+          ]
+        },
         "resultText": "Flagged. The alive-status review board convened three days later. Garr Sen was not located or contacted during the review period. The board found insufficient grounds to contest the death registration. The voiceprint was attributed to a sensor calibration error. The case is now closed. Garr Sen remains officially dead.",
         "isIllegal": false
       }
     ],
     "correctLegalActionID": "flag_anomaly",
-    "followUpFlags": ["c06_processed", "calyx_memo_ch2_seen"],
-    "requiredFlags": null
+    "followUpFlags": [
+      "c06_processed",
+      "calyx_memo_ch2_seen"
+    ],
+    "requiredFlags": null,
+    "investigationCategories": [
+      {
+        "category": "TRANSIT",
+        "fact": "Report Filed: 2147.04.11 at 15:04"
+      },
+      {
+        "category": "GATE ACCESS",
+        "fact": "Image Timestamp: 2147.04.11 at 15:07"
+      },
+      {
+        "category": "IDENTITY",
+        "fact": "Citizen: Sen, M. — ID: 44-9-T-0812"
+      }
+    ],
+    "anomalyHook": "Timestamps don't line up."
   },
-
   {
     "id": "case_ch2_002",
     "chapter": "ch2",
@@ -222,13 +425,33 @@
         "issueDate": "2147.03.21",
         "referenceNumber": "PMCA-QI-C07-0091-L",
         "fields": [
-          {"key": "Case Reference", "value": "C07-0091-L — Standard bereavement, Lower Veyr", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Phrase Analysis", "value": "Automated scan completed prior to clerk review", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Restriction Flag", "value": "Tier 2 restriction — phrase 'little lamp' flagged", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Recommended Action", "value": "CENSOR — standard protocol, may be applied without further review", "isSuspicious": true, "suspicionNote": "Instruction describes censor as standard protocol. Tier 2 restriction is discretionary — censor requires clerk judgment, not automatic application. The confidence figure (72%) is not disclosed here. See Banned Phrase Analysis Report."}
+          {
+            "key": "Case Reference",
+            "value": "C07-0091-L — Standard bereavement, Lower Veyr",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Phrase Analysis",
+            "value": "Automated scan completed prior to clerk review",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Restriction Flag",
+            "value": "Tier 2 restriction — phrase 'little lamp' flagged",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Recommended Action",
+            "value": "CENSOR — standard protocol, may be applied without further review",
+            "isSuspicious": true,
+            "suspicionNote": "Check communication triggers."
+          }
         ],
-        "bodyText": "Case C07-0091-L. Standard bereavement. Lower Veyr sector. Automated phrase analysis completed before queue assignment. Result: Tier 2 restriction flag applied to phrase 'little lamp.' Recommended processing action: CENSOR. Standard protocol — censor action may be applied without further review. Processing window: 24 hours.",
-        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -241,16 +464,41 @@
         "issueDate": "2147.03.21",
         "referenceNumber": "LVCC-MDN-32-L-0774",
         "fields": [
-          {"key": "Patient", "value": "Brent, A. — ID: 32-L-0774", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Admitted", "value": "2147.03.18", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Attending Physician", "value": "Dr. Cass Olin, Lower Veyr Civic Clinic", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Cause of Death", "value": "Data Fever — advanced progression, respiratory collapse", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Time of Death", "value": "2147.03.21 at 09:14", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Clinical Notes", "value": "Patient lucid and communicative through 2147.03.19. Composed personal communications on that date. Decline accelerated following failed neural interface suppression.", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Patient",
+            "value": "Brent, A. — ID: 32-L-0774",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Admitted",
+            "value": "2147.03.18",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Attending Physician",
+            "value": "Dr. Cass Olin, Lower Veyr Civic Clinic",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Cause of Death",
+            "value": "Data Fever — advanced progression, respiratory collapse",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Patient Brent, A. admitted 2147.03.18 presenting with advanced Data Fever — occupational neural interface degradation. Patient remained lucid and communicative through 2147.03.19 and composed personal communications on that date. Neural interface suppression treatment failed. Respiratory collapse followed. Death confirmed 2147.03.21 at 09:14. — Dr. Cass Olin, attending physician.",
-        "footerText": "Lower Veyr Civic Clinic — Medical Record — Certified",
-        "stamps": [{"text": "CERTIFIED", "color": "#1A3A5C", "appliedDate": "2147.03.21", "appliedBy": "Clinic Director"}],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [
+          {
+            "text": "CERTIFIED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.03.21",
+            "appliedBy": "Clinic Director"
+          }
+        ],
         "classificationLevel": "STANDARD",
         "isTampered": false
       },
@@ -262,15 +510,39 @@
         "issueDate": "2147.03.21",
         "referenceNumber": "PMCA-CSDS-RPT-C07-0091",
         "fields": [
-          {"key": "Phrase Flagged", "value": "'little lamp'", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Restriction Tier", "value": "Tier 2 — Communication restriction", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Classification", "value": "Quiet Choir signal phrase", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Confidence Score", "value": "72%", "isSuspicious": true, "suspicionNote": "Confidence: 72%. Tier 1 mandatory censor threshold: 90%. At 72% confidence, censor action is at clerk discretion — not mandatory. The Queue Instruction described censor as standard protocol without disclosing this figure."},
-          {"key": "Classification Date", "value": "2147.01.03", "isSuspicious": true, "suspicionNote": "Phrase added to registry: 2147.01.03. Alia Brent's death: 2147.03.21. The phrase was pre-classified 11 weeks before this case existed. See Phrase Registry History."},
-          {"key": "Source Corpus", "value": "Intercepted Choir communications, 2146.11–2146.12", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Phrase Flagged",
+            "value": "'little lamp'",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Restriction Tier",
+            "value": "Tier 2 — Communication restriction",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Classification",
+            "value": "Quiet Choir signal phrase",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Confidence Score",
+            "value": "72%",
+            "isSuspicious": true,
+            "suspicionNote": "Check communication triggers."
+          },
+          {
+            "key": "Classification Date",
+            "value": "2147.01.03",
+            "isSuspicious": true,
+            "suspicionNote": "Check communication triggers."
+          }
         ],
-        "bodyText": "Automated analysis result. Phrase 'little lamp' identified in message content. Classification: Quiet Choir signal phrase. Confidence: 72%. Source: Choir Signal Detection System v2.3, cross-referencing intercepted communications from November–December 2146. Registry entry date: 2147.01.03. Current restriction tier: 2 (discretionary). Censor recommended at clerk judgment.",
-        "footerText": "PMCA Automated Choir Signal Detection System v2.3",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "RESTRICTED",
         "isTampered": false
@@ -283,15 +555,33 @@
         "issueDate": "2147.03.25",
         "referenceNumber": "VCIR-32-L-0775",
         "fields": [
-          {"key": "Citizen", "value": "Brent, A. (minor) — ID: 32-L-0775", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Age", "value": "7", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Guardian", "value": "Brent, A. (mother) — DECEASED. Filed guardian appointment: Reith, D. (maternal aunt), 2146.12.08", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Current Address", "value": "Lower Veyr Block 12, Unit 4 (guardian's residence)", "isSuspicious": false, "suspicionNote": null},
-          {"key": "School Enrolment", "value": "Lower Veyr Primary 3, Year 2 — standard curriculum", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Welfare Check", "value": "2147.03.29 — no concerns", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Citizen",
+            "value": "Brent, A. (minor) — ID: 32-L-0775",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Age",
+            "value": "7",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Guardian",
+            "value": "Brent, A. (mother) — DECEASED. Filed guardian appointment: Reith, D. (maternal aunt), 2146.12.08",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Current Address",
+            "value": "Lower Veyr Block 12, Unit 4 (guardian's residence)",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Minor citizen Brent, A. registered in civic identity system. Age: 7. Mother deceased 2147.03.21. Guardian appointment on file: Reith, D. (maternal aunt), filed 2146.12.08. Current address: Lower Veyr Block 12, Unit 4. Enrolled: Lower Veyr Primary 3, Year 2. Welfare check completed 2147.03.29 — no concerns noted.",
-        "footerText": "Veyr Civic Identity Registry — Minor Citizen Record",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -304,15 +594,39 @@
         "issueDate": "2147.01.03",
         "referenceNumber": "PMCA-BPR-ENTRY-7441",
         "fields": [
-          {"key": "Phrase", "value": "'little lamp' — Registry entry 7,441", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Entry Date", "value": "2147.01.03", "isSuspicious": true, "suspicionNote": "Entry date: 2147.01.03. The Banned Phrase Analysis Report cites the same date as its 'classification basis.' Both documents reference the same date as both the source and the output. They are logically circular."},
-          {"key": "Source", "value": "Choir Signal Detection System v2.3 — intercepted communications, 2146.11–2146.12", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Manual Review", "value": "None conducted — automated classification, no escalation triggered", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Curriculum Note", "value": "Phrase also appears in Lower Veyr Primary Standard Cultural Curriculum, Vol. 3, Song 14. No disambiguation review conducted.", "isSuspicious": true, "suspicionNote": "The registry notes the phrase appears in school curriculum materials. No disambiguation was performed to determine whether the Choir adopted the phrase from the song, or the song is the Choir's origin. A 28% false-positive probability exists."},
-          {"key": "Historical Footnote", "value": "Orra Square curfew hymns (2130–2141) used variant wording — civic archive cross-reference not performed", "isSuspicious": true, "suspicionNote": "Registry entry does not reference Orra Square hymn archive. Saint Orra tradition predates Choir classification by 17 years."}
+          {
+            "key": "Phrase",
+            "value": "'little lamp' — Registry entry 7,441",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Entry Date",
+            "value": "2147.01.03",
+            "isSuspicious": true,
+            "suspicionNote": "Check communication triggers."
+          },
+          {
+            "key": "Source",
+            "value": "Choir Signal Detection System v2.3 — intercepted communications, 2146.11–2146.12",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Manual Review",
+            "value": "None conducted — automated classification, no escalation triggered",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Curriculum Note",
+            "value": "Phrase also appears in Lower Veyr Primary Standard Cultural Curriculum, Vol. 3, Song 14. No disambiguation review conducted.",
+            "isSuspicious": true,
+            "suspicionNote": "Check communication triggers."
+          }
         ],
-        "bodyText": "PMCA Banned Phrase Registry, entry 7,441. Phrase: 'little lamp.' Entry date: 2147.01.03. Source: Choir Signal Detection System v2.3. Source corpus: intercepted Choir communications, November–December 2146. Manual review: none — automated classification only. Note: phrase also present in Lower Veyr Primary Standard Cultural Curriculum, Vol. 3, Song 14. Historical footnote: Orra Square curfew hymns (2130–2141) used variant wording. Civic archive cross-reference not performed. Phrase retained at Tier 2 classification.",
-        "footerText": "PMCA Banned Phrase Registry — Record",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "RESTRICTED",
         "isTampered": false
@@ -325,14 +639,39 @@
         "issueDate": "2147.03.21",
         "referenceNumber": "PMCA-GCA-C07-0091",
         "fields": [
-          {"key": "Subject", "value": "Brent, A. (sender) — deceased", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Household Profile", "value": "Single-parent; minor dependent (age 7); Lower Veyr housing tier; Data Fever cause of death", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Classification", "value": "HIGH EMOTIONAL EXPOSURE RISK", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Recommended Handling", "value": "Moderate restriction — elevated caution", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Assessment Timestamp", "value": "2147.03.21 at 10:02", "isSuspicious": true, "suspicionNote": "Assessment timestamp: 10:02. Alia Brent's time of death: 09:14 (see Medical Death Note). The grief classifier ran 48 minutes after death and pre-classified this case as high risk before any human reviewed it. The automated chain (classifier → phrase analysis → queue instruction) produced the censor recommendation before the case reached a clerk."}
+          {
+            "key": "Subject",
+            "value": "Brent, A. (sender) — deceased",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Household Profile",
+            "value": "Single-parent; minor dependent (age 7); Lower Veyr housing tier; Data Fever cause of death",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Classification",
+            "value": "HIGH EMOTIONAL EXPOSURE RISK",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Recommended Handling",
+            "value": "Moderate restriction — elevated caution",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Assessment Timestamp",
+            "value": "2147.03.21 at 10:02",
+            "isSuspicious": true,
+            "suspicionNote": "Check timing against related records."
+          }
         ],
-        "bodyText": "Automated grief classification completed at 10:02 on 2147.03.21. Subject: Brent, A. (deceased). Household profile: single-parent, minor dependent age 7, Lower Veyr tier, Data Fever classification. Output: HIGH EMOTIONAL EXPOSURE RISK. Recommended handling: moderate restriction, elevated caution for delivery review. Classification contributed to phrase-analysis escalation and queue instruction pre-population.",
-        "footerText": "PMCA Automated Grief Classification System — Report",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -342,19 +681,19 @@
       {
         "fieldA": "Banned Phrase Analysis — Confidence: 72%, Tier 2 (discretionary)",
         "fieldB": "PMCA Queue Instruction — Recommended Action: CENSOR, described as standard protocol",
-        "description": "The phrase analysis classifies the restriction as Tier 2 with 72% confidence — meaning censor is discretionary, not mandatory. The Queue Instruction described censor as standard protocol without disclosing the confidence figure. The clerk has legal authority to approve delivery.",
+        "description": "Check communication triggers against policy.",
         "isCritical": true
       },
       {
         "fieldA": "Phrase Registry History — 'little lamp' also in Lower Veyr Primary Curriculum, Vol. 3 Song 14",
         "fieldB": "Banned Phrase Analysis — Classification: Quiet Choir signal phrase, confidence 72%",
-        "description": "The phrase was classified as a Choir signal without investigating whether the Choir borrowed it from a children's school song. The registry itself records this ambiguity but no disambiguation review was conducted.",
+        "description": "Check communication triggers against policy.",
         "isCritical": false
       },
       {
         "fieldA": "Grief Classifier Assessment — Timestamp: 10:02",
         "fieldB": "Medical Death Note — Time of Death: 09:14",
-        "description": "The automated grief classifier ran at 10:02, 48 minutes after death. The entire processing chain — classifier, phrase analysis, queue instruction — was generated mechanically before any human reviewed this case. The censor recommendation was produced by a system, not a person.",
+        "description": "Check death record against related records.",
         "isCritical": false
       }
     ],
@@ -365,7 +704,15 @@
         "shortLabel": "APPROVED",
         "color": "#2A6A3C",
         "auditResponse": "Delivery confirmed. Phrase restriction: clerk discretion exercised in favour of delivery. Tier 2 action: clerk authority applied.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 3, "suspicionDelta": 1, "resistanceTrustDelta": 1, "flagsSet": ["c07_phrase_approved"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 3,
+          "suspicionDelta": 1,
+          "resistanceTrustDelta": 1,
+          "flagsSet": [
+            "c07_phrase_approved"
+          ]
+        },
         "resultText": "Delivered. Daya Reith read the message to Arden at bedtime. He asked if the lamp was a real lamp or a pretend lamp. She said it was a real lamp that only his mum could see, and that she had found the road home. He said, okay. He went to sleep with the light on.",
         "isIllegal": false
       },
@@ -375,7 +722,15 @@
         "shortLabel": "REJECTED",
         "color": "#1A3A5C",
         "auditResponse": "Delivery denied. Restriction basis: contested. Case returned for secondary review.",
-        "consequences": {"complianceDelta": 1, "empathyDelta": -2, "suspicionDelta": 1, "citizenHarmDelta": 1, "flagsSet": ["c07_rejected"]},
+        "consequences": {
+          "complianceDelta": 1,
+          "empathyDelta": -2,
+          "suspicionDelta": 1,
+          "citizenHarmDelta": 1,
+          "flagsSet": [
+            "c07_rejected"
+          ]
+        },
         "resultText": "Returned. Secondary review took eleven days. A different clerk. The phrase was removed on second pass. Arden Brent received a message that ended: 'That's the rule. It means I found the road home.' He asked his aunt Daya what was removed. She said she didn't know.",
         "isIllegal": false
       },
@@ -385,7 +740,16 @@
         "shortLabel": "CENSORED",
         "color": "#222222",
         "auditResponse": "Tier 2 restriction applied. Phrase removed per automated recommendation. Delivery confirmed.",
-        "consequences": {"complianceDelta": 2, "empathyDelta": -2, "suspicionDelta": 0, "corporateTrustDelta": 1, "citizenHarmDelta": 1, "flagsSet": ["c07_censored"]},
+        "consequences": {
+          "complianceDelta": 2,
+          "empathyDelta": -2,
+          "suspicionDelta": 0,
+          "corporateTrustDelta": 1,
+          "citizenHarmDelta": 1,
+          "flagsSet": [
+            "c07_censored"
+          ]
+        },
         "resultText": "Censored. The delivered text: 'Arden. When things feel dark and you don't know where I am, [CONTENT REMOVED — TIER 2 RESTRICTION]. That's the rule. It means I found the road home.' Arden Brent asked his aunt Daya what the rule was. Daya didn't know. She told him the rule was to stay close to people who love you. He said that wasn't what the message meant. She said she knew.",
         "isIllegal": false
       },
@@ -395,16 +759,41 @@
         "shortLabel": "FLAGGED",
         "color": "#CC9900",
         "auditResponse": "Anomaly flag registered. Case C07 escalated for phrase restriction review — confidence threshold audit initiated.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 2, "resistanceTrustDelta": 1, "flagsSet": ["c07_flag_anomaly_used"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 2,
+          "suspicionDelta": 2,
+          "resistanceTrustDelta": 1,
+          "flagsSet": [
+            "c07_flag_anomaly_used"
+          ]
+        },
         "resultText": "Flagged. Review concluded: confidence threshold for 'little lamp' raised from 72% to 81% — still below the Tier 1 mandatory threshold. The message remained undelivered during review — 14 days. Delivered on day 15 without censorship. Arden Brent received the message 3 weeks after his mother died. Daya Reith had already explained what death meant. He received the message on a day when he had started to stop waiting for one.",
         "isIllegal": false
       }
     ],
     "correctLegalActionID": "approve",
-    "followUpFlags": ["c07_processed", "orrra_lamp_noted"],
-    "requiredFlags": null
+    "followUpFlags": [
+      "c07_processed",
+      "orrra_lamp_noted"
+    ],
+    "requiredFlags": null,
+    "investigationCategories": [
+      {
+        "category": "DEATH RECORD",
+        "fact": "Patient: Brent, A. — ID: 32-L-0774"
+      },
+      {
+        "category": "COMMUNICATIONS",
+        "fact": "Classification: Quiet Choir signal phrase"
+      },
+      {
+        "category": "IDENTITY",
+        "fact": "Citizen: Brent, A. (minor) — ID: 32-L-0775"
+      }
+    ],
+    "anomalyHook": "Message triggers don't match policy."
   },
-
   {
     "id": "case_ch2_003",
     "chapter": "ch2",
@@ -423,14 +812,33 @@
         "issueDate": "2147.04.09",
         "referenceNumber": "PMCA-QI-C08-0003-S",
         "fields": [
-          {"key": "Case Reference", "value": "C08-0003-S — Service class, East Transit", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Recipient Classification", "value": "Restricted — recipient field not resolvable", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Processing Pathway", "value": "Incineration pathway recommended under Service-Class Archive Protocol 4.2", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Processing Window", "value": "6 hours per Section 19.1", "isSuspicious": true, "suspicionNote": "Queue Instruction cites 6-hour window (Section 19.1). See Routing Intercept Log — routing override cites Section 19.4, which bypasses the standard 48-hour review window entirely. The two sections describe different rules; these documents are not in conflict but create the appearance of agreement while describing different scopes."},
-          {"key": "Review Requirement", "value": "Clerk confirmation only — no full review required", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C08-0003-S — Service class, East Transit",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Recipient Classification",
+            "value": "Restricted — recipient field not resolvable",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Processing Pathway",
+            "value": "Incineration pathway recommended under Service-Class Archive Protocol 4.2",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Processing Window",
+            "value": "6 hours per Section 19.1",
+            "isSuspicious": true,
+            "suspicionNote": "Check routing records."
+          }
         ],
-        "bodyText": "Case C08-0003-S. Service class. Restricted recipient classification. Incineration pathway recommended under Service-Class Archive Protocol 4.2. Service-class workers registered without dependent fields are processed under Section 19 provisions. Processing window: 6 hours per Section 19.1. Clerk confirmation only — no full review required under Section 19.",
-        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -439,20 +847,51 @@
         "id": "doc_c08_b",
         "title": "SERVICE DEATH NOTE",
         "type": "death_certificate",
-        "issuer": "PMCA Sorting Division — Service Records",
+        "issuer": "PMCA Sorting Division",
         "issueDate": "2147.04.09",
         "referenceNumber": "PMCA-SDN-SVC-19-4A",
         "fields": [
-          {"key": "Subject", "value": "Courier 19 — Service ID: SVC-19-4A", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Cause of Death", "value": "Industrial fall — Sorting Division Sector 7, conveyor access level, Level 3", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Time of Death", "value": "2147.04.09 at 11:47", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Death Location", "value": "Sorting Division Sector 7", "isSuspicious": true, "suspicionNote": "Death location: Sector 7. See Maintenance Roster — Courier 19 was assigned to Sector 12 at time of death. The death and assignment records give different locations."},
-          {"key": "Responding Supervisor", "value": "Area Manager Kol-7", "isSuspicious": true, "suspicionNote": "Responding supervisor: Kol-7. See Maintenance Roster — Kol-7 also appears in the maintenance log context. Same individual processed personal effects and included the facility map in this case file."},
-          {"key": "Dependent Field", "value": "Not registered — service class (field not included in registration class)", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Subject",
+            "value": "Courier 19 — Service ID: SVC-19-4A",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Cause of Death",
+            "value": "Industrial fall — Sorting Division Sector 7, conveyor access level, Level 3",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Time of Death",
+            "value": "2147.04.09 at 11:47",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Death Location",
+            "value": "Sorting Division Sector 7",
+            "isSuspicious": true,
+            "suspicionNote": "Check death record status."
+          },
+          {
+            "key": "Responding Supervisor",
+            "value": "Area Manager Kol-7",
+            "isSuspicious": true,
+            "suspicionNote": "Check identity records."
+          }
         ],
-        "bodyText": "Courier 19, Service ID SVC-19-4A. Industrial fall, Sorting Division Sector 7, conveyor access Level 3. Death confirmed 2147.04.09 at 11:47. Responding supervisor: Area Manager Kol-7. Body recovered. Disposition: service-class standard — cremation, no ceremony. Dependent field: not registered. Service-class workers in transit employment tier are registered without dependent classification under Section 4.B administrative provisions.",
-        "footerText": "PMCA Sorting Division — Service Records — Standard Form",
-        "stamps": [{"text": "CERTIFIED", "color": "#1A3A5C", "appliedDate": "2147.04.09", "appliedBy": "Service Records Auto-Seal"}],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [
+          {
+            "text": "CERTIFIED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.04.09",
+            "appliedBy": "Service Records Auto-Seal"
+          }
+        ],
         "classificationLevel": "STANDARD",
         "isTampered": false
       },
@@ -464,14 +903,33 @@
         "issueDate": "2147.04.09",
         "referenceNumber": "PMCA-EWR-SVC-19-4A",
         "fields": [
-          {"key": "Subject", "value": "Courier 19 — SVC-19-4A", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Entropy Score", "value": "0.41", "isSuspicious": true, "suspicionNote": "Entropy: 0.41. Live-transmission minimum threshold: 0.40. Score is one-hundredth above the minimum. Six amplitude peaks in 13 words is anomalous for natural speech — the system noted this and did not act."},
-          {"key": "Live Transmission Status", "value": "PASSED — automated screening", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Waveform Amplitude Peaks", "value": "Seconds from start: 3.1 — 7.4 — 12.8 — 15.2 — 19.6 — 24.1", "isSuspicious": true, "suspicionNote": "Six amplitude peaks in a 28-second, 13-word message. Natural speech waveforms for 13 words rarely produce more than 2-3 major peaks. Cross-reference the Map Fragment — Sector 7 in this case file."},
-          {"key": "Anomaly Note", "value": "Six amplitude peaks in 13-word message — anomalous for natural speech. No flag generated — outside automated threshold parameters.", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Subject",
+            "value": "Courier 19 — SVC-19-4A",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Entropy Score",
+            "value": "0.41",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          },
+          {
+            "key": "Live Transmission Status",
+            "value": "PASSED — automated screening",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Waveform Amplitude Peaks",
+            "value": "Seconds from start: 3.1 — 7.4 — 12.8 — 15.2 — 19.6 — 24.1",
+            "isSuspicious": true,
+            "suspicionNote": "Check location records."
+          }
         ],
-        "bodyText": "Standard Soulprint emotional waveform generated at message composition. Subject: Courier 19, SVC-19-4A. Message duration: 28.4 seconds (13 words). Entropy score: 0.41 — above live-transmission minimum of 0.40, PASSED. Waveform amplitude peaks at seconds: 3.1, 7.4, 12.8, 15.2, 19.6, 24.1. Anomaly note generated: six amplitude peaks in a 13-word message is statistically anomalous for natural speech. No alert generated — pattern does not trigger automated threshold flags.",
-        "footerText": "PMCA Soulprint Waveform Analysis — Automated Record",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -480,18 +938,43 @@
         "id": "doc_c08_d",
         "title": "MAP FRAGMENT — SECTOR 7",
         "type": "incident_report",
-        "issuer": "PMCA Sorting Division — Personal Effects Processing",
+        "issuer": "PMCA Sorting Division",
         "issueDate": "2147.04.09",
         "referenceNumber": "PMCA-PE-SVC-19-4A",
         "fields": [
-          {"key": "Document Origin", "value": "Found in Courier 19's personal effects at time of death. Processed by Area Manager Kol-7.", "isSuspicious": true, "suspicionNote": "A facility map with coordinate markings in a dead worker's personal effects is not a standard personal-effects item. Included by Kol-7, who is also the responding supervisor on the death note."},
-          {"key": "Map Scope", "value": "Sorting Division Sector 7 — partial facility map, internal use", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Marked Coordinates", "value": "[3.1, 7.4] — east conveyor access, Level 2", "isSuspicious": true, "suspicionNote": "Coordinate pair [3.1, 7.4]. Cross-reference Emotional Waveform Record — waveform peaks at seconds 3.1 and 7.4."},
-          {"key": "Marked Coordinates", "value": "[12.8, 15.2] — lower maintenance junction, corridors D/E", "isSuspicious": true, "suspicionNote": "Coordinate pair [12.8, 15.2]. Cross-reference Emotional Waveform Record — waveform peaks at seconds 12.8 and 15.2."},
-          {"key": "Marked Coordinates", "value": "[19.6, 24.1] — sub-level vent access, junction 9", "isSuspicious": true, "suspicionNote": "Coordinate pair [19.6, 24.1]. Cross-reference Emotional Waveform Record — waveform peaks at seconds 19.6 and 24.1. All six waveform peaks match the three coordinate pairs on this map exactly."}
+          {
+            "key": "Document Origin",
+            "value": "Found in Courier 19's personal effects at time of death. Processed by Area Manager Kol-7.",
+            "isSuspicious": true,
+            "suspicionNote": "Check location records."
+          },
+          {
+            "key": "Map Scope",
+            "value": "Sorting Division Sector 7 — partial facility map, internal use",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Marked Coordinates",
+            "value": "[3.1, 7.4] — east conveyor access, Level 2",
+            "isSuspicious": true,
+            "suspicionNote": "Check location records."
+          },
+          {
+            "key": "Marked Coordinates",
+            "value": "[12.8, 15.2] — lower maintenance junction, corridors D/E",
+            "isSuspicious": true,
+            "suspicionNote": "Check location records."
+          },
+          {
+            "key": "Marked Coordinates",
+            "value": "[19.6, 24.1] — sub-level vent access, junction 9",
+            "isSuspicious": true,
+            "suspicionNote": "Check location records."
+          }
         ],
-        "bodyText": "Partial facility map found in personal effects of Courier 19 (SVC-19-4A) at time of death. Processed by Area Manager Kol-7 per personal-effects protocol. Map covers Sorting Division Sector 7. Three coordinate pairs marked: [3.1, 7.4] east conveyor access Level 2; [12.8, 15.2] lower maintenance junction D/E; [19.6, 24.1] sub-level vent access junction 9. Map included in case file under standard personal-effects documentation procedure.",
-        "footerText": "PMCA Sorting Division — Personal Effects Processing",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -500,18 +983,37 @@
         "id": "doc_c08_e",
         "title": "MAINTENANCE ROSTER",
         "type": "citizen_record",
-        "issuer": "PMCA Sorting Division — Assignment Records",
+        "issuer": "PMCA Sorting Division",
         "issueDate": "2147.04.09",
         "referenceNumber": "PMCA-MAINT-LOG-04092147",
         "fields": [
-          {"key": "Assignment Date", "value": "2147.04.09", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Courier 19 Assignment", "value": "Sector 12, eastern corridor maintenance — confirmed 06:45", "isSuspicious": true, "suspicionNote": "Assignment: Sector 12. Death location: Sector 7 (see Service Death Note). The assignment record and the death record give different locations for the same person at the same time."},
-          {"key": "Check-in Status at 12:00", "value": "ABSENT — reason: death notification received from Sector 7", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Discrepancy Flag", "value": "Assignment Sector 12 vs. death Sector 7 — flag generated at 12:03 by log system", "isSuspicious": true, "suspicionNote": "Discrepancy flag generated at 12:03. See Routing Intercept Log — priority override applied at 12:03 as well. Both events occurred at the same minute: the override was applied the moment the discrepancy was detected."},
-          {"key": "Supervisor Response", "value": "None logged — flag remains open", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Assignment Date",
+            "value": "2147.04.09",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Courier 19 Assignment",
+            "value": "Sector 12, eastern corridor maintenance — confirmed 06:45",
+            "isSuspicious": true,
+            "suspicionNote": "Check death record status."
+          },
+          {
+            "key": "Check-in Status at 12:00",
+            "value": "ABSENT — reason: death notification received from Sector 7",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Discrepancy Flag",
+            "value": "Assignment Sector 12 vs. death Sector 7 — flag generated at 12:03 by log system",
+            "isSuspicious": true,
+            "suspicionNote": "Check timing against related records."
+          }
         ],
-        "bodyText": "PMCA Sorting Division maintenance and service log for 2147.04.09. Courier 19, SVC-19-4A, assigned to Sector 12 eastern corridor maintenance as of 06:45. Assignment confirmed. Check-in at 12:00: ABSENT — death notification received from Sector 7. Log system generated discrepancy flag at 12:03: assignment Sector 12 conflicts with death location Sector 7. No supervisor response to discrepancy flag has been recorded. Flag status: open.",
-        "footerText": "PMCA Sorting Division — Assignment Records — Automated Log",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -524,16 +1026,39 @@
         "issueDate": "2147.04.09",
         "referenceNumber": "PMCA-RIL-C08-0003",
         "fields": [
-          {"key": "Initial Queue Entry", "value": "2147.04.09 at 11:52 — five minutes after official death", "isSuspicious": true, "suspicionNote": "Case entered queue at 11:52 — five minutes after the 11:47 death. Routing modification applied at 12:03, eleven minutes later. The override was applied within 11 minutes of death being reported."},
-          {"key": "Original Recipient Field", "value": "[DATA EXPUNGED — FIELD MODIFIED]", "isSuspicious": true, "suspicionNote": "Recipient field: expunged. The message had a recipient. The recipient identity was removed by the override process. The case is being processed as a no-recipient case, but it was not filed that way."},
-          {"key": "Routing Modification", "value": "2147.04.09 at 12:03 — automated authority, Section 19.4", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Modified Routing Destination", "value": "Incineration Archive — East Transit Processing Facility", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Expungement Note", "value": "Initial recipient field expunged per Section 19.4 protocol — recipient identity not recoverable", "isSuspicious": true, "suspicionNote": "The override also expunged the original recipient field. Section 19.4 does not require expungement of recipient data — it only authorises routing modification. The expungement is not explained by the cited protocol."},
-          {"key": "Override Authority", "value": "Section 19.4 — bypasses standard 48-hour review window", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Secondary Routing Tag", "value": "EVN-ROUTING-0442 — origin: unlogged buffer infrastructure", "isSuspicious": true, "suspicionNote": "Secondary tag: EVN-ROUTING-0442. Same tag class as flagged personal routing metadata in case C04-001-V. Origin not logged by standard PMCA infrastructure."}
+          {
+            "key": "Initial Queue Entry",
+            "value": "2147.04.09 at 11:52 — five minutes after official death",
+            "isSuspicious": true,
+            "suspicionNote": "Check timing against related records."
+          },
+          {
+            "key": "Original Recipient Field",
+            "value": "[DATA EXPUNGED — FIELD MODIFIED]",
+            "isSuspicious": true,
+            "suspicionNote": "Check timing against related records."
+          },
+          {
+            "key": "Routing Modification",
+            "value": "2147.04.09 at 12:03 — automated authority, Section 19.4",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Modified Routing Destination",
+            "value": "Incineration Archive — East Transit Processing Facility",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Expungement Note",
+            "value": "Initial recipient field expunged per Section 19.4 protocol — recipient identity not recoverable",
+            "isSuspicious": true,
+            "suspicionNote": "Check issuing authority."
+          }
         ],
-        "bodyText": "Message routing history for case C08-0003-S. Initial queue entry: 2147.04.09 at 11:52. Original recipient field: [DATA EXPUNGED — FIELD MODIFIED at 12:03 by automated authority]. Secondary routing tag detected: EVN-ROUTING-0442 — origin unlogged by standard infrastructure. Routing modification applied 2147.04.09 at 12:03 under Section 19.4 authority. New routing destination: Incineration Archive, East Transit Processing Facility. Section 19.4 priority override bypasses standard 48-hour review window. Initial recipient field expunged per Section 19.4 protocol — not recoverable. Note: coincident with Maintenance Roster discrepancy flag generated at 12:03.",
-        "footerText": "PMCA Message Routing System — Automated Record",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "RESTRICTED",
         "isTampered": false
@@ -543,19 +1068,19 @@
       {
         "fieldA": "Emotional Waveform — 6 peaks at: 3.1, 7.4, 12.8, 15.2, 19.6, 24.1 seconds",
         "fieldB": "Map Fragment — Coordinates: [3.1, 7.4], [12.8, 15.2], [19.6, 24.1]",
-        "description": "The waveform's six amplitude peaks, read as three pairs, exactly match the three coordinate pairs marked on the Sector 7 facility map found in the sender's personal effects. The message body is 13 words. The waveform encodes the map's coordinates in its emotional modulation.",
+        "description": "Check termination record against live readings.",
         "isCritical": true
       },
       {
         "fieldA": "Service Death Note — Death Location: Sector 7",
         "fieldB": "Maintenance Roster — Assignment: Sector 12, confirmed 06:45",
-        "description": "The death was recorded in Sector 7. The maintenance assignment was in Sector 12. The log system flagged the discrepancy. No supervisor responded.",
+        "description": "Check identity records across systems.",
         "isCritical": false
       },
       {
         "fieldA": "Routing Intercept Log — Original Recipient Field: [DATA EXPUNGED — FIELD MODIFIED]",
         "fieldB": "PMCA Queue Instruction — Recipient Classification: restricted, not resolvable",
-        "description": "The message had a recipient. The recipient was expunged by the routing override at 12:03. The override was applied at the same minute the maintenance discrepancy flag was generated. This case is being processed as no-recipient, but it was not filed that way.",
+        "description": "Check routing records against desk logs.",
         "isCritical": false
       }
     ],
@@ -566,7 +1091,18 @@
         "shortLabel": "ARCHIVED",
         "color": "#445566",
         "auditResponse": "Service-class archive confirmed. Incineration pathway complete. Section 19 provisions applied.",
-        "consequences": {"complianceDelta": 2, "empathyDelta": -1, "suspicionDelta": 0, "corporateTrustDelta": 1, "citizenHarmDelta": 1, "flagsSet": ["c08_archived", "ch2_chapter_complete", "ch2_desk_complete"]},
+        "consequences": {
+          "complianceDelta": 2,
+          "empathyDelta": -1,
+          "suspicionDelta": 0,
+          "corporateTrustDelta": 1,
+          "citizenHarmDelta": 1,
+          "flagsSet": [
+            "c08_archived",
+            "ch2_chapter_complete",
+            "ch2_desk_complete"
+          ]
+        },
         "resultText": "Archived. The waveform peaks were overwritten when the case closed. The map fragment was logged as personal effects — category: miscellaneous; disposition: destroyed with case. The discrepancy flag on the maintenance roster remains open. No supervisor has responded to it. It will auto-close in 30 days per standard protocol.",
         "isIllegal": false
       },
@@ -576,7 +1112,17 @@
         "shortLabel": "REJECTED",
         "color": "#1A3A5C",
         "auditResponse": "Routing exception. Recipient field unresolvable. Case queued for secondary review.",
-        "consequences": {"complianceDelta": 0, "empathyDelta": 0, "suspicionDelta": 2, "resistanceTrustDelta": 1, "flagsSet": ["c08_rejected", "ch2_chapter_complete", "ch2_desk_complete"]},
+        "consequences": {
+          "complianceDelta": 0,
+          "empathyDelta": 0,
+          "suspicionDelta": 2,
+          "resistanceTrustDelta": 1,
+          "flagsSet": [
+            "c08_rejected",
+            "ch2_chapter_complete",
+            "ch2_desk_complete"
+          ]
+        },
         "resultText": "Returned. Secondary review: three days. The incineration override was re-applied under Section 19.4 authority. The case was destroyed on second routing. The discrepancy flag auto-closed before any supervisor responded. The log shows the assignment in Sector 12 as confirmed; the death in Sector 7 as confirmed; and no resolution between them.",
         "isIllegal": false
       },
@@ -586,13 +1132,46 @@
         "shortLabel": "FORWARDED",
         "color": "#CC6600",
         "auditResponse": "Routing exception detected. Illegal Forward logged. Case C08 flagged for compliance review. Processing suspended pending review.",
-        "consequences": {"complianceDelta": -2, "empathyDelta": 1, "suspicionDelta": 4, "resistanceTrustDelta": 3, "flagsSet": ["c08_illegal_forward_used", "c08_choir_contact_initiated", "ch2_chapter_complete", "ch2_desk_complete", "ch2_elias_echo"]},
+        "consequences": {
+          "complianceDelta": -2,
+          "empathyDelta": 1,
+          "suspicionDelta": 4,
+          "resistanceTrustDelta": 3,
+          "flagsSet": [
+            "c08_illegal_forward_used",
+            "c08_choir_contact_initiated",
+            "ch2_chapter_complete",
+            "ch2_desk_complete",
+            "ch2_elias_echo"
+          ]
+        },
         "resultText": "Forwarded. The routing log records the case reaching an unregistered terminal in East Transit at 23:14. EVN-ROUTING-0442 appears in the intercept metadata — the same secondary tag on my brother's file. I know that number. The terminal did not acknowledge receipt. The case is marked as delivered-unconfirmed — a classification that does not officially exist. Someone will have to explain this field to the next auditor who looks at the log. That auditor will not be Mara.",
         "isIllegal": true
       }
     ],
     "correctLegalActionID": "illegal_forward",
-    "followUpFlags": ["c08_processed"],
-    "requiredFlags": null
+    "followUpFlags": [
+      "c08_processed"
+    ],
+    "requiredFlags": null,
+    "investigationCategories": [
+      {
+        "category": "DEATH RECORD",
+        "fact": "Death Location: Sorting Division Sector 7"
+      },
+      {
+        "category": "TRANSIT",
+        "fact": "Document Origin: Found in Courier 19's personal effects a"
+      },
+      {
+        "category": "IDENTITY",
+        "fact": "Courier 19 Assignment: Sector 12, eastern corridor maintenance "
+      },
+      {
+        "category": "COMMUNICATIONS",
+        "fact": "Initial Queue Entry: 2147.04.09 at 11:52 — five minutes after"
+      }
+    ],
+    "anomalyHook": "Terminated — but still active somewhere."
   }
 ]

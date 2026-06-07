@@ -33,6 +33,7 @@ struct Interactable: Codable, Identifiable {
     var ladderExtent: [CGFloat]?  // [bottomY, topY] for ladder interactables
     var hackPuzzleID: String?     // PDA hack puzzle registry id
     var nodeLabel: String?          // information node / prompt label
+    var maraObservation: String? = nil  // Mara's spoken summary after terminal read
 }
 
 struct BackgroundLayer: Codable {

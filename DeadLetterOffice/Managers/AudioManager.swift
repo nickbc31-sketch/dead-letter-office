@@ -1,10 +1,11 @@
 import AVFoundation
 import SpriteKit
 
-final class AudioManager {
+final class AudioManager: NSObject, AVAudioPlayerDelegate {
 
     static let shared = AudioManager()
-    private init() {
+    private override init() {
+        super.init()
         configureSession()
     }
 
@@ -12,6 +13,8 @@ final class AudioManager {
 
     private var musicPlayer: AVAudioPlayer?
     private var currentTrackName: String?
+    /// Retain one-shot players until playback finishes — otherwise SFX are cut off immediately.
+    private var activeOneShots: [AVAudioPlayer] = []
     private var lastUIClickTime: TimeInterval = 0
     private var lastDialogueTime: TimeInterval = 0
     private let uiClickMinInterval: TimeInterval = 0.06
@@ -19,7 +22,8 @@ final class AudioManager {
 
     private func configureSession() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
+            try AVAudioSession.sharedInstance().setCategory(
+                .ambient, mode: .default, options: [.mixWithOthers])
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
             NSLog("[AudioManager] WARNING — audio session setup failed: %@", error.localizedDescription)
@@ -93,17 +97,46 @@ final class AudioManager {
         if now - lastPlayed < minInterval { return }
         lastPlayed = now
 
-        guard let url = Bundle.main.url(forResource: name, withExtension: fileExtension) else {
+        guard let url = bundleURL(forResource: name, extension: fileExtension) else {
             NSLog("[AudioManager] WARNING — missing SFX '%@.%@'", name, fileExtension)
             return
         }
         do {
             let player = try AVAudioPlayer(contentsOf: url)
+            player.delegate = self
             player.volume = volume
             player.prepareToPlay()
-            player.play()
+            activeOneShots.append(player)
+            if !player.play() {
+                activeOneShots.removeAll { $0 === player }
+                NSLog("[AudioManager] WARNING — SFX '%@' play() returned false", name)
+            }
         } catch {
             NSLog("[AudioManager] WARNING — failed to play SFX '%@': %@", name, error.localizedDescription)
+        }
+    }
+
+    private func bundleURL(forResource name: String, extension ext: String) -> URL? {
+        if let url = Bundle.main.url(forResource: name, withExtension: ext) { return url }
+        // Case-insensitive fallback for bundle resources copied from UI_Sounds.
+        let candidates = [name, name.lowercased(), name.uppercased(),
+                          name.prefix(1).uppercased() + name.dropFirst().lowercased()]
+        for candidate in Set(candidates) {
+            if let url = Bundle.main.url(forResource: String(candidate), withExtension: ext) {
+                return url
+            }
+        }
+        return nil
+    }
+
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        activeOneShots.removeAll { $0 === player }
+    }
+
+    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        activeOneShots.removeAll { $0 === player }
+        if let error {
+            NSLog("[AudioManager] WARNING — SFX decode error: %@", error.localizedDescription)
         }
     }
 

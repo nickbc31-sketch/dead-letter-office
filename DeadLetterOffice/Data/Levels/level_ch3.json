@@ -23,7 +23,10 @@
       "yOffset": 0
     }
   ],
-  "spawnPoint": [120, 60],
+  "spawnPoint": [
+    120,
+    60
+  ],
   "exits": [
     {
       "type": "platform_end",
@@ -38,7 +41,10 @@
   "securityCameras": [
     {
       "id": "ch3_block_c_cam",
-      "position": [2480, 68],
+      "position": [
+        2480,
+        68
+      ],
       "coneLength": 120,
       "coneAngle": 38,
       "scanAmplitude": 12,
@@ -58,13 +64,49 @@
     },
     {
       "module": "environmental_story",
+      "id": "ch3_f_c01_denied",
+      "environmental": {
+        "x": 400,
+        "y": 125,
+        "text": "BLOCK 14 — DELIVERY DENIED RECORD",
+        "requiredFlag": "c01_rejected",
+        "kind": "sign",
+        "signID": "sign_ch3_c01_denied"
+      }
+    },
+    {
+      "module": "environmental_story",
+      "id": "ch3_f_lina_warned",
+      "environmental": {
+        "x": 400,
+        "y": 110,
+        "text": "MARR UNIT — LINA WARNED BY MESSAGE",
+        "requiredFlag": "lina_warned",
+        "kind": "sign",
+        "signID": "sign_ch3_lina_warned"
+      }
+    },
+    {
+      "module": "environmental_story",
       "id": "ch3_f_housing_notice",
       "environmental": {
         "x": 280,
         "y": 68,
-        "text": "LOWER HOUSING BLOCK P03\nRESIDENTIAL — STANDARD TIER",
+        "text": "LOWER HOUSING BLOCK P03",
         "kind": "sign",
         "signID": "sign_housing"
+      }
+    },
+    {
+      "module": "environmental_story",
+      "id": "ch3_f_c01_reloc",
+      "environmental": {
+        "x": 400,
+        "y": 95,
+        "text": "BLOCK 14 — RELOCATION ENFORCED",
+        "requiredFlag": "c01_approved",
+        "kind": "sign",
+        "signID": "sign_ch3_c01_reloc"
       }
     },
     {
@@ -72,9 +114,13 @@
       "id": "ch3_d_checkin_terminal",
       "terminal": {
         "id": "terminal_checkin",
-        "position": [420, 68],
+        "position": [
+          420,
+          68
+        ],
         "setsFlag": "ch3_orphan_tags_read",
-        "displayText": "PMCA RESIDENTIAL REGISTER — BLOCK P03\nUpdated: 2147.04.22\n\nUnit 312 — MARR, L. — VC-4472-F\nStatus: DECEASED — 2147.03.18\nCase: C09-0441-V — Posthumous appeal\nAppeal status: in processing\n\nUnit 408 — DAIN, F. — 19-MH-0221\nStatus: DECEASED — 2147.03.16 (registry)\nDependent: K. DAIN — 19-MH-0221-K\nRelocation: enforced 2147.03.14 (prior to registry date)\n\nUnit 204 — ORVIN, K. — 38-SV-0091\nStatus: INCINERATION COMPLETE — 2147.04.18\nNote: Final correspondence processed\n\n— — —\nORPHAN ROUTING TAGS — EVN CLASS\nEVN-ROUTING-0442 — no primary record\nStatus: ORPHANED — audit closed 2142\nEVN-ROUTING-0447 — no primary record\nStatus: ORPHANED — pending deletion\nNote: Tags not visible from clerk terminals."
+        "displayText": "PMCA RESIDENTIAL REGISTER — BLOCK P03\nUpdated: 2147.04.22\nUnit 312 — MARR, L. — VC-4472-F\nStatus: DECEASED — 2147.03.18",
+        "maraObservation": "Desk terminals don't show this buffer."
       }
     },
     {
@@ -83,7 +129,16 @@
       "anchorX": 500,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[400, 130], [650, 130]],
+        "points": [
+          [
+            400,
+            130
+          ],
+          [
+            650,
+            130
+          ]
+        ],
         "speed": 55,
         "pauseDuration": 2.0
       }
@@ -94,7 +149,7 @@
       "environmental": {
         "x": 720,
         "y": 68,
-        "text": "[COMMUNITY MURAL — BLOCK A CORRIDOR]\n'ORRA LIT THE LAMP\nWHEN THE SQUARE WENT DARK'\n— RESTORED 2138 —\nPMCA NOTICE: UNAUTHORISED\nSYMBOLISM — DO NOT REPRODUCE",
+        "text": "[COMMUNITY MURAL — BLOCK A CORRIDOR]",
         "kind": "sign",
         "signID": "sign_orrra_mural"
       }
@@ -105,7 +160,7 @@
       "environmental": {
         "x": 900,
         "y": 68,
-        "text": "NOTICE — BLOCK A — UNITS 301-318\nBATCH RELOCATION ORDER — Q1 2147\nREFERENCE: PMCA-REL-0441\n9 UNITS CLEARED",
+        "text": "NOTICE — BLOCK A — UNITS 301-318",
         "kind": "sign",
         "signID": "sign_eviction"
       }
@@ -124,9 +179,12 @@
       "id": "ch3_d_monitoring_terminal",
       "terminal": {
         "id": "terminal_monitoring",
-        "position": [1280, 68],
+        "position": [
+          1280,
+          68
+        ],
         "setsFlag": "ch3_monitoring_read",
-        "displayText": "PMCA ADMINISTRATIVE REVIEW — INTERNAL\nMonitoring batch P03 — compiled 2147.01.20\n\nFlags applied:\n1. MARR, L. — VC-4472-F — ACTIVE\n   Basis: correspondence irregularity\n2. DAIN, F. — 19-MH-0221 — ACTIVE\n   Basis: relocation non-compliance\n3. ORVIN, K. — 38-SV-0091 — ACTIVE\n   Basis: suspected system access\n\nReview authority: J. HARREL-09\nAuthorisation code: PMCA-INT-4471-A\n\nStatus update 2147.04.18:\nItems 1 and 2 pending final resolution.\nItem 3: CLOSED — incineration confirmed."
+        "displayText": "PMCA ADMINISTRATIVE REVIEW — INTERNAL\nMonitoring batch P03 — compiled 2147.01.20\nFlags applied:\n1. MARR, L. — VC-4472-F — ACTIVE"
       }
     },
     {
@@ -134,7 +192,10 @@
       "id": "ch3_e_resident",
       "npc": {
         "id": "resident_305",
-        "position": [1680, 68],
+        "position": [
+          1680,
+          68
+        ],
         "displayName": "RESIDENT — UNIT 305",
         "dialogue": [
           "They cleared block A in a single morning. No notice. The families were told their relatives had already been processed — before they even received the notifications.",
@@ -151,7 +212,16 @@
       "anchorX": 1900,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[1100, 130], [1550, 130]],
+        "points": [
+          [
+            1100,
+            130
+          ],
+          [
+            1550,
+            130
+          ]
+        ],
         "speed": 60,
         "pauseDuration": 1.5
       }
@@ -171,7 +241,16 @@
       "anchorX": 2600,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[2100, 130], [2450, 130]],
+        "points": [
+          [
+            2100,
+            130
+          ],
+          [
+            2450,
+            130
+          ]
+        ],
         "speed": 65,
         "pauseDuration": 1.0
       }
@@ -182,7 +261,7 @@
       "environmental": {
         "x": 2400,
         "y": 90,
-        "text": "BLOCK C — SEALED UNITS — AUTHORISED ENTRY ONLY"
+        "text": "BLOCK C — SEALED UNITS — AUTHORISED ENTRY ON"
       }
     },
     {
@@ -190,10 +269,13 @@
       "id": "ch3_d_apt_main",
       "terminal": {
         "id": "terminal_apt_main",
-        "position": [2850, 68],
+        "position": [
+          2850,
+          68
+        ],
         "requiredFlag": "c09_processed",
         "setsFlag": "ch3_apt_main_read",
-        "displayText": "UNIT 312 — MARR, L. — SEALING INVENTORY\nLogged: 2147.03.20 — PMCA Property Division\n\nPersonal effects catalogued:\n- Clothing: 3 sets (retained)\n- Personal documents: sealed for case\n- Letter: UNDELIVERED\n  Addressed: PMCA REVIEW BUREAU\n  Re: Father's final message\n  Status: under review — Statute 11-G\n\nNote: Occupant death pre-dates\nrelocation order by 0 days.\nRelocation enforced posthumously.\nAdministrative reference: see C09-0441-V."
+        "displayText": "UNIT 312 — MARR, L. — SEALING INVENTORY\nLogged: 2147.03.20 — PMCA Property Division\nPersonal effects catalogued:\n- Clothing: 3 sets (retained)"
       }
     },
     {
@@ -201,10 +283,13 @@
       "id": "ch3_d_apt_approved",
       "terminal": {
         "id": "terminal_apt_approved",
-        "position": [3100, 68],
+        "position": [
+          3100,
+          68
+        ],
         "requiredFlag": "c09_approved",
         "setsFlag": "ch3_apt_outcome_read",
-        "displayText": "APT 312 — APPEAL STATUS UPDATE\nCase C09-0441-V — 2147.04.21\n\nStatute 11-G review: APPEAL APPROVED\nMonitoring flag: referred for independent\nreview per Statute 11-G requirements.\n\nClerk action logged: 2147.04.20\nNext step: independent reviewer assignment\nExpected resolution: 2147.05.10\n\n[Note appended by unknown party]\n'She was right to fight it.\nI hope it matters.'"
+        "displayText": "APT 312 — APPEAL STATUS UPDATE\nCase C09-0441-V — 2147.04.21\nStatute 11-G review: APPEAL APPROVED\nMonitoring flag: referred for independent"
       }
     },
     {
@@ -212,10 +297,13 @@
       "id": "ch3_d_apt_rejected",
       "terminal": {
         "id": "terminal_apt_rejected",
-        "position": [3100, 68],
+        "position": [
+          3100,
+          68
+        ],
         "requiredFlag": "c09_rejected",
         "setsFlag": "ch3_apt_outcome_read",
-        "displayText": "APT 312 — APPEAL STATUS UPDATE\nCase C09-0441-V — 2147.04.21\n\nStatute 11-G review: APPEAL REJECTED\nMonitoring flag: upheld.\n\nClerk action logged: 2147.04.20\nProcessing pathway: standard routing\nIndependent review: not assigned\n\n[Unit scheduled for permanent\nreallocation — 2147.05.01]"
+        "displayText": "APT 312 — APPEAL STATUS UPDATE\nCase C09-0441-V — 2147.04.21\nStatute 11-G review: APPEAL REJECTED\nMonitoring flag: upheld."
       }
     },
     {
@@ -223,10 +311,13 @@
       "id": "ch3_d_apt_flagged",
       "terminal": {
         "id": "terminal_apt_flagged",
-        "position": [3100, 68],
+        "position": [
+          3100,
+          68
+        ],
         "requiredFlag": "c09_flagged",
         "setsFlag": "ch3_apt_outcome_read",
-        "displayText": "APT 312 — APPEAL STATUS UPDATE\nCase C09-0441-V — 2147.04.21\n\nStatute 11-G review: ANOMALY FLAGGED\nMonitoring flag: under investigation.\n\nClerk action logged: 2147.04.20\nInvestigation reference: PMCA-INT-FLAG-C09\nStatus: open — no assigned reviewer\n\n[Administrative note]\n'Flagging this was irregular.\nSource clerk: 1147-F. Note for file.'"
+        "displayText": "APT 312 — APPEAL STATUS UPDATE\nCase C09-0441-V — 2147.04.21\nStatute 11-G review: ANOMALY FLAGGED\nMonitoring flag: under investigation."
       }
     },
     {
@@ -235,7 +326,16 @@
       "anchorX": 3200,
       "patrol": {
         "enemyType": "security_guard",
-        "points": [[2750, 68], [3150, 68]],
+        "points": [
+          [
+            2750,
+            68
+          ],
+          [
+            3150,
+            68
+          ]
+        ],
         "speed": 45,
         "pauseDuration": 3.5
       }
@@ -255,7 +355,16 @@
       "anchorX": 4200,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[3900, 130], [4300, 130]],
+        "points": [
+          [
+            3900,
+            130
+          ],
+          [
+            4300,
+            130
+          ]
+        ],
         "speed": 70,
         "pauseDuration": 2.0
       }
@@ -266,7 +375,7 @@
       "environmental": {
         "x": 4400,
         "y": 90,
-        "text": "EXIT — P03 TRANSIT CORRIDOR — AUTHORISED ONLY"
+        "text": "EXIT — P03 TRANSIT CORRIDOR — AUTHORISED ONL"
       }
     }
   ],
@@ -274,17 +383,23 @@
     {
       "id": "override_marr_apt",
       "type": "security_override",
-      "position": [2550, 68],
+      "position": [
+        2550,
+        68
+      ],
       "requiredFlag": "c09_processed",
       "setsFlag": "ch3_override_used",
       "hackPuzzleID": "ch3_marr_seal_bypass",
-      "displayText": "MAINTENANCE OVERRIDE — RESIDENTIAL SEAL\nUnit 312 — Marr, L.\nSeal authority: PMCA Property Division\n\nConnect PDA to route maintenance access\nsignal and bypass residential seal.\n\nApply override?",
+      "displayText": "MAINTENANCE OVERRIDE — RESIDENTIAL SEAL\nUnit 312 — Marr, L.\nSeal authority: PMCA Property Division",
       "linkedInteractableID": "door_marr_apt"
     },
     {
       "id": "door_marr_apt",
       "type": "door",
-      "position": [2680, 68],
+      "position": [
+        2680,
+        68
+      ],
       "requiredFlag": "ch3_override_used",
       "setsFlag": "ch3_marr_apt_open",
       "displayText": "APT 312 — MARR, L. — [SEALED]\nMAINTENANCE OVERRIDE OR AUTHORISED ACCESS REQUIRED"
@@ -292,18 +407,41 @@
     {
       "id": "cartridge_kell_orvin",
       "type": "cartridge",
-      "position": [3850, 68],
+      "position": [
+        3850,
+        68
+      ],
       "nodeLabel": "FILE",
       "setsFlag": "ch3_orvin_cartridge_collected",
-      "cartridgeData": "UNIT 204 — ORVIN, K. — PERSONAL EFFECTS\nLogged before incineration: 2147.04.17\n\nItem recovered: handwritten note.\nContent transcribed:\n\n'If you are reading this, I am already\ngone. I did not write the confession.\nI never had system access.\nThey gave me the words and said:\nsign or the boy loses his guardian.\nI signed. I do not know who the boy is.\nI do not know what I signed away.\n\nMy citizen ID: 38-SV-0091.\nCheck the entropy. Check the\nprocessing timestamp.\nSomeone was in that system before me.\n\n— K. ORVIN'\n\n[Note: This item was scheduled for\nincineration. Recovery source unknown.]"
+      "cartridgeData": "UNIT 204 — ORVIN, K. — PERSONAL EFFECTS\nLogged before incineration: 2147.04.17\nItem recovered: handwritten note.\nContent transcribed:\n'If you are reading this, I am already"
     }
   ],
   "patrols": [],
   "pickups": [
-    {"id": "ch3_pickup_01", "x": "350", "y": "68", "setsFlag": "ch3_pickup01_collected"},
-    {"id": "ch3_pickup_02", "x": "1150", "y": "68", "setsFlag": "ch3_pickup02_collected"},
-    {"id": "ch3_pickup_03", "x": "2200", "y": "68", "setsFlag": "ch3_pickup03_collected"},
-    {"id": "ch3_pickup_04", "x": "4050", "y": "68", "setsFlag": "ch3_pickup04_collected"}
+    {
+      "id": "ch3_pickup_01",
+      "x": "350",
+      "y": "68",
+      "setsFlag": "ch3_pickup01_collected"
+    },
+    {
+      "id": "ch3_pickup_02",
+      "x": "1150",
+      "y": "68",
+      "setsFlag": "ch3_pickup02_collected"
+    },
+    {
+      "id": "ch3_pickup_03",
+      "x": "2200",
+      "y": "68",
+      "setsFlag": "ch3_pickup03_collected"
+    },
+    {
+      "id": "ch3_pickup_04",
+      "x": "4050",
+      "y": "68",
+      "setsFlag": "ch3_pickup04_collected"
+    }
   ],
   "environmentalTextNodes": [],
   "npcs": [],

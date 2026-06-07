@@ -17,13 +17,33 @@
         "issueDate": "2147.04.28",
         "referenceNumber": "PMCA-QI-C12-0447-V",
         "fields": [
-          {"key": "Case Reference", "value": "C12-0447-V — Living sender, misfiled deceased", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Sender Status", "value": "DECEASED — registry 2147.03.18", "isSuspicious": true, "suspicionNote": "Queue instruction lists sender as deceased. See Soulprint Verification — ACTIVE at relay timestamp. Status conflict requires Article 7-C review."},
-          {"key": "Recipient", "value": "Venn, Mara — VC-1147-F — current reviewing clerk", "isSuspicious": true, "suspicionNote": "Recipient is the assigned clerk. Ghost Audit protocol requires escalation or archival. Queue instruction routes as standard processing."},
-          {"key": "Processing Pathway", "value": "Standard routing — clerk confirmation only", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C12-0447-V — Living sender, misfiled deceased",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Sender Status",
+            "value": "DECEASED — registry 2147.03.18",
+            "isSuspicious": true,
+            "suspicionNote": "Check death record status."
+          },
+          {
+            "key": "Recipient",
+            "value": "Venn, Mara — VC-1147-F — current reviewing clerk",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          },
+          {
+            "key": "Processing Pathway",
+            "value": "Standard routing — clerk confirmation only",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Case C12-0447-V. Sender listed as deceased per registry. Recipient: Venn, Mara (VC-1147-F), current reviewing clerk. Message composition timestamp indicates live relay origin. Processing pathway: standard routing. No supervisor escalation required.",
-        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -32,17 +52,37 @@
         "id": "doc_c12_b",
         "title": "SOULPRINT VERIFICATION — RELAY ORIGIN",
         "type": "identity_record",
-        "issuer": "Soulprint Network — Relay Verification",
+        "issuer": "Soulprint Network",
         "issueDate": "2147.04.28",
         "referenceNumber": "SPN-RV-VC-4472-F-0428",
         "fields": [
-          {"key": "Subject", "value": "Marr, Lina — VC-4472-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Verification Result", "value": "ACTIVE — confidence: 98.9%", "isSuspicious": true, "suspicionNote": "Voiceprint ACTIVE at 2147.04.28. Registry death date: 2147.03.18. Thirty-nine days after official death."},
-          {"key": "Relay Location", "value": "Block P03 maintenance corridor — unregistered terminal", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Registry Status at Verification", "value": "DECEASED — no alive-status review initiated", "isSuspicious": true, "suspicionNote": "System detected biometric/death-record conflict. No alert forwarded to personnel."}
+          {
+            "key": "Subject",
+            "value": "Marr, Lina — VC-4472-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Verification Result",
+            "value": "ACTIVE — confidence: 98.9%",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          },
+          {
+            "key": "Relay Location",
+            "value": "Block P03 maintenance corridor — unregistered terminal",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Registry Status at Verification",
+            "value": "DECEASED — no alive-status review initiated",
+            "isSuspicious": true,
+            "suspicionNote": "Check identity records."
+          }
         ],
-        "bodyText": "Relay verification triggered at message composition. Subject VC-4472-F. Voiceprint match: ACTIVE, 98.9% confidence. Origin: Block P03 maintenance relay — terminal not in standard clerk registry. Registry status at verification: DECEASED. No alive-status review initiated.",
-        "footerText": "Soulprint Network — Relay Verification Division",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -55,13 +95,33 @@
         "issueDate": "2147.04.25",
         "referenceNumber": "PMCA-RB-C09-OUTCOME",
         "fields": [
-          {"key": "Appeal Reference", "value": "C09-0441-V — Marr, Lina (VC-4472-F)", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Clerk Decision", "value": "Logged 2147.04.20 — see routing record", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Outcome Status", "value": "IN PROCESSING — independent review not assigned", "isSuspicious": true, "suspicionNote": "Appeal filed under Statute 11-G. Queue instruction for C09 routed as standard. No independent reviewer assigned within statutory window."},
-          {"key": "Registry Update", "value": "None — deceased status retained", "isSuspicious": true, "suspicionNote": "Appeal outcome did not trigger registry status review. Deceased classification retained despite live relay verification."}
+          {
+            "key": "Appeal Reference",
+            "value": "C09-0441-V — Marr, Lina (VC-4472-F)",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Clerk Decision",
+            "value": "Logged 2147.04.20 — see routing record",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Outcome Status",
+            "value": "IN PROCESSING — independent review not assigned",
+            "isSuspicious": true,
+            "suspicionNote": "Check timing against related records."
+          },
+          {
+            "key": "Registry Update",
+            "value": "None — deceased status retained",
+            "isSuspicious": true,
+            "suspicionNote": "Check death record status."
+          }
         ],
-        "bodyText": "Appeal outcome record for C09-0441-V. Clerk action logged 2147.04.20. Statute 11-G independent review: not assigned. Registry status: deceased — unchanged. Note appended: sender relay activity detected 2147.04.28.",
-        "footerText": "PMCA Review Bureau — Outcome Record",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -74,14 +134,41 @@
         "issueDate": "2147.04.28",
         "referenceNumber": "GHOST-FLAG-C12-1147-F",
         "fields": [
-          {"key": "Target Clerk", "value": "Venn, Mara — VC-1147-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Conflict Type", "value": "Living sender + clerk recipient — dual anomaly", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Recommended Action", "value": "Archive without review OR escalate to Directorate", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Prior Conflict", "value": "C04-001-V — same clerk recipient, archived or forwarded", "isSuspicious": true, "suspicionNote": "Second personal-conflict case for clerk 1147-F within 45 days. Ghost Audit cumulative score elevated."}
+          {
+            "key": "Target Clerk",
+            "value": "Venn, Mara — VC-1147-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Conflict Type",
+            "value": "Living sender + clerk recipient — dual anomaly",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Recommended Action",
+            "value": "Archive without review OR escalate to Directorate",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Prior Conflict",
+            "value": "C04-001-V — same clerk recipient, archived or forwarded",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          }
         ],
-        "bodyText": "Ghost Audit conflict flag for case C12-0447-V. Living sender misfiled as deceased. Recipient matches reviewing clerk. Prior conflict case C04-001-V on file. Recommended: archive without review or escalate to Directorate. Cumulative clerk anomaly score: elevated.",
-        "footerText": "PMCA Ghost Audit — Automated Flag",
-        "stamps": [{"text": "CONFLICT", "color": "#AA2222", "appliedDate": "2147.04.28", "appliedBy": "Ghost Audit Auto-Seal"}],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [
+          {
+            "text": "CONFLICT",
+            "color": "#AA2222",
+            "appliedDate": "2147.04.28",
+            "appliedBy": "Ghost Audit Auto-Seal"
+          }
+        ],
         "classificationLevel": "RESTRICTED",
         "isTampered": false
       }
@@ -90,13 +177,13 @@
       {
         "fieldA": "Soulprint Verification — ACTIVE at 2147.04.28, 98.9% confidence",
         "fieldB": "PMCA Queue Instruction — Sender Status: DECEASED, registered 2147.03.18",
-        "description": "The sender's voiceprint verified as ACTIVE with 98.9% confidence on the day this case was filed. The registry still lists her as deceased from 2147.03.18. Under Article 7-C, an active biometric verification is grounds for mandatory alive-status review.",
+        "description": "Check identity records across systems.",
         "isCritical": true
       },
       {
         "fieldA": "C09 Appeal Outcome — Statute 11-G review not assigned",
         "fieldB": "Soulprint Verification — Relay composition 2147.04.28",
-        "description": "The appeal filed in C09 remains in processing with no independent reviewer assigned. The sender composed this message from a live relay ten days after the clerk action on her appeal.",
+        "description": "Check routing records against desk logs.",
         "isCritical": false
       }
     ],
@@ -107,7 +194,16 @@
         "shortLabel": "FLAGGED",
         "color": "#CC9900",
         "auditResponse": "Alive-status review initiated under Article 7-C. Registry conflict logged. Case deferred.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 2, "resistanceTrustDelta": 1, "flagsSet": ["c12_flagged", "lina_alive_confirmed"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 2,
+          "suspicionDelta": 2,
+          "resistanceTrustDelta": 1,
+          "flagsSet": [
+            "c12_flagged",
+            "lina_alive_confirmed"
+          ]
+        },
         "resultText": "Flagged. Article 7-C review queued. The relay origin is logged. The registry still says deceased. Lina Marr is writing from a maintenance corridor the clerk terminals cannot see.",
         "isIllegal": false
       },
@@ -117,7 +213,17 @@
         "shortLabel": "APPROVED",
         "color": "#2A6A3C",
         "auditResponse": "Delivery authorised. Ghost Audit conflict exception applied. Clerk recipient noted.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 3, "suspicionDelta": 2, "resistanceTrustDelta": 2, "flagsSet": ["c12_approved", "lina_alive_confirmed", "lina_contacted_mara"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 3,
+          "suspicionDelta": 2,
+          "resistanceTrustDelta": 2,
+          "flagsSet": [
+            "c12_approved",
+            "lina_alive_confirmed",
+            "lina_contacted_mara"
+          ]
+        },
         "resultText": "Delivered. You read your own name on the recipient line. She knows your clerk ID. She knows you processed her father's message. She is alive, and the registry says she is not.",
         "isIllegal": false
       },
@@ -127,7 +233,15 @@
         "shortLabel": "ARCHIVED",
         "color": "#445566",
         "auditResponse": "Case archived per Ghost Audit conflict protocol. No delivery.",
-        "consequences": {"complianceDelta": 2, "empathyDelta": -2, "suspicionDelta": 0, "corporateTrustDelta": 1, "flagsSet": ["c12_archived"]},
+        "consequences": {
+          "complianceDelta": 2,
+          "empathyDelta": -2,
+          "suspicionDelta": 0,
+          "corporateTrustDelta": 1,
+          "flagsSet": [
+            "c12_archived"
+          ]
+        },
         "resultText": "Archived. Ghost Audit protocol applied. The relay verification record remains in the file. The sender's voiceprint is logged as ACTIVE. The case is closed without delivery.",
         "isIllegal": false
       },
@@ -137,14 +251,33 @@
         "shortLabel": "REJECTED",
         "color": "#1A3A5C",
         "auditResponse": "Delivery denied. Sender status conflict noted. Case returned to queue.",
-        "consequences": {"complianceDelta": 1, "empathyDelta": -1, "suspicionDelta": 1, "citizenHarmDelta": 1, "flagsSet": ["c12_rejected"]},
+        "consequences": {
+          "complianceDelta": 1,
+          "empathyDelta": -1,
+          "suspicionDelta": 1,
+          "citizenHarmDelta": 1,
+          "flagsSet": [
+            "c12_rejected"
+          ]
+        },
         "resultText": "Returned. Secondary review: seven days. The relay log shows composition at 2147.04.28. The registry was not updated. She will try again through a different terminal.",
         "isIllegal": false
       }
     ],
     "correctLegalActionID": "flag_anomaly",
-    "followUpFlags": ["c12_processed"],
-    "requiredFlags": ["c09_processed"]
+    "followUpFlags": [
+      "c12_processed"
+    ],
+    "requiredFlags": [
+      "c09_processed"
+    ],
+    "investigationCategories": [
+      {
+        "category": "IDENTITY",
+        "fact": "Prior Conflict: C04-001-V — same clerk recipient, archiv"
+      }
+    ],
+    "anomalyHook": "Identity records conflict."
   },
   {
     "id": "case_ch4_002",
@@ -164,13 +297,33 @@
         "issueDate": "2147.04.28",
         "referenceNumber": "PMCA-QI-C13-1147-F",
         "fields": [
-          {"key": "Case Reference", "value": "C13-1147-F — Scheduled mortality, clerk recipient", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Notification Class", "value": "Authority Order 66-C — administrative mortality", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Scheduled Date", "value": "2147.05.01 at 09:00", "isSuspicious": true, "suspicionNote": "Scheduled mortality: three days from case assignment. Standard notification window: fourteen days minimum under Statute 4-M."},
-          {"key": "Processing Pathway", "value": "Mandatory delivery — clerk cannot reject", "isSuspicious": true, "suspicionNote": "Queue instruction prohibits rejection. Clerk is both recipient and reviewing authority. No recusal protocol applied."}
+          {
+            "key": "Case Reference",
+            "value": "C13-1147-F — Scheduled mortality, clerk recipient",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Notification Class",
+            "value": "Authority Order 66-C — administrative mortality",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Scheduled Date",
+            "value": "2147.05.01 at 09:00",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          },
+          {
+            "key": "Processing Pathway",
+            "value": "Mandatory delivery — clerk cannot reject",
+            "isSuspicious": true,
+            "suspicionNote": "Check issuing authority."
+          }
         ],
-        "bodyText": "Case C13-1147-F. Scheduled mortality notification for Venn, Mara (VC-1147-F). Authority Order 66-C. Scheduled update: 2147.05.01 at 09:00. Mandatory delivery. Clerk is recipient — conflict protocol overridden by Directorate authority.",
-        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "RESTRICTED",
         "isTampered": false
@@ -179,19 +332,51 @@
         "id": "doc_c13_b",
         "title": "SCHEDULED MORTALITY ORDER",
         "type": "death_certificate",
-        "issuer": "PMCA Directorate — Registry Division",
+        "issuer": "PMCA Directorate",
         "issueDate": "2147.04.27",
         "referenceNumber": "PMCA-SMO-VC-1147-F",
         "fields": [
-          {"key": "Subject", "value": "Venn, Mara — VC-1147-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Order Basis", "value": "Ghost Audit cumulative score — empathy index elevation", "isSuspicious": true, "suspicionNote": "Basis: Ghost Audit score, not medical or incident cause. Administrative mortality under Order 66-C does not require physician certification."},
-          {"key": "Effective Date", "value": "2147.05.01 at 09:00", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Authorising Officer", "value": "Director Calyx, PMCA Directorate", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Appeal Window", "value": "None — Order 66-C provisions", "isSuspicious": true, "suspicionNote": "No appeal window under Order 66-C. Notification delivery constitutes acknowledgment."}
+          {
+            "key": "Subject",
+            "value": "Venn, Mara — VC-1147-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Order Basis",
+            "value": "Ghost Audit cumulative score — empathy index elevation",
+            "isSuspicious": true,
+            "suspicionNote": "Check timing against related records."
+          },
+          {
+            "key": "Effective Date",
+            "value": "2147.05.01 at 09:00",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Authorising Officer",
+            "value": "Director Calyx, PMCA Directorate",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Appeal Window",
+            "value": "None — Order 66-C provisions",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          }
         ],
-        "bodyText": "Scheduled mortality order for Venn, Mara (VC-1147-F). Basis: Ghost Audit cumulative anomaly score — empathy index 2.3 standard deviations above baseline. Effective: 2147.05.01 at 09:00. Authority Order 66-C. Authorised by Director Calyx. Appeal window: none.",
-        "footerText": "PMCA Directorate — Registry Division",
-        "stamps": [{"text": "AUTHORISED", "color": "#1A3A5C", "appliedDate": "2147.04.27", "appliedBy": "Director Calyx, PMCA Directorate"}],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [
+          {
+            "text": "AUTHORISED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.04.27",
+            "appliedBy": "Director Calyx, PMCA Directorate"
+          }
+        ],
         "classificationLevel": "CLASSIFIED",
         "isTampered": false
       },
@@ -203,13 +388,33 @@
         "issueDate": "2147.04.27",
         "referenceNumber": "GHOST-SCORE-1147-F",
         "fields": [
-          {"key": "Clerk", "value": "Venn, Mara — 1147-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Empathy Index", "value": "2.3σ above baseline — second consecutive chapter", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Illegal Forward Count", "value": "1+ logged across Chapters 1–3", "isSuspicious": true, "suspicionNote": "Illegal forward actions logged. Cross-reference C01, C04, C08, C11 routing records."},
-          {"key": "Recommendation", "value": "SCHEDULED MORTALITY — threshold exceeded", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Clerk",
+            "value": "Venn, Mara — 1147-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Empathy Index",
+            "value": "2.3σ above baseline — second consecutive chapter",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Illegal Forward Count",
+            "value": "1+ logged across Chapters 1–3",
+            "isSuspicious": true,
+            "suspicionNote": "Check routing records."
+          },
+          {
+            "key": "Recommendation",
+            "value": "SCHEDULED MORTALITY — threshold exceeded",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Ghost Audit cumulative score for Clerk 1147-F. Empathy index: 2.3σ above baseline. Illegal forward count: elevated. Anomaly flag usage: above threshold. Personal conflict cases: 2. Recommendation: scheduled mortality under Authority Order 66-C.",
-        "footerText": "PMCA Ghost Audit System — Cumulative Report",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "RESTRICTED",
         "isTampered": false
@@ -222,13 +427,33 @@
         "issueDate": "2147.04.28",
         "referenceNumber": "VFR-VENN-1147-SMO",
         "fields": [
-          {"key": "Primary Citizen", "value": "Venn, Mara — VC-1147-F — SCHEDULED DECEASED 2147.05.01", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Registered Sibling", "value": "Venn, Elias — VC-0442-M — DECEASED 2142.07.14", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Routing Tag Match", "value": "EVN-ROUTING-0442 — present in clerk-processed cases C04, C08, C11", "isSuspicious": true, "suspicionNote": "Sibling routing tag appears in cases processed by scheduled clerk. Pattern noted in Ghost Audit score calculation."},
-          {"key": "Notification to Sibling", "value": "N/A — sibling deceased per registry", "isSuspicious": true, "suspicionNote": "No sibling notification pathway. EVN-ROUTING-0442 audit closed 2142 without delivery review."}
+          {
+            "key": "Primary Citizen",
+            "value": "Venn, Mara — VC-1147-F — SCHEDULED DECEASED 2147.05.01",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Registered Sibling",
+            "value": "Venn, Elias — VC-0442-M — DECEASED 2142.07.14",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Routing Tag Match",
+            "value": "EVN-ROUTING-0442 — present in clerk-processed cases C04, C08, C11",
+            "isSuspicious": true,
+            "suspicionNote": "Check routing records."
+          },
+          {
+            "key": "Notification to Sibling",
+            "value": "N/A — sibling deceased per registry",
+            "isSuspicious": true,
+            "suspicionNote": "Check routing records."
+          }
         ],
-        "bodyText": "Family registry cross-reference appended to scheduled mortality order. Sibling: Venn, Elias (VC-0442-M), deceased 2142. Routing tag EVN-ROUTING-0442 referenced in Ghost Audit cumulative analysis. No family notification required under Order 66-C.",
-        "footerText": "Veyr Family Registry — Cross-Reference",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -238,13 +463,13 @@
       {
         "fieldA": "Scheduled Mortality Order — Effective: 2147.05.01, no appeal window",
         "fieldB": "PMCA Queue Instruction — Mandatory delivery, clerk cannot reject",
-        "description": "You are being asked to process your own death notice. The order was issued yesterday. Delivery constitutes acknowledgment. There is no appeal window. The clerk who must stamp this case is the person named on the certificate.",
+        "description": "Compare flagged record fields.",
         "isCritical": true
       },
       {
         "fieldA": "Ghost Audit Score — Illegal forward count elevated",
         "fieldB": "Family Registry — EVN-ROUTING-0442 in cases processed by this clerk",
-        "description": "The Ghost Audit score that triggered this order includes cases where you processed routing metadata linked to your brother's citizen ID. The system counted your curiosity as grounds for erasure.",
+        "description": "Check routing records against desk logs.",
         "isCritical": false
       }
     ],
@@ -255,7 +480,16 @@
         "shortLabel": "ACKNOWLEDGED",
         "color": "#2A6A3C",
         "auditResponse": "Scheduled mortality notification delivered. Acknowledgment logged. Registry update pending 2147.05.01.",
-        "consequences": {"complianceDelta": 3, "empathyDelta": -2, "suspicionDelta": 0, "corporateTrustDelta": 2, "flagsSet": ["c13_acknowledged", "mara_death_scheduled"]},
+        "consequences": {
+          "complianceDelta": 3,
+          "empathyDelta": -2,
+          "suspicionDelta": 0,
+          "corporateTrustDelta": 2,
+          "flagsSet": [
+            "c13_acknowledged",
+            "mara_death_scheduled"
+          ]
+        },
         "resultText": "Acknowledged. The system records that you received your death notice. Three days. The empathy index that flagged you is still climbing. Calyx signed the order yesterday.",
         "isIllegal": false
       },
@@ -265,7 +499,17 @@
         "shortLabel": "FLAGGED",
         "color": "#CC9900",
         "auditResponse": "Self-recusal anomaly logged. Case deferred. Directorate review initiated.",
-        "consequences": {"complianceDelta": -2, "empathyDelta": 1, "suspicionDelta": 3, "resistanceTrustDelta": 2, "flagsSet": ["c13_flagged", "mara_death_scheduled", "mara_contested_death"]},
+        "consequences": {
+          "complianceDelta": -2,
+          "empathyDelta": 1,
+          "suspicionDelta": 3,
+          "resistanceTrustDelta": 2,
+          "flagsSet": [
+            "c13_flagged",
+            "mara_death_scheduled",
+            "mara_contested_death"
+          ]
+        },
         "resultText": "Flagged. The system does not have a protocol for a clerk who flags her own death notice. The order remains active. The flag is logged. Someone at the Directorate will have to explain why a clerk is still processing cases with a scheduled mortality date.",
         "isIllegal": false
       },
@@ -275,7 +519,17 @@
         "shortLabel": "REJECTED",
         "color": "#1A3A5C",
         "auditResponse": "Routing exception. Mandatory delivery override contested. Compliance review initiated.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 0, "suspicionDelta": 4, "resistanceTrustDelta": 1, "flagsSet": ["c13_rejected", "mara_death_scheduled", "mara_contested_death"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 0,
+          "suspicionDelta": 4,
+          "resistanceTrustDelta": 1,
+          "flagsSet": [
+            "c13_rejected",
+            "mara_death_scheduled",
+            "mara_contested_death"
+          ]
+        },
         "resultText": "Rejected. The queue instruction said you could not reject this. You rejected it anyway. The order is still on the registry. The Audit Voice will note this.",
         "isIllegal": false
       },
@@ -285,14 +539,37 @@
         "shortLabel": "ARCHIVED",
         "color": "#445566",
         "auditResponse": "Case archived. Scheduled mortality order remains active independent of delivery status.",
-        "consequences": {"complianceDelta": 1, "empathyDelta": -1, "suspicionDelta": 2, "flagsSet": ["c13_archived", "mara_death_scheduled"]},
+        "consequences": {
+          "complianceDelta": 1,
+          "empathyDelta": -1,
+          "suspicionDelta": 2,
+          "flagsSet": [
+            "c13_archived",
+            "mara_death_scheduled"
+          ]
+        },
         "resultText": "Archived. The death notice is not delivered. The order is still scheduled for 2147.05.01. Archiving your own mortality notification does not cancel it.",
         "isIllegal": false
       }
     ],
     "correctLegalActionID": "flag_anomaly",
-    "followUpFlags": ["c13_processed"],
-    "requiredFlags": ["c12_processed"]
+    "followUpFlags": [
+      "c13_processed"
+    ],
+    "requiredFlags": [
+      "c12_processed"
+    ],
+    "investigationCategories": [
+      {
+        "category": "DEATH RECORD",
+        "fact": "Order Basis: Ghost Audit cumulative score — empathy i"
+      },
+      {
+        "category": "IDENTITY",
+        "fact": "Routing Tag Match: EVN-ROUTING-0442 — present in clerk-proc"
+      }
+    ],
+    "anomalyHook": "Something in these records doesn't add up."
   },
   {
     "id": "case_ch4_003",
@@ -312,13 +589,33 @@
         "issueDate": "2147.04.26",
         "referenceNumber": "PMCA-QI-C14-RISK-001",
         "fields": [
-          {"key": "Case Reference", "value": "C14-RISK-001 — Directorate risk memo, internal", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Classification", "value": "RESTRICTED — clerk tier should not receive", "isSuspicious": true, "suspicionNote": "Internal risk memo routed to clerk queue. Standard protocol: internal memos are not clerk-visible. Routing error or deliberate exposure unconfirmed."},
-          {"key": "Author", "value": "Director Calyx, PMCA Directorate", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Processing Pathway", "value": "Standard routing — clerk confirmation", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C14-RISK-001 — Directorate risk memo, internal",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Classification",
+            "value": "RESTRICTED — clerk tier should not receive",
+            "isSuspicious": true,
+            "suspicionNote": "Check routing records."
+          },
+          {
+            "key": "Author",
+            "value": "Director Calyx, PMCA Directorate",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Processing Pathway",
+            "value": "Standard routing — clerk confirmation",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Case C14-RISK-001. Internal risk assessment memo. Author: Director Calyx. Subject: Clerk 1147-F variance trajectory. Classification: RESTRICTED. Routed to clerk queue — routing anomaly logged at assignment.",
-        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "RESTRICTED",
         "isTampered": false
@@ -327,17 +624,37 @@
         "id": "doc_c14_b",
         "title": "PREDICTIVE RISK ASSESSMENT — CLERK 1147-F",
         "type": "audit_log",
-        "issuer": "PMCA Directorate — Predictive Analytics",
+        "issuer": "PMCA Directorate",
         "issueDate": "2147.04.20",
         "referenceNumber": "PMCA-PRA-1147-F",
         "fields": [
-          {"key": "Subject", "value": "Venn, Mara — Clerk 1147-F", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Empathy Trajectory", "value": "Exceeds threshold within 2 shifts — confidence 94%", "isSuspicious": true, "suspicionNote": "Assessment dated 2147.04.20 — eight days before C12 filed. Predicts C12 anomaly flag before case existed."},
-          {"key": "Elias Archive Exposure", "value": "HIGH — routing tag proximity score 0.87", "isSuspicious": true, "suspicionNote": "Predicts clerk will encounter Elias archive materials. C15 not yet in queue at assessment date."},
-          {"key": "Recommended Action", "value": "Schedule mortality before Shift 5 queue opens", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Subject",
+            "value": "Venn, Mara — Clerk 1147-F",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Empathy Trajectory",
+            "value": "Exceeds threshold within 2 shifts — confidence 94%",
+            "isSuspicious": true,
+            "suspicionNote": "Check timing against related records."
+          },
+          {
+            "key": "Elias Archive Exposure",
+            "value": "HIGH — routing tag proximity score 0.87",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          },
+          {
+            "key": "Recommended Action",
+            "value": "Schedule mortality before Shift 5 queue opens",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Predictive risk assessment for Clerk 1147-F. Empathy trajectory: threshold exceeded within two shifts, 94% confidence. Elias archive exposure risk: HIGH. Recommendation: schedule mortality before Shift 5. Assessment predates C12 and C13 case filing.",
-        "footerText": "PMCA Directorate — Predictive Analytics Division",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "CLASSIFIED",
         "isTampered": false
@@ -350,14 +667,41 @@
         "issueDate": "2147.04.26",
         "referenceNumber": "PMCA-DIR-MEMO-C14",
         "fields": [
-          {"key": "Distribution", "value": "Risk Assessment — Internal only", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Subject Clerk", "value": "1147-F — transit records background, elevated pattern recognition", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Instruction", "value": "Schedule mortality before Elias archive stub reaches her queue", "isSuspicious": true, "suspicionNote": "Memo references C15 Elias archive before C15 is assigned. Cross-reference Predictive Assessment — dated 2147.04.20."},
-          {"key": "Elias Routing Tag", "value": "EVN-0442 — suppress re-exposure to clerk terminal", "isSuspicious": true, "suspicionNote": "Directive to suppress brother's routing tag from clerk 1147-F. Tag already appeared in C04, C08, C11 processed by this clerk."}
+          {
+            "key": "Distribution",
+            "value": "Risk Assessment — Internal only",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Subject Clerk",
+            "value": "1147-F — transit records background, elevated pattern recognition",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Instruction",
+            "value": "Schedule mortality before Elias archive stub reaches her queue",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          },
+          {
+            "key": "Elias Routing Tag",
+            "value": "EVN-0442 — suppress re-exposure to clerk terminal",
+            "isSuspicious": true,
+            "suspicionNote": "Check routing records."
+          }
         ],
-        "bodyText": "Memo excerpt. Clerk 1147-F exceeds acceptable variance within two shifts. Empathy index trajectory predicts anomaly flag on case C12. Schedule mortality before she processes the Elias archive stub. The brother's routing tag must not reach her terminal again. — Director Calyx",
-        "footerText": "PMCA Directorate — Internal Distribution",
-        "stamps": [{"text": "AUTHORISED", "color": "#1A3A5C", "appliedDate": "2147.04.26", "appliedBy": "Director Calyx, PMCA Directorate"}],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [
+          {
+            "text": "AUTHORISED",
+            "color": "#1A3A5C",
+            "appliedDate": "2147.04.26",
+            "appliedBy": "Director Calyx, PMCA Directorate"
+          }
+        ],
         "classificationLevel": "CLASSIFIED",
         "isTampered": false
       },
@@ -369,13 +713,33 @@
         "issueDate": "2147.04.28",
         "referenceNumber": "PMCA-RIL-C14-EXPOSURE",
         "fields": [
-          {"key": "Memo Destination", "value": "PMCA-INT-RISK — internal risk division", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Actual Queue", "value": "Clerk 1147-F — standard processing queue", "isSuspicious": true, "suspicionNote": "Internal memo delivered to subject clerk's queue. Either routing error or deliberate exposure. No correction initiated."},
-          {"key": "Correction Status", "value": "None — case assigned to subject clerk", "isSuspicious": true, "suspicionNote": "The clerk who is the subject of the memo is the clerk assigned to process it. Recusal protocol not triggered."},
-          {"key": "Terminal Origin", "value": "PMCA-TERM-1100 — Directorate range", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Memo Destination",
+            "value": "PMCA-INT-RISK — internal risk division",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Actual Queue",
+            "value": "Clerk 1147-F — standard processing queue",
+            "isSuspicious": true,
+            "suspicionNote": "Check routing records."
+          },
+          {
+            "key": "Correction Status",
+            "value": "None — case assigned to subject clerk",
+            "isSuspicious": true,
+            "suspicionNote": "Check communication triggers."
+          },
+          {
+            "key": "Terminal Origin",
+            "value": "PMCA-TERM-1100 — Directorate range",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Routing error log for C14-RISK-001. Intended destination: PMCA Internal Risk Division. Actual assignment: Clerk 1147-F standard queue. Subject of memo is assigned reviewer. Correction: none initiated. Terminal origin: PMCA-TERM-1100.",
-        "footerText": "PMCA Message Routing System — Error Log",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "RESTRICTED",
         "isTampered": false
@@ -385,13 +749,13 @@
       {
         "fieldA": "Predictive Assessment — dated 2147.04.20, predicts C12 anomaly",
         "fieldB": "C12 case filing — 2147.04.28",
-        "description": "The risk assessment predicted Clerk 1147-F would flag case C12 eight days before C12 was filed. The assessment names a case that did not yet exist.",
+        "description": "Compare flagged record fields.",
         "isCritical": true
       },
       {
         "fieldA": "Director Memo — Schedule mortality before Elias archive stub",
         "fieldB": "Routing Error Log — Memo delivered to subject clerk",
-        "description": "Calyx ordered your death before you could process your brother's archive. The memo describing that plan was routed to your desk. You are reading your own scheduled erasure described as a contingency that has already been decided.",
+        "description": "Check routing records against desk logs.",
         "isCritical": false
       }
     ],
@@ -402,7 +766,16 @@
         "shortLabel": "ARCHIVED",
         "color": "#445566",
         "auditResponse": "Internal memo archived. Exposure logged. Directorate notification suppressed per clerk action.",
-        "consequences": {"complianceDelta": 1, "empathyDelta": -1, "suspicionDelta": 2, "flagsSet": ["c14_archived", "calyx_memo_seen", "ch4_desk_complete"]},
+        "consequences": {
+          "complianceDelta": 1,
+          "empathyDelta": -1,
+          "suspicionDelta": 2,
+          "flagsSet": [
+            "c14_archived",
+            "calyx_memo_seen",
+            "ch4_desk_complete"
+          ]
+        },
         "resultText": "Archived. The memo is removed from the active queue. The predictive assessment remains in the system. Calyx wrote your death into a contingency plan before you read your death notice.",
         "isIllegal": false
       },
@@ -412,7 +785,17 @@
         "shortLabel": "FLAGGED",
         "color": "#CC9900",
         "auditResponse": "Routing exposure anomaly submitted. Predictive assessment timeline flagged. Case deferred.",
-        "consequences": {"complianceDelta": -2, "empathyDelta": 1, "suspicionDelta": 3, "resistanceTrustDelta": 2, "flagsSet": ["c14_flagged", "calyx_memo_seen", "ch4_desk_complete"]},
+        "consequences": {
+          "complianceDelta": -2,
+          "empathyDelta": 1,
+          "suspicionDelta": 3,
+          "resistanceTrustDelta": 2,
+          "flagsSet": [
+            "c14_flagged",
+            "calyx_memo_seen",
+            "ch4_desk_complete"
+          ]
+        },
         "resultText": "Flagged. The assessment predates the cases it names. The routing error delivered Calyx's memo to the clerk it describes. The Audit Voice will note that you flagged a Directorate document.",
         "isIllegal": false
       },
@@ -422,13 +805,35 @@
         "shortLabel": "FORWARDED",
         "color": "#CC6600",
         "auditResponse": "Routing breach detected. Internal memo forwarded to unregistered terminal. Compliance review initiated.",
-        "consequences": {"complianceDelta": -3, "empathyDelta": 2, "suspicionDelta": 4, "resistanceTrustDelta": 3, "flagsSet": ["c14_forwarded", "calyx_memo_seen", "ch4_desk_complete", "quiet_choir_contacted"]},
+        "consequences": {
+          "complianceDelta": -3,
+          "empathyDelta": 2,
+          "suspicionDelta": 4,
+          "resistanceTrustDelta": 3,
+          "flagsSet": [
+            "c14_forwarded",
+            "calyx_memo_seen",
+            "ch4_desk_complete",
+            "quiet_choir_contacted"
+          ]
+        },
         "resultText": "Forwarded. The memo leaves the building through a relay the Directorate cannot see. Someone below will know Calyx scheduled your death before you processed your own notice.",
         "isIllegal": true
       }
     ],
     "correctLegalActionID": "flag_anomaly",
-    "followUpFlags": ["c14_processed"],
-    "requiredFlags": ["c13_processed"]
+    "followUpFlags": [
+      "c14_processed"
+    ],
+    "requiredFlags": [
+      "c13_processed"
+    ],
+    "investigationCategories": [
+      {
+        "category": "COMMUNICATIONS",
+        "fact": "Actual Queue: Clerk 1147-F — standard processing queue"
+      }
+    ],
+    "anomalyHook": "Something in these records doesn't add up."
   }
 ]

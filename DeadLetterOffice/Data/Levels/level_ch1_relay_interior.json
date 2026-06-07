@@ -4,7 +4,10 @@
   "displayName": "PMCA RELAY UTILITY — INTERIOR",
   "tileMapName": null,
   "parentLevelID": "level_ch1",
-  "returnSpawnPoint": [920, 60],
+  "returnSpawnPoint": [
+    920,
+    60
+  ],
   "isInterior": true,
   "backgroundLayers": [
     {
@@ -14,13 +17,19 @@
       "yOffset": 0
     }
   ],
-  "spawnPoint": [90, 60],
+  "spawnPoint": [
+    90,
+    60
+  ],
   "exits": [],
   "interactables": [
     {
       "id": "relay_console_01",
       "type": "terminal",
-      "position": [280, 68],
+      "position": [
+        280,
+        68
+      ],
       "requiredFlag": null,
       "setsFlag": "relay_console_read",
       "requiredCode": null,
@@ -32,7 +41,10 @@
     {
       "id": "relay_cabinet_01",
       "type": "cabinet",
-      "position": [420, 68],
+      "position": [
+        420,
+        68
+      ],
       "requiredFlag": "relay_console_read",
       "setsFlag": "ch1_relay_credential",
       "requiredCode": null,
@@ -44,7 +56,10 @@
     {
       "id": "relay_building_exit",
       "type": "building_exit",
-      "position": [500, 68],
+      "position": [
+        500,
+        68
+      ],
       "requiredFlag": "ch1_relay_credential",
       "setsFlag": "relay_building_exited",
       "requiredCode": null,
@@ -57,14 +72,31 @@
   "patrols": [],
   "pickups": [],
   "environmentalTextNodes": [
-    {"x": "200", "y": "100", "text": "RELAY NODE 7 — UTILITY CONTROL"},
-    {"x": "420", "y": "100", "text": "MAINTENANCE CREDENTIAL LOCKER — AUTHORISED ACCESS ONLY"},
-    {"x": "280", "y": "130", "text": "SECONDARY ROUTING — BUFFER STATUS: ACTIVE"},
-    {"x": "480", "y": "115", "text": "UNAUTHORISED ACCESS — PMCA SECTOR 12"}
+    {
+      "x": "200",
+      "y": "100",
+      "text": "RELAY NODE 7 — UTILITY CONTROL"
+    },
+    {
+      "x": "420",
+      "y": "100",
+      "text": "MAINTENANCE CREDENTIAL LOCKER — AUTHORISED ACCES"
+    },
+    {
+      "x": "280",
+      "y": "130",
+      "text": "SECONDARY ROUTING — BUFFER STATUS: ACTIVE"
+    },
+    {
+      "x": "480",
+      "y": "115",
+      "text": "UNAUTHORISED ACCESS — PMCA SECTOR 12"
+    }
   ],
   "objectiveText": "SHIFT 1 — RELAY NODE 7",
   "ambientMusicTrack": "ambient_platform",
   "platformNodes": [],
   "levelWidth": 560,
-  "levelHeight": 280
+  "levelHeight": 280,
+  "encounterSequence": []
 }

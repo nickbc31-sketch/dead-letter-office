@@ -1,0 +1,86 @@
+{
+  "cases": {
+    "cases_ch1.json": {
+      "before": 7334,
+      "after": 2537
+    },
+    "cases_ch2.json": {
+      "before": 16968,
+      "after": 2905
+    },
+    "cases_ch3.json": {
+      "before": 23081,
+      "after": 4703
+    },
+    "cases_ch4.json": {
+      "before": 7779,
+      "after": 2131
+    },
+    "cases_ch5.json": {
+      "before": 6892,
+      "after": 1929
+    },
+    "cases_ch6.json": {
+      "before": 5712,
+      "after": 1889
+    },
+    "cases_ch7.json": {
+      "before": 6362,
+      "after": 2101
+    },
+    "cases_ch8.json": {
+      "before": 1827,
+      "after": 618
+    }
+  },
+  "levels": {
+    "level_ch1.json": {
+      "before": 190,
+      "after": 152
+    },
+    "level_ch1_checkpoint_interior.json": {
+      "before": 550,
+      "after": 422
+    },
+    "level_ch1_relay_interior.json": {
+      "before": 161,
+      "after": 155
+    },
+    "level_ch2.json": {
+      "before": 2834,
+      "after": 1907
+    },
+    "level_ch3.json": {
+      "before": 4042,
+      "after": 2240
+    },
+    "level_ch4.json": {
+      "before": 2209,
+      "after": 1339
+    },
+    "level_ch5.json": {
+      "before": 1961,
+      "after": 1497
+    },
+    "level_ch6.json": {
+      "before": 2303,
+      "after": 1769
+    },
+    "level_ch7.json": {
+      "before": 2196,
+      "after": 1527
+    },
+    "level_ch8.json": {
+      "before": 2097,
+      "after": 1388
+    }
+  },
+  "totals": {
+    "cases_before": 75955,
+    "cases_after": 18813,
+    "cases_reduction_pct": 75.2,
+    "levels_before": 18543,
+    "levels_after": 12396,
+    "levels_reduction_pct": 33.1
+  }
+}

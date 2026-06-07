@@ -67,6 +67,7 @@ struct TerminalEncounterConfig: Codable {
     var setsFlag: String?
     var linkedDialogueID: String?
     var displayText: String?
+    var maraObservation: String?
 }
 
 struct EnvironmentalEncounterConfig: Codable {
@@ -75,6 +76,7 @@ struct EnvironmentalEncounterConfig: Codable {
     var text: String
     var kind: String?       // "label" (default) | "sign"
     var signID: String?
+    var requiredFlag: String?   // Only show when player has this flag (consequence links)
 }
 
 struct EncounterModule: Codable, Identifiable {

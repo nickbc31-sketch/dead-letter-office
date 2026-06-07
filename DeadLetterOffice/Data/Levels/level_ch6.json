@@ -4,11 +4,29 @@
   "displayName": "BLACK MAIL TRAIN — P06 TRANSIT",
   "tileMapName": null,
   "backgroundLayers": [
-    {"imageName": "bg_city_far", "zPosition": -30, "scrollFactor": 0.1, "yOffset": 0},
-    {"imageName": "bg_facility_mid", "zPosition": -20, "scrollFactor": 0.4, "yOffset": 0},
-    {"imageName": "bg_facility_near", "zPosition": -10, "scrollFactor": 0.7, "yOffset": 0}
+    {
+      "imageName": "bg_city_far",
+      "zPosition": -30,
+      "scrollFactor": 0.1,
+      "yOffset": 0
+    },
+    {
+      "imageName": "bg_facility_mid",
+      "zPosition": -20,
+      "scrollFactor": 0.4,
+      "yOffset": 0
+    },
+    {
+      "imageName": "bg_facility_near",
+      "zPosition": -10,
+      "scrollFactor": 0.7,
+      "yOffset": 0
+    }
   ],
-  "spawnPoint": [140, 60],
+  "spawnPoint": [
+    140,
+    60
+  ],
   "exits": [
     {
       "type": "platform_end",
@@ -23,7 +41,10 @@
   "securityCameras": [
     {
       "id": "ch6_transit_cam",
-      "position": [2600, 68],
+      "position": [
+        2600,
+        68
+      ],
       "coneLength": 120,
       "coneAngle": 36,
       "scanAmplitude": 11,
@@ -38,7 +59,7 @@
       "environmental": {
         "x": 180,
         "y": 90,
-        "text": "EAST TRANSIT — ROUTE 7-B ACCESS\nBLACK MAIL TRAIN — MAINTENANCE ONLY"
+        "text": "EAST TRANSIT — ROUTE 7-B ACCESS"
       }
     },
     {
@@ -46,9 +67,24 @@
       "id": "ch6_d_manifest_terminal",
       "terminal": {
         "id": "terminal_manifest",
-        "position": [360, 68],
+        "position": [
+          360,
+          68
+        ],
         "setsFlag": "ch6_manifest_read",
-        "displayText": "BLACK TRAIN MANIFEST — ROUTE 7-B\nUpdated: 2147.05.10\n\nCarriage load: 312 messages\nClassification: FORBIDDEN\nStatus: Deferred transit\n\nManifest authority: J.V.\nCredential: MOT-MAINT-JV\nExpiry: 2144 — EXPIRED\n\nDestination: Incineration Archive\nRoute: beneath sealed district"
+        "displayText": "BLACK TRAIN MANIFEST — ROUTE 7-B\nUpdated: 2147.05.10\nCarriage load: 312 messages\nClassification: FORBIDDEN",
+        "maraObservation": "Messages held in limbo — not delivered, not destroyed."
+      }
+    },
+    {
+      "module": "environmental_story",
+      "id": "ch6_f_jun_tag",
+      "environmental": {
+        "x": 3400,
+        "y": 115,
+        "text": "CARRIAGE TAG — JUN VALE",
+        "kind": "sign",
+        "signID": "sign_ch6_hidden_jun"
       }
     },
     {
@@ -57,7 +93,16 @@
       "anchorX": 480,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[380, 130], [580, 130]],
+        "points": [
+          [
+            380,
+            130
+          ],
+          [
+            580,
+            130
+          ]
+        ],
         "speed": 55,
         "pauseDuration": 2.0
       }
@@ -68,7 +113,7 @@
       "environmental": {
         "x": 700,
         "y": 68,
-        "text": "JUNCTION 9 — SUB-LEVEL VENT ACCESS\n[Coordinates: 19.6, 24.1]",
+        "text": "JUNCTION 9 — SUB-LEVEL VENT ACCESS",
         "kind": "sign",
         "signID": "sign_junction_9"
       }
@@ -78,9 +123,13 @@
       "id": "ch6_d_c08_xref_terminal",
       "terminal": {
         "id": "terminal_c08_xref",
-        "position": [920, 68],
+        "position": [
+          920,
+          68
+        ],
         "setsFlag": "ch6_c08_xref_read",
-        "displayText": "C08 CROSS-REFERENCE — COORDINATES\nCourier 19 — SVC-19-4A\n\nWaveform peaks as coordinate pairs:\n[3.1, 7.4] — east conveyor\n[12.8, 15.2] — maintenance junction\n[19.6, 24.1] — junction 9 ← HERE\n\nMap fragment: Sector 7\nDeath location conflict: Sector 12\n\n[You are standing at junction 9.]"
+        "displayText": "C08 CROSS-REFERENCE — COORDINATES\nCourier 19 — SVC-19-4A\nWaveform peaks as coordinate pairs:\nMap fragment: Sector 7",
+        "maraObservation": "Coordinates hidden in the waveform. Map doesn't match death location."
       }
     },
     {
@@ -89,7 +138,16 @@
       "anchorX": 1300,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[1000, 130], [1250, 130]],
+        "points": [
+          [
+            1000,
+            130
+          ],
+          [
+            1250,
+            130
+          ]
+        ],
         "speed": 60,
         "pauseDuration": 1.5
       }
@@ -99,10 +157,14 @@
       "id": "ch6_d_trial_terminal",
       "terminal": {
         "id": "terminal_trial_biometric",
-        "position": [1500, 68],
+        "position": [
+          1500,
+          68
+        ],
         "requiredFlag": "c18_processed",
         "setsFlag": "ch6_trial_biometric_read",
-        "displayText": "TRIAL MONITORING — SUBNET FEED\nTRIAL-0442 — VC-0442-M\n\nLast reading: 2147.05.07 at 03:14\nStatus: ACTIVE\nOrigin: Route 7-B maintenance\n\nTermination report: 2142.07.14\nReporter: Harrow, Lena — deceased\nAlert: SUPPRESSED\n\n[Biometric active 5 years after\ntermination. Registry unchanged.]"
+        "displayText": "TRIAL MONITORING — SUBNET FEED\nTRIAL-0442 — VC-0442-M\nLast reading: 2147.05.07 at 03:14\nStatus: ACTIVE",
+        "maraObservation": "Still active on the subnet. Death record says otherwise."
       }
     },
     {
@@ -111,7 +173,7 @@
       "environmental": {
         "x": 1750,
         "y": 90,
-        "text": "CARRIAGE 2 — ORRA FRAGMENT RECOVERY\nCARRIAGE 3 — MAINTENANCE SUBNET"
+        "text": "CARRIAGE 2 — ORRA FRAGMENT RECOVERY"
       }
     },
     {
@@ -119,7 +181,10 @@
       "id": "ch6_e_transit_worker",
       "npc": {
         "id": "transit_worker_p06",
-        "position": [2100, 68],
+        "position": [
+          2100,
+          68
+        ],
         "displayName": "TRANSIT WORKER — P06",
         "dialogue": [
           "Route 7-B doesn't appear on clerk maps. It runs under the sealed district.",
@@ -136,7 +201,16 @@
       "anchorX": 2500,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[2000, 130], [2350, 130]],
+        "points": [
+          [
+            2000,
+            130
+          ],
+          [
+            2350,
+            130
+          ]
+        ],
         "speed": 62,
         "pauseDuration": 1.2
       }
@@ -146,10 +220,14 @@
       "id": "ch6_d_orra_terminal",
       "terminal": {
         "id": "terminal_orra_fragment",
-        "position": [2850, 68],
+        "position": [
+          2850,
+          68
+        ],
         "requiredFlag": "c19_processed",
         "setsFlag": "ch6_orra_fragment_read",
-        "displayText": "BUFFER RECOVERY — CARRIAGE 2\nSaint Orra fragment — 2147.05.09\n\n'They are still deleting us.\nThe count rises while the square\nstays dark. Light the lamp.'\n\nDeletion count at recovery: 1,247,883\nDaily increment: +847\n\nTransmission method: UNKNOWN\nOrigin terminal: NOT LOGGED\n\n[Recovered before incineration.]"
+        "displayText": "BUFFER RECOVERY — CARRIAGE 2\nSaint Orra fragment — 2147.05.09\n'They are still deleting us.\nThe count rises while the square",
+        "maraObservation": "They're still deleting people. The count rises every day."
       }
     },
     {
@@ -158,7 +236,16 @@
       "anchorX": 3200,
       "patrol": {
         "enemyType": "security_guard",
-        "points": [[2900, 68], [3150, 68]],
+        "points": [
+          [
+            2900,
+            68
+          ],
+          [
+            3150,
+            68
+          ]
+        ],
         "speed": 44,
         "pauseDuration": 3.0
       }
@@ -168,10 +255,14 @@
       "id": "ch6_d_jv_terminal",
       "terminal": {
         "id": "terminal_jv_credential",
-        "position": [3550, 68],
+        "position": [
+          3550,
+          68
+        ],
         "requiredFlag": "ch6_frequency_bypass_used",
         "setsFlag": "ch6_jv_credential_read",
-        "displayText": "CREDENTIAL LOG — MOT-MAINT-JV\nAuthor: J.V.\n\nIssued: 2141.03.02\nRevoked: 2144.08.11 (official)\nActive on subnet: 2147.04.08–present\n\nPersonnel file: NOT FOUND\nRegistry: Vale, Jun — DECEASED 2147.04.01\nSoulprint: ACTIVE — carriage 3\n\n[Officially dead. Operating the train.]"
+        "displayText": "CREDENTIAL LOG — MOT-MAINT-JV\nAuthor: J.V.\nIssued: 2141.03.02\nRevoked: 2144.08.11 (official)",
+        "maraObservation": "Credentials exist. No personnel file. Ghost identity."
       }
     },
     {
@@ -180,7 +271,16 @@
       "anchorX": 4100,
       "patrol": {
         "enemyType": "security_drone",
-        "points": [[3800, 130], [4200, 130]],
+        "points": [
+          [
+            3800,
+            130
+          ],
+          [
+            4200,
+            130
+          ]
+        ],
         "speed": 68,
         "pauseDuration": 2.0
       }
@@ -191,7 +291,7 @@
       "environmental": {
         "x": 4300,
         "y": 90,
-        "text": "SURFACE POINT — UNDERCITY ACCESS\nROUTE 7-B TERMINUS"
+        "text": "SURFACE POINT — UNDERCITY ACCESS"
       }
     }
   ],
@@ -199,17 +299,23 @@
     {
       "id": "ch6_frequency_override",
       "type": "security_override",
-      "position": [2550, 68],
+      "position": [
+        2550,
+        68
+      ],
       "requiredFlag": "ch6_manifest_read",
       "setsFlag": "ch6_frequency_bypass_used",
       "hackPuzzleID": "ch6_transit_frequency",
-      "displayText": "TRANSIT FREQUENCY LOCK — ROUTE 7-B\nAutomated train control signal\n\nConnect PDA to match transit\ncontrol frequency and open\ncarriage access corridor.\n\nApply override?",
+      "displayText": "TRANSIT FREQUENCY LOCK — ROUTE 7-B\nAutomated train control signal\n",
       "linkedInteractableID": "ch6_carriage_door"
     },
     {
       "id": "ch6_carriage_door",
       "type": "door",
-      "position": [2680, 68],
+      "position": [
+        2680,
+        68
+      ],
       "requiredFlag": "ch6_frequency_bypass_used",
       "setsFlag": "ch6_carriage_open",
       "displayText": "CARRIAGE ACCESS — [LOCKED]\nTRANSIT FREQUENCY MATCH REQUIRED"
@@ -217,18 +323,41 @@
     {
       "id": "cartridge_black_train_manifest",
       "type": "cartridge",
-      "position": [3950, 68],
+      "position": [
+        3950,
+        68
+      ],
       "nodeLabel": "FILE",
       "setsFlag": "ch6_field_complete",
-      "cartridgeData": "BLACK TRAIN MANIFEST — COPY\nRoute 7-B — sealed district\n\n312 forbidden dead letters\nDeferred transit — not delivered,\nnot incinerated, not forgotten\n\nAuthority: J.V. (expired 2144)\nJun Vale — officially dead\nActive on carriage 3\n\nJunction 9 = Courier 19 coords\nEVN-0442 tag in carriage class\n\nThe train is the infrastructure.\nThe fragments ride the rails.\nThe living-dead move beneath\nthe city that declared them gone."
+      "cartridgeData": "BLACK TRAIN MANIFEST — COPY\nRoute 7-B — sealed district\n312 forbidden dead letters\nDeferred transit — not delivered,\nnot incinerated, not forgotten"
     }
   ],
   "patrols": [],
   "pickups": [
-    {"id": "ch6_pickup_01", "x": "280", "y": "68", "setsFlag": "ch6_pickup01_collected"},
-    {"id": "ch6_pickup_02", "x": "1050", "y": "68", "setsFlag": "ch6_pickup02_collected"},
-    {"id": "ch6_pickup_03", "x": "2200", "y": "68", "setsFlag": "ch6_pickup03_collected"},
-    {"id": "ch6_pickup_04", "x": "3750", "y": "68", "setsFlag": "ch6_pickup04_collected"}
+    {
+      "id": "ch6_pickup_01",
+      "x": "280",
+      "y": "68",
+      "setsFlag": "ch6_pickup01_collected"
+    },
+    {
+      "id": "ch6_pickup_02",
+      "x": "1050",
+      "y": "68",
+      "setsFlag": "ch6_pickup02_collected"
+    },
+    {
+      "id": "ch6_pickup_03",
+      "x": "2200",
+      "y": "68",
+      "setsFlag": "ch6_pickup03_collected"
+    },
+    {
+      "id": "ch6_pickup_04",
+      "x": "3750",
+      "y": "68",
+      "setsFlag": "ch6_pickup04_collected"
+    }
   ],
   "environmentalTextNodes": [],
   "npcs": [],
@@ -236,7 +365,12 @@
   "ambientMusicTrack": "ambient_platform_train",
   "platformNodes": [],
   "buildingNodes": [
-    {"asset": "train_infrastructure", "x": 1900, "y": 0, "scale": 1.0}
+    {
+      "asset": "train_infrastructure",
+      "x": 1900,
+      "y": 0,
+      "scale": 1.0
+    }
   ],
   "levelWidth": 4600,
   "levelHeight": 400

@@ -23,8 +23,10 @@ final class DeskScene: SKScene {
     private var deskStatusLabel: SKLabelNode!
     private var complianceScoreLabel: SKLabelNode!
     private var suspicionScoreLabel: SKLabelNode!
+    private var deductionScoreLabel: SKLabelNode!
     private var hasStamped = false
     private var caseHeaderNode: SKLabelNode?
+    private var categoryStripNode: SKNode?
     private var actionRequiredNode: SKLabelNode?
     private var continueButtonNode: SKNode?
 
@@ -852,13 +854,21 @@ final class DeskScene: SKScene {
         suspicionScoreLabel.text = "SUSP: \(GameState.shared.suspicionScore)"
         suspicionScoreLabel.position = CGPoint(x: suspX, y: kHudY)
 
-        let suspRight = suspX + suspicionScoreLabel.frame.width
-        if suspRight > pdaLeft - 8 {
-            let overflow = suspRight - (pdaLeft - 8)
+        let compRight2 = suspX + suspicionScoreLabel.frame.width
+        var dedX = compRight2 + scoreGap
+        deductionScoreLabel.fontSize = scoreSize
+        deductionScoreLabel.text = "DED: \(GameState.shared.deductionCount)"
+        deductionScoreLabel.position = CGPoint(x: dedX, y: kHudY)
+
+        let dedRight = dedX + deductionScoreLabel.frame.width
+        if dedRight > pdaLeft - 8 {
+            let overflow = dedRight - (pdaLeft - 8)
             scoresX -= overflow
             suspX -= overflow
+            dedX -= overflow
             complianceScoreLabel.position.x = scoresX
             suspicionScoreLabel.position.x = suspX
+            deductionScoreLabel.position.x = dedX
         }
     }
 
@@ -882,6 +892,13 @@ final class DeskScene: SKScene {
         suspicionScoreLabel.fontColor = DLOColor.danger.withAlphaComponent(0.85)
         suspicionScoreLabel.verticalAlignmentMode = .center
         hudNode.addChild(suspicionScoreLabel)
+
+        deductionScoreLabel = DLOFont.terminalLabel(
+            text: "DED: \(GameState.shared.deductionCount)", size: scoreSize)
+        deductionScoreLabel.horizontalAlignmentMode = .left
+        deductionScoreLabel.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.85)
+        deductionScoreLabel.verticalAlignmentMode = .center
+        hudNode.addChild(deductionScoreLabel)
 
         layoutDeskScoreLabels()
     }
@@ -907,6 +924,7 @@ final class DeskScene: SKScene {
         buildDocumentTabs(currentCase)
         buildStampButtons(currentCase)
         buildCaseHeader(currentCase)
+        buildInvestigationCategoryStrip(currentCase)
 
         showContradictionSummary(currentCase)
         updateHUD()
@@ -958,8 +976,12 @@ final class DeskScene: SKScene {
         documentNodes[index].run(SKAction.fadeIn(withDuration: 0.07))
         activeDocumentIndex = index
         if let caseFile = currentCase, caseFile.documents.indices.contains(index) {
+            let doc = caseFile.documents[index]
             NotebookManager.onDeskDocumentOpened(
-                documentID: caseFile.documents[index].id, caseID: caseFile.id)
+                documentID: doc.id, caseID: caseFile.id)
+            if doc.fields.contains(where: { $0.isSuspicious }) {
+                GameState.shared.logDeduction("\(caseFile.id)_\(doc.id)_suspicious")
+            }
             buildDocumentTabs(caseFile)
         }
         AudioManager.shared.playPageTurn(on: self)
@@ -1018,6 +1040,37 @@ final class DeskScene: SKScene {
         }
     }
 
+    private func buildInvestigationCategoryStrip(_ caseFile: CaseFile) {
+        categoryStripNode?.removeFromParent()
+        categoryStripNode = nil
+        guard let categories = caseFile.investigationCategories, !categories.isEmpty else { return }
+
+        let strip = SKNode()
+        strip.zPosition = 9
+        strip.position = CGPoint(x: layout.left + 8, y: kTabsY + kTabH + 4)
+
+        var x: CGFloat = 0
+        for (i, cat) in categories.enumerated() {
+            let label = cat.fact.count > 28 ? String(cat.fact.prefix(25)) + "..." : cat.fact
+            let text = "\(cat.category): \(label)"
+            let lbl = DLOFont.terminalLabel(text: text, size: 7.5)
+            lbl.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.75)
+            lbl.horizontalAlignmentMode = .left
+            lbl.position = CGPoint(x: x, y: 0)
+            strip.addChild(lbl)
+            x += lbl.frame.width + 10
+            if i < categories.count - 1 {
+                let sep = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.3),
+                                       size: CGSize(width: 1, height: 10))
+                sep.position = CGPoint(x: x, y: -5)
+                strip.addChild(sep)
+                x += 6
+            }
+        }
+        addChild(strip)
+        categoryStripNode = strip
+    }
+
     private func buildCaseHeader(_ caseFile: CaseFile) {
         caseHeaderNode?.removeFromParent()
         let hdr = DLOFont.terminalLabel(
@@ -1042,6 +1095,8 @@ final class DeskScene: SKScene {
         messageArea.removeAllChildren()
         caseHeaderNode?.removeFromParent()
         caseHeaderNode = nil
+        categoryStripNode?.removeFromParent()
+        categoryStripNode = nil
         actionRequiredNode?.removeFromParent()
         actionRequiredNode = nil
         clearContinueButton()
@@ -1088,6 +1143,9 @@ final class DeskScene: SKScene {
         caseFile.followUpFlags?.forEach { GameState.shared.setFlag($0) }
         GameState.shared.recordDecision(caseID: caseFile.id, actionID: action.id)
         PDAJournalManager.onCaseDecision(caseID: caseFile.id, actionID: action.id)
+        if action.id == "flag_anomaly" {
+            GameState.shared.logDeduction("\(caseFile.id)_flagged")
+        }
         GameState.shared.save()
         showPDAUpdateToast()
         NSLog("[DLO State] case=\(caseFile.id) action=\(action.id) compliance=\(GameState.shared.complianceScore) suspicion=\(GameState.shared.suspicionScore)")
@@ -1451,7 +1509,8 @@ final class DeskScene: SKScene {
         }
 
         let msgW   = kMsgW
-        let panelH: CGFloat = 56
+        let hasHook = caseFile.anomalyHook?.isEmpty == false
+        let panelH: CGFloat = hasHook ? 74 : 56
 
         let bg = SKSpriteNode(color: .black, size: CGSize(width: msgW, height: panelH))
         bg.position = CGPoint(x: msgW / 2, y: panelH / 2)
@@ -1471,10 +1530,19 @@ final class DeskScene: SKScene {
         hdr.position = CGPoint(x: msgW / 2, y: panelH - 14)
         messageArea.addChild(hdr)
 
+        if let hook = caseFile.anomalyHook, !hook.isEmpty {
+            let hookLbl = DLOFont.terminalLabel(text: hook, size: 8.5)
+            hookLbl.fontColor = DLOColor.bodyText.withAlphaComponent(0.7)
+            hookLbl.horizontalAlignmentMode = .center
+            hookLbl.position = CGPoint(x: msgW / 2, y: panelH - 30)
+            messageArea.addChild(hookLbl)
+        }
+
+        let sepY: CGFloat = hasHook ? panelH - 40 : panelH - 24
         let sep = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.2),
                                size: CGSize(width: msgW - 8, height: 1))
         sep.anchorPoint = CGPoint(x: 0, y: 0.5)
-        sep.position = CGPoint(x: 4, y: panelH - 24)
+        sep.position = CGPoint(x: 4, y: sepY)
         messageArea.addChild(sep)
 
         // AUDIT LOG button
@@ -1504,6 +1572,7 @@ final class DeskScene: SKScene {
 
     private func showAuditOverlay(for caseFile: CaseFile) {
         guard auditOverlay == nil else { return }
+        GameState.shared.logDeduction("\(caseFile.id)_audit")
 
         let overlay = SKNode()
         overlay.zPosition = 700
@@ -1774,6 +1843,7 @@ final class DeskScene: SKScene {
         let state = GameState.shared
         complianceScoreLabel.text = "COMP: \(state.complianceScore)"
         suspicionScoreLabel.text = "SUSP: \(state.suspicionScore)"
+        deductionScoreLabel.text = "DED: \(state.deductionCount)"
         layoutDeskScoreLabels()
     }
 
@@ -1847,6 +1917,9 @@ final class DeskScene: SKScene {
 
     private func showPDAJournal() {
         guard pdaOverlay == nil else { return }
+        if let caseID = currentCase?.id {
+            PDAJournalManager.recordDeskPDAOpen(caseID: caseID)
+        }
         let shift = PDAJournalManager.shiftNumber(from: chapterID)
         let skipBoot = PDAJournalManager.state.bootScreenSeen
         NSLog("[DLO PDA] desk open requested shift=%d skipBoot=%d", shift, skipBoot)
@@ -1857,6 +1930,15 @@ final class DeskScene: SKScene {
     private func rebuildPDAJournal(screen: PDAJournalPanel.Screen) {
         isRebuildingPDAJournal = true
         defer { isRebuildingPDAJournal = false }
+
+        if let caseID = currentCase?.id {
+            switch screen {
+            case .section(.objectives, _), .section(.journal, _):
+                PDAJournalManager.recordDeskPDAOpen(caseID: caseID)
+            default:
+                break
+            }
+        }
 
         let priorScreen = pdaJournalScreen
         let wasVisible = pdaOverlay?.parent != nil
@@ -1875,6 +1957,7 @@ final class DeskScene: SKScene {
             currentShift: shift,
             chapterID: chapterID,
             fieldObjective: nil,
+            activeCaseID: currentCase?.id,
             onRebuild: { [weak self] newScreen in self?.rebuildPDAJournal(screen: newScreen) },
             onClose: { [weak self] in self?.hidePDAJournal() })
 

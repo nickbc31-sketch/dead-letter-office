@@ -44,6 +44,7 @@ enum PDAJournalPanel {
         currentShift: Int,
         chapterID: String? = nil,
         fieldObjective: String? = nil,
+        activeCaseID: String? = nil,
         onRebuild: @escaping (Screen) -> Void,
         onClose: @escaping () -> Void
     ) -> BuildResult {
@@ -58,7 +59,8 @@ enum PDAJournalPanel {
             return buildSection(section, shift: shift, currentShift: currentShift,
                                 panelSize: panelSize, center: center,
                                 textMultiplier: textMultiplier, chapterID: chapterID,
-                                fieldObjective: fieldObjective, onRebuild: onRebuild, onClose: onClose)
+                                fieldObjective: fieldObjective, activeCaseID: activeCaseID,
+                                onRebuild: onRebuild, onClose: onClose)
         }
     }
 
@@ -157,6 +159,7 @@ enum PDAJournalPanel {
         textMultiplier: CGFloat,
         chapterID: String?,
         fieldObjective: String?,
+        activeCaseID: String?,
         onRebuild: @escaping (Screen) -> Void,
         onClose: @escaping () -> Void
     ) -> BuildResult {
@@ -171,11 +174,12 @@ enum PDAJournalPanel {
         switch section {
         case .journal:
             header = "JOURNAL"
-            bodyText = PDAJournalManager.journalBody(forShift: shift)
+            bodyText = PDAJournalManager.journalBody(forShift: shift, activeCaseID: activeCaseID)
         case .objectives:
             header = "OBJECTIVES"
             bodyText = PDAJournalManager.objectivesBody(
-                forShift: shift, chapterID: shiftChapter, fieldObjective: activeFieldObjective)
+                forShift: shift, chapterID: shiftChapter, fieldObjective: activeFieldObjective,
+                activeCaseID: activeCaseID)
         case .discoveries:
             header = "DISCOVERIES"
             bodyText = PDAJournalManager.discoveriesBody(forShift: shift)

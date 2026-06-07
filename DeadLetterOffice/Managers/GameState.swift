@@ -16,6 +16,7 @@ final class GameState {
     var complianceScore: Int = 0
     var empathyScore: Int = 0
     var suspicionScore: Int = 0
+    var deductionCount: Int = 0
     var resistanceTrust: Int = 0
     var corporateTrust: Int = 0
     var citizenHarmCount: Int = 0
@@ -53,6 +54,15 @@ final class GameState {
     func setFlag(_ flag: String) { activeFlags.insert(flag) }
     func clearFlag(_ flag: String) { activeFlags.remove(flag) }
     func hasFlag(_ flag: String) -> Bool { activeFlags.contains(flag) }
+
+    /// Records a unique deduction moment (audit open, pattern spotted, clue linked).
+    func logDeduction(_ key: String) {
+        let flag = "deduction_\(key)"
+        guard !activeFlags.contains(flag) else { return }
+        activeFlags.insert(flag)
+        deductionCount += 1
+        save()
+    }
 
     func applyConsequences(_ consequences: ConsequenceMap) {
         complianceScore  += consequences.complianceDelta ?? 0
@@ -117,6 +127,7 @@ final class GameState {
         complianceScore  = 0
         empathyScore     = 0
         suspicionScore   = 0
+        deductionCount   = 0
         resistanceTrust  = 0
         corporateTrust   = 0
         citizenHarmCount = 0

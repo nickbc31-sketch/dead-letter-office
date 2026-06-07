@@ -1826,6 +1826,7 @@ Return to authorised sector immediately.
                 guard let self else { return }
                 if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
                 NotebookManager.onInformationNodeRead(nodeID: inter.id)
+                GameState.shared.logDeduction("notice_\(inter.id)")
                 self.notifyPDAIfUpdated()
                 let header = inter.nodeLabel == "RELAY" ? "CIVIC DATA UPLINK"
                     : "PUBLIC INFORMATION NODE"
@@ -1869,8 +1870,11 @@ Return to authorised sector immediately.
             if self.levelID == "level_ch3" { NotebookManager.checkCh3FieldCompletion() }
 
             let body = self.terminalContent(for: inter.id, displayText: inter.displayText)
+            let observation = inter.maraObservation ?? self.maraObservationForTerminal(id: inter.id)
+            let fullBody = self.appendMaraObservation(body, observation: observation)
+            GameState.shared.logDeduction("terminal_\(inter.id)")
             self.notifyPDAIfUpdated()
-            self.showContentPanel(header: "TERMINAL — \(inter.id.uppercased())", body: body) { }
+            self.showContentPanel(header: "TERMINAL — \(inter.id.uppercased())", body: fullBody) { }
         }
     }
 
@@ -2009,62 +2013,45 @@ Apply temporary access?
         switch id {
         case "terminal_01":
             return """
-PMCA SORTING FACILITY — SECTOR 12
-Access Log: 2147.03.17 — Override Active
-
-Director's Audit Order applied.
-Standard log entries: SUSPENDED.
-
-Routing anomaly at Relay Node 7.
-Message ID DL-2147-009941 flagged
-for secondary routing.
-Origin: unlogged by standard system.
-
-Interior clearance codes rotated.
-Derived from active case victim IDs.
-Format: VC-[XXXX]-M (enter XXXX).
-
-Case 1 on your desk lists the ID.
+PMCA SORTING — SECTOR 12
+Routing anomaly: Relay Node 7
+Checkpoint codes: VC-[XXXX]-M
 """
         case "terminal_02":
             return """
-PMCA RELAY NODE 7 — INTERNAL LOG
-
-Secondary routing tag: EVN-ROUTING-0442
-Destination: QUIET CHOIR RELAY BUFFER
-
-47 messages in transit buffer.
-Scheduled deletion: 2147.03.19.
-
-— — —
-INNER CHECKPOINT CODE:
-Derived from Case 1 victim ID.
-Format: 4 digits.
-Citizen VC-[XXXX]-M.
-— — —
-
-This terminal will be wiped
-upon Director's audit completion.
+ROUTING BUFFER 47
+Messages queued: 47
+Messages altered: 12
+Operator: REDACTED
 """
         case "relay_console_01":
             return """
-PMCA RELAY NODE 7 — UTILITY CONSOLE
-
-Maintenance credential issuance:
-AUTHORISED LOCKER — EAST WALL
-Locker ID: MNT-RELAY-07
-
-Credential must be signed out
-before exterior transit resumes.
-
-— — —
-Note: Locker access requires
-console login acknowledgement.
-— — —
+RELAY CONSOLE
+Locker: MNT-RELAY-07
+Sign-out required.
 """
         default:
             return "TERMINAL ACCESS GRANTED.\nNo additional data available."
         }
+    }
+
+    private func maraObservationForTerminal(id: String) -> String? {
+        switch id {
+        case "terminal_01":
+            return "Checkpoint codes follow case IDs. Desk won't show the buffer."
+        case "terminal_02":
+            return "Somebody manually changed these routes."
+        case "relay_console_01":
+            return "Credential locker needs console sign-out before we leave."
+        default:
+            return nil
+        }
+    }
+
+    private func appendMaraObservation(_ body: String, observation: String?) -> String {
+        guard let raw = observation, !raw.isEmpty else { return body }
+        let mara = PDAGuidanceResolver.clampMara(raw)
+        return body + "\n\n— — —\nMARA: \"\(mara)\""
     }
 
     // MARK: - Content Panel
@@ -2367,6 +2354,7 @@ console login acknowledgement.
             currentShift: shift,
             chapterID: levelData?.chapter,
             fieldObjective: levelData?.objectiveText,
+            activeCaseID: nil,
             onRebuild: { [weak self] newScreen in self?.rebuildFieldPDAJournal(screen: newScreen) },
             onClose: { [weak self] in
                 self?.isGamePaused = false

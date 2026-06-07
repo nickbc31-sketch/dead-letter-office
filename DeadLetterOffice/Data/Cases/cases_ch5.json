@@ -17,13 +17,33 @@
         "issueDate": "2147.05.02",
         "referenceNumber": "PMCA-QI-C15-0442-M",
         "fields": [
-          {"key": "Case Reference", "value": "C15-0442-M — Archive stub, deceased 2142", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Archive Status", "value": "STUB ONLY — no primary message on file", "isSuspicious": true, "suspicionNote": "Archive stub with no message body in primary record. Secondary tag EVN-ROUTING-0442 orphaned since 2142."},
-          {"key": "Recipient", "value": "Venn, Mara — VC-1147-F — sibling link", "isSuspicious": true, "suspicionNote": "Recipient is registered sibling of sender. Ghost Audit conflict flag auto-generated."},
-          {"key": "Processing Pathway", "value": "Archive closure recommended — Section 19.4", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C15-0442-M — Archive stub, deceased 2142",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Archive Status",
+            "value": "STUB ONLY — no primary message on file",
+            "isSuspicious": true,
+            "suspicionNote": "Check routing records."
+          },
+          {
+            "key": "Recipient",
+            "value": "Venn, Mara — VC-1147-F — sibling link",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          },
+          {
+            "key": "Processing Pathway",
+            "value": "Archive closure recommended — Section 19.4",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Case C15-0442-M. Archive stub for Venn, Elias (VC-0442-M), declared deceased 2142.07.14. No primary message. Secondary routing tag EVN-ROUTING-0442 orphaned. Recipient: sibling Venn, Mara (VC-1147-F). Incineration pathway recommended under Section 19.4.",
-        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "RESTRICTED",
         "isTampered": false
@@ -36,14 +56,41 @@
         "issueDate": "2142.07.14",
         "referenceNumber": "PMCA-AS-VC-0442-M",
         "fields": [
-          {"key": "Citizen", "value": "Venn, Elias — VC-0442-M", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Death Registration", "value": "2142.07.14 — administrative, no incident report", "isSuspicious": true, "suspicionNote": "Death registered without incident report, body recovery record, or witness statement. Archive stub created same day."},
-          {"key": "Body Recovery", "value": "NOT RECORDED", "isSuspicious": true, "suspicionNote": "No body recovery on file. Standard PMCA protocol requires recovery confirmation or explicit waiver with supervisor signature."},
-          {"key": "Dead Letter", "value": "NONE — stub only", "isSuspicious": true, "suspicionNote": "No Dead Letter composed. Archive stub exists without message content. Cross-reference EVN routing audit C11."}
+          {
+            "key": "Citizen",
+            "value": "Venn, Elias — VC-0442-M",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Death Registration",
+            "value": "2142.07.14 — administrative, no incident report",
+            "isSuspicious": true,
+            "suspicionNote": "Check transit status."
+          },
+          {
+            "key": "Body Recovery",
+            "value": "NOT RECORDED",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          },
+          {
+            "key": "Dead Letter",
+            "value": "NONE — stub only",
+            "isSuspicious": true,
+            "suspicionNote": "Check routing records."
+          }
         ],
-        "bodyText": "Archive stub for Venn, Elias (VC-0442-M). Death registered 2142.07.14. No incident report. No body recovery. No Dead Letter. Stub maintained for routing tag EVN-ROUTING-0442. Audit closed same day — no irregularity logged.",
-        "footerText": "PMCA Archive Division — Stub Record",
-        "stamps": [{"text": "STUB", "color": "#445566", "appliedDate": "2142.07.14", "appliedBy": "Archive Auto-Seal"}],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [
+          {
+            "text": "STUB",
+            "color": "#445566",
+            "appliedDate": "2142.07.14",
+            "appliedBy": "Archive Auto-Seal"
+          }
+        ],
         "classificationLevel": "RESTRICTED",
         "isTampered": false
       },
@@ -55,13 +102,33 @@
         "issueDate": "2147.05.02",
         "referenceNumber": "PMCA-EWR-VC-0442-M-STUB",
         "fields": [
-          {"key": "Subject", "value": "Venn, Elias — VC-0442-M", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Entropy Score", "value": "0.52", "isSuspicious": true, "suspicionNote": "Entropy: 0.52 — above live-transmission threshold. Message attached to archive stub composed 2147.05.02, five years after registered death."},
-          {"key": "Composition Date", "value": "2147.05.02 — not 2142", "isSuspicious": true, "suspicionNote": "Waveform timestamp: 2147.05.02. Death registration: 2142.07.14. Live composition five years post-mortem is not possible under standard protocol."},
-          {"key": "Live Transmission Status", "value": "PASSED — automated screening", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Subject",
+            "value": "Venn, Elias — VC-0442-M",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Entropy Score",
+            "value": "0.52",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          },
+          {
+            "key": "Composition Date",
+            "value": "2147.05.02 — not 2142",
+            "isSuspicious": true,
+            "suspicionNote": "Check death record status."
+          },
+          {
+            "key": "Live Transmission Status",
+            "value": "PASSED — automated screening",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Waveform analysis for archive stub message. Subject: Venn, Elias, VC-0442-M. Entropy: 0.52 — PASSED live-transmission threshold. Composition timestamp: 2147.05.02. Registered death: 2142.07.14. Anomaly: live composition date conflicts with death registration.",
-        "footerText": "PMCA Soulprint Waveform Analysis — Automated Record",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -70,17 +137,37 @@
         "id": "doc_c15_d",
         "title": "ROUTING AUDIT — EVN-ROUTING-0442",
         "type": "audit_log",
-        "issuer": "PMCA Message Routing System — Audit Division",
+        "issuer": "PMCA Message Routing System",
         "issueDate": "2142.07.14",
         "referenceNumber": "PMCA-RAA-EVN-0442-C15",
         "fields": [
-          {"key": "Tag", "value": "EVN-ROUTING-0442 — orphaned secondary", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Primary Record", "value": "NONE — stub only since 2142", "isSuspicious": true, "suspicionNote": "Five years orphaned. Tag reappeared in C04, C08, C11 processed by clerk 1147-F."},
-          {"key": "Audit Status", "value": "CLOSED 2142.07.14 — no irregularity", "isSuspicious": true, "suspicionNote": "Audit closed same day as death registration. Family registry cross-reference not performed."},
-          {"key": "Helix Meridian Interest", "value": "Memory-cleaning trial division — administrative note", "isSuspicious": true, "suspicionNote": "Helix Meridian Memory Division listed as administrative interest. Trial subject classification referenced in restricted appendix."}
+          {
+            "key": "Tag",
+            "value": "EVN-ROUTING-0442 — orphaned secondary",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Primary Record",
+            "value": "NONE — stub only since 2142",
+            "isSuspicious": true,
+            "suspicionNote": "Check routing records."
+          },
+          {
+            "key": "Audit Status",
+            "value": "CLOSED 2142.07.14 — no irregularity",
+            "isSuspicious": true,
+            "suspicionNote": "Check death record status."
+          },
+          {
+            "key": "Helix Meridian Interest",
+            "value": "Memory-cleaning trial division — administrative note",
+            "isSuspicious": true,
+            "suspicionNote": "Check corporate authority records."
+          }
         ],
-        "bodyText": "Routing audit for EVN-ROUTING-0442. Orphaned since 2142.07.14. No primary message. Audit closed same day. Administrative interest: Helix Meridian Memory-Cleaning Trial Division. Appendix note: subject classification TRIAL-0442.",
-        "footerText": "PMCA Message Routing System — Audit Division",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "CLASSIFIED",
         "isTampered": false
@@ -90,13 +177,13 @@
       {
         "fieldA": "Emotional Waveform — Composition 2147.05.02, entropy 0.52 PASSED",
         "fieldB": "Archive Stub Record — Death registered 2142.07.14, no body, no letter",
-        "description": "The message on this archive stub has a live-transmission waveform dated today. The death was registered five years ago with no body recovered and no Dead Letter ever filed. The stub has no closure — only a tag that will not close.",
+        "description": "Check termination record against live readings.",
         "isCritical": true
       },
       {
         "fieldA": "Routing Audit — Helix Memory-Cleaning Trial TRIAL-0442",
         "fieldB": "Archive Stub — Body recovery NOT RECORDED",
-        "description": "Helix Meridian's memory-cleaning trial division holds administrative interest in this stub. There is no body on record. The trial classification matches the citizen ID suffix.",
+        "description": "Check corporate authority against incident record.",
         "isCritical": false
       }
     ],
@@ -107,7 +194,16 @@
         "shortLabel": "FLAGGED",
         "color": "#CC9900",
         "auditResponse": "Archive stub anomaly submitted. Waveform date conflict queued for review. Case deferred.",
-        "consequences": {"complianceDelta": -2, "empathyDelta": 2, "suspicionDelta": 3, "resistanceTrustDelta": 2, "flagsSet": ["c15_flagged", "elias_stub_flagged"]},
+        "consequences": {
+          "complianceDelta": -2,
+          "empathyDelta": 2,
+          "suspicionDelta": 3,
+          "resistanceTrustDelta": 2,
+          "flagsSet": [
+            "c15_flagged",
+            "elias_stub_flagged"
+          ]
+        },
         "resultText": "Flagged. The waveform says today. The stub says 2142. Your brother's archive has no body, no letter, and a trial classification you were not supposed to see.",
         "isIllegal": false
       },
@@ -117,7 +213,15 @@
         "shortLabel": "APPROVED",
         "color": "#2A6A3C",
         "auditResponse": "Delivery authorised. Sibling conflict exception applied. Archive stub retained.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 3, "suspicionDelta": 2, "flagsSet": ["c15_approved", "elias_message_received"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 3,
+          "suspicionDelta": 2,
+          "flagsSet": [
+            "c15_approved",
+            "elias_message_received"
+          ]
+        },
         "resultText": "Delivered. You read your brother's words on your own terminal. He says the trial was real. The archive failed. The stub is still open.",
         "isIllegal": false
       },
@@ -127,14 +231,35 @@
         "shortLabel": "ARCHIVED",
         "color": "#445566",
         "auditResponse": "Section 19.4 archive closure confirmed. Stub incineration pathway initiated.",
-        "consequences": {"complianceDelta": 2, "empathyDelta": -2, "suspicionDelta": 0, "corporateTrustDelta": 1, "flagsSet": ["c15_archived"]},
+        "consequences": {
+          "complianceDelta": 2,
+          "empathyDelta": -2,
+          "suspicionDelta": 0,
+          "corporateTrustDelta": 1,
+          "flagsSet": [
+            "c15_archived"
+          ]
+        },
         "resultText": "Archived. The stub closes. The waveform record is destroyed with the case. EVN-ROUTING-0442 remains orphaned. Your brother's name stays officially dead with no body on file.",
         "isIllegal": false
       }
     ],
     "correctLegalActionID": "flag_anomaly",
-    "followUpFlags": ["c15_processed"],
-    "requiredFlags": null
+    "followUpFlags": [
+      "c15_processed"
+    ],
+    "requiredFlags": null,
+    "investigationCategories": [
+      {
+        "category": "IDENTITY",
+        "fact": "Citizen: Venn, Elias — VC-0442-M"
+      },
+      {
+        "category": "COMMUNICATIONS",
+        "fact": "Primary Record: NONE — stub only since 2142"
+      }
+    ],
+    "anomalyHook": "Terminated — but still active somewhere."
   },
   {
     "id": "case_ch5_002",
@@ -154,13 +279,33 @@
         "issueDate": "2147.05.03",
         "referenceNumber": "PMCA-QI-C16-8812-Q",
         "fields": [
-          {"key": "Case Reference", "value": "C16-8812-Q — Premium legacy edit, Meridian Heights", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Legacy Tier", "value": "Tier 3 — Afterlife Premium package", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Edit Authorization", "value": "PRE-APPROVED — Helix Meridian Legacy Division", "isSuspicious": true, "suspicionNote": "Legacy edit pre-approved before death. Standard bereavement messages do not receive pre-approval. Tier 3 includes content revision authority."},
-          {"key": "Processing Pathway", "value": "Legacy edit pathway — clerk review optional", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C16-8812-Q — Premium legacy edit, Meridian Heights",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Legacy Tier",
+            "value": "Tier 3 — Afterlife Premium package",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Edit Authorization",
+            "value": "PRE-APPROVED — Helix Meridian Legacy Division",
+            "isSuspicious": true,
+            "suspicionNote": "Check issuing authority."
+          },
+          {
+            "key": "Processing Pathway",
+            "value": "Legacy edit pathway — clerk review optional",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Case C16-8812-Q. Sender: Quill, Sera — MH-8812-Q — deceased 2147.05.01. Tier 3 Afterlife Premium legacy package. Pre-approved edit authorization from Helix Meridian Legacy Division. Clerk review optional under premium pathway.",
-        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -173,14 +318,41 @@
         "issueDate": "2147.04.15",
         "referenceNumber": "HM-LEA-MH-8812-Q",
         "fields": [
-          {"key": "Client", "value": "Quill, Sera — MH-8812-Q", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Package", "value": "Tier 3 — full legacy edit, tone revision, incident redaction", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Pre-Purchase Date", "value": "2147.04.15 — fourteen days before death", "isSuspicious": true, "suspicionNote": "Legacy package purchased 2147.04.15. Death registered 2147.05.01. See Medical Death Note — admission 2147.04.28."},
-          {"key": "Authorized Revisions", "value": "Unlimited — including technical disclosure removal", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Client",
+            "value": "Quill, Sera — MH-8812-Q",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Package",
+            "value": "Tier 3 — full legacy edit, tone revision, incident redaction",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Pre-Purchase Date",
+            "value": "2147.04.15 — fourteen days before death",
+            "isSuspicious": true,
+            "suspicionNote": "Check death record status."
+          },
+          {
+            "key": "Authorized Revisions",
+            "value": "Unlimited — including technical disclosure removal",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Tier 3 Afterlife Premium authorization for Quill, Sera. Package includes full legacy edit, tone revision, and incident redaction. Pre-purchased 2147.04.15. Authorized revisions: unlimited, including technical disclosure removal.",
-        "footerText": "Helix Meridian Legacy Division — Authorization Form",
-        "stamps": [{"text": "PREMIUM", "color": "#2A6A3C", "appliedDate": "2147.04.15", "appliedBy": "Legacy Division Auto-Seal"}],
+        "bodyText": "",
+        "footerText": null,
+        "stamps": [
+          {
+            "text": "PREMIUM",
+            "color": "#2A6A3C",
+            "appliedDate": "2147.04.15",
+            "appliedBy": "Legacy Division Auto-Seal"
+          }
+        ],
         "classificationLevel": "STANDARD",
         "isTampered": false
       },
@@ -192,13 +364,33 @@
         "issueDate": "2147.05.01",
         "referenceNumber": "PMCA-LEP-C16-ORIG",
         "fields": [
-          {"key": "Original Text Excerpt", "value": "'I built the deletion engines that erase Lower Veyr citizens. Tier 3 was tested on service-class workers first.'", "isSuspicious": true, "suspicionNote": "Original message names deletion infrastructure and service-class testing. Edited version removes technical disclosure."},
-          {"key": "Edit Applied", "value": "Technical disclosure removed — 'deletion engines' → 'systems'", "isSuspicious": true, "suspicionNote": "Legacy edit replaced 'deletion engines' with 'systems' and removed service-class testing reference."},
-          {"key": "Editor", "value": "Helix Meridian Legacy AI — automated tone revision", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Clerk Visibility", "value": "Original retained in edit pipeline — clerk tier access", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Original Text Excerpt",
+            "value": "'I built the deletion engines that erase Lower Veyr citizens. Tier 3 was tested on service-class workers first.'",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          },
+          {
+            "key": "Edit Applied",
+            "value": "Technical disclosure removed — 'deletion engines' → 'systems'",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          },
+          {
+            "key": "Editor",
+            "value": "Helix Meridian Legacy AI — automated tone revision",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Clerk Visibility",
+            "value": "Original retained in edit pipeline — clerk tier access",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Legacy edit pipeline record. Original message composed 2147.05.01. Tier 3 edit applied: technical disclosure removed, tone softened, incident references redacted. Original text retained in pipeline for clerk review.",
-        "footerText": "PMCA Legacy Edit Pipeline — Edit Record",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "RESTRICTED",
         "isTampered": false
@@ -211,13 +403,33 @@
         "issueDate": "2147.04.30",
         "referenceNumber": "HM-MD-SVC-DELETION-0442",
         "fields": [
-          {"key": "Trial Reference", "value": "TRIAL-0442 — memory-cleaning subject", "isSuspicious": true, "suspicionNote": "Trial subject VC-0442-M matches Elias Venn citizen ID. Cross-reference C15 archive stub."},
-          {"key": "Engine Version", "value": "Deletion Engine v3.1 — architect: Quill, S.", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Service-Class Tests", "value": "47 subjects — incineration pathway standard", "isSuspicious": true, "suspicionNote": "47 service-class subjects processed through deletion engine. Kell Orvin (C11) among test cohort per date overlap."},
-          {"key": "Tier 3 Rollout", "value": "Meridian Heights only — Lower Veyr excluded per revenue model", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Trial Reference",
+            "value": "TRIAL-0442 — memory-cleaning subject",
+            "isSuspicious": true,
+            "suspicionNote": "Check identity records."
+          },
+          {
+            "key": "Engine Version",
+            "value": "Deletion Engine v3.1 — architect: Quill, S.",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Service-Class Tests",
+            "value": "47 subjects — incineration pathway standard",
+            "isSuspicious": true,
+            "suspicionNote": "Check communication triggers."
+          },
+          {
+            "key": "Tier 3 Rollout",
+            "value": "Meridian Heights only — Lower Veyr excluded per revenue model",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Memory division deletion log. Engine v3.1, architect Quill, S. Service-class trial cohort: 47 subjects. Trial reference TRIAL-0442 flagged. Tier 3 rollout: Meridian Heights residential tier only.",
-        "footerText": "Helix Meridian Memory Division — Internal Log",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "CLASSIFIED",
         "isTampered": false
@@ -227,13 +439,13 @@
       {
         "fieldA": "Original Message — 'I built the deletion engines'",
         "fieldB": "Legacy Edit Authorization — technical disclosure removal authorized",
-        "description": "The original message names the deletion infrastructure Sera Quill built. The Tier 3 legacy edit removed that disclosure and replaced it with the word 'systems.' The premium package buys erasure of accountability.",
+        "description": "Check termination record against live readings.",
         "isCritical": true
       },
       {
         "fieldA": "Deletion Log — TRIAL-0442, architect Quill, S.",
         "fieldB": "Archive Stub C15 — Venn, Elias VC-0442-M",
-        "description": "The deletion engine trial reference matches your brother's citizen ID. Sera Quill architected the system that processed Elias as a trial subject.",
+        "description": "Check termination record against live readings.",
         "isCritical": false
       }
     ],
@@ -244,7 +456,15 @@
         "shortLabel": "APPROVED",
         "color": "#2A6A3C",
         "auditResponse": "Legacy edit delivery confirmed. Tier 3 revision applied per authorization.",
-        "consequences": {"complianceDelta": 2, "empathyDelta": -1, "suspicionDelta": 0, "corporateTrustDelta": 2, "flagsSet": ["c16_approved"]},
+        "consequences": {
+          "complianceDelta": 2,
+          "empathyDelta": -1,
+          "suspicionDelta": 0,
+          "corporateTrustDelta": 2,
+          "flagsSet": [
+            "c16_approved"
+          ]
+        },
         "resultText": "Approved. The edited message reaches Meridian Heights. The deletion engines become 'systems.' The trial reference is redacted. The premium package worked as designed.",
         "isIllegal": false
       },
@@ -254,7 +474,16 @@
         "shortLabel": "FLAGGED",
         "color": "#CC9900",
         "auditResponse": "Legacy edit irregularity submitted. Original text retained. Case deferred.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 2, "resistanceTrustDelta": 1, "flagsSet": ["c16_flagged", "deletion_engine_disclosed"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 2,
+          "suspicionDelta": 2,
+          "resistanceTrustDelta": 1,
+          "flagsSet": [
+            "c16_flagged",
+            "deletion_engine_disclosed"
+          ]
+        },
         "resultText": "Flagged. The original text is retained in the pipeline. TRIAL-0442 is logged. Sera Quill built the engine that holds your brother's trial classification.",
         "isIllegal": false
       },
@@ -264,14 +493,28 @@
         "shortLabel": "RESTORED",
         "color": "#222222",
         "auditResponse": "Legacy edit reversed. Original message queued for delivery. Helix authorization contested.",
-        "consequences": {"complianceDelta": -2, "empathyDelta": 3, "suspicionDelta": 3, "resistanceTrustDelta": 2, "corporateTrustDelta": -2, "flagsSet": ["c16_original_restored", "deletion_engine_disclosed"]},
+        "consequences": {
+          "complianceDelta": -2,
+          "empathyDelta": 3,
+          "suspicionDelta": 3,
+          "resistanceTrustDelta": 2,
+          "corporateTrustDelta": -2,
+          "flagsSet": [
+            "c16_original_restored",
+            "deletion_engine_disclosed"
+          ]
+        },
         "resultText": "Restored. The original message names the deletion engines. Helix Meridian will contest the delivery. The trial reference TRIAL-0442 is in the file.",
         "isIllegal": false
       }
     ],
     "correctLegalActionID": "flag_anomaly",
-    "followUpFlags": ["c16_processed"],
-    "requiredFlags": null
+    "followUpFlags": [
+      "c16_processed"
+    ],
+    "requiredFlags": null,
+    "investigationCategories": [],
+    "anomalyHook": "Terminated — but still active somewhere."
   },
   {
     "id": "case_ch5_003",
@@ -291,13 +534,33 @@
         "issueDate": "2147.05.04",
         "referenceNumber": "PMCA-QI-C17-0001-P",
         "fields": [
-          {"key": "Case Reference", "value": "C17-0001-P — Executive legacy, three valid versions", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Legacy Tier", "value": "Tier 3 Executive — multi-version delivery authority", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Clerk Instruction", "value": "Select version per Helix Meridian Board guidance", "isSuspicious": true, "suspicionNote": "Clerk authorized to select final message version. All three versions legally valid under Tier 3 executive package."},
-          {"key": "Processing Pathway", "value": "Executive pathway — clerk discretion", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Case Reference",
+            "value": "C17-0001-P — Executive legacy, three valid versions",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Legacy Tier",
+            "value": "Tier 3 Executive — multi-version delivery authority",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Clerk Instruction",
+            "value": "Select version per Helix Meridian Board guidance",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          },
+          {
+            "key": "Processing Pathway",
+            "value": "Executive pathway — clerk discretion",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Case C17-0001-P. Executive Pell, MH-0001-P, deceased 2147.05.03. Tier 3 executive package: three valid final message versions. Clerk selects delivery version per board guidance. All versions legally deliverable.",
-        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -310,13 +573,33 @@
         "issueDate": "2147.05.03",
         "referenceNumber": "HM-LEG-C17-A",
         "fields": [
-          {"key": "Version", "value": "A — 'I regret nothing.'", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Tone Classification", "value": "Defiant — board risk: HIGH", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Market Impact Forecast", "value": "Negative — shareholder confidence -12%", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Delivery Eligibility", "value": "VALID — Tier 3 executive authority", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Version",
+            "value": "A — 'I regret nothing.'",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Tone Classification",
+            "value": "Defiant — board risk: HIGH",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Market Impact Forecast",
+            "value": "Negative — shareholder confidence -12%",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Delivery Eligibility",
+            "value": "VALID — Tier 3 executive authority",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Version A. Text: 'I regret nothing.' Tone: defiant. Board risk assessment: HIGH. Market impact forecast: negative. Legally valid under Tier 3 executive package.",
-        "footerText": "Helix Meridian Legacy Division — Version Record",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -329,13 +612,33 @@
         "issueDate": "2147.05.03",
         "referenceNumber": "HM-LEG-C17-B",
         "fields": [
-          {"key": "Version", "value": "B — 'The Choir are terrorists.'", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Tone Classification", "value": "Compliance — board risk: LOW", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Market Impact Forecast", "value": "Positive — civic stability +8%", "isSuspicious": false, "suspicionNote": null},
-          {"key": "PMCA Alignment", "value": "Matches Communications Monitoring Bureau phrase policy", "isSuspicious": true, "suspicionNote": "Version B aligns with PMCA Choir suppression policy. Executive message as state propaganda — Tier 3 allows this revision."}
+          {
+            "key": "Version",
+            "value": "B — 'The Choir are terrorists.'",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Tone Classification",
+            "value": "Compliance — board risk: LOW",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Market Impact Forecast",
+            "value": "Positive — civic stability +8%",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "PMCA Alignment",
+            "value": "Matches Communications Monitoring Bureau phrase policy",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          }
         ],
-        "bodyText": "Version B. Text: 'The Choir are terrorists.' Tone: compliance. Board risk: LOW. Market impact: positive. PMCA phrase policy alignment: confirmed.",
-        "footerText": "Helix Meridian Legacy Division — Version Record",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "STANDARD",
         "isTampered": false
@@ -348,13 +651,33 @@
         "issueDate": "2147.05.03",
         "referenceNumber": "HM-LEG-C17-C",
         "fields": [
-          {"key": "Version", "value": "C — 'I chose Tier 3 because I could.'", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Tone Classification", "value": "Confessional — board risk: CRITICAL", "isSuspicious": false, "suspicionNote": null},
-          {"key": "Market Impact Forecast", "value": "Severe — Afterlife Premium revenue exposure", "isSuspicious": true, "suspicionNote": "Version C exposes Tier 3 as wealth-class product. Delivery would confirm two-tier death processing to public record."},
-          {"key": "Delivery Eligibility", "value": "VALID — clerk discretion under executive package", "isSuspicious": false, "suspicionNote": null}
+          {
+            "key": "Version",
+            "value": "C — 'I chose Tier 3 because I could.'",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Tone Classification",
+            "value": "Confessional — board risk: CRITICAL",
+            "isSuspicious": false,
+            "suspicionNote": null
+          },
+          {
+            "key": "Market Impact Forecast",
+            "value": "Severe — Afterlife Premium revenue exposure",
+            "isSuspicious": true,
+            "suspicionNote": "Compare flagged fields across documents."
+          },
+          {
+            "key": "Delivery Eligibility",
+            "value": "VALID — clerk discretion under executive package",
+            "isSuspicious": false,
+            "suspicionNote": null
+          }
         ],
-        "bodyText": "Version C. Text: 'I chose Tier 3 because I could.' Tone: confessional. Board risk: CRITICAL. Market impact: severe — exposes premium death product to public scrutiny. Legally valid under Tier 3 executive authority.",
-        "footerText": "Helix Meridian Legacy Division — Version Record",
+        "bodyText": "",
+        "footerText": null,
         "stamps": [],
         "classificationLevel": "RESTRICTED",
         "isTampered": false
@@ -364,13 +687,13 @@
       {
         "fieldA": "Version C — 'I chose Tier 3 because I could'",
         "fieldB": "Version B — 'The Choir are terrorists' — board risk LOW",
-        "description": "Three legally valid final messages. Version B serves the state. Version C exposes that the rich buy their deaths. The clerk chooses which truth the executive leaves behind.",
+        "description": "Check identity records against monitoring lists.",
         "isCritical": true
       },
       {
         "fieldA": "Queue Instruction — Clerk selects version",
         "fieldB": "Sera Quill C16 — Tier 3 edit removed technical disclosure",
-        "description": "Executive Pell bought the same Tier 3 package that edited Sera Quill's confession. The premium product does not preserve truth — it sells the version that keeps stock prices stable.",
+        "description": "Compare flagged record fields.",
         "isCritical": false
       }
     ],
@@ -381,7 +704,16 @@
         "shortLabel": "V-B",
         "color": "#2A6A3C",
         "auditResponse": "Version B delivered per board guidance. Compliance alignment confirmed.",
-        "consequences": {"complianceDelta": 3, "empathyDelta": -2, "suspicionDelta": 0, "corporateTrustDelta": 3, "flagsSet": ["c17_version_b", "ch5_desk_complete"]},
+        "consequences": {
+          "complianceDelta": 3,
+          "empathyDelta": -2,
+          "suspicionDelta": 0,
+          "corporateTrustDelta": 3,
+          "flagsSet": [
+            "c17_version_b",
+            "ch5_desk_complete"
+          ]
+        },
         "resultText": "Version B delivered. The Choir are terrorists. The board is satisfied. The stock price holds. Lower Veyr citizens are still deleted without a Tier 3 package.",
         "isIllegal": false
       },
@@ -391,7 +723,17 @@
         "shortLabel": "V-C",
         "color": "#222222",
         "auditResponse": "Version C delivered. Executive confessional logged. Board notification sent.",
-        "consequences": {"complianceDelta": -2, "empathyDelta": 2, "suspicionDelta": 3, "resistanceTrustDelta": 2, "corporateTrustDelta": -3, "flagsSet": ["c17_version_c", "ch5_desk_complete"]},
+        "consequences": {
+          "complianceDelta": -2,
+          "empathyDelta": 2,
+          "suspicionDelta": 3,
+          "resistanceTrustDelta": 2,
+          "corporateTrustDelta": -3,
+          "flagsSet": [
+            "c17_version_c",
+            "ch5_desk_complete"
+          ]
+        },
         "resultText": "Version C delivered. 'I chose Tier 3 because I could.' The board will contest the delivery. The public record now shows what the premium package actually buys.",
         "isIllegal": false
       },
@@ -401,7 +743,15 @@
         "shortLabel": "V-A",
         "color": "#1A3A5C",
         "auditResponse": "Version A delivered. Defiant tone logged. Market impact forecast acknowledged.",
-        "consequences": {"complianceDelta": 0, "empathyDelta": 1, "suspicionDelta": 2, "flagsSet": ["c17_version_a", "ch5_desk_complete"]},
+        "consequences": {
+          "complianceDelta": 0,
+          "empathyDelta": 1,
+          "suspicionDelta": 2,
+          "flagsSet": [
+            "c17_version_a",
+            "ch5_desk_complete"
+          ]
+        },
         "resultText": "Version A delivered. 'I regret nothing.' The shareholders will not like it. The message is honest in a way the premium package was not designed to allow.",
         "isIllegal": false
       },
@@ -411,13 +761,26 @@
         "shortLabel": "FLAGGED",
         "color": "#CC9900",
         "auditResponse": "Multi-version irregularity submitted. No version delivered pending review.",
-        "consequences": {"complianceDelta": -1, "empathyDelta": 1, "suspicionDelta": 2, "resistanceTrustDelta": 1, "flagsSet": ["c17_flagged", "ch5_desk_complete"]},
+        "consequences": {
+          "complianceDelta": -1,
+          "empathyDelta": 1,
+          "suspicionDelta": 2,
+          "resistanceTrustDelta": 1,
+          "flagsSet": [
+            "c17_flagged",
+            "ch5_desk_complete"
+          ]
+        },
         "resultText": "Flagged. No version delivered. The executive bought three endings and the clerk refused to choose. The board will escalate.",
         "isIllegal": false
       }
     ],
     "correctLegalActionID": "flag_anomaly",
-    "followUpFlags": ["c17_processed"],
-    "requiredFlags": null
+    "followUpFlags": [
+      "c17_processed"
+    ],
+    "requiredFlags": null,
+    "investigationCategories": [],
+    "anomalyHook": "Identity records conflict."
   }
 ]
