@@ -1,0 +1,238 @@
+{
+  "id": "level_ch8",
+  "chapter": "ch8",
+  "displayName": "CENTRAL ARCHIVE — P08 INFILTRATION",
+  "tileMapName": null,
+  "backgroundLayers": [
+    {"imageName": "bg_facility_mid", "zPosition": -20, "scrollFactor": 0.4, "yOffset": 0},
+    {"imageName": "bg_facility_near", "zPosition": -10, "scrollFactor": 0.7, "yOffset": 0}
+  ],
+  "spawnPoint": [160, 60],
+  "exits": [
+    {
+      "type": "platform_end",
+      "x": "4000",
+      "y": "60",
+      "requiredFlag": "ch8_field_complete",
+      "dialogueID": "dialogue_ch8_platform_end",
+      "nextSceneHint": "desk_ch8"
+    }
+  ],
+  "fieldBoundaryX": 4150,
+  "securityCameras": [
+    {
+      "id": "ch8_archive_cam_a",
+      "position": [1800, 68],
+      "coneLength": 125,
+      "coneAngle": 36,
+      "scanAmplitude": 13,
+      "scanSpeed": 0.5,
+      "disabledFlag": "ch8_signal_bypass_used"
+    },
+    {
+      "id": "ch8_archive_cam_b",
+      "position": [3100, 68],
+      "coneLength": 110,
+      "coneAngle": 34,
+      "scanAmplitude": 10,
+      "scanSpeed": 0.48,
+      "disabledFlag": "ch8_credential_bypass_used"
+    }
+  ],
+  "encounterSequence": [
+    {
+      "module": "environmental_story",
+      "id": "ch8_f_archive_sign",
+      "environmental": {
+        "x": 200,
+        "y": 90,
+        "text": "PMCA CENTRAL ARCHIVE — P08\nFINAL RECORD RECOVERY"
+      }
+    },
+    {
+      "module": "terminal_investigation",
+      "id": "ch8_d_access_terminal",
+      "terminal": {
+        "id": "terminal_archive_access",
+        "position": [380, 68],
+        "setsFlag": "ch8_access_read",
+        "displayText": "CENTRAL ARCHIVE — ACCESS STATUS\nClerk 1147-F — unauthorised entry\n\nScheduled mortality: OVERDUE\nGhost Audit: CRITICAL\nDirector Calyx: EN ROUTE — ETA 3 min\n\nVault 1 contents:\n- Saint Orra complete letter (2130)\n- Deletion census methodology\n- TRIAL-0442 termination record\n\n[Dual PDA hack required:\nSignal routing + credential inject]"
+      }
+    },
+    {
+      "module": "drone_patrol",
+      "id": "ch8_a_drone_entry",
+      "anchorX": 500,
+      "patrol": {
+        "enemyType": "security_drone",
+        "points": [[400, 130], [600, 130]],
+        "speed": 58,
+        "pauseDuration": 2.0
+      }
+    },
+    {
+      "module": "environmental_story",
+      "id": "ch8_f_vault_sign",
+      "environmental": {
+        "x": 750,
+        "y": 68,
+        "text": "VAULT 1 — ORRA COMPLETE LETTER\nSEALED SINCE 2130",
+        "kind": "sign",
+        "signID": "sign_vault_1"
+      }
+    },
+    {
+      "module": "terminal_investigation",
+      "id": "ch8_d_deletion_terminal",
+      "terminal": {
+        "id": "terminal_deletion_census",
+        "position": [1050, 68],
+        "requiredFlag": "ch8_signal_bypass_used",
+        "setsFlag": "ch8_deletion_census_read",
+        "displayText": "DELETION CENSUS — FULL RECORD\nTotal incinerations: 1,247,883\nBaseline 2130 (Orra execution): 412,000\nDaily increment: +847\nService-class share: 61%\n\nCensus methodology:\nSoulprint Network injection\nAll receiver nodes — broadcast\n\n[Complete letter contains\nmethodology to name all erased.]"
+      }
+    },
+    {
+      "module": "drone_patrol",
+      "id": "ch8_a_drone_mid",
+      "anchorX": 1400,
+      "patrol": {
+        "enemyType": "security_drone",
+        "points": [[1100, 130], [1350, 130]],
+        "speed": 62,
+        "pauseDuration": 1.4
+      }
+    },
+    {
+      "module": "terminal_investigation",
+      "id": "ch8_d_trial_terminal",
+      "terminal": {
+        "id": "terminal_trial_termination",
+        "position": [1650, 68],
+        "setsFlag": "ch8_trial_termination_read",
+        "displayText": "TRIAL TERMINATION — VAULT COPY\nTRIAL-0442 — Venn, Elias\n\nType: Memory deletion\nNOT physical death\nAuthorised: Calyx, 2142.07.14\nFamily notification: NONE\n\nSibling: Venn, Mara — VC-1147-F\nNot notified. Not informed.\nArchive stub created same day.\n\n[Your brother was erased.\nYou were never told.]"
+      }
+    },
+    {
+      "module": "npc_encounter",
+      "id": "ch8_e_k_haas",
+      "npc": {
+        "id": "k_haas_archive",
+        "position": [2100, 68],
+        "displayName": "K. HAAS — ARCHIVE",
+        "dialogue": [
+          "Vault 1 has been sealed since they executed Orra. The fragments were all they let out.",
+          "Calyx is two minutes away. She knows you're here because the Archive tells her everything.",
+          "Broadcast, Control, or Erasure. That's what the complete letter says you have to choose."
+        ],
+        "setsFlag": "ch8_khaas_talked",
+        "repeatable": false
+      }
+    },
+    {
+      "module": "drone_patrol",
+      "id": "ch8_a_guard_vault",
+      "anchorX": 2600,
+      "patrol": {
+        "enemyType": "security_guard",
+        "points": [[2300, 68], [2550, 68]],
+        "speed": 42,
+        "pauseDuration": 3.0
+      }
+    },
+    {
+      "module": "terminal_investigation",
+      "id": "ch8_d_orra_terminal",
+      "terminal": {
+        "id": "terminal_orra_complete",
+        "position": [2900, 68],
+        "requiredFlag": "ch8_credential_bypass_used",
+        "setsFlag": "ch8_orra_complete_read",
+        "displayText": "SAINT ORRA — COMPLETE LETTER\nComposed: 2130.06.14\nDay of execution\n\n'To the living who process the dead:\nyou hold the census now.\nThe lamp counts everyone they erased.\nBroadcast it and they fall.\nControl it and you become them.\nErase it and the names stay buried.\nChoose.'\n\n412,000 names in 2130.\n1,247,883 now.\n\n[Ready for final desk action.]"
+      }
+    },
+    {
+      "module": "drone_patrol",
+      "id": "ch8_a_drone_exit",
+      "anchorX": 3600,
+      "patrol": {
+        "enemyType": "security_drone",
+        "points": [[3300, 130], [3700, 130]],
+        "speed": 65,
+        "pauseDuration": 2.0
+      }
+    },
+    {
+      "module": "environmental_story",
+      "id": "ch8_f_desk_sign",
+      "environmental": {
+        "x": 3850,
+        "y": 90,
+        "text": "EXIT — CLERK DESK LEVEL\nFINAL SHIFT WAITING"
+      }
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ch8_signal_override",
+      "type": "security_override",
+      "position": [850, 68],
+      "requiredFlag": "ch8_access_read",
+      "setsFlag": "ch8_signal_bypass_used",
+      "hackPuzzleID": "ch8_archive_signal",
+      "displayText": "ARCHIVE SIGNAL ROUTING — NODE 12-A\nCentral Archive relay lock\n\nConnect PDA to route access\nsignal through Node 12-A buffer.\n\nApply override?",
+      "linkedInteractableID": "ch8_signal_door"
+    },
+    {
+      "id": "ch8_signal_door",
+      "type": "door",
+      "position": [980, 68],
+      "requiredFlag": "ch8_signal_bypass_used",
+      "setsFlag": "ch8_signal_door_open",
+      "displayText": "ARCHIVE RELAY — [LOCKED]\nSIGNAL ROUTING REQUIRED"
+    },
+    {
+      "id": "ch8_credential_override",
+      "type": "security_override",
+      "position": [2750, 68],
+      "requiredFlag": "ch8_signal_bypass_used",
+      "setsFlag": "ch8_credential_bypass_used",
+      "hackPuzzleID": "ch8_archive_credential",
+      "displayText": "VAULT 1 — CREDENTIAL LOCK\nSaint Orra seal credential\n\nConnect PDA to inject verified\narchive fragments and open\nVault 1 access.\n\nApply override?",
+      "linkedInteractableID": "ch8_vault_door"
+    },
+    {
+      "id": "ch8_vault_door",
+      "type": "door",
+      "position": [2880, 68],
+      "requiredFlag": "ch8_credential_bypass_used",
+      "setsFlag": "ch8_vault_open",
+      "displayText": "VAULT 1 — [SEALED]\nORRA CREDENTIAL REQUIRED"
+    },
+    {
+      "id": "cartridge_orra_complete",
+      "type": "cartridge",
+      "position": [3550, 68],
+      "nodeLabel": "FILE",
+      "setsFlag": "ch8_field_complete",
+      "cartridgeData": "SAINT ORRA — COMPLETE LETTER\n2130.06.14 — day of execution\n\nFull text recovered from Vault 1.\nCensus methodology included.\n412,000 names in 2130.\n1,247,883 now.\n\nThree pathways:\nBROADCAST — all receiver nodes\nCONTROL — retain as leverage\nERASURE — delete census + self\n\nCalyx ETA: 2 minutes.\nThe desk is one floor up.\n\nChoose."
+    }
+  ],
+  "patrols": [],
+  "pickups": [
+    {"id": "ch8_pickup_01", "x": "280", "y": "68", "setsFlag": "ch8_pickup01_collected"},
+    {"id": "ch8_pickup_02", "x": "1200", "y": "68", "setsFlag": "ch8_pickup02_collected"},
+    {"id": "ch8_pickup_03", "x": "2400", "y": "68", "setsFlag": "ch8_pickup03_collected"},
+    {"id": "ch8_pickup_04", "x": "3400", "y": "68", "setsFlag": "ch8_pickup04_collected"}
+  ],
+  "environmentalTextNodes": [],
+  "npcs": [],
+  "objectiveText": "SHIFT 8 — CENTRAL ARCHIVE",
+  "ambientMusicTrack": "ambient_platform",
+  "platformNodes": [],
+  "buildingNodes": [
+    {"asset": "central_archive", "x": 2000, "y": 0, "scale": 1.0}
+  ],
+  "levelWidth": 4100,
+  "levelHeight": 400
+}

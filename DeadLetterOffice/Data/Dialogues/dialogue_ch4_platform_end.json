@@ -1,0 +1,41 @@
+{
+  "id": "dialogue_ch4_platform_end",
+  "chapter": "ch4",
+  "returnSceneHint": "desk_ch5",
+  "nodes": [
+    {
+      "id": "n0",
+      "lines": [
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "The annex confirms it. Ghost Audit scored me before I flagged Lina's relay. Calyx's memo was already in the routing buffer.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "TRIAL-0442 appears in the restricted index. Elias. Five years in a stub with no body.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. Scheduled mortality: fourteen days remaining. Shift 5 queue will open on return.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "I have fourteen days to find out what Afterlife Premium means for the people who can't afford it.",
+          "voiceFilter": "normal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": ["ch4_platform_complete"],
+      "nextID": null
+    }
+  ]
+}

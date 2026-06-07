@@ -1,0 +1,407 @@
+[
+  {
+    "id": "case_ch6_001",
+    "chapter": "ch6",
+    "senderName": "Lena Harrow",
+    "senderStatus": "Deceased",
+    "senderCitizenID": "ET-3301-H",
+    "recipientName": "PMCA Trial Records",
+    "recipientCitizenID": "PMCA-TRIAL-001",
+    "messageText": "Subject TRIAL-0442 is still generating biometric data. I filed the termination report in 2142. The trial division says the subject is deceased. The sensors say otherwise. Someone is still in the system.",
+    "documents": [
+      {
+        "id": "doc_c18_a",
+        "title": "PMCA QUEUE INSTRUCTION",
+        "type": "audit_log",
+        "issuer": "PMCA Processing Authority",
+        "issueDate": "2147.05.08",
+        "referenceNumber": "PMCA-QI-C18-3301-H",
+        "fields": [
+          {"key": "Case Reference", "value": "C18-3301-H — Trial data anomaly, East Transit", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Sender Status", "value": "DECEASED — transit incident 2147.05.06", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Processing Pathway", "value": "Trial records pathway — restricted", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Administrative Interest", "value": "Helix Meridian Memory Division — TRIAL-0442", "isSuspicious": true, "suspicionNote": "Trial reference matches Elias Venn archive stub C15."}
+        ],
+        "bodyText": "Case C18-3301-H. Sender: Harrow, Lena — ET-3301-H — deceased 2147.05.06. Trial data anomaly report. Subject TRIAL-0442 referenced. Processing pathway: trial records, restricted access.",
+        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "stamps": [],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c18_b",
+        "title": "TRIAL TERMINATION REPORT — 2142",
+        "type": "incident_report",
+        "issuer": "Helix Meridian Memory Division",
+        "issueDate": "2142.07.14",
+        "referenceNumber": "HM-TR-0442-TERM",
+        "fields": [
+          {"key": "Trial Subject", "value": "TRIAL-0442 — Venn, Elias — VC-0442-M", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Termination Date", "value": "2142.07.14", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Reporting Officer", "value": "Harrow, Lena — ET-3301-H", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Outcome", "value": "Subject deceased — memory deletion complete", "isSuspicious": true, "suspicionNote": "Report claims deletion complete. See Biometric Feed — active readings 2147.05.07."}
+        ],
+        "bodyText": "Trial termination report. Subject TRIAL-0442 (Venn, Elias). Termination 2142.07.14. Reporting officer: Harrow, Lena. Outcome: deceased, memory deletion complete. Body disposition: not recorded.",
+        "footerText": "Helix Meridian Memory Division — Trial Records",
+        "stamps": [{"text": "CLOSED", "color": "#1A3A5C", "appliedDate": "2142.07.14", "appliedBy": "Trial Division Auto-Seal"}],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c18_c",
+        "title": "BIOMETRIC FEED — TRIAL-0442",
+        "type": "audit_log",
+        "issuer": "Soulprint Network — Trial Monitoring",
+        "issueDate": "2147.05.07",
+        "referenceNumber": "SPN-TM-TRIAL-0442-0507",
+        "fields": [
+          {"key": "Subject", "value": "TRIAL-0442 — VC-0442-M", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Last Reading", "value": "2147.05.07 at 03:14 — ACTIVE", "isSuspicious": true, "suspicionNote": "Biometric ACTIVE five years after termination report. Reading origin: East Transit maintenance subnet."},
+          {"key": "Registry Status", "value": "DECEASED — 2142.07.14", "isSuspicious": true, "suspicionNote": "Registry and biometric feed contradict. No alive-status review initiated."},
+          {"key": "Alert Status", "value": "Suppressed — trial division authority", "isSuspicious": true, "suspicionNote": "Alert suppressed by trial division. Harrow filed anomaly report before death."}
+        ],
+        "bodyText": "Trial monitoring feed for TRIAL-0442. Last reading: 2147.05.07 at 03:14, ACTIVE. Origin: East Transit maintenance subnet. Registry status: deceased 2142.07.14. Alert: suppressed per trial division authority.",
+        "footerText": "Soulprint Network — Trial Monitoring",
+        "stamps": [],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c18_d",
+        "title": "SERVICE DEATH RECORD — HARROW",
+        "type": "death_certificate",
+        "issuer": "East Transit Safety Division",
+        "issueDate": "2147.05.06",
+        "referenceNumber": "ET-SDR-ET-3301-H",
+        "fields": [
+          {"key": "Subject", "value": "Harrow, Lena — ET-3301-H", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Cause", "value": "Transit infrastructure incident — sorting bay access", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Time of Death", "value": "2147.05.06 at 22:41", "isSuspicious": true, "suspicionNote": "Death: 2147.05.06 at 22:41. Biometric reading TRIAL-0442: 2147.05.07 at 03:14. Harrow filed this report before the reading she described."},
+          {"key": "Personal Effects", "value": "Trial access credential — revoked posthumously", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Service death record. Harrow, Lena (ET-3301-H). Transit infrastructure incident, 2147.05.06 at 22:41. Trial access credential revoked. Final message composed pre-death references TRIAL-0442 biometric anomaly.",
+        "footerText": "East Transit Safety Division — Form SDR-4",
+        "stamps": [{"text": "CERTIFIED", "color": "#1A3A5C", "appliedDate": "2147.05.06", "appliedBy": "Transit Safety Auto-Seal"}],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [
+      {
+        "fieldA": "Biometric Feed — ACTIVE 2147.05.07 at 03:14",
+        "fieldB": "Trial Termination Report — deceased 2142.07.14, deletion complete",
+        "description": "Lena Harrow filed the termination report in 2142. The biometric feed shows TRIAL-0442 — Elias Venn — still ACTIVE in the maintenance subnet the night after Harrow died. The trial was closed. The sensors were not.",
+        "isCritical": true
+      }
+    ],
+    "availableActions": [
+      {
+        "id": "flag_anomaly",
+        "label": "FLAG ANOMALY",
+        "shortLabel": "FLAGGED",
+        "color": "#CC9900",
+        "auditResponse": "Trial biometric anomaly submitted. TRIAL-0442 queued for alive-status review.",
+        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 3, "resistanceTrustDelta": 2, "flagsSet": ["c18_flagged", "elias_biometric_active"]},
+        "resultText": "Flagged. TRIAL-0442 is active in the maintenance subnet. Your brother's trial was closed in 2142. The sensors registered him at 03:14 yesterday.",
+        "isIllegal": false
+      },
+      {
+        "id": "archive",
+        "label": "ARCHIVE (ORDERED)",
+        "shortLabel": "ARCHIVED",
+        "color": "#445566",
+        "auditResponse": "Trial records archived. Biometric anomaly logged and suppressed.",
+        "consequences": {"complianceDelta": 2, "empathyDelta": -2, "suspicionDelta": 0, "corporateTrustDelta": 2, "flagsSet": ["c18_archived"]},
+        "resultText": "Archived. The biometric feed is suppressed. Harrow's report is filed. TRIAL-0442 stays officially deceased.",
+        "isIllegal": false
+      },
+      {
+        "id": "approve",
+        "label": "FORWARD TO TRIAL RECORDS",
+        "shortLabel": "FORWARDED",
+        "color": "#2A6A3C",
+        "auditResponse": "Report forwarded to PMCA Trial Records. Biometric conflict retained.",
+        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 2, "flagsSet": ["c18_approved", "elias_biometric_active"]},
+        "resultText": "Forwarded. The trial records division will have to reconcile a termination report from 2142 with a live reading from yesterday.",
+        "isIllegal": false
+      }
+    ],
+    "correctLegalActionID": "flag_anomaly",
+    "followUpFlags": ["c18_processed"],
+    "requiredFlags": null
+  },
+  {
+    "id": "case_ch6_002",
+    "chapter": "ch6",
+    "senderName": "Saint Orra",
+    "senderStatus": "Deceased (Historical)",
+    "senderCitizenID": "ORRA-2130-M",
+    "recipientName": "Veyr City — All Receivers",
+    "recipientCitizenID": "BROADCAST-ALL",
+    "messageText": "They are still deleting us. The count rises while the square stays dark. Light the lamp when you hear this. The choir is not a signal — it is a census.",
+    "documents": [
+      {
+        "id": "doc_c19_a",
+        "title": "PMCA QUEUE INSTRUCTION",
+        "type": "audit_log",
+        "issuer": "PMCA Processing Authority",
+        "issueDate": "2147.05.09",
+        "referenceNumber": "PMCA-QI-C19-ORRA-FRG",
+        "fields": [
+          {"key": "Case Reference", "value": "C19-ORRA-FRG — Fragment broadcast, historical sender", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Sender Status", "value": "DECEASED — executed 2130", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Fragment Class", "value": "Saint Orra broadcast fragment — recurring", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Processing Pathway", "value": "Incineration recommended — Choir signal class", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Case C19-ORRA-FRG. Saint Orra broadcast fragment. Historical sender, executed 2130. Recurring fragment class detected in transit buffer. Incineration pathway recommended per Choir signal protocol.",
+        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "stamps": [],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c19_b",
+        "title": "DELETION COUNT REGISTRY",
+        "type": "audit_log",
+        "issuer": "PMCA Incineration Archive",
+        "issueDate": "2147.05.09",
+        "referenceNumber": "PMCA-DCR-ORRA-XREF",
+        "fields": [
+          {"key": "Total Incinerations", "value": "1,247,883 — as of 2147.05.09", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Count 2130 Baseline", "value": "412,000 — Saint Orra execution year", "isSuspicious": true, "suspicionNote": "Deletion count tripled since 2130. Fragment claims count 'still rising.'"},
+          {"key": "Daily Increment", "value": "+847 — above 2146 daily average", "isSuspicious": true, "suspicionNote": "Daily increment accelerating. Fragment composed before today's count was finalized."},
+          {"key": "Service-Class Share", "value": "61% — incineration pathway Section 19", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Deletion count registry. Total incinerations: 1,247,883. Baseline 2130: 412,000. Daily increment: +847. Service-class share: 61%. Fragment references count still increasing — registry confirms.",
+        "footerText": "PMCA Incineration Archive — Count Registry",
+        "stamps": [],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c19_c",
+        "title": "BROADCAST FRAGMENT ANALYSIS",
+        "type": "restricted_phrase_list",
+        "issuer": "PMCA Choir Signal Detection System",
+        "issueDate": "2147.05.09",
+        "referenceNumber": "PMCA-CSDS-C19-ORRA",
+        "fields": [
+          {"key": "Phrase Class", "value": "Saint Orra fragment — 'light the lamp'", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Confidence", "value": "96% — Tier 1 mandatory suppression", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Transmission Method", "value": "Unknown — appears in transit buffer without origin", "isSuspicious": true, "suspicionNote": "Fragment appears in Black Train transit buffer. No sender terminal logged. Recurring pattern since 2135."},
+          {"key": "Curriculum Cross-Ref", "value": "Lower Veyr Primary Vol. 3 Song 14 — disambiguation not performed", "isSuspicious": true, "suspicionNote": "Same ambiguity as C07 'little lamp' case. Orra tradition predates Choir classification."}
+        ],
+        "bodyText": "Fragment analysis. Saint Orra broadcast class. Phrase 'light the lamp' — Tier 1 suppression. Transmission method: unknown, transit buffer injection. Recurring since 2135. Curriculum cross-reference: not performed.",
+        "footerText": "PMCA Choir Signal Detection System",
+        "stamps": [],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c19_d",
+        "title": "ORRA SQUARE SURVEILLANCE LOG",
+        "type": "incident_report",
+        "issuer": "Veyr Civic Security — Orra Square Division",
+        "issueDate": "2147.05.08",
+        "referenceNumber": "VCS-OS-05082147",
+        "fields": [
+          {"key": "Location", "value": "Saint Orra Square — curfew zone", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Event", "value": "Unauthorized lamp lighting — 2147.05.08 at 21:00", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Response", "value": "Light suppressed — no individuals detained", "isSuspicious": true, "suspicionNote": "Lamp lighting at 21:00. Fragment references square 'stays dark.' Event predates fragment queue entry."},
+          {"key": "Broadcast Correlation", "value": "Fragment detected in buffer 2147.05.09 at 02:17", "isSuspicious": true, "suspicionNote": "Buffer injection five hours after square lamp event. Correlation unconfirmed by automated system."}
+        ],
+        "bodyText": "Orra Square surveillance log. Unauthorized lamp lighting 2147.05.08 at 21:00. Light suppressed. No detentions. Broadcast fragment detected in transit buffer 2147.05.09 at 02:17.",
+        "footerText": "Veyr Civic Security — Orra Square Division",
+        "stamps": [],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [
+      {
+        "fieldA": "Deletion Count Registry — +847 daily, total rising",
+        "fieldB": "Broadcast Fragment — 'They are still deleting us'",
+        "description": "The fragment claims the deletion count is still rising. The registry confirms: 1,247,883 total, accelerating daily increment, 61% service-class. A martyr executed in 2130 is still counting the dead in 2147.",
+        "isCritical": true
+      },
+      {
+        "fieldA": "Broadcast Analysis — transmission method unknown, transit buffer",
+        "fieldB": "Orra Square Log — lamp lighting 2147.05.08, fragment in buffer 2147.05.09",
+        "description": "Someone lit a lamp in Orra Square. Five hours later, a Saint Orra fragment appeared in the transit buffer with no logged origin. The broadcast method is the infrastructure itself.",
+        "isCritical": false
+      }
+    ],
+    "availableActions": [
+      {
+        "id": "archive",
+        "label": "ARCHIVE (ORDERED)",
+        "shortLabel": "ARCHIVED",
+        "color": "#445566",
+        "auditResponse": "Fragment archived. Tier 1 suppression applied. Incineration pathway complete.",
+        "consequences": {"complianceDelta": 2, "empathyDelta": -2, "suspicionDelta": 0, "flagsSet": ["c19_archived"]},
+        "resultText": "Archived. The fragment is incinerated. The deletion count keeps rising. The square stays dark.",
+        "isIllegal": false
+      },
+      {
+        "id": "flag_anomaly",
+        "label": "FLAG ANOMALY",
+        "shortLabel": "FLAGGED",
+        "color": "#CC9900",
+        "auditResponse": "Broadcast origin anomaly submitted. Transit buffer injection queued for review.",
+        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 2, "resistanceTrustDelta": 2, "flagsSet": ["c19_flagged", "orra_fragment_flagged"]},
+        "resultText": "Flagged. The fragment has no origin terminal. It appeared in the transit buffer after someone lit a lamp in Orra Square. The choir is a census.",
+        "isIllegal": false
+      },
+      {
+        "id": "illegal_forward",
+        "label": "ILLEGAL FORWARD",
+        "shortLabel": "FORWARDED",
+        "color": "#CC6600",
+        "auditResponse": "Routing breach detected. Fragment forwarded to broadcast relay. Compliance review initiated.",
+        "consequences": {"complianceDelta": -2, "empathyDelta": 1, "suspicionDelta": 4, "resistanceTrustDelta": 3, "flagsSet": ["c19_forwarded", "orra_fragment_preserved"]},
+        "resultText": "Forwarded. The fragment leaves the incineration pathway. Someone in the undercity will hear what the square tried to suppress.",
+        "isIllegal": true
+      }
+    ],
+    "correctLegalActionID": "flag_anomaly",
+    "followUpFlags": ["c19_processed"],
+    "requiredFlags": null
+  },
+  {
+    "id": "case_ch6_003",
+    "chapter": "ch6",
+    "senderName": "Transit Authority — Automated",
+    "senderStatus": "System Generated",
+    "senderCitizenID": "MOT-AUTO-001",
+    "recipientName": "PMCA Sorting Division",
+    "recipientCitizenID": "PMCA-SORT-001",
+    "messageText": "Black Train manifest update. Route 7-B beneath sealed district. 312 forbidden dead letters in transit. Manifest auth: J.V. — credential expired 2144.",
+    "documents": [
+      {
+        "id": "doc_c20_a",
+        "title": "PMCA QUEUE INSTRUCTION",
+        "type": "audit_log",
+        "issuer": "PMCA Processing Authority",
+        "issueDate": "2147.05.10",
+        "referenceNumber": "PMCA-QI-C20-MANIFEST",
+        "fields": [
+          {"key": "Case Reference", "value": "C20-MANIFEST — Black Train routing, sealed district", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Manifest Class", "value": "Forbidden dead letters — incineration deferral", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Route", "value": "7-B — beneath sealed district, East Transit", "isSuspicious": true, "suspicionNote": "Route passes under sealed district. Clerk tier maps do not include Route 7-B."},
+          {"key": "Processing Pathway", "value": "Manifest verification — clerk confirmation", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Case C20-MANIFEST. Black Train manifest update. Route 7-B beneath sealed district. 312 forbidden dead letters in transit. Manifest verification required.",
+        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "stamps": [],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c20_b",
+        "title": "BLACK TRAIN MANIFEST — ROUTE 7-B",
+        "type": "incident_report",
+        "issuer": "Ministry of Transit — Black Mail Division",
+        "issueDate": "2147.05.10",
+        "referenceNumber": "MOT-BTM-7B-0510",
+        "fields": [
+          {"key": "Route", "value": "7-B — sealed district corridor", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Carriage Load", "value": "312 messages — forbidden class", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Manifest Authority", "value": "J.V. — credential MOT-MAINT-JV", "isSuspicious": true, "suspicionNote": "Author J.V. Credential expired 2144. Same initials as Jun Vale maintenance auth from Ch2."},
+          {"key": "Destination", "value": "Incineration Archive — deferred transit", "isSuspicious": true, "suspicionNote": "Messages in transit under Route 7-B — not incinerated, not delivered. Deferred class."}
+        ],
+        "bodyText": "Black Train manifest Route 7-B. Carriage load: 312 forbidden dead letters. Manifest authority: J.V., credential expired 2144. Destination: incineration archive, deferred transit status.",
+        "footerText": "Ministry of Transit — Black Mail Division",
+        "stamps": [],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c20_c",
+        "title": "SEALED DISTRICT MAP EXCERPT",
+        "type": "incident_report",
+        "issuer": "PMCA Cartography — Restricted",
+        "issueDate": "2147.05.10",
+        "referenceNumber": "PMCA-MAP-SEALED-7B",
+        "fields": [
+          {"key": "District", "value": "Sealed Sector — beneath East Transit Line 9", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Route 7-B", "value": "Automated data train — maintenance access only", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Orra Square Proximity", "value": "1.2km — curfew zone boundary", "isSuspicious": true, "suspicionNote": "Route 7-B passes beneath Orra Square. Cross-reference C19 lamp event."},
+          {"key": "Clerk Map Visibility", "value": "NOT INCLUDED — restricted cartography", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Sealed district map excerpt. Route 7-B: automated data train, maintenance access only. Passes beneath sealed sector and Orra Square proximity zone. Not included on clerk-tier maps.",
+        "footerText": "PMCA Cartography — Restricted Access",
+        "stamps": [],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c20_d",
+        "title": "C08 ROUTING CROSS-REFERENCE",
+        "type": "audit_log",
+        "issuer": "PMCA Message Routing System",
+        "issueDate": "2147.05.10",
+        "referenceNumber": "PMCA-RIL-C20-C08-XREF",
+        "fields": [
+          {"key": "Case Reference", "value": "C08-0003-S — Courier 19, Sector 7 coordinates", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Waveform Coordinates", "value": "[19.6, 24.1] — sub-level vent access junction 9", "isSuspicious": true, "suspicionNote": "Coordinate pair matches Route 7-B maintenance junction on sealed map."},
+          {"key": "EVN Tag", "value": "EVN-ROUTING-0442 — secondary, same carriage class", "isSuspicious": true, "suspicionNote": "Courier 19 message used same routing class as Elias orphan tag."},
+          {"key": "Carriage Match", "value": "Forbidden class — Route 7-B manifest includes matching tag prefix", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Cross-reference C08 waveform coordinates with Route 7-B map. Junction 9 matches sub-level vent access. EVN-ROUTING-0442 class present in manifest tag prefix list.",
+        "footerText": "PMCA Message Routing System — Cross-Reference",
+        "stamps": [],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [
+      {
+        "fieldA": "Black Train Manifest — 312 forbidden letters, deferred transit",
+        "fieldB": "C08 Cross-Reference — Courier 19 coordinates match Route 7-B junction 9",
+        "description": "Courier 19 encoded facility coordinates in his waveform. Those coordinates match a junction on Route 7-B — the Black Train carrying 312 forbidden dead letters beneath the sealed district.",
+        "isCritical": true
+      },
+      {
+        "fieldA": "Manifest Authority — J.V., credential expired 2144",
+        "fieldB": "Ch2 Maintenance Log — J.V. authorisation 2147.04.08, personnel NOT FOUND",
+        "description": "The manifest is signed J.V. with a credential expired three years ago. The same initials appear on maintenance logs that have no personnel file.",
+        "isCritical": false
+      }
+    ],
+    "availableActions": [
+      {
+        "id": "approve",
+        "label": "VERIFY MANIFEST",
+        "shortLabel": "VERIFIED",
+        "color": "#2A6A3C",
+        "auditResponse": "Manifest verified. Route 7-B logged. Deferred transit status confirmed.",
+        "consequences": {"complianceDelta": 1, "empathyDelta": 0, "suspicionDelta": 1, "flagsSet": ["c20_verified", "black_train_manifest_seen"]},
+        "resultText": "Verified. 312 forbidden letters on Route 7-B. J.V. signed the manifest with an expired credential. The train runs beneath the sealed district.",
+        "isIllegal": false
+      },
+      {
+        "id": "flag_anomaly",
+        "label": "FLAG ANOMALY",
+        "shortLabel": "FLAGGED",
+        "color": "#CC9900",
+        "auditResponse": "Manifest irregularity submitted. J.V. credential and coordinate cross-reference queued.",
+        "consequences": {"complianceDelta": -1, "empathyDelta": 1, "suspicionDelta": 2, "resistanceTrustDelta": 2, "flagsSet": ["c20_flagged", "black_train_manifest_seen", "ch6_desk_complete"]},
+        "resultText": "Flagged. The manifest authority is expired. The coordinates from Courier 19's waveform match this route. Someone is moving forbidden letters beneath a district that is not on your map.",
+        "isIllegal": false
+      },
+      {
+        "id": "archive",
+        "label": "ARCHIVE MANIFEST",
+        "shortLabel": "ARCHIVED",
+        "color": "#445566",
+        "auditResponse": "Manifest archived. Route 7-B transit continues without clerk verification.",
+        "consequences": {"complianceDelta": 2, "empathyDelta": -1, "suspicionDelta": 0, "flagsSet": ["c20_archived", "ch6_desk_complete"]},
+        "resultText": "Archived. The train continues. The 312 messages stay in deferred transit. The manifest is filed and forgotten.",
+        "isIllegal": false
+      }
+    ],
+    "correctLegalActionID": "flag_anomaly",
+    "followUpFlags": ["c20_processed"],
+    "requiredFlags": null
+  }
+]

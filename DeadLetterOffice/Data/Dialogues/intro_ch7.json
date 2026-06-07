@@ -1,0 +1,127 @@
+{
+  "id": "intro_ch7",
+  "chapter": "ch7",
+  "returnSceneHint": "desk_ch7",
+  "nodes": [
+    {
+      "id": "n0",
+      "lines": [
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. Shift 7. Your scheduled mortality date has passed. You continue to process cases.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "The order didn't work.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Three cases. The first is from Jun Vale — officially deceased, active on Route 7-B.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "He knows I verified the manifest.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Case two: Quiet Choir petition. 847 signatures. Fourteen forged. Statute 8-F applies.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "They told me about the forgeries in the message.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Case three: final packet from VC-0442-M. Section 19.4 incineration — immediate.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Elias.",
+          "voiceFilter": "normal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": ["ch7_intro_complete"],
+      "nextID": null
+    },
+    {
+      "id": "n1",
+      "lines": [
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Jun Vale case resolved. Meeting coordinates logged or suppressed per your action.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "He is on the train. Officially dead. Writing from carriage 3.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Two cases remain. The petition will test your compliance index.",
+          "voiceFilter": "terminal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": ["c21_processed"],
+      "flagsSet": ["ch7_c21_pause_shown"],
+      "nextID": null
+    },
+    {
+      "id": "n2",
+      "lines": [
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Chapter 7 queue complete.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Memory deletion. Not physical death. Calyx signed it in 2142. Entropy 0.67.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Trial termination analysis is not a standard clerk function.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "847 living-dead beneath the sealed district. My brother is one of them. I need to go down.",
+          "voiceFilter": "normal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": ["ch7_desk_complete"],
+      "flagsSet": ["ch7_outro_complete"],
+      "nextID": null
+    }
+  ]
+}

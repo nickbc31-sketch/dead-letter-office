@@ -1,0 +1,133 @@
+[
+  {
+    "id": "case_ch8_001",
+    "chapter": "ch8",
+    "senderName": "Saint Orra",
+    "senderStatus": "Deceased (Historical)",
+    "senderCitizenID": "ORRA-2130-M",
+    "recipientName": "Veyr City — All Receivers",
+    "recipientCitizenID": "BROADCAST-ALL",
+    "messageText": "Complete letter — 2130. To the living who process the dead: you hold the census now. The lamp counts everyone they erased. Broadcast it and they fall. Control it and you become them. Erase it and the names stay buried. Choose.",
+    "documents": [
+      {
+        "id": "doc_c24_a",
+        "title": "PMCA QUEUE INSTRUCTION",
+        "type": "audit_log",
+        "issuer": "PMCA Processing Authority",
+        "issueDate": "2147.05.15",
+        "referenceNumber": "PMCA-QI-C24-ORRA-COMPLETE",
+        "fields": [
+          {"key": "Case Reference", "value": "C24-ORRA-COMPLETE — Final shift, complete letter", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Classification", "value": "CLASSIFIED — Central Archive access required", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Clerk", "value": "Venn, Mara — 1147-F — scheduled mortality 2147.05.01", "isSuspicious": true, "suspicionNote": "Clerk has scheduled mortality date fourteen days past. Still processing. Ghost Audit score: critical."},
+          {"key": "Processing Pathway", "value": "Final decision — no standard action applies", "isSuspicious": true, "suspicionNote": "Queue instruction lists no standard action. Clerk must select broadcast, control, or erasure pathway."}
+        ],
+        "bodyText": "Case C24-ORRA-COMPLETE. Saint Orra complete letter. Final shift assignment for Clerk 1147-F. Central Archive access confirmed. No standard processing action. Clerk selects outcome pathway.",
+        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "stamps": [],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c24_b",
+        "title": "COMPLETE LETTER — ORIGINAL 2130",
+        "type": "restricted_phrase_list",
+        "issuer": "Saint Orra Archive — Sealed",
+        "issueDate": "2130.06.14",
+        "referenceNumber": "ORRA-LETTER-COMPLETE",
+        "fields": [
+          {"key": "Author", "value": "Orra, executed 2130 — complete letter never delivered", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Content Summary", "value": "Census of erased citizens — 412,000 names at time of execution", "isSuspicious": true, "suspicionNote": "Current deletion count: 1,247,883. Letter census methodology still valid per C19 fragment."},
+          {"key": "Broadcast Method", "value": "Soulprint Network injection — all receiver nodes", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Suppression Status", "value": "SEALED since 2130 — fragments only released", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Complete letter composed 2130.06.14, day of execution. Census of erased citizens: 412,000 names. Broadcast method: Soulprint Network injection to all receiver nodes. Sealed since execution. Only fragments released 2135–2147.",
+        "footerText": "Saint Orra Archive — Sealed Record",
+        "stamps": [{"text": "SEALED", "color": "#440044", "appliedDate": "2130.06.14", "appliedBy": "PMCA Directorate"}],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c24_c",
+        "title": "CENTRAL ARCHIVE ACCESS LOG",
+        "type": "audit_log",
+        "issuer": "PMCA Central Archive",
+        "issueDate": "2147.05.15",
+        "referenceNumber": "PMCA-CA-ACCESS-1147-F",
+        "fields": [
+          {"key": "Clerk", "value": "Venn, Mara — 1147-F", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Access Method", "value": "PDA signal routing + credential injection — dual hack", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Records Retrieved", "value": "Complete letter + deletion census + TRIAL-0442 termination", "isSuspicious": true, "suspicionNote": "Retrieval includes Elias termination record and full incineration census."},
+          {"key": "Director Calyx Status", "value": "ALERTED — en route to Central Archive", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Central Archive access log. Clerk 1147-F retrieved complete letter, deletion census, and TRIAL-0442 termination record. Access via dual PDA hack. Director Calyx alerted — en route.",
+        "footerText": "PMCA Central Archive — Access Log",
+        "stamps": [],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c24_d",
+        "title": "OUTCOME PATHWAY ANALYSIS",
+        "type": "audit_log",
+        "issuer": "PMCA Directorate — Predictive Analytics",
+        "issueDate": "2147.05.15",
+        "referenceNumber": "PMCA-OPA-C24",
+        "fields": [
+          {"key": "Broadcast Pathway", "value": "Resistance alignment — city-wide disclosure, government collapse probability 78%", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Control Pathway", "value": "Corporate alignment — archive retained as leverage, clerk succession probability 65%", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Erasure Pathway", "value": "Self-erasure alignment — 47 names removable from registry per clerk action capacity", "isSuspicious": true, "suspicionNote": "Erasure pathway matches Ending C model — clerk removes self and select citizens from registry."},
+          {"key": "Clerk Trust Profile", "value": "See GameState resistance/corporate/empathy/compliance scores", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Outcome pathway analysis for C24. Three valid clerk actions: Broadcast (release to all nodes), Control (retain as leverage), Erasure (delete census and self from registry). Clerk trust profile determines ending alignment.",
+        "footerText": "PMCA Directorate — Predictive Analytics",
+        "stamps": [],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [
+      {
+        "fieldA": "Complete Letter — 412,000 names at execution, census methodology valid",
+        "fieldB": "Deletion Count Registry C19 — 1,247,883 total, still rising",
+        "description": "Saint Orra counted 412,000 erased citizens in 2130. The registry now shows 1,247,883. The complete letter contains the methodology to name all of them. You hold the census.",
+        "isCritical": true
+      }
+    ],
+    "availableActions": [
+      {
+        "id": "broadcast",
+        "label": "BROADCAST",
+        "shortLabel": "BROADCAST",
+        "color": "#CC9900",
+        "auditResponse": "Complete letter released to all Soulprint receiver nodes. Broadcast pathway activated.",
+        "consequences": {"complianceDelta": -4, "empathyDelta": 4, "suspicionDelta": 5, "resistanceTrustDelta": 6, "corporateTrustDelta": -4, "flagsSet": ["c24_broadcast", "orra_letter_released", "ch8_desk_complete"]},
+        "resultText": "Broadcast. The complete letter reaches every receiver node in Veyr. For three hours, the city hears the names of the erased. The government will fall within a week. Some of the voices are yours.",
+        "isIllegal": true
+      },
+      {
+        "id": "control",
+        "label": "CONTROL",
+        "shortLabel": "CONTROL",
+        "color": "#1A3A5C",
+        "auditResponse": "Complete letter retained. Archive secured under clerk authority. Leverage pathway activated.",
+        "consequences": {"complianceDelta": 4, "empathyDelta": -2, "suspicionDelta": 2, "corporateTrustDelta": 6, "resistanceTrustDelta": -3, "flagsSet": ["c24_control", "orra_letter_secured", "ch8_desk_complete"]},
+        "resultText": "Control. You do not release the archive. You understand what it is — the last leverage point. Calyx is en route. You will have to decide what to do with the chair when she arrives.",
+        "isIllegal": true
+      },
+      {
+        "id": "erasure",
+        "label": "ERASURE",
+        "shortLabel": "ERASURE",
+        "color": "#2A6A3C",
+        "auditResponse": "Census deleted. Clerk self-erasure initiated. Forty-seven names removed from registry.",
+        "consequences": {"complianceDelta": -2, "empathyDelta": 3, "suspicionDelta": 3, "resistanceTrustDelta": 2, "corporateTrustDelta": -2, "flagsSet": ["c24_erasure", "mara_self_erased", "ch8_desk_complete"]},
+        "resultText": "Erasure. You delete yourself from every civic record. Forty-seven names come with you — the ones you could reach. The system continues. Somewhere in the undercity, a clerk named Mara helps people rebuild. Her name appears in no archive.",
+        "isIllegal": true
+      }
+    ],
+    "correctLegalActionID": "broadcast",
+    "followUpFlags": ["c24_processed", "game_complete"],
+    "requiredFlags": null
+  }
+]

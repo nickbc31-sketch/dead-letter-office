@@ -1,4 +1,5 @@
 import SpriteKit
+import UIKit
 
 enum EndingType {
     case broadcast
@@ -26,9 +27,20 @@ final class SceneManager {
     weak var view: SKView?
 
     func transition(to destination: SceneType, from source: SKScene) {
-        guard let view = view else { return }
-        let size = view.bounds.size
+        guard let view = view else {
+            NSLog("[DLO Startup] BLOCKED transition to %@ — SceneManager.view is nil", "\(destination)")
+            return
+        }
+        NSLog("[DLO Startup] transition %@ → %@", String(describing: type(of: source)), "\(destination)")
+        let screen = UIScreen.main.bounds.size
+        let viewBounds = view.bounds.size
+        let size = CGSize(
+            width: max(screen.width, screen.height, viewBounds.width, viewBounds.height),
+            height: min(screen.width, screen.height, viewBounds.width, viewBounds.height)
+        )
         let scene = makeScene(for: destination, size: size)
+        scene.alpha = 1
+        source.alpha = 1
         let fade = SKTransition.fade(withDuration: 0.35)
         view.presentScene(scene, transition: fade)
     }

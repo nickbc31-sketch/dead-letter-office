@@ -325,80 +325,79 @@ enum PlatformBuildingVisuals {
 
 // MARK: - Field investigation interactables
 
-/// Visual primitives for information nodes and level boundaries.
+/// Grounded field investigation interactable visuals (Ch1–8).
 enum FieldInvestigationVisuals {
 
+    // MARK: - PMCA Field Terminal (chest-height kiosk)
+
+    static func pmcaFieldTerminal() -> SKNode {
+        if let node = FieldSpriteAssets.groundedNode(named: "pmca_terminal", targetHeight: 56) {
+            return node
+        }
+        return pmcaFieldTerminalProcedural()
+    }
+
+    // MARK: - Public Notice Board (distinct from terminals)
+
+    static func publicNoticeBoard(label: String = "NOTICE") -> SKNode {
+        if let board = FieldSpriteAssets.groundedSprite(named: "notice_board", targetHeight: 52) {
+            let node = SKNode()
+            node.addChild(board)
+            if label != "NOTICE" {
+                let tag = DLOFont.terminalLabel(text: label, size: 6)
+                tag.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.85)
+                tag.position = CGPoint(x: 0, y: 58)
+                node.addChild(tag)
+            }
+            return node
+        }
+        return publicNoticeBoardProcedural(label: label)
+    }
+
     static func informationNodeBeacon(label: String = "NOTICE") -> SKNode {
-        let node = SKNode()
-        let housing = SKSpriteNode(
-            color: SKColor(red: 0.12, green: 0.16, blue: 0.22, alpha: 1),
-            size: CGSize(width: 22, height: 30))
-        housing.position = CGPoint(x: 0, y: 15)
-        node.addChild(housing)
+        publicNoticeBoard(label: label)
+    }
 
-        let screen = SKSpriteNode(
-            color: SKColor(red: 0.08, green: 0.20, blue: 0.28, alpha: 1),
-            size: CGSize(width: 16, height: 12))
-        screen.position = CGPoint(x: 0, y: 20)
-        node.addChild(screen)
+    // MARK: - Network Access Node (PDA hack port)
 
-        let pulse = SKSpriteNode(color: DLOColor.teal.withAlphaComponent(0.35),
-                                 size: CGSize(width: 4, height: 4))
-        pulse.position = CGPoint(x: 7, y: 24)
-        node.addChild(pulse)
-        pulse.run(SKAction.repeatForever(SKAction.sequence([
-            SKAction.fadeAlpha(to: 0.15, duration: 1.0),
-            SKAction.fadeAlpha(to: 0.55, duration: 1.0),
-        ])))
+    static func networkAccessNode() -> SKNode {
+        if let node = FieldSpriteAssets.groundedNode(named: "pda_hack_port", targetHeight: 42) {
+            return node
+        }
+        return networkAccessNodeProcedural()
+    }
 
-        let bracketL = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.5),
-                                    size: CGSize(width: 2, height: 26))
-        bracketL.position = CGPoint(x: -12, y: 15)
-        node.addChild(bracketL)
-        let bracketR = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.5),
-                                    size: CGSize(width: 2, height: 26))
-        bracketR.position = CGPoint(x: 12, y: 15)
-        node.addChild(bracketR)
+    // MARK: - Data Cache / file pickup
 
-        let tag = DLOFont.terminalLabel(text: label, size: 6)
-        tag.fontColor = DLOColor.teal.withAlphaComponent(0.75)
-        tag.position = CGPoint(x: 0, y: 36)
-        node.addChild(tag)
-        return node
+    static func dataCacheUnit() -> SKNode {
+        if let node = FieldSpriteAssets.groundedNode(named: "data_cartridge", targetHeight: 26) {
+            return node
+        }
+        return dataCacheUnitProcedural()
     }
 
     static func enforcementRobot() -> SKNode {
         let robot = SKNode()
         robot.name = "enforcement_robot"
 
-        let base = SKSpriteNode(color: SKColor(red: 0.14, green: 0.14, blue: 0.16, alpha: 1),
-                                size: CGSize(width: 36, height: 14))
-        base.position = CGPoint(x: 0, y: 7)
-        robot.addChild(base)
-
-        let body = SKSpriteNode(color: SKColor(red: 0.20, green: 0.20, blue: 0.24, alpha: 1),
-                                size: CGSize(width: 28, height: 44))
-        body.position = CGPoint(x: 0, y: 36)
-        robot.addChild(body)
-
-        let eye = SKShapeNode(circleOfRadius: 5)
-        eye.fillColor = DLOColor.danger.withAlphaComponent(0.9)
-        eye.strokeColor = .clear
-        eye.position = CGPoint(x: 0, y: 48)
-        robot.addChild(eye)
-        eye.run(SKAction.repeatForever(SKAction.sequence([
-            SKAction.fadeAlpha(to: 0.4, duration: 0.6),
-            SKAction.fadeAlpha(to: 1.0, duration: 0.6),
-        ])))
+        let bodyTop: CGFloat
+        if let sprite = FieldSpriteAssets.groundedSprite(named: "enforcer_robot", targetHeight: 96) {
+            robot.addChild(sprite)
+            bodyTop = 96
+        } else {
+            let fallback = enforcementRobotBodyProcedural()
+            robot.addChild(fallback)
+            bodyTop = 48
+        }
 
         let lbl = DLOFont.terminalLabel(text: "ENFORCER", size: 6)
         lbl.fontColor = DLOColor.danger.withAlphaComponent(0.8)
-        lbl.position = CGPoint(x: 0, y: 82)
+        lbl.position = CGPoint(x: 0, y: bodyTop + 14)
         robot.addChild(lbl)
 
         let cone = SKShapeNode()
         let conePath = CGMutablePath()
-        conePath.move(to: CGPoint(x: 0, y: 48))
+        conePath.move(to: CGPoint(x: 0, y: bodyTop * 0.5))
         conePath.addLine(to: CGPoint(x: -55, y: -72))
         conePath.addLine(to: CGPoint(x: 55, y: -72))
         conePath.closeSubpath()
@@ -411,34 +410,199 @@ enum FieldInvestigationVisuals {
 
         let warn = DLOFont.terminalLabel(text: "RESTRICTED", size: 5)
         warn.fontColor = DLOColor.danger.withAlphaComponent(0.65)
-        warn.position = CGPoint(x: 0, y: 94)
+        warn.position = CGPoint(x: 0, y: bodyTop + 26)
         robot.addChild(warn)
         return robot
     }
 
+    static func maintenanceCabinet() -> SKNode {
+        if let node = FieldSpriteAssets.groundedNode(named: "maintenance_locker", targetHeight: 46) {
+            return node
+        }
+        return maintenanceCabinetProcedural()
+    }
+
     static func dataCartridgePedestal() -> SKNode {
+        if let node = FieldSpriteAssets.groundedNode(named: "data_cartridge_2", targetHeight: 28) {
+            return node
+        }
+        if let node = FieldSpriteAssets.groundedNode(named: "data_cartridge", targetHeight: 28) {
+            return node
+        }
+        return dataCacheUnitProcedural()
+    }
+
+    static func civicNoticeBoard(label: String) -> SKNode {
+        publicNoticeBoard(label: label)
+    }
+
+    // MARK: - Procedural fallbacks
+
+    private static func pmcaFieldTerminalProcedural() -> SKNode {
         let node = SKNode()
-        let base = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.35),
-                                size: CGSize(width: 28, height: 10))
-        base.position = CGPoint(x: 0, y: 5)
+        let base = SKSpriteNode(
+            color: SKColor(red: 0.14, green: 0.16, blue: 0.18, alpha: 1),
+            size: CGSize(width: 34, height: 8))
+        base.position = CGPoint(x: 0, y: 4)
         node.addChild(base)
-        let cart = SKSpriteNode(color: DLOColor.terminalGreen.withAlphaComponent(0.55),
-                                size: CGSize(width: 14, height: 20))
-        cart.position = CGPoint(x: 0, y: 18)
-        node.addChild(cart)
-        let tag = DLOFont.terminalLabel(text: "FILE", size: 5)
-        tag.fontColor = DLOColor.terminalGreen.withAlphaComponent(0.8)
+
+        let pedestal = SKSpriteNode(
+            color: SKColor(red: 0.11, green: 0.13, blue: 0.15, alpha: 1),
+            size: CGSize(width: 28, height: 38))
+        pedestal.position = CGPoint(x: 0, y: 24)
+        node.addChild(pedestal)
+
+        let screen = SKSpriteNode(
+            color: SKColor(red: 0.06, green: 0.18, blue: 0.22, alpha: 1),
+            size: CGSize(width: 22, height: 16))
+        screen.position = CGPoint(x: 0, y: 34)
+        node.addChild(screen)
+
+        let glow = SKSpriteNode(color: DLOColor.teal.withAlphaComponent(0.35),
+                                size: CGSize(width: 24, height: 2))
+        glow.position = CGPoint(x: 0, y: 26)
+        node.addChild(glow)
+        glow.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.fadeAlpha(to: 0.15, duration: 1.2),
+            SKAction.fadeAlpha(to: 0.55, duration: 1.2),
+        ])))
+
+        let tag = DLOFont.terminalLabel(text: "PMCA", size: 5)
+        tag.fontColor = DLOColor.teal.withAlphaComponent(0.8)
+        tag.position = CGPoint(x: 0, y: 48)
+        node.addChild(tag)
+        return node
+    }
+
+    private static func publicNoticeBoardProcedural(label: String) -> SKNode {
+        let node = SKNode()
+        let postL = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.45),
+                                 size: CGSize(width: 4, height: 44))
+        postL.position = CGPoint(x: -16, y: 22)
+        node.addChild(postL)
+        let postR = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.45),
+                                 size: CGSize(width: 4, height: 44))
+        postR.position = CGPoint(x: 16, y: 22)
+        node.addChild(postR)
+
+        let board = SKSpriteNode(
+            color: SKColor(red: 0.18, green: 0.16, blue: 0.12, alpha: 1),
+            size: CGSize(width: 38, height: 28))
+        board.position = CGPoint(x: 0, y: 38)
+        node.addChild(board)
+
+        let pin = SKSpriteNode(color: DLOColor.terminalAmber.withAlphaComponent(0.7),
+                               size: CGSize(width: 4, height: 4))
+        pin.position = CGPoint(x: 0, y: 50)
+        node.addChild(pin)
+
+        let tag = DLOFont.terminalLabel(text: label, size: 6)
+        tag.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.85)
+        tag.position = CGPoint(x: 0, y: 56)
+        node.addChild(tag)
+        return node
+    }
+
+    private static func networkAccessNodeProcedural() -> SKNode {
+        let node = SKNode()
+        let base = SKSpriteNode(
+            color: SKColor(red: 0.12, green: 0.14, blue: 0.13, alpha: 1),
+            size: CGSize(width: 30, height: 6))
+        base.position = CGPoint(x: 0, y: 3)
+        node.addChild(base)
+
+        let housing = SKSpriteNode(
+            color: SKColor(red: 0.14, green: 0.18, blue: 0.16, alpha: 1),
+            size: CGSize(width: 24, height: 32))
+        housing.position = CGPoint(x: 0, y: 20)
+        node.addChild(housing)
+
+        let port = SKSpriteNode(
+            color: SKColor(red: 0.08, green: 0.22, blue: 0.18, alpha: 1),
+            size: CGSize(width: 14, height: 10))
+        port.position = CGPoint(x: 0, y: 26)
+        node.addChild(port)
+
+        let cable = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.4),
+                                 size: CGSize(width: 2, height: 14))
+        cable.position = CGPoint(x: 10, y: 14)
+        node.addChild(cable)
+
+        let lbl = DLOFont.terminalLabel(text: "PDA PORT", size: 5)
+        lbl.fontColor = SKColor(red: 0.52, green: 0.74, blue: 0.62, alpha: 0.95)
+        lbl.position = CGPoint(x: 0, y: 42)
+        node.addChild(lbl)
+        return node
+    }
+
+    private static func dataCacheUnitProcedural() -> SKNode {
+        let node = SKNode()
+        let base = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.4),
+                                size: CGSize(width: 32, height: 6))
+        base.position = CGPoint(x: 0, y: 3)
+        node.addChild(base)
+
+        let crate = SKSpriteNode(
+            color: SKColor(red: 0.12, green: 0.14, blue: 0.13, alpha: 1),
+            size: CGSize(width: 26, height: 22))
+        crate.position = CGPoint(x: 0, y: 17)
+        node.addChild(crate)
+
+        let stripe = SKSpriteNode(color: DLOColor.terminalGreen.withAlphaComponent(0.45),
+                                  size: CGSize(width: 26, height: 3))
+        stripe.position = CGPoint(x: 0, y: 22)
+        node.addChild(stripe)
+
+        let tag = DLOFont.terminalLabel(text: "DATA CACHE", size: 5)
+        tag.fontColor = DLOColor.terminalGreen.withAlphaComponent(0.85)
         tag.position = CGPoint(x: 0, y: 34)
         node.addChild(tag)
         return node
     }
 
-    static func civicNoticeBoard(label: String) -> SKNode {
-        let node = informationNodeBeacon(label: label)
-        let stand = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.3),
-                                 size: CGSize(width: 18, height: 6))
-        stand.position = CGPoint(x: 0, y: 3)
-        node.addChild(stand)
+    private static func enforcementRobotBodyProcedural() -> SKNode {
+        let body = SKNode()
+        let base = SKSpriteNode(color: SKColor(red: 0.14, green: 0.14, blue: 0.16, alpha: 1),
+                                size: CGSize(width: 36, height: 14))
+        base.position = CGPoint(x: 0, y: 7)
+        body.addChild(base)
+
+        let torso = SKSpriteNode(color: SKColor(red: 0.20, green: 0.20, blue: 0.24, alpha: 1),
+                                 size: CGSize(width: 28, height: 44))
+        torso.position = CGPoint(x: 0, y: 36)
+        body.addChild(torso)
+
+        let eye = SKShapeNode(circleOfRadius: 5)
+        eye.fillColor = DLOColor.danger.withAlphaComponent(0.9)
+        eye.strokeColor = .clear
+        eye.position = CGPoint(x: 0, y: 48)
+        body.addChild(eye)
+        eye.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.fadeAlpha(to: 0.4, duration: 0.6),
+            SKAction.fadeAlpha(to: 1.0, duration: 0.6),
+        ])))
+        return body
+    }
+
+    private static func maintenanceCabinetProcedural() -> SKNode {
+        let node = SKNode()
+        let base = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.35),
+                                size: CGSize(width: 30, height: 6))
+        base.position = CGPoint(x: 0, y: 3)
+        node.addChild(base)
+        let door = SKSpriteNode(
+            color: SKColor(red: 0.13, green: 0.15, blue: 0.14, alpha: 1),
+            size: CGSize(width: 26, height: 36))
+        door.position = CGPoint(x: 0, y: 22)
+        node.addChild(door)
+        let handle = SKSpriteNode(color: DLOColor.terminalAmber.withAlphaComponent(0.6),
+                                  size: CGSize(width: 3, height: 8))
+        handle.position = CGPoint(x: 8, y: 22)
+        node.addChild(handle)
+        let tag = DLOFont.terminalLabel(text: "LOCKER", size: 5)
+        tag.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.75)
+        tag.position = CGPoint(x: 0, y: 44)
+        node.addChild(tag)
         return node
     }
 }

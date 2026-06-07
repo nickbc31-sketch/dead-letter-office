@@ -299,7 +299,7 @@
     {"x": "3800", "y": "90", "text": "SORTING DIVISION — TIER 3 ARCHIVE"}
   ],
   "npcs": [],
-  "objectiveText": "FIND MAINTENANCE CREDENTIAL — REACH RESTRICTED SECTOR — COLLECT CHOIR LIST",
+  "objectiveText": "SHIFT 2 — EAST TRANSIT",
   "ambientMusicTrack": "ambient_platform",
   "platformNodes": [],
   "levelWidth": 4800,

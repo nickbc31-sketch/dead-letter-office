@@ -58,7 +58,8 @@
     "splashImageName": "splash_ch5",
     "ambientMusicTrack": "ambient_desk",
     "segments": [
-      {"id": "seg_ch5_desk", "mode": "desk", "resourceID": "cases_ch5", "requiredFlags": null, "setsFlags": ["ch5_desk_complete"]}
+      {"id": "seg_ch5_desk", "mode": "desk", "resourceID": "cases_ch5", "requiredFlags": null, "setsFlags": ["ch5_desk_complete"]},
+      {"id": "seg_ch5_platform", "mode": "platform", "resourceID": "level_ch5", "requiredFlags": ["ch5_desk_complete"], "setsFlags": ["ch5_platform_complete", "ch6_unlocked"]}
     ],
     "unlockRequires": ["ch5_unlocked"],
     "summary": "The rich can edit their death records. Poor citizens are deleted. Mara discovers her brother's death was part of a memory-cleaning trial."
@@ -70,7 +71,8 @@
     "splashImageName": "splash_ch6",
     "ambientMusicTrack": "ambient_platform_train",
     "segments": [
-      {"id": "seg_ch6_platform", "mode": "platform", "resourceID": "level_ch6", "requiredFlags": null, "setsFlags": ["ch6_platform_complete", "ch7_unlocked"]}
+      {"id": "seg_ch6_desk", "mode": "desk", "resourceID": "cases_ch6", "requiredFlags": null, "setsFlags": ["ch6_desk_complete"]},
+      {"id": "seg_ch6_platform", "mode": "platform", "resourceID": "level_ch6", "requiredFlags": ["ch6_desk_complete"], "setsFlags": ["ch6_platform_complete", "ch7_unlocked"]}
     ],
     "unlockRequires": ["ch6_unlocked"],
     "summary": "Platform chapter on an automated underground data train carrying forbidden dead letters."
@@ -95,7 +97,8 @@
     "splashImageName": "splash_ch8",
     "ambientMusicTrack": "ambient_desk_final",
     "segments": [
-      {"id": "seg_ch8_desk", "mode": "desk", "resourceID": "cases_ch8", "requiredFlags": null, "setsFlags": ["ch8_desk_complete"]}
+      {"id": "seg_ch8_platform", "mode": "platform", "resourceID": "level_ch8", "requiredFlags": null, "setsFlags": ["ch8_platform_complete"]},
+      {"id": "seg_ch8_desk", "mode": "desk", "resourceID": "cases_ch8", "requiredFlags": ["ch8_platform_complete"], "setsFlags": ["ch8_desk_complete"]}
     ],
     "unlockRequires": ["ch8_unlocked"],
     "summary": "Final shift. Player chooses the ending."

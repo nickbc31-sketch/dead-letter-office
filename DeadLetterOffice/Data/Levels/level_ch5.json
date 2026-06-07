@@ -1,0 +1,224 @@
+{
+  "id": "level_ch5",
+  "chapter": "ch5",
+  "displayName": "HELIX MERIDIAN — P05 SERVICE CORRIDOR",
+  "tileMapName": null,
+  "backgroundLayers": [
+    {"imageName": "bg_city_far", "zPosition": -30, "scrollFactor": 0.1, "yOffset": 0},
+    {"imageName": "bg_facility_mid", "zPosition": -20, "scrollFactor": 0.4, "yOffset": 0},
+    {"imageName": "bg_facility_near", "zPosition": -10, "scrollFactor": 0.7, "yOffset": 0}
+  ],
+  "spawnPoint": [160, 60],
+  "exits": [
+    {
+      "type": "platform_end",
+      "x": "4200",
+      "y": "60",
+      "requiredFlag": "ch5_field_complete",
+      "dialogueID": "dialogue_ch5_platform_end",
+      "nextSceneHint": "level_ch6"
+    }
+  ],
+  "fieldBoundaryX": 4350,
+  "securityCameras": [
+    {
+      "id": "ch5_corridor_cam",
+      "position": [2800, 68],
+      "coneLength": 130,
+      "coneAngle": 38,
+      "scanAmplitude": 12,
+      "scanSpeed": 0.55,
+      "disabledFlag": "ch5_camera_bypass_used"
+    }
+  ],
+  "encounterSequence": [
+    {
+      "module": "environmental_story",
+      "id": "ch5_f_corridor_sign",
+      "environmental": {
+        "x": 200,
+        "y": 90,
+        "text": "HELIX MERIDIAN — P05 SERVICE CORRIDOR\nPREMIUM TIER / DELETION TIER"
+      }
+    },
+    {
+      "module": "terminal_investigation",
+      "id": "ch5_d_legacy_terminal",
+      "terminal": {
+        "id": "terminal_legacy",
+        "position": [380, 68],
+        "setsFlag": "ch5_legacy_read",
+        "displayText": "HELIX MERIDIAN LEGACY DIVISION\nTier 3 Package Registry\n\nQUILL, SERA — MH-8812-Q\nPackage: Full legacy edit\nPre-purchase: 2147.04.15\nDeath: 2147.05.01\nEdit: 'deletion engines' → 'systems'\n\nPELL, EXECUTIVE — MH-0001-P\nPackage: 3 valid final versions\nClerk discretion: SELECT ONE\n\n[Lower Veyr tier: NOT ELIGIBLE]"
+      }
+    },
+    {
+      "module": "drone_patrol",
+      "id": "ch5_a_drone_entry",
+      "anchorX": 500,
+      "patrol": {
+        "enemyType": "security_drone",
+        "points": [[400, 130], [600, 130]],
+        "speed": 52,
+        "pauseDuration": 2.2
+      }
+    },
+    {
+      "module": "environmental_story",
+      "id": "ch5_f_tier3_sign",
+      "environmental": {
+        "x": 720,
+        "y": 68,
+        "text": "TIER 3 — AFTERLIFE PREMIUM\nYOUR LEGACY. EDITED.",
+        "kind": "sign",
+        "signID": "sign_tier3"
+      }
+    },
+    {
+      "module": "environmental_story",
+      "id": "ch5_f_deletion_sign",
+      "environmental": {
+        "x": 980,
+        "y": 68,
+        "text": "DELETION ENGINE v3.1\nSERVICE-CLASS PROCESSING\nArchitect: Quill, S.",
+        "kind": "sign",
+        "signID": "sign_deletion_engine"
+      }
+    },
+    {
+      "module": "terminal_investigation",
+      "id": "ch5_d_deletion_terminal",
+      "terminal": {
+        "id": "terminal_deletion",
+        "position": [1280, 68],
+        "requiredFlag": "c16_processed",
+        "setsFlag": "ch5_deletion_read",
+        "displayText": "HELIX MEMORY DIVISION — DELETION LOG\nEngine v3.1 — architect Quill, S.\n\nService-class trial cohort: 47\nTrial reference: TRIAL-0442\nSubject: Venn, Elias — VC-0442-M\nOutcome: memory deletion, not death\n\nIncineration pathway: STANDARD\nTier 3 rollout: Meridian Heights only\n\n[Cross-reference C15 archive stub]"
+      }
+    },
+    {
+      "module": "drone_patrol",
+      "id": "ch5_a_drone_mid",
+      "anchorX": 1700,
+      "patrol": {
+        "enemyType": "security_drone",
+        "points": [[1200, 130], [1550, 130]],
+        "speed": 58,
+        "pauseDuration": 1.6
+      }
+    },
+    {
+      "module": "npc_encounter",
+      "id": "ch5_e_service_worker",
+      "npc": {
+        "id": "service_worker_p05",
+        "position": [1950, 68],
+        "displayName": "SERVICE WORKER — P05",
+        "dialogue": [
+          "Premium corridor is climate-controlled. Deletion corridor is not.",
+          "They process service-class workers through the same building. Different doors.",
+          "I saw a clerk badge on the deletion floor last week. She looked like she wasn't supposed to be there."
+        ],
+        "setsFlag": "ch5_worker_talked",
+        "repeatable": false
+      }
+    },
+    {
+      "module": "terminal_investigation",
+      "id": "ch5_d_trial_terminal",
+      "terminal": {
+        "id": "terminal_trial",
+        "position": [2400, 68],
+        "requiredFlag": "c15_processed",
+        "setsFlag": "ch5_trial_read",
+        "displayText": "TRIAL RECORDS — RESTRICTED\nTRIAL-0442 — Venn, Elias\n\nTermination: 2142.07.14\nType: Memory deletion\nAuthorised: Director Calyx\nBody recovery: NOT REQUIRED\n\nWaveform anomaly 2147.05.02:\nLIVE composition on archive stub\nEntropy: 0.52 — PASSED\n\n[Clerk 1147-F sibling link noted]"
+      }
+    },
+    {
+      "module": "drone_patrol",
+      "id": "ch5_a_guard_camera",
+      "anchorX": 2900,
+      "patrol": {
+        "enemyType": "security_guard",
+        "points": [[2600, 68], [2850, 68]],
+        "speed": 40,
+        "pauseDuration": 3.5
+      }
+    },
+    {
+      "module": "terminal_investigation",
+      "id": "ch5_d_executive_terminal",
+      "terminal": {
+        "id": "terminal_executive",
+        "position": [3300, 68],
+        "requiredFlag": "c17_processed",
+        "setsFlag": "ch5_executive_read",
+        "displayText": "EXECUTIVE LEGACY — VERSION LOG\nPell, Executive — MH-0001-P\n\nVersion A: 'I regret nothing.'\nVersion B: 'The Choir are terrorists.'\nVersion C: 'I chose Tier 3 because I could.'\n\nClerk action: [SEE CASE C17]\nBoard notification: SENT\n\n[The clerk chose which truth\nthe executive left behind.]"
+      }
+    },
+    {
+      "module": "drone_patrol",
+      "id": "ch5_a_drone_exit",
+      "anchorX": 3900,
+      "patrol": {
+        "enemyType": "security_drone",
+        "points": [[3600, 130], [4000, 130]],
+        "speed": 65,
+        "pauseDuration": 2.0
+      }
+    },
+    {
+      "module": "environmental_story",
+      "id": "ch5_f_transit_sign",
+      "environmental": {
+        "x": 4050,
+        "y": 90,
+        "text": "TRANSIT ACCESS — ROUTE 7-B MAINTENANCE"
+      }
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ch5_camera_override",
+      "type": "security_override",
+      "position": [2750, 68],
+      "requiredFlag": "ch5_deletion_read",
+      "setsFlag": "ch5_camera_bypass_used",
+      "hackPuzzleID": "ch5_camera_bypass",
+      "displayText": "SURVEILLANCE NODE — P05-CAM-3\nHelix Meridian corporate camera\n\nConnect PDA to match surveillance\nsweep frequency and bypass cone.\n\nApply override?",
+      "linkedInteractableID": "ch5_deletion_door"
+    },
+    {
+      "id": "ch5_deletion_door",
+      "type": "door",
+      "position": [2880, 68],
+      "requiredFlag": "ch5_camera_bypass_used",
+      "setsFlag": "ch5_deletion_door_open",
+      "displayText": "DELETION ENGINE ACCESS — [LOCKED]\nCAMERA BYPASS REQUIRED"
+    },
+    {
+      "id": "cartridge_trial_0442",
+      "type": "cartridge",
+      "position": [3650, 68],
+      "nodeLabel": "FILE",
+      "setsFlag": "ch5_field_complete",
+      "cartridgeData": "TRIAL-0442 — RECOVERED LOG\nHelix Memory Division\n\nSubject: Venn, Elias\nType: Memory deletion\nNOT physical death\n\nTermination signed: Calyx, 2142\nFamily notification: NONE\nArchive stub: same day\n\nYour brother was erased from\nthe civic system.\n\nHe was not killed.\nHe was deleted.\n\nThe engine that did it was\nbuilt by Sera Quill.\nTested on 47 service-class\nworkers first."
+    }
+  ],
+  "patrols": [],
+  "pickups": [
+    {"id": "ch5_pickup_01", "x": "300", "y": "68", "setsFlag": "ch5_pickup01_collected"},
+    {"id": "ch5_pickup_02", "x": "1100", "y": "68", "setsFlag": "ch5_pickup02_collected"},
+    {"id": "ch5_pickup_03", "x": "2100", "y": "68", "setsFlag": "ch5_pickup03_collected"},
+    {"id": "ch5_pickup_04", "x": "3500", "y": "68", "setsFlag": "ch5_pickup04_collected"}
+  ],
+  "environmentalTextNodes": [],
+  "npcs": [],
+  "objectiveText": "SHIFT 5 — HELIX MERIDIAN",
+  "ambientMusicTrack": "ambient_platform",
+  "platformNodes": [],
+  "buildingNodes": [
+    {"asset": "helix_meridian", "x": 1800, "y": 0, "scale": 1.0}
+  ],
+  "levelWidth": 4300,
+  "levelHeight": 400
+}

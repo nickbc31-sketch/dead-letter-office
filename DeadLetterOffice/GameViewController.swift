@@ -5,6 +5,18 @@ class GameViewController: UIViewController {
 
     private var didPresent = false
 
+    /// Landscape logical size for this landscape-only app.
+    /// `UIScreen.main.bounds` often reports portrait dimensions on a physical device.
+    private static func landscapeSceneSize(from bounds: CGSize) -> CGSize {
+        CGSize(width: max(bounds.width, bounds.height),
+               height: min(bounds.width, bounds.height))
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presentBootSceneIfNeeded()
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         presentBootSceneIfNeeded()
@@ -12,13 +24,17 @@ class GameViewController: UIViewController {
 
     private func presentBootSceneIfNeeded() {
         guard !didPresent,
-              let sv = view as? SKView,
-              sv.bounds.width > sv.bounds.height,   // wait for landscape — portrait fires first on device
-              sv.bounds.width > 200 else { return }
-        didPresent = true
+              let sv = view as? SKView else { return }
 
-        let sz = sv.bounds.size
-        NSLog("[DLO] GameVC: presenting at %.0f×%.0f (landscape confirmed)", sz.width, sz.height)
+        let viewBounds = sv.bounds
+        guard viewBounds.width > 1, viewBounds.height > 1 else { return }
+
+        let sz = Self.landscapeSceneSize(from: UIScreen.main.bounds.size)
+        guard sz.width > 200, sz.height > 150 else { return }
+
+        didPresent = true
+        NSLog("[DLO Startup] GameVC presenting BootScene view=%.0f×%.0f scene=%.0f×%.0f",
+              viewBounds.width, viewBounds.height, sz.width, sz.height)
         SceneManager.shared.view = sv
 
         // Debug: --start-at-desk / --start-at-dialogue launch arguments for UI testing
@@ -36,9 +52,20 @@ class GameViewController: UIViewController {
             s.scaleMode = .resizeFill
             sv.presentScene(s); return
         }
-        if args.contains("--start-at-platform") {
-            let s = PlatformScene(size: sz); s.levelID = "level_ch1"; s.scaleMode = .resizeFill
-            sv.presentScene(s); return
+        if args.contains("--start-at-platform")
+            || args.contains("--dlo-validate-platform")
+            || args.contains("-DLOTestPlatformScene") {
+            let s = PlatformScene(size: sz)
+            s.levelID = "level_ch1"
+            s.scaleMode = .resizeFill
+            #if DEBUG
+            if args.contains("--dlo-validate-platform") || args.contains("-DLOTestPlatformScene") {
+                s.debugValidationMode = true
+                NSLog("[DLO Validate] debug platform regression mode — level_ch1")
+            }
+            #endif
+            sv.presentScene(s)
+            return
         }
         if args.contains("--start-at-chapter-select") {
             let s = ChapterSelectScene(size: sz); s.scaleMode = .resizeFill
@@ -48,6 +75,12 @@ class GameViewController: UIViewController {
             let s = DebugScene(size: sz); s.scaleMode = .resizeFill
             sv.presentScene(s); return
         }
+        #if DEBUG
+        if args.contains("-DLOTestHackPuzzles") {
+            let s = HackPuzzleTestScene(size: sz); s.scaleMode = .resizeFill
+            sv.presentScene(s); return
+        }
+        #endif
 
         let scene = BootScene(size: sz)
         scene.scaleMode = .resizeFill

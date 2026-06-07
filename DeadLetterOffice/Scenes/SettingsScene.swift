@@ -35,6 +35,9 @@ final class SettingsScene: SKScene {
         SceneManager.shared.view = view
         backgroundColor = DLOColor.background
         buildScene()
+        if GameState.shared.settingsReturnDestination == nil {
+            AudioManager.shared.playMainMenuMusic()
+        }
     }
 
     override func didChangeSize(_ oldSize: CGSize) {
@@ -227,6 +230,7 @@ final class SettingsScene: SKScene {
 
         if awaitingConfirm {
             if confirmRect.contains(pos) {
+                AudioManager.shared.playUIClick()
                 awaitingConfirm = false
                 confirmPanel?.removeFromParent(); confirmPanel = nil
                 SaveManager.shared.deleteSave()
@@ -238,6 +242,7 @@ final class SettingsScene: SKScene {
                     }
                 ]))
             } else if cancelledRect.contains(pos) {
+                AudioManager.shared.playUIClick()
                 awaitingConfirm = false
                 confirmPanel?.removeFromParent(); confirmPanel = nil
             }
@@ -250,14 +255,15 @@ final class SettingsScene: SKScene {
         // Toggle tap
         for (i, toggle) in toggleItems.enumerated() {
             if toggle.hitRect.contains(pos) {
+                AudioManager.shared.playUIClick()
                 applyToggleTap(index: i)
                 return
             }
         }
 
-        if resumeRect.contains(pos) { returnToGame() }
-        if backRect.contains(pos)   { goBack() }
-        if deleteRect.contains(pos) { confirmDeleteSave() }
+        if resumeRect.contains(pos) { AudioManager.shared.playUIClick(); returnToGame() }
+        if backRect.contains(pos)   { AudioManager.shared.playUIClick(); goBack() }
+        if deleteRect.contains(pos) { AudioManager.shared.playUIClick(); confirmDeleteSave() }
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {

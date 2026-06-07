@@ -1,0 +1,127 @@
+{
+  "id": "intro_ch5",
+  "chapter": "ch5",
+  "returnSceneHint": "desk_ch5",
+  "nodes": [
+    {
+      "id": "n0",
+      "lines": [
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. Shift 5. Scheduled mortality: 2147.05.01 at 09:00. You are still processing cases.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "The order is still active.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Acknowledged. Your queue contains three cases. The first is an archive stub for citizen VC-0442-M.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "My brother.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Calyx ordered your mortality before this case reached your queue. The memo was routed to your terminal. You read it.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "The stub has no body. No letter. Five years of nothing.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Cases two and three concern Afterlife Premium. Tier 3 legacy edits. Executive discretion.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Proceed.",
+          "voiceFilter": "terminal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": ["ch5_intro_complete"],
+      "nextID": null
+    },
+    {
+      "id": "n1",
+      "lines": [
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Archive stub processed. Waveform date conflict logged.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "TRIAL-0442. Helix memory-cleaning. Sera Quill built the engine.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Two cases remain. The executive package allows three valid final messages.",
+          "voiceFilter": "terminal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": ["c15_processed"],
+      "flagsSet": ["ch5_c15_pause_shown"],
+      "nextID": null
+    },
+    {
+      "id": "n2",
+      "lines": [
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Chapter 5 queue complete.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "The rich buy their deaths. The poor are deleted. Elias was a trial subject.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Helix Meridian administrative interest is not a clerk discussion topic.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "I need to get to the transit infrastructure. The Black Train manifest is waiting.",
+          "voiceFilter": "normal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": ["ch5_desk_complete"],
+      "flagsSet": ["ch5_outro_complete"],
+      "nextID": null
+    }
+  ]
+}

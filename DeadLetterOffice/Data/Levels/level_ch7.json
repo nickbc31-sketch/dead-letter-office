@@ -1,0 +1,235 @@
+{
+  "id": "level_ch7",
+  "chapter": "ch7",
+  "displayName": "UNDERCITY REFUGE — P07 SECTOR",
+  "tileMapName": null,
+  "backgroundLayers": [
+    {"imageName": "bg_city_far", "zPosition": -30, "scrollFactor": 0.1, "yOffset": 0},
+    {"imageName": "bg_facility_mid", "zPosition": -20, "scrollFactor": 0.4, "yOffset": 0},
+    {"imageName": "bg_facility_near", "zPosition": -10, "scrollFactor": 0.7, "yOffset": 0}
+  ],
+  "spawnPoint": [150, 60],
+  "exits": [
+    {
+      "type": "platform_end",
+      "x": "4100",
+      "y": "60",
+      "requiredFlag": "ch7_field_complete",
+      "dialogueID": "dialogue_ch7_platform_end",
+      "nextSceneHint": "desk_ch8"
+    }
+  ],
+  "fieldBoundaryX": 4250,
+  "securityCameras": [
+    {
+      "id": "ch7_choir_cam",
+      "position": [2400, 68],
+      "coneLength": 115,
+      "coneAngle": 35,
+      "scanAmplitude": 10,
+      "scanSpeed": 0.45,
+      "disabledFlag": "ch7_pattern_bypass_used"
+    }
+  ],
+  "encounterSequence": [
+    {
+      "module": "environmental_story",
+      "id": "ch7_f_undercity_sign",
+      "environmental": {
+        "x": 200,
+        "y": 90,
+        "text": "UNDERCITY REFUGE — P07\nQUIET CHOIR TERRITORY"
+      }
+    },
+    {
+      "module": "terminal_investigation",
+      "id": "ch7_d_census_terminal",
+      "terminal": {
+        "id": "terminal_census",
+        "position": [380, 68],
+        "setsFlag": "ch7_census_read",
+        "displayText": "QUIET CHOIR CENSUS — INTERNAL\nLiving-dead count: 847\nBeneath sealed district\n\nVerified signatures: 833\nForged (admitted): 14\nSigners on monitoring lists: 612\n\nDeletion risk if petition rejected:\nINCINERATION of all records\n\n[Statute 8-F: any forgery =\nmandatory rejection]"
+      }
+    },
+    {
+      "module": "drone_patrol",
+      "id": "ch7_a_drone_entry",
+      "anchorX": 500,
+      "patrol": {
+        "enemyType": "security_drone",
+        "points": [[400, 130], [580, 130]],
+        "speed": 48,
+        "pauseDuration": 2.5
+      }
+    },
+    {
+      "module": "environmental_story",
+      "id": "ch7_f_mural_sign",
+      "environmental": {
+        "x": 680,
+        "y": 68,
+        "text": "[MURAL — UNDERCITY]\n'ORRA LIT THE LAMP\nWHEN THE SQUARE WENT DARK'\n— 2138 —",
+        "kind": "sign",
+        "signID": "sign_undercity_mural"
+      }
+    },
+    {
+      "module": "terminal_investigation",
+      "id": "ch7_d_jun_terminal",
+      "terminal": {
+        "id": "terminal_jun_relay",
+        "position": [950, 68],
+        "requiredFlag": "c21_processed",
+        "setsFlag": "ch7_jun_relay_read",
+        "displayText": "RELAY LOG — JUN VALE\nVC-2290-V — registry: DECEASED\n\nLast composition: 2147.05.12\nOrigin: Route 7-B carriage 3\nSoulprint: ACTIVE — 99.1%\n\nMessage to Clerk 1147-F:\n'You verified the manifest.'\n'Meet me where Route 7-B surfaces.'\n\n[Meeting point: this junction.]"
+      }
+    },
+    {
+      "module": "npc_encounter",
+      "id": "ch7_e_jun_vale",
+      "npc": {
+        "id": "jun_vale_undercity",
+        "position": [1350, 68],
+        "displayName": "JUN VALE",
+        "dialogue": [
+          "You verified the manifest. I signed it with a dead credential because the living ones are watched.",
+          "847 people down here. Officially dead. The census is not a signal — it is a count of everyone they erased.",
+          "Elias is on the relay network. The complete letter is in Central Archive. Calyx sealed it in 2130."
+        ],
+        "setsFlag": "ch7_jun_talked",
+        "repeatable": false
+      }
+    },
+    {
+      "module": "drone_patrol",
+      "id": "ch7_a_drone_mid",
+      "anchorX": 1700,
+      "patrol": {
+        "enemyType": "security_drone",
+        "points": [[1200, 130], [1550, 130]],
+        "speed": 52,
+        "pauseDuration": 1.8
+      }
+    },
+    {
+      "module": "terminal_investigation",
+      "id": "ch7_d_petition_terminal",
+      "terminal": {
+        "id": "terminal_petition",
+        "position": [1900, 68],
+        "requiredFlag": "c22_processed",
+        "setsFlag": "ch7_petition_read",
+        "displayText": "PETITION STATUS — C22\nQuiet Choir recognition petition\n\nClerk action: [SEE CASE C22]\n\nIf REJECTED (Statute 8-F):\n847 signature records incinerated\nIncluding 833 verified authentic\n\nIf APPROVED:\nDirectorate review — treason risk\n\nIf FLAGGED:\nDeferred — monitoring escalates"
+      }
+    },
+    {
+      "module": "environmental_story",
+      "id": "ch7_f_census_wall",
+      "environmental": {
+        "x": 2200,
+        "y": 68,
+        "text": "CENSUS WALL — 847 NAMES\n833 VERIFIED — 14 MARKED FORGED",
+        "kind": "sign",
+        "signID": "sign_census_wall"
+      }
+    },
+    {
+      "module": "terminal_investigation",
+      "id": "ch7_d_elias_terminal",
+      "terminal": {
+        "id": "terminal_elias_packet",
+        "position": [2650, 68],
+        "requiredFlag": "c23_processed",
+        "setsFlag": "ch7_elias_packet_read",
+        "displayText": "ELIAS FINAL PACKET — RELAY COPY\nVC-0442-M — seven fragments\n\nEntropy: 0.67 — PASSED\nComposition: 2147.05.14\nOrigin: undercity relay\n\nTermination type: memory deletion\nAuthorised: Calyx, 2142\nFamily notification: NONE\n\n'Fragment five: I love you.\nFragment six: do not archive this.\nFragment seven: check the entropy.'"
+      }
+    },
+    {
+      "module": "drone_patrol",
+      "id": "ch7_a_guard_relay",
+      "anchorX": 3000,
+      "patrol": {
+        "enemyType": "security_guard",
+        "points": [[2700, 68], [2950, 68]],
+        "speed": 38,
+        "pauseDuration": 4.0
+      }
+    },
+    {
+      "module": "terminal_investigation",
+      "id": "ch7_d_encrypted_terminal",
+      "terminal": {
+        "id": "terminal_encrypted",
+        "position": [3300, 68],
+        "requiredFlag": "ch7_pattern_bypass_used",
+        "setsFlag": "ch7_encrypted_read",
+        "displayText": "ENCRYPTED MESSAGE BUFFER\nQuiet Choir subnet — decrypted\n\n847 living-dead relay addresses\nMaintenance subnet routing table\nCentral Archive access vectors:\n  - Signal routing: Node 12-A\n  - Credential: ORRA-SEAL-2130\n\nComplete letter location:\nPMCA Central Archive — Vault 1\n\n[Dual hack required for access.]"
+      }
+    },
+    {
+      "module": "drone_patrol",
+      "id": "ch7_a_drone_exit",
+      "anchorX": 3800,
+      "patrol": {
+        "enemyType": "security_drone",
+        "points": [[3500, 130], [3900, 130]],
+        "speed": 55,
+        "pauseDuration": 2.0
+      }
+    },
+    {
+      "module": "environmental_story",
+      "id": "ch7_f_archive_sign",
+      "environmental": {
+        "x": 4000,
+        "y": 90,
+        "text": "SURFACE ROUTE — CENTRAL ARCHIVE ACCESS"
+      }
+    }
+  ],
+  "interactables": [
+    {
+      "id": "ch7_choir_override",
+      "type": "security_override",
+      "position": [2350, 68],
+      "requiredFlag": "ch7_census_read",
+      "setsFlag": "ch7_pattern_bypass_used",
+      "hackPuzzleID": "ch7_choir_pattern",
+      "displayText": "CHOIR RELAY — PATTERN LOCK\nEncrypted message buffer\n\nConnect PDA to decode Choir\naccess pattern and open relay\nsubnet terminal.\n\nApply override?",
+      "linkedInteractableID": "ch7_relay_door"
+    },
+    {
+      "id": "ch7_relay_door",
+      "type": "door",
+      "position": [2480, 68],
+      "requiredFlag": "ch7_pattern_bypass_used",
+      "setsFlag": "ch7_relay_open",
+      "displayText": "RELAY SUBNET — [ENCRYPTED]\nPATTERN DECODE REQUIRED"
+    },
+    {
+      "id": "cartridge_elias_relay",
+      "type": "cartridge",
+      "position": [3650, 68],
+      "nodeLabel": "FILE",
+      "setsFlag": "ch7_field_complete",
+      "cartridgeData": "ELIAS VENN — RELAY MESSAGE\nComposed: 2147.05.14\nEntropy: 0.67\n\n'Mara. Final packet.\nThe trial was memory deletion,\nnot death.\nI am in the undercity relay.\nCalyx signed the termination.\nTell them the lamp is a census.\nI love you.\nDo not archive this.\nCheck the entropy.'\n\nYour brother is alive.\nHe has been alive since 2142.\nThe city erased him.\nIt did not kill him."
+    }
+  ],
+  "patrols": [],
+  "pickups": [
+    {"id": "ch7_pickup_01", "x": "300", "y": "68", "setsFlag": "ch7_pickup01_collected"},
+    {"id": "ch7_pickup_02", "x": "1100", "y": "68", "setsFlag": "ch7_pickup02_collected"},
+    {"id": "ch7_pickup_03", "x": "2100", "y": "68", "setsFlag": "ch7_pickup03_collected"},
+    {"id": "ch7_pickup_04", "x": "3450", "y": "68", "setsFlag": "ch7_pickup04_collected"}
+  ],
+  "environmentalTextNodes": [],
+  "npcs": [],
+  "objectiveText": "SHIFT 7 — UNDERCITY",
+  "ambientMusicTrack": "ambient_platform",
+  "platformNodes": [],
+  "buildingNodes": [
+    {"asset": "quiet_choir_undercity", "x": 1750, "y": 0, "scale": 1.0}
+  ],
+  "levelWidth": 4200,
+  "levelHeight": 400
+}

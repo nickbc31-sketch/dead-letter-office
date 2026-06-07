@@ -17,7 +17,8 @@ final class MainMenuScene: SKScene {
         layout = SceneLayout.make(scene: self)
         backgroundColor = DLOColor.background
         buildScene()
-        AudioManager.shared.playMusic(named: "ambient_menu")
+        AudioManager.shared.playMainMenuMusic()
+        NSLog("[DLO Startup] MainMenuScene ready — %d buttons", buttonTargets.count)
     }
 
     override func didChangeSize(_ oldSize: CGSize) {
@@ -174,6 +175,7 @@ final class MainMenuScene: SKScene {
     // MARK: - Continue Shift
 
     private func handleContinueShift() {
+        AudioManager.shared.stopMainMenuMusic()
         let state = GameState.shared
         if state.hasFlag("game_complete") {
             SceneManager.shared.transition(to: .credits, from: self)
@@ -261,6 +263,7 @@ final class MainMenuScene: SKScene {
     }
 
     private func confirmNewShift() {
+        AudioManager.shared.stopMainMenuMusic()
         awaitingNewShiftConfirm = false
         confirmPanel?.removeFromParent()
         confirmPanel = nil
@@ -283,11 +286,14 @@ final class MainMenuScene: SKScene {
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let pos = touches.first?.location(in: self) else { return }
+        NSLog("[DLO Startup] MainMenu tap (%.0f,%.0f) confirm=%d", pos.x, pos.y, awaitingNewShiftConfirm)
 
         if awaitingNewShiftConfirm {
             if confirmRect.contains(pos) {
+                AudioManager.shared.playUIClick()
                 confirmNewShift()
             } else if cancelRect.contains(pos) {
+                AudioManager.shared.playUIClick()
                 awaitingNewShiftConfirm = false
                 confirmPanel?.removeFromParent()
                 confirmPanel = nil
@@ -296,6 +302,7 @@ final class MainMenuScene: SKScene {
         }
 
         for target in buttonTargets where target.rect.contains(pos) {
+            AudioManager.shared.playUIClick()
             target.labelNode.run(SKAction.sequence([
                 SKAction.fadeAlpha(to: 0.4, duration: 0.06),
                 SKAction.fadeAlpha(to: 1.0, duration: 0.12)

@@ -18,6 +18,7 @@ struct SaveData: Codable {
     var musicVolume: Float
     var sfxVolume: Float
     var notebookUnlockedIDs: [String]?
+    var pdaJournal: PDAJournalState?
 }
 
 final class SaveManager {
@@ -45,7 +46,8 @@ final class SaveManager {
             textSizeMultiplier: state.textSizeMultiplier,
             musicVolume: state.musicVolume,
             sfxVolume: state.sfxVolume,
-            notebookUnlockedIDs: Array(state.notebookUnlockedIDs)
+            notebookUnlockedIDs: Array(state.notebookUnlockedIDs),
+            pdaJournal: state.pdaJournal
         )
         if let encoded = try? JSONEncoder().encode(data) {
             UserDefaults.standard.set(encoded, forKey: saveKey)
@@ -75,6 +77,11 @@ final class SaveManager {
         state.musicVolume            = data.musicVolume
         state.sfxVolume              = data.sfxVolume
         state.notebookUnlockedIDs    = Set(data.notebookUnlockedIDs ?? [])
+        state.pdaJournal = data.pdaJournal ?? PDAJournalState()
+        NotebookJournalMigration.applyIfNeeded(
+            journal: &state.pdaJournal,
+            legacyNotebookIDs: state.notebookUnlockedIDs
+        )
     }
 
     func deleteSave() {

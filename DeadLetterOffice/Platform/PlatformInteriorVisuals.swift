@@ -98,13 +98,19 @@ enum PlatformInteriorVisuals {
 
         // Security camera domes
         for x: CGFloat in [100, width - 100] {
-            let cam = SKShapeNode(circleOfRadius: 6)
-            cam.fillColor = SKColor(white: 0.12, alpha: 1)
-            cam.strokeColor = DLOColor.terminalAmber.withAlphaComponent(0.5)
-            cam.lineWidth = 1
-            cam.position = CGPoint(x: x, y: floorH + wallH - 18)
-            cam.zPosition = 20
-            scene.addChild(cam)
+            if let cam = FieldSpriteAssets.groundedSprite(named: "security_camera", targetHeight: 28) {
+                cam.position = CGPoint(x: x, y: floorH + wallH - 46)
+                cam.zPosition = 20
+                scene.addChild(cam)
+            } else {
+                let fallback = SKShapeNode(circleOfRadius: 6)
+                fallback.fillColor = SKColor(white: 0.12, alpha: 1)
+                fallback.strokeColor = DLOColor.terminalAmber.withAlphaComponent(0.5)
+                fallback.lineWidth = 1
+                fallback.position = CGPoint(x: x, y: floorH + wallH - 18)
+                fallback.zPosition = 20
+                scene.addChild(fallback)
+            }
         }
 
         // Archive hardware cabinets — left
@@ -188,6 +194,18 @@ enum PlatformInteriorVisuals {
     }
 
     private static func addLocker(at pos: CGPoint, into scene: SKNode, number: Int) {
+        if let locker = FieldSpriteAssets.groundedSprite(named: "maintenance_locker", targetHeight: 58) {
+            locker.position = pos
+            locker.zPosition = 19.5
+            scene.addChild(locker)
+            let num = DLOFont.terminalLabel(text: String(format: "%02d", number), size: 7)
+            num.fontColor = DLOColor.dimText
+            num.position = CGPoint(x: pos.x, y: pos.y + 28)
+            num.zPosition = 19.6
+            scene.addChild(num)
+            return
+        }
+
         let locker = SKSpriteNode(color: SKColor(red: 0.08, green: 0.11, blue: 0.15, alpha: 1),
                                   size: CGSize(width: 28, height: 58))
         locker.anchorPoint = CGPoint(x: 0.5, y: 0)
@@ -285,6 +303,15 @@ enum PlatformInteriorVisuals {
                                    at floor: CGFloat, label: String) -> SKNode {
         let unit = SKNode()
         unit.zPosition = 17
+        if let locker = FieldSpriteAssets.groundedSprite(named: "maintenance_locker", targetHeight: h) {
+            locker.position = CGPoint(x: 0, y: floor)
+            unit.addChild(locker)
+            let plate = DLOFont.terminalLabel(text: label, size: 7)
+            plate.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.7)
+            plate.position = CGPoint(x: 0, y: floor + h * 0.55)
+            unit.addChild(plate)
+            return unit
+        }
         let body = SKSpriteNode(color: SKColor(red: 0.08, green: 0.11, blue: 0.15, alpha: 1),
                                 size: CGSize(width: w, height: h))
         body.anchorPoint = CGPoint(x: 0.5, y: 0)
@@ -311,6 +338,15 @@ enum PlatformInteriorVisuals {
     private static func fortifiedDoor(width w: CGFloat, height h: CGFloat, at floor: CGFloat) -> SKNode {
         let door = SKNode()
         door.zPosition = 17
+        if let archiveDoor = FieldSpriteAssets.groundedSprite(named: "archive_door", targetHeight: h) {
+            archiveDoor.position = CGPoint(x: 0, y: floor)
+            door.addChild(archiveDoor)
+            if let keypadSprite = FieldSpriteAssets.groundedSprite(named: "keypad", targetHeight: 20) {
+                keypadSprite.position = CGPoint(x: w / 2 - 4, y: floor + h * 0.45)
+                door.addChild(keypadSprite)
+            }
+            return door
+        }
         let plate = SKSpriteNode(color: SKColor(red: 0.06, green: 0.08, blue: 0.12, alpha: 1),
                                  size: CGSize(width: w + 12, height: h + 6))
         plate.anchorPoint = CGPoint(x: 0.5, y: 0)
@@ -330,6 +366,11 @@ enum PlatformInteriorVisuals {
     private static func overridePort(width w: CGFloat, height h: CGFloat, at floor: CGFloat) -> SKNode {
         let port = SKNode()
         port.zPosition = 17
+        if let hackPort = FieldSpriteAssets.groundedSprite(named: "pda_hack_port", targetHeight: h) {
+            hackPort.position = CGPoint(x: 0, y: floor)
+            port.addChild(hackPort)
+            return port
+        }
         let housing = SKSpriteNode(color: SKColor(red: 0.09, green: 0.12, blue: 0.14, alpha: 1),
                                    size: CGSize(width: w, height: h))
         housing.anchorPoint = CGPoint(x: 0.5, y: 0)

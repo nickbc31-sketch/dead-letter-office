@@ -10,6 +10,7 @@ final class CreditsScene: SKScene {
         layout = SceneLayout.make(scene: self)
         backgroundColor = DLOColor.background
         buildScene()
+        AudioManager.shared.playMainMenuMusic()
     }
 
     private func buildScene() {
@@ -54,6 +55,7 @@ final class CreditsScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let pos = touches.first?.location(in: self) else { return }
         if backRect.contains(pos) {
+            AudioManager.shared.playUIClick()
             SceneManager.shared.transition(to: .mainMenu, from: self)
         }
     }

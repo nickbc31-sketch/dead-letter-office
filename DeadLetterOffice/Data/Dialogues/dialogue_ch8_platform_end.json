@@ -1,0 +1,41 @@
+{
+  "id": "dialogue_ch8_platform_end",
+  "chapter": "ch8",
+  "returnSceneHint": "desk_ch8",
+  "nodes": [
+    {
+      "id": "n0",
+      "lines": [
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Central Archive. Complete letter retrieved. Deletion census. TRIAL-0442 termination record.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Calyx is three minutes away. The desk is one floor up.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. Final case loaded. Broadcast. Control. Erasure.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "I know.",
+          "voiceFilter": "normal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": ["ch8_platform_complete"],
+      "nextID": null
+    }
+  ]
+}

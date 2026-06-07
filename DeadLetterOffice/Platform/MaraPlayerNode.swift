@@ -10,16 +10,19 @@ final class MaraPlayerNode: SKNode {
     private(set) var isGrounded: Bool = false
     private(set) var isOnLadder: Bool = false
     private(set) var facingRight: Bool = true
+    var pdaVisualOut: Bool { anim.pdaVisualOut }
+    var isActionAnimating: Bool { anim.isOneShotPlaying }
 
     private var stunCooldown: TimeInterval = 0
     private let stunCooldownMax: TimeInterval = 8.0
-    private var lastInputTime: TimeInterval = 0
 
-    // Visual
-    private var bodyNode: SKNode!
-    private var walkTimer: TimeInterval = 0
+    private var bodyNode: SKSpriteNode?
+    private let anim = MaraAnimationController()
+    private var wasMoving = false
+    private var locomotionHold: TimeInterval = 0
+    private let locomotionHoldDuration: TimeInterval = 0.12
 
-    // Physics — tuned for gravity=-700 in PlatformScene (cinematic, low apex)
+    // Physics — tuned for gravity=-700 in PlatformScene
     private let moveSpeed: CGFloat   = 180
     private let jumpImpulse: CGFloat = 285
     private let ladderClimbSpeed: CGFloat = 130
@@ -31,8 +34,6 @@ final class MaraPlayerNode: SKNode {
     private let bodyHalfH: CGFloat = 31
     private let floorTopY: CGFloat = 40
     private let standCenterY: CGFloat = 71
-    private let spriteWidth: CGFloat = 38
-    private let spriteHeight: CGFloat = 78
     private var ladderRailX: CGFloat = 0
     private var ladderBottomY: CGFloat = 66
     private var ladderTopY: CGFloat = 120
@@ -44,48 +45,20 @@ final class MaraPlayerNode: SKNode {
     }
     required init?(coder: NSCoder) { fatalError() }
 
-    // MARK: - Visual
-    private func buildSprite() {
-        if UIImage(named: "mara_silhouette") != nil {
-            let sprite = SKSpriteNode(imageNamed: "mara_silhouette")
-            sprite.texture?.filteringMode = .nearest
-            sprite.size = CGSize(width: spriteWidth, height: spriteHeight)
-            bodyNode = sprite
-        } else {
-            bodyNode = buildProceduralMara()
-        }
-        bodyNode.zPosition = 1
-        addChild(bodyNode)
+    // MARK: - Preload
+
+    static func preloadAnimations(completion: @escaping () -> Void) {
+        MaraAnimationController.preload(completion: completion)
     }
 
-    private func buildProceduralMara() -> SKNode {
-        let container = SKNode()
-        let coat = DLOColor.platformSilhouette
-        let teal = DLOColor.teal
+    // MARK: - Visual
 
-        let legL = SKSpriteNode(color: coat, size: CGSize(width: 9, height: 26))
-        legL.position = CGPoint(x: -6, y: -20)
-        container.addChild(legL)
-
-        let legR = SKSpriteNode(color: coat, size: CGSize(width: 9, height: 26))
-        legR.position = CGPoint(x: 6, y: -20)
-        container.addChild(legR)
-
-        let torso = SKSpriteNode(color: coat, size: CGSize(width: 26, height: 24))
-        torso.position = CGPoint(x: 0, y: 6)
-        container.addChild(torso)
-
-        let trim = SKSpriteNode(color: teal, size: CGSize(width: 28, height: 2))
-        trim.position = CGPoint(x: 0, y: 19)
-        container.addChild(trim)
-
-        let head = SKShapeNode(circleOfRadius: 8)
-        head.fillColor = coat
-        head.strokeColor = .clear
-        head.position = CGPoint(x: 0, y: 31)
-        container.addChild(head)
-
-        return container
+    private func buildSprite() {
+        let sprite = SKSpriteNode()
+        sprite.zPosition = 1
+        addChild(sprite)
+        bodyNode = sprite
+        anim.attach(to: sprite)
     }
 
     private func setupPhysics() {
@@ -94,7 +67,7 @@ final class MaraPlayerNode: SKNode {
         body.mass = 1.0
         body.allowsRotation = false
         body.restitution = 0
-        body.friction = 0          // ground contact must not zero horizontal velocity
+        body.friction = 0
         body.linearDamping = 0
         body.angularDamping = 1.0
         body.categoryBitMask = PhysicsCategory.player
@@ -103,10 +76,55 @@ final class MaraPlayerNode: SKNode {
         physicsBody = body
     }
 
-    // MARK: - Movement halt (modal lock)
+    // MARK: - Animation API (PlatformScene)
+
+    func ensurePDAOut(completion: @escaping () -> Void) {
+        anim.ensurePDAOut(completion: completion)
+    }
+
+    func putAwayPDA(completion: @escaping () -> Void) {
+        anim.putAwayPDA(completion: completion)
+    }
+
+    func playScanObserve(completion: @escaping () -> Void) {
+        ensurePDAOut { [weak self] in
+            self?.anim.playScanObserve(completion: completion)
+        }
+    }
+
+    func playTerminalInteraction(completion: @escaping () -> Void) {
+        ensurePDAOut { [weak self] in
+            self?.anim.playTerminalInteraction(completion: completion)
+        }
+    }
+
+    func playHackConnect(completion: @escaping () -> Void) {
+        ensurePDAOut { [weak self] in
+            self?.anim.playHackConnect(completion: completion)
+        }
+    }
+
+    func playEMPActivation(onPulse: @escaping () -> Void, completion: @escaping () -> Void = {}) {
+        guard canFireEMP else { return }
+        ensurePDAOut { [weak self] in
+            guard let self else { return }
+            self.anim.playEMPActivation(onPulseFrame: { [weak self] in
+                guard let self else { return }
+                self.stunCooldown = self.stunCooldownMax
+                onPulse()
+            }, completion: completion)
+        }
+    }
+
+    var canFireEMP: Bool { stunCooldown <= 0 && !anim.isOneShotPlaying }
+
+    // MARK: - Movement halt
 
     func haltMovement() {
         manualAirborne = false
+        wasMoving = false
+        locomotionHold = 0
+        anim.updateLocomotion(isMoving: false)
         if isOnLadder {
             detachFromLadder(standingY: position.y)
         }
@@ -126,6 +144,9 @@ final class MaraPlayerNode: SKNode {
         ladderTopY = topY
         manualAirborne = false
         jumpCount = maxJumps
+        wasMoving = false
+        locomotionHold = 0
+        anim.updateLocomotion(isMoving: false)
         position.x = railX
         if let body = physicsBody {
             body.velocity = .zero
@@ -199,6 +220,7 @@ final class MaraPlayerNode: SKNode {
     }
 
     // MARK: - Input
+
     func applyInput(_ input: VirtualPadNode.Input, delta: TimeInterval = 1.0 / 60.0) {
         guard let body = physicsBody else { return }
         if isOnLadder { return }
@@ -211,11 +233,10 @@ final class MaraPlayerNode: SKNode {
         isCrouching = input.crouch
         isHiding = input.crouch
         let targetScaleY: CGFloat = isCrouching ? crouchScale : 1.0
-        if bodyNode.yScale != targetScaleY {
-            bodyNode.run(SKAction.scaleY(to: targetScaleY, duration: 0.08))
-        }
+        anim.applyCrouchScale(targetScaleY)
 
         let speed: CGFloat = isCrouching ? moveSpeed * 0.4 : moveSpeed
+        let moving = input.left || input.right
 
         if input.left {
             let dy = manualAirborne ? body.velocity.dy : (isGrounded ? min(body.velocity.dy, 0) : body.velocity.dy)
@@ -240,12 +261,32 @@ final class MaraPlayerNode: SKNode {
             }
         }
 
-        if input.left || input.right {
-            walkTimer += 0.016
-            if walkTimer > 0.12 {
-                walkTimer = 0
-                animateWalk()
-            }
+        let wantsWalk = moving && !manualAirborne && (isGrounded || abs(body.velocity.dx) > 15)
+        if wantsWalk {
+            locomotionHold = locomotionHoldDuration
+        } else {
+            locomotionHold = max(0, locomotionHold - delta)
+        }
+        let locomoting = wantsWalk || locomotionHold > 0
+        if locomoting != wasMoving {
+            wasMoving = locomoting
+            anim.updateLocomotion(isMoving: locomoting)
+        }
+
+        maintainGroundContact()
+    }
+
+    func maintainGroundContact() {
+        guard !isOnLadder, !manualAirborne, let body = physicsBody else { return }
+        let feetY = position.y - bodyHalfH
+        guard feetY <= floorTopY + 10 else { return }
+        if abs(position.y - standCenterY) > 0.25 {
+            position.y = standCenterY
+        }
+        if isGrounded || abs(body.velocity.dy) < 60 {
+            body.velocity = CGVector(dx: body.velocity.dx, dy: 0)
+            isGrounded = true
+            jumpCount = 0
         }
     }
 
@@ -258,6 +299,7 @@ final class MaraPlayerNode: SKNode {
             body.affectedByGravity = true
             position.y = standCenterY
             body.velocity = CGVector(dx: body.velocity.dx, dy: 0)
+            anim.updateLocomotion(isMoving: abs(body.velocity.dx) > 20)
         } else if body.velocity.dy <= 0 && abs(body.velocity.dy) < 25 {
             manualAirborne = false
             body.collisionBitMask |= PhysicsCategory.ground
@@ -267,45 +309,63 @@ final class MaraPlayerNode: SKNode {
 
     private func flipSprite(right: Bool) {
         facingRight = right
-        bodyNode.xScale = right ? 1 : -1
+        anim.setFacingRight(right)
     }
 
-    private func animateWalk() {
-        let bob = SKAction.sequence([
-            SKAction.moveBy(x: 0, y: 2, duration: 0.06),
-            SKAction.moveBy(x: 0, y: -2, duration: 0.06)
-        ])
-        bodyNode.run(bob, withKey: "walkBob")
-    }
+    // MARK: - EMP pulse visual
 
-    // MARK: - Stun Pulse
-    func fireStunPulse(scene: SKScene) -> Bool {
-        guard stunCooldown <= 0 else { return false }
-        stunCooldown = stunCooldownMax
+    func spawnEmpPulseVisual(on scene: SKScene? = nil) {
+        let target = scene ?? self.scene
+        guard let target else { return }
 
-        let pulse = SKShapeNode(circleOfRadius: 120)
-        pulse.fillColor = DLOColor.teal.withAlphaComponent(0.3)
-        pulse.strokeColor = DLOColor.teal
-        pulse.lineWidth = 2
-        pulse.position = position
-        pulse.zPosition = 45
-        scene.addChild(pulse)
-
-        pulse.run(SKAction.sequence([
+        let origin = position
+        let coreFlash = SKShapeNode(circleOfRadius: 8)
+        coreFlash.fillColor = SKColor(white: 0.95, alpha: 0.9)
+        coreFlash.strokeColor = SKColor(red: 0.55, green: 0.82, blue: 1.0, alpha: 1)
+        coreFlash.lineWidth = 2
+        coreFlash.position = origin
+        coreFlash.zPosition = 46
+        target.addChild(coreFlash)
+        coreFlash.run(SKAction.sequence([
             SKAction.group([
-                SKAction.scale(to: 2.5, duration: 0.4),
-                SKAction.fadeOut(withDuration: 0.4)
+                SKAction.scale(to: 2.2, duration: 0.12),
+                SKAction.fadeOut(withDuration: 0.12)
             ]),
             SKAction.removeFromParent()
         ]))
-        return true
+
+        let ringSpecs: [(radius: CGFloat, delay: TimeInterval, lineWidth: CGFloat)] = [
+            (28, 0.00, 3.5),
+            (56, 0.05, 2.8),
+            (92, 0.10, 2.0),
+        ]
+        for spec in ringSpecs {
+            let ring = SKShapeNode(circleOfRadius: spec.radius)
+            ring.fillColor = .clear
+            ring.strokeColor = SKColor(red: 0.45, green: 0.78, blue: 1.0, alpha: 0.95)
+            ring.lineWidth = spec.lineWidth
+            ring.glowWidth = 4
+            ring.position = origin
+            ring.zPosition = 45
+            ring.alpha = 0.95
+            target.addChild(ring)
+            ring.run(SKAction.sequence([
+                SKAction.wait(forDuration: spec.delay),
+                SKAction.group([
+                    SKAction.scale(to: 2.8, duration: 0.28),
+                    SKAction.fadeOut(withDuration: 0.28)
+                ]),
+                SKAction.removeFromParent()
+            ]))
+        }
     }
+
 
     func updateStunCooldown(delta: TimeInterval) {
         if stunCooldown > 0 { stunCooldown -= delta }
     }
 
     var stunCooldownRatio: CGFloat {
-        return CGFloat(max(0, stunCooldown) / stunCooldownMax)
+        CGFloat(max(0, stunCooldown) / stunCooldownMax)
     }
 }

@@ -74,6 +74,7 @@ struct LevelData: Codable, Identifiable {
     var levelHeight: CGFloat
     var fieldBoundaryX: CGFloat?    // hard east boundary — security enforcer
     var securityCameras: [SecurityCameraSpec]?
+    var buildingNodes: [BuildingNodeSpec]?
 
     static func load(id: String) -> LevelData? {
         guard

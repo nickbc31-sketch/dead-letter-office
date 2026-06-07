@@ -40,23 +40,30 @@ final class SecurityCameraNode: SKNode {
     required init?(coder: NSCoder) { fatalError() }
 
     private func buildVisual() {
-        let housing = SKSpriteNode(
-            color: SKColor(red: 0.10, green: 0.12, blue: 0.14, alpha: 1),
-            size: CGSize(width: 18, height: 14))
-        housing.position = CGPoint(x: 0, y: 52)
-        addChild(housing)
+        let mountTop: CGFloat
+        if let sprite = FieldSpriteAssets.groundedSprite(named: "security_camera", targetHeight: 44) {
+            addChild(sprite)
+            mountTop = 44
+        } else {
+            let housing = SKSpriteNode(
+                color: SKColor(red: 0.10, green: 0.12, blue: 0.14, alpha: 1),
+                size: CGSize(width: 18, height: 14))
+            housing.position = CGPoint(x: 0, y: 52)
+            addChild(housing)
 
-        let lens = SKShapeNode(circleOfRadius: 4)
-        lens.fillColor = SKColor(red: 0.18, green: 0.22, blue: 0.28, alpha: 1)
-        lens.strokeColor = DLOColor.danger.withAlphaComponent(0.5)
-        lens.lineWidth = 1
-        lens.position = CGPoint(x: 0, y: 52)
-        addChild(lens)
+            let lens = SKShapeNode(circleOfRadius: 4)
+            lens.fillColor = SKColor(red: 0.18, green: 0.22, blue: 0.28, alpha: 1)
+            lens.strokeColor = DLOColor.danger.withAlphaComponent(0.5)
+            lens.lineWidth = 1
+            lens.position = CGPoint(x: 0, y: 52)
+            addChild(lens)
 
-        let mount = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.5),
-                                 size: CGSize(width: 4, height: 20))
-        mount.position = CGPoint(x: 0, y: 40)
-        addChild(mount)
+            let mount = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.5),
+                                     size: CGSize(width: 4, height: 20))
+            mount.position = CGPoint(x: 0, y: 40)
+            addChild(mount)
+            mountTop = 64
+        }
 
         coneNode = SKShapeNode()
         coneNode.fillColor = DLOColor.danger.withAlphaComponent(0.12)
@@ -68,7 +75,7 @@ final class SecurityCameraNode: SKNode {
 
         let lbl = DLOFont.terminalLabel(text: "CAM", size: 5)
         lbl.fontColor = DLOColor.danger.withAlphaComponent(0.7)
-        lbl.position = CGPoint(x: 0, y: 64)
+        lbl.position = CGPoint(x: 0, y: mountTop + 8)
         addChild(lbl)
     }
 

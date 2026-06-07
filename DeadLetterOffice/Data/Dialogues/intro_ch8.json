@@ -1,0 +1,139 @@
+{
+  "id": "intro_ch8",
+  "chapter": "ch8",
+  "returnSceneHint": "desk_ch8",
+  "nodes": [
+    {
+      "id": "n0",
+      "lines": [
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. Final shift. One case. One decision.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Saint Orra. The complete letter. Sealed since 2130.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Central Archive access confirmed via your PDA intrusion. Director Calyx en route.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Broadcast. Control. Erasure.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "No standard action applies. Your trust profile will determine the outcome.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Elias is in the undercity. Lina is on a maintenance relay. Jun runs the train. 847 names on the census.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Begin.",
+          "voiceFilter": "terminal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": ["ch8_intro_complete"],
+      "nextID": null
+    },
+    {
+      "id": "n1",
+      "lines": [
+        {
+          "speaker": "DIRECTOR CALYX",
+          "portraitAsset": "portrait_calyx",
+          "text": "Clerk Venn. You were supposed to be deceased twelve days ago.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "The order didn't take.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "DIRECTOR CALYX",
+          "portraitAsset": "portrait_calyx",
+          "text": "You have the complete letter. I know because I sealed it in 2130.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "DIRECTOR CALYX",
+          "portraitAsset": "portrait_calyx",
+          "text": "Broadcast it and the city burns. Control it and you sit in my chair. Erase it and you disappear with everyone you could not save.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "You signed my brother's termination. Memory deletion. Not death.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "DIRECTOR CALYX",
+          "portraitAsset": "portrait_calyx",
+          "text": "I signed everyone's termination. That is what this office does.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "DIRECTOR CALYX",
+          "portraitAsset": "portrait_calyx",
+          "text": "Choose.",
+          "voiceFilter": "normal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": ["ch8_intro_complete"],
+      "flagsSet": ["ch8_calyx_confrontation"],
+      "nextID": null
+    },
+    {
+      "id": "n2",
+      "lines": [
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Final case processed. Game complete flag set.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "...",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Outcome evaluation in progress.",
+          "voiceFilter": "terminal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": ["ch8_desk_complete"],
+      "flagsSet": ["ch8_outro_complete"],
+      "nextID": null
+    }
+  ]
+}

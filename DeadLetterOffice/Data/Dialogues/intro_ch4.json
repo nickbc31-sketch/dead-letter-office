@@ -1,0 +1,145 @@
+{
+  "id": "intro_ch4",
+  "chapter": "ch4",
+  "returnSceneHint": "desk_ch4",
+  "nodes": [
+    {
+      "id": "n0",
+      "lines": [
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. Chapter 3 performance reviewed. Accuracy index: 89.1%. Empathy index: third consecutive elevation.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Ghost Audit cumulative score: elevated. Your queue today contains three cases. The first involves a living sender misfiled as deceased.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Living sender. After everything in Block P03.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "The registry says deceased. The relay says otherwise. Apply an action.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Supplemental note. Case two is addressed to you. Case three is not intended for your clearance level.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Addressed to me.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Your queue is ready.",
+          "voiceFilter": "terminal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": ["ch4_intro_complete"],
+      "nextID": null
+    },
+    {
+      "id": "n1",
+      "lines": [
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Case two resolved. Scheduled mortality notification for Clerk 1147-F logged.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Three days.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "2147.05.01 at 09:00. One case remains. Internal classification: RESTRICTED.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Calyx.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Proceed.",
+          "voiceFilter": "terminal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": ["c13_processed"],
+      "flagsSet": ["ch4_c13_pause_shown"],
+      "nextID": null
+    },
+    {
+      "id": "n2",
+      "lines": [
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Chapter 4 queue complete. Three cases processed.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Calyx wrote my death into a memo before I read my death notice. The predictive assessment named cases that did not exist yet.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Directorate document analysis is not a standard clerk function.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Lina Marr is alive. Elias is still in the system. I have three days.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Exterior movement authorised. Records Annex access code issued to your PDA.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "I need to see what they filed while I was at the desk.",
+          "voiceFilter": "normal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": ["ch4_desk_complete"],
+      "flagsSet": ["ch4_outro_complete"],
+      "nextID": null
+    }
+  ]
+}

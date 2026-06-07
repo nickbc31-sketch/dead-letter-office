@@ -85,6 +85,11 @@ final class DebugScene: SKScene {
             ("PLATFORM CH1", { SceneManager.shared.transition(to: .platform(levelID: "level_ch1"), from: self) }),
             ("PLATFORM CH2", { SceneManager.shared.transition(to: .platform(levelID: "level_ch2"), from: self) }),
             ("PLATFORM CH3", { SceneManager.shared.transition(to: .platform(levelID: "level_ch3"), from: self) }),
+            ("PLATFORM CH4", { SceneManager.shared.transition(to: .platform(levelID: "level_ch4"), from: self) }),
+            ("PLATFORM CH5", { SceneManager.shared.transition(to: .platform(levelID: "level_ch5"), from: self) }),
+            ("PLATFORM CH6", { SceneManager.shared.transition(to: .platform(levelID: "level_ch6"), from: self) }),
+            ("PLATFORM CH7", { SceneManager.shared.transition(to: .platform(levelID: "level_ch7"), from: self) }),
+            ("PLATFORM CH8", { SceneManager.shared.transition(to: .platform(levelID: "level_ch8"), from: self) }),
             ("DIALOGUE INTRO CH1", {
                 SceneManager.shared.transition(
                     to: .dialogue(dialogueID: "intro_ch1", returnScene: .debug, startNodeID: nil),
@@ -175,6 +180,16 @@ final class DebugScene: SKScene {
                   width: layout.w * 0.22) { [weak self] in
             self?.buildScene()
         }
+
+        #if DEBUG
+        addButton(label: "TEST HACK PUZZLES", x: layout.x(0.62), y: layout.y(0.08),
+                  width: layout.w * 0.22) { [weak self] in
+            guard let self, let view else { return }
+            let s = HackPuzzleTestScene(size: self.size)
+            s.scaleMode = .resizeFill
+            view.presentScene(s, transition: SKTransition.fade(withDuration: 0.25))
+        }
+        #endif
 
         addButton(label: "< BACK TO MENU", x: layout.x(0.82), y: layout.y(0.08),
                   width: layout.w * 0.22) { [weak self] in

@@ -1,0 +1,41 @@
+{
+  "id": "dialogue_ch7_platform_end",
+  "chapter": "ch7",
+  "returnSceneHint": "desk_ch8",
+  "nodes": [
+    {
+      "id": "n0",
+      "lines": [
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "847 names on the census wall. Fourteen forgeries marked in red. 833 in green.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Jun met me at the surface point. He said the complete letter is in Central Archive.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. Central Archive infiltration detected. Final shift authorised.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "One case. One letter. Three endings.",
+          "voiceFilter": "normal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": ["ch7_platform_complete"],
+      "nextID": null
+    }
+  ]
+}

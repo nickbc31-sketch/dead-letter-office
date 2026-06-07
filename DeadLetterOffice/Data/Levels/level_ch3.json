@@ -307,9 +307,17 @@
   ],
   "environmentalTextNodes": [],
   "npcs": [],
-  "objectiveText": "INVESTIGATE BLOCK P03 — OVERRIDE SEAL — READ MARR UNIT — COLLECT ORVIN FILE",
+  "objectiveText": "SHIFT 3 — BLOCK P03",
   "ambientMusicTrack": "ambient_platform",
   "platformNodes": [],
+  "buildingNodes": [
+    {
+      "asset": "housing_block",
+      "x": 2400,
+      "y": 0,
+      "scale": 1.0
+    }
+  ],
   "levelWidth": 4800,
   "levelHeight": 400
 }

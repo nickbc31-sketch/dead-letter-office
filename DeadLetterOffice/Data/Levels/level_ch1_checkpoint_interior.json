@@ -74,7 +74,7 @@
     {"x": "480", "y": "100", "text": "▶ ARCHIVE TRANSIT — PROCEED WHEN CLEARED"},
     {"x": "420", "y": "108", "text": "PDA OVERRIDE PORT — CREDENTIAL REQUIRED"}
   ],
-  "objectiveText": "ENTER CHECKPOINT CODE — COMPLETE TRANSIT",
+  "objectiveText": "SHIFT 1 — CHECKPOINT",
   "ambientMusicTrack": "ambient_platform",
   "platformNodes": [],
   "levelWidth": 560,

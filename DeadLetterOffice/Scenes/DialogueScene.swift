@@ -356,6 +356,7 @@ final class DialogueScene: SKScene {
             let pos = touch.location(in: self)
             if exitButtonRect.contains(pos) {
                 typingTimer?.invalidate()
+                AudioManager.shared.playUIClick()
                 SceneManager.shared.transition(to: .mainMenu, from: self)
                 return
             }
@@ -385,6 +386,7 @@ final class DialogueScene: SKScene {
         if node?.choices != nil && !(node?.choices?.isEmpty ?? true) { return }
 
         currentLineIndex += 1
+        AudioManager.shared.playDialogueContinue()
         presentCurrentLine()
     }
 }
@@ -419,7 +421,9 @@ private final class ChoiceButtonNode: SKNode {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { alpha = 0.6 }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        alpha = 1.0; tapAction()
+        alpha = 1.0
+        AudioManager.shared.playDialogueContinue()
+        tapAction()
     }
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { alpha = 1.0 }
 }

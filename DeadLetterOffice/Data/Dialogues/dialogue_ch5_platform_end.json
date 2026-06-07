@@ -1,0 +1,41 @@
+{
+  "id": "dialogue_ch5_platform_end",
+  "chapter": "ch5",
+  "returnSceneHint": "level_ch6",
+  "nodes": [
+    {
+      "id": "n0",
+      "lines": [
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Tier 3 on one side. Deletion engines on the other. Same corridor. Different doors.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Sera Quill built what erased Kell Orvin. Executive Pell bought three endings.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. Transit infrastructure access logged. Route 7-B is not on your authorised map.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "It is now.",
+          "voiceFilter": "normal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": ["ch5_platform_complete"],
+      "nextID": null
+    }
+  ]
+}

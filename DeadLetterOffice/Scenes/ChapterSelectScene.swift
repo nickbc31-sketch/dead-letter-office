@@ -12,6 +12,7 @@ final class ChapterSelectScene: SKScene {
         chapters = ChapterData.loadAll()
         if chapters.isEmpty { chapters = placeholderChapters() }
         buildScene()
+        AudioManager.shared.playMainMenuMusic()
     }
 
     override func didChangeSize(_ oldSize: CGSize) {
@@ -58,6 +59,7 @@ final class ChapterSelectScene: SKScene {
                 isCompleted: state.completedCaseIDs.contains(where: { $0.hasPrefix(chapter.id) }),
                 size: CGSize(width: cellW - 8, height: cellH)) { [weak self] in
                     guard let self = self, isUnlocked else { return }
+                    AudioManager.shared.stopMainMenuMusic()
                     GameState.shared.currentChapterID = chapter.id
                     SceneManager.shared.transition(to: .desk(chapterID: chapter.id), from: self)
                 }
@@ -76,6 +78,7 @@ final class ChapterSelectScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let pos = touches.first?.location(in: self) else { return }
         if backRect.contains(pos) {
+            AudioManager.shared.playUIClick()
             SceneManager.shared.transition(to: .mainMenu, from: self)
         }
     }
@@ -164,6 +167,8 @@ private final class ChapterCellNode: SKNode {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { alpha = 0.7 }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         alpha = 1.0
+        guard userData?["action"] != nil else { return }
+        AudioManager.shared.playUIClick()
         (userData?["action"] as? () -> Void)?()
     }
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) { alpha = 1.0 }

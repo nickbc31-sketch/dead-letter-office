@@ -1,0 +1,41 @@
+{
+  "id": "dialogue_ch6_platform_end",
+  "chapter": "ch6",
+  "returnSceneHint": "desk_ch7",
+  "nodes": [
+    {
+      "id": "n0",
+      "lines": [
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Manifest verified. 312 forbidden letters. Junction 9 matches Courier 19's coordinates.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Orra fragment recovered from carriage 2. The deletion count on the manifest terminal matches the registry.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. You are fourteen days past scheduled mortality. Shift 7 queue is authorised.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Jun Vale signed this route. Elias is still generating readings. I need the undercity.",
+          "voiceFilter": "normal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": ["ch6_platform_complete"],
+      "nextID": null
+    }
+  ]
+}

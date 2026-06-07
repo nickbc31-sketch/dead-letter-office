@@ -20,8 +20,9 @@ final class DeskScene: SKScene {
     private var messageArea: SKNode!
     private var hudNode: SKNode!
 
-    private var complianceBar: SKSpriteNode!
-    private var suspicionBar: SKSpriteNode!
+    private var deskStatusLabel: SKLabelNode!
+    private var complianceScoreLabel: SKLabelNode!
+    private var suspicionScoreLabel: SKLabelNode!
     private var hasStamped = false
     private var caseHeaderNode: SKLabelNode?
     private var actionRequiredNode: SKLabelNode?
@@ -44,15 +45,23 @@ final class DeskScene: SKScene {
     // Pause overlay rects (populated when overlay is shown, cleared when hidden)
     private var pauseOverlay:     SKNode?
     private var pauseResumeRect = CGRect.zero
-    private var pauseExitRect   = CGRect.zero
-    private var notebookOverlay:  SKNode?
-    private var notebookScrollState: ScrollableReadablePanel.ScrollState?
-    private var notebookScrollTouch: UITouch?
+    private var pauseSettingsRect = CGRect.zero
+    private var pauseSaveExitRect = CGRect.zero
+    private var pdaOverlay: SKNode?
+    private var pdaJournalScreen: PDAJournalPanel.Screen = .boot
+    private var pdaJournalRegions = PDAJournalPanel.HitRegions()
+    private var isRebuildingPDAJournal = false
+    private var pdaScrollState: ScrollableReadablePanel.ScrollState?
+    private var pdaScrollTouch: UITouch?
+    private var pdaUpdateToastNode: SKNode?
 
     // Action result overlay (shown after stamp, over doc area)
     private var resultPanel:        SKNode?
     private var resultContinueRect: CGRect = .zero
     private var resultContinueAction: (() -> Void)?
+    private var resultScrollState: ScrollableReadablePanel.ScrollState?
+    private var resultScrollBodyRect: CGRect = .zero
+    private var resultScrollTouch: UITouch?
 
     // Audit analysis overlay
     private var auditOverlay:      SKNode?
@@ -73,7 +82,8 @@ final class DeskScene: SKScene {
 
     private var layout = SceneLayout.fallback(size: CGSize(width: 844, height: 390))
 
-    private let kStatusH: CGFloat = 28
+    private let kStatusH: CGFloat = 34
+    private var hudTextMult: CGFloat { GameState.shared.textSizeMultiplier }
     private let kTabH:    CGFloat = 26
     private let kTabGap:  CGFloat = 4
     private var kHudY:    CGFloat { layout.top - kStatusH / 2 }
@@ -111,9 +121,24 @@ final class DeskScene: SKScene {
             }
         }
 
+        // Ch8: infiltration platform before final desk case (C24).
+        if chapterID == "ch8" {
+            let platformLevelID = "level_ch8"
+            if LevelData.load(id: platformLevelID) != nil,
+               !GameState.shared.completedLevelIDs.contains(platformLevelID) {
+                SceneManager.shared.transition(to: .platform(levelID: platformLevelID), from: self)
+                return
+            }
+        }
+
+        NSLog("[DLO Startup] DeskScene didMove chapter=%@ — PDA not auto-opened", chapterID)
+        PDAJournalManager.onShiftStart(chapterID: chapterID)
         loadCases()
         buildScene()
         AudioManager.shared.playMusic(named: "ambient_desk")
+        if PDAJournalManager.consumeUpdateNotice() {
+            showPDAUpdateToast()
+        }
         if ProcessInfo.processInfo.arguments.contains("--run-touch-test") {
             run(SKAction.wait(forDuration: 0.5)) { [weak self] in self?.runTouchTests() }
         }
@@ -131,23 +156,39 @@ final class DeskScene: SKScene {
         guard abs(size.width - oldSize.width) > 5 || abs(size.height - oldSize.height) > 5 else { return }
         documentNodes.removeAll()
         stampButtons.removeAll()
-        pauseOverlay = nil
-        pauseResumeRect = .zero
-        pauseExitRect = .zero
+        clearModalOverlayState()
         buildScene()
     }
 
     private func buildScene() {
         layout = SceneLayout.make(scene: self)
         removeAllChildren()
+        clearModalOverlayState()
         tabTargets.removeAll()
         stampTargets.removeAll()
         continueRect = nil
         continueAction = nil
-        pauseResumeRect = .zero
-        pauseExitRect = .zero
         buildLayout()
         presentCurrentCase()
+    }
+
+    /// Clears PDA/pause overlay refs so removeAllChildren cannot leave a touch-blocking ghost.
+    private func clearModalOverlayState() {
+        pdaOverlay = nil
+        pdaScrollState = nil
+        pdaScrollTouch = nil
+        pdaJournalRegions = PDAJournalPanel.HitRegions()
+        pauseOverlay = nil
+        pauseResumeRect = .zero
+        pauseSettingsRect = .zero
+        pauseSaveExitRect = .zero
+    }
+
+    private func reconcileStalePDAOverlay() {
+        guard !isRebuildingPDAJournal else { return }
+        guard let overlay = pdaOverlay, overlay.parent == nil else { return }
+        NSLog("[DLO PDA] clearing stale desk overlay ref (node detached)")
+        clearModalOverlayState()
     }
 
     // MARK: - Touch (scene-level — no isUserInteractionEnabled on any child node)
@@ -159,9 +200,22 @@ final class DeskScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let pos = touch.location(in: self)
+        reconcileStalePDAOverlay()
 
-        if notebookOverlay != nil, notebookScrollState?.maxScroll ?? 0 > 0 {
-            notebookScrollTouch = touch
+        if resultPanel != nil {
+            if resultScrollBodyRect.contains(pos), resultScrollState?.maxScroll ?? 0 > 0 {
+                resultScrollTouch = touch
+            }
+            return
+        }
+
+        if pdaOverlay != nil {
+            if pdaJournalRegions.close.contains(pos) { return }
+            if !pdaJournalRegions.shiftBar.contains(pos),
+               pdaJournalRegions.scrollBody.contains(pos),
+               pdaScrollState?.maxScroll ?? 0 > 0 {
+                pdaScrollTouch = touch
+            }
             return
         }
 
@@ -193,8 +247,13 @@ final class DeskScene: SKScene {
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
         let pos = touch.location(in: self)
-        if let scrollTouch = notebookScrollTouch, touch === scrollTouch,
-           let state = notebookScrollState {
+        if let scrollTouch = resultScrollTouch, touch === scrollTouch,
+           let state = resultScrollState {
+            state.applyDrag(deltaY: pos.y - touch.previousLocation(in: self).y)
+            return
+        }
+        if let scrollTouch = pdaScrollTouch, touch === scrollTouch,
+           let state = pdaScrollState {
             state.applyDrag(deltaY: pos.y - touch.previousLocation(in: self).y)
             return
         }
@@ -214,8 +273,9 @@ final class DeskScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         isScrollingDocument = false
         isScrollingAudit = false
-        for touch in touches where touch === notebookScrollTouch {
-            notebookScrollTouch = nil
+        for touch in touches {
+            if touch === pdaScrollTouch { pdaScrollTouch = nil }
+            if touch === resultScrollTouch { resultScrollTouch = nil }
         }
         guard let touch = touches.first else { return }
         handleTap(at: touch.location(in: self))
@@ -225,6 +285,7 @@ final class DeskScene: SKScene {
     @discardableResult
     private func handleTap(at pos: CGPoint) -> String {
         NSLog("[DLO Touch] tap pos=(\(Int(pos.x)),\(Int(pos.y)))")
+        reconcileStalePDAOverlay()
 
         // ── Action result panel is open ───────────────────────────────────────
         if resultPanel != nil {
@@ -260,31 +321,49 @@ final class DeskScene: SKScene {
         // ── Pause overlay is open ─────────────────────────────────────────────
         if pauseOverlay != nil {
             if pauseResumeRect.contains(pos) {
+                AudioManager.shared.playUIClick()
                 NSLog("[DLO Touch] → RESUME SHIFT")
                 hidePauseOverlay()
                 return "resume"
-            } else if pauseExitRect.contains(pos) {
-                NSLog("[DLO Touch] → EXIT TO MAIN MENU")
+            } else if pauseSettingsRect.contains(pos) {
+                AudioManager.shared.playUIClick()
+                NSLog("[DLO Touch] → SETTINGS")
+                hidePauseOverlay()
+                GameState.shared.setSettingsReturn(.desk(chapterID: chapterID))
+                SceneManager.shared.transition(to: .settings, from: self)
+                return "settings"
+            } else if pauseSaveExitRect.contains(pos) {
+                AudioManager.shared.playUIClick()
+                NSLog("[DLO Touch] → SAVE & EXIT TO MENU")
                 hidePauseOverlay()
                 GameState.shared.save()
                 SceneManager.shared.transition(to: .mainMenu, from: self)
-                return "exit"
+                return "save-exit"
             }
             NSLog("[DLO Touch] → overlay background (consumed)")
             return "overlay-bg"
         }
 
-        if notebookOverlay != nil {
-            return "notebook-open"
+        if pdaOverlay != nil {
+            if isRebuildingPDAJournal { return "pda-rebuild" }
+            if PDAJournalPanel.handleTap(
+                at: pos, build: currentPDABuild(),
+                currentShift: PDAJournalManager.shiftNumber(from: chapterID),
+                onRebuild: { [weak self] screen in self?.rebuildPDAJournal(screen: screen) },
+                onClose: { [weak self] in self?.hidePDAJournal() }) {
+                return "pda-nav"
+            }
+            return "pda-open"
         }
 
         if notebookButtonRect.contains(pos) {
-            showNotebookOverlay()
-            return "notebook-open"
+            showPDAJournal()
+            return "pda-open"
         }
 
         // ── Pause button ──────────────────────────────────────────────────────
         if pauseButtonRect.contains(pos) {
+            AudioManager.shared.playUIClick()
             NSLog("[DLO Touch] → OPEN PAUSE MENU")
             showPauseOverlay()
             return "pause-open"
@@ -299,6 +378,7 @@ final class DeskScene: SKScene {
 
         // ── Continue / Next Case ──────────────────────────────────────────────
         if let cr = continueRect, cr.contains(pos) {
+            AudioManager.shared.playUIClick()
             NSLog("[DLO Touch] → CONTINUE / NEXT CASE")
             let action = continueAction
             clearContinueButton()
@@ -627,50 +707,58 @@ final class DeskScene: SKScene {
         statusBar.zPosition = 5
         addChild(statusBar)
 
-        let hudReservedW: CGFloat = 237
-        let statusAvailW = layout.w - hudReservedW
-        let shiftNum = chapterID.replacingOccurrences(of: "ch", with: "")
-        let statusText: String
-        if statusAvailW >= 220 {
-            statusText = "PMCA CLERK TERMINAL  |  MARA VENN  |  SHIFT \(shiftNum)"
-        } else if statusAvailW >= 100 {
-            statusText = "MARA VENN  |  SHIFT \(shiftNum)"
-        } else {
-            statusText = "SHIFT \(shiftNum)"
-        }
-        let statusLabel = DLOFont.terminalLabel(text: statusText, size: 9)
-        statusLabel.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.7)
-        statusLabel.position = CGPoint(x: layout.left + 12, y: kHudY)
-        statusLabel.verticalAlignmentMode = .center
-        statusLabel.zPosition = 6
-        addChild(statusLabel)
+        let hudSize = 11 * hudTextMult
+        let statusText = deskStatusText()
+        deskStatusLabel = DLOFont.terminalLabel(text: statusText, size: hudSize)
+        deskStatusLabel.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.85)
+        deskStatusLabel.position = CGPoint(x: layout.left + 12, y: kHudY)
+        deskStatusLabel.verticalAlignmentMode = .center
+        deskStatusLabel.zPosition = 6
+        addChild(deskStatusLabel)
 
-        // Case notes button
-        let notesLbl = DLOFont.terminalLabel(text: "NOTES", size: 9)
-        notesLbl.fontColor = DLOColor.teal.withAlphaComponent(0.75)
-        notesLbl.horizontalAlignmentMode = .right
-        notesLbl.verticalAlignmentMode   = .center
-        notesLbl.position   = CGPoint(x: layout.right - 72, y: kHudY)
-        notesLbl.zPosition  = 6
-        addChild(notesLbl)
+        // PDA button — styled like field investigation PDA
+        let pdaW: CGFloat = 58
+        let pdaH: CGFloat = 28
+        let pdaCX = layout.right - 128
+        let pdaBG = SKShapeNode(rectOf: CGSize(width: pdaW, height: pdaH), cornerRadius: 4)
+        pdaBG.fillColor = DLOColor.terminalBG.withAlphaComponent(0.9)
+        pdaBG.strokeColor = SKColor(red: 0.38, green: 0.48, blue: 0.42, alpha: 0.9)
+        pdaBG.lineWidth = 1.2
+        pdaBG.position = CGPoint(x: pdaCX, y: kHudY)
+        pdaBG.zPosition = 6
+        addChild(pdaBG)
+
+        let pdaLbl = DLOFont.terminalLabel(text: "PDA", size: 11 * hudTextMult)
+        pdaLbl.fontColor = SKColor(red: 0.52, green: 0.74, blue: 0.62, alpha: 1)
+        pdaLbl.horizontalAlignmentMode = .center
+        pdaLbl.position = CGPoint(x: pdaCX, y: kHudY - 3)
+        pdaLbl.zPosition = 7
+        addChild(pdaLbl)
 
         let btnH: CGFloat = max(kStatusH, 44)
-        notebookButtonRect = CGRect(x: layout.right - 110,
-                                      y: kHudY - btnH / 2,
-                                      width: 52, height: btnH)
+        notebookButtonRect = CGRect(x: pdaCX - pdaW / 2, y: kHudY - btnH / 2,
+                                    width: pdaW, height: btnH)
 
-        // Pause / menu button — tap target stored in pauseButtonRect
-        let menuLbl = DLOFont.terminalLabel(text: "≡ MENU", size: 9)
-        menuLbl.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.6)
-        menuLbl.horizontalAlignmentMode = .right
-        menuLbl.verticalAlignmentMode   = .center
-        menuLbl.position   = CGPoint(x: layout.right - 4, y: kHudY)
-        menuLbl.zPosition  = 6
+        // Menu button
+        let menuW: CGFloat = 62
+        let menuCX = layout.right - 36
+        let menuBG = SKShapeNode(rectOf: CGSize(width: menuW, height: pdaH), cornerRadius: 4)
+        menuBG.fillColor = DLOColor.terminalBG.withAlphaComponent(0.75)
+        menuBG.strokeColor = DLOColor.uiBorder.withAlphaComponent(0.6)
+        menuBG.lineWidth = 1
+        menuBG.position = CGPoint(x: menuCX, y: kHudY)
+        menuBG.zPosition = 6
+        addChild(menuBG)
+
+        let menuLbl = DLOFont.terminalLabel(text: "MENU", size: 10 * hudTextMult)
+        menuLbl.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.75)
+        menuLbl.horizontalAlignmentMode = .center
+        menuLbl.position = CGPoint(x: menuCX, y: kHudY - 3)
+        menuLbl.zPosition = 7
         addChild(menuLbl)
 
-        pauseButtonRect = CGRect(x: layout.right - 60,
-                                 y: kHudY - btnH / 2,
-                                 width: 60, height: btnH)
+        pauseButtonRect = CGRect(x: menuCX - menuW / 2, y: kHudY - btnH / 2,
+                                 width: menuW, height: btnH)
     }
 
     // Procedural terminal wallpaper: dark navy base + very faint horizontal scanlines.
@@ -728,32 +816,74 @@ final class DeskScene: SKScene {
         addChild(messageArea)
     }
 
+    /// Width reserved on the right for PDA + MENU controls.
+    private let kHudRightReserved: CGFloat = 150
+
+    private func deskStatusText() -> String {
+        let statusAvailW = layout.w - kHudRightReserved
+        let shiftNum = chapterID.replacingOccurrences(of: "ch", with: "")
+        if statusAvailW >= 220 {
+            return "PMCA CLERK TERMINAL  |  MARA VENN  |  SHIFT \(shiftNum)"
+        }
+        if statusAvailW >= 100 {
+            return "MARA VENN  |  SHIFT \(shiftNum)"
+        }
+        return "SHIFT \(shiftNum)"
+    }
+
+    /// COMP/SUSP sit after the status label using measured width — never overlaps SHIFT text.
+    private func layoutDeskScoreLabels() {
+        let scoreSize = 10 * hudTextMult
+        let gap: CGFloat = max(14, 10 * hudTextMult)
+        let scoreGap: CGFloat = max(12, 8 * hudTextMult)
+        let pdaLeft = layout.right - kHudRightReserved
+
+        let statusRight = deskStatusLabel.position.x + deskStatusLabel.frame.width
+        var scoresX = statusRight + gap
+
+        complianceScoreLabel.fontSize = scoreSize
+        complianceScoreLabel.text = "COMP: \(GameState.shared.complianceScore)"
+        complianceScoreLabel.position = CGPoint(x: scoresX, y: kHudY)
+
+        let compRight = scoresX + complianceScoreLabel.frame.width
+        var suspX = compRight + scoreGap
+
+        suspicionScoreLabel.fontSize = scoreSize
+        suspicionScoreLabel.text = "SUSP: \(GameState.shared.suspicionScore)"
+        suspicionScoreLabel.position = CGPoint(x: suspX, y: kHudY)
+
+        let suspRight = suspX + suspicionScoreLabel.frame.width
+        if suspRight > pdaLeft - 8 {
+            let overflow = suspRight - (pdaLeft - 8)
+            scoresX -= overflow
+            suspX -= overflow
+            complianceScoreLabel.position.x = scoresX
+            suspicionScoreLabel.position.x = suspX
+        }
+    }
+
     private func buildHUD() {
         hudNode = SKNode()
         hudNode.zPosition = 20
         addChild(hudNode)
 
-        let compLabel = DLOFont.terminalLabel(text: "COMP", size: 8)
-        compLabel.position = CGPoint(x: layout.right - 217, y: kHudY)
-        compLabel.fontColor = DLOColor.uiBorder
-        compLabel.verticalAlignmentMode = .center
-        hudNode.addChild(compLabel)
+        let scoreSize = 10 * hudTextMult
 
-        complianceBar = SKSpriteNode(color: DLOColor.approveRed, size: CGSize(width: 60, height: 6))
-        complianceBar.anchorPoint = CGPoint(x: 0, y: 0.5)
-        complianceBar.position = CGPoint(x: layout.right - 193, y: kHudY)
-        hudNode.addChild(complianceBar)
+        complianceScoreLabel = DLOFont.terminalLabel(
+            text: "COMP: \(GameState.shared.complianceScore)", size: scoreSize)
+        complianceScoreLabel.horizontalAlignmentMode = .left
+        complianceScoreLabel.fontColor = DLOColor.teal.withAlphaComponent(0.9)
+        complianceScoreLabel.verticalAlignmentMode = .center
+        hudNode.addChild(complianceScoreLabel)
 
-        let suspLabel = DLOFont.terminalLabel(text: "SUSP", size: 8)
-        suspLabel.position = CGPoint(x: layout.right - 129, y: kHudY)
-        suspLabel.fontColor = DLOColor.uiBorder
-        suspLabel.verticalAlignmentMode = .center
-        hudNode.addChild(suspLabel)
+        suspicionScoreLabel = DLOFont.terminalLabel(
+            text: "SUSP: \(GameState.shared.suspicionScore)", size: scoreSize)
+        suspicionScoreLabel.horizontalAlignmentMode = .left
+        suspicionScoreLabel.fontColor = DLOColor.danger.withAlphaComponent(0.85)
+        suspicionScoreLabel.verticalAlignmentMode = .center
+        hudNode.addChild(suspicionScoreLabel)
 
-        suspicionBar = SKSpriteNode(color: DLOColor.danger, size: CGSize(width: 60, height: 6))
-        suspicionBar.anchorPoint = CGPoint(x: 0, y: 0.5)
-        suspicionBar.position = CGPoint(x: layout.right - 105, y: kHudY)
-        hudNode.addChild(suspicionBar)
+        layoutDeskScoreLabels()
     }
 
     // MARK: - Case Presentation
@@ -957,7 +1087,9 @@ final class DeskScene: SKScene {
         GameState.shared.applyConsequences(action.consequences)
         caseFile.followUpFlags?.forEach { GameState.shared.setFlag($0) }
         GameState.shared.recordDecision(caseID: caseFile.id, actionID: action.id)
+        PDAJournalManager.onCaseDecision(caseID: caseFile.id, actionID: action.id)
         GameState.shared.save()
+        showPDAUpdateToast()
         NSLog("[DLO State] case=\(caseFile.id) action=\(action.id) compliance=\(GameState.shared.complianceScore) suspicion=\(GameState.shared.suspicionScore)")
 
         playStampAnimation(label: action.shortLabel, color: .fromHex(action.color))
@@ -998,22 +1130,67 @@ final class DeskScene: SKScene {
            caseFile.id == "case_ch3_003",
            action.consequences.flagsSet?.contains("ch3_desk_complete") == true,
            !GameState.shared.hasFlag("ch3_outro_complete") {
-            let platformLevelID = "level_ch3"
-            let nextScene: SceneType
-            if LevelData.load(id: platformLevelID) != nil,
-               !GameState.shared.completedLevelIDs.contains(platformLevelID) {
-                nextScene = .chapterComplete(chapterID: "ch3",
-                                             nextScene: .platform(levelID: platformLevelID))
-            } else {
-                nextScene = resolveNextScene(afterDeskFor: "ch3")
-            }
+            return deskOutroDialogue(chapterID: "ch3", introNodeID: "n2")
+        }
+
+        if chapterID == "ch4",
+           caseFile.id == "case_ch4_002",
+           GameState.shared.hasFlag("c13_processed"),
+           !GameState.shared.hasFlag("ch4_c13_pause_shown") {
             return PendingDeskDialogue(
-                dialogueID: "intro_ch3",
-                startNodeID: "n2",
-                returnScene: nextScene)
+                dialogueID: "intro_ch4",
+                startNodeID: "n1",
+                returnScene: .desk(chapterID: "ch4"))
+        }
+
+        if chapterID == "ch4",
+           caseFile.id == "case_ch4_003",
+           action.consequences.flagsSet?.contains("ch4_desk_complete") == true,
+           !GameState.shared.hasFlag("ch4_outro_complete") {
+            return deskOutroDialogue(chapterID: "ch4", introNodeID: "n2")
+        }
+
+        if chapterID == "ch5",
+           caseFile.id == "case_ch5_003",
+           action.consequences.flagsSet?.contains("ch5_desk_complete") == true,
+           !GameState.shared.hasFlag("ch5_outro_complete") {
+            return deskOutroDialogue(chapterID: "ch5", introNodeID: "n2")
+        }
+
+        if chapterID == "ch6",
+           caseFile.id == "case_ch6_002",
+           GameState.shared.hasFlag("c19_processed"),
+           !GameState.shared.hasFlag("ch6_c19_pause_shown") {
+            return PendingDeskDialogue(
+                dialogueID: "intro_ch6",
+                startNodeID: "n1",
+                returnScene: .desk(chapterID: "ch6"))
+        }
+
+        if chapterID == "ch7",
+           caseFile.id == "case_ch7_003",
+           action.consequences.flagsSet?.contains("ch7_desk_complete") == true,
+           !GameState.shared.hasFlag("ch7_outro_complete") {
+            return deskOutroDialogue(chapterID: "ch7", introNodeID: "n2")
         }
 
         return nil
+    }
+
+    private func deskOutroDialogue(chapterID: String, introNodeID: String) -> PendingDeskDialogue? {
+        let platformLevelID = "level_\(chapterID)"
+        let nextScene: SceneType
+        if LevelData.load(id: platformLevelID) != nil,
+           !GameState.shared.completedLevelIDs.contains(platformLevelID) {
+            nextScene = .chapterComplete(chapterID: chapterID,
+                                         nextScene: .platform(levelID: platformLevelID))
+        } else {
+            nextScene = resolveNextScene(afterDeskFor: chapterID)
+        }
+        return PendingDeskDialogue(
+            dialogueID: "intro_\(chapterID)",
+            startNodeID: introNodeID,
+            returnScene: nextScene)
     }
 
     private func continueAfterCaseAction(caseFile: CaseFile, action: CaseAction) {
@@ -1117,15 +1294,24 @@ final class DeskScene: SKScene {
         }
     }
 
+    private func auditStatusHeaderColor(from stampColor: SKColor) -> SKColor {
+        // CRT-bright status line — readable on dark header strips for all stamp colours.
+        _ = stampColor
+        return SKColor(red: 0.38, green: 1.0, blue: 0.58, alpha: 1)
+    }
+
     // MARK: - Action Result Overlay (over left doc area, replaces right-panel showMessage after stamp)
 
     private func showActionResultPanel(text: String, color: SKColor,
                                        auditResponse: String?,
                                        onContinue: @escaping () -> Void) {
         resultPanel?.removeFromParent()
+        resultScrollState = nil
+        resultScrollBodyRect = .zero
+        resultScrollTouch = nil
 
         let panelW = kDocW - 20
-        let panelH = min(layout.h * 0.58, 240)
+        let panelH = min(layout.h * 0.72, 300)
         let panelX = layout.left + kDocW / 2
         let panelY = layout.midY
 
@@ -1146,59 +1332,68 @@ final class DeskScene: SKScene {
         border.position    = CGPoint(x: panelX, y: panelY)
         panel.addChild(border)
 
-        // Header strip
         let headerH: CGFloat = 24
-        let headerBG = SKSpriteNode(color: color.withAlphaComponent(0.18),
+        let footerH: CGFloat = 48
+        let headerBG = SKSpriteNode(color: color.withAlphaComponent(0.28),
                                     size: CGSize(width: panelW, height: headerH))
         headerBG.position = CGPoint(x: panelX, y: panelY + panelH / 2 - headerH / 2)
         panel.addChild(headerBG)
 
-        let headerLbl = DLOFont.terminalLabel(text: "PMCA — ACTION RECORDED", size: 9)
+        let headerLbl = DLOFont.terminalLabel(text: "PMCA — ACTION RECORDED", size: 10)
         headerLbl.horizontalAlignmentMode = .center
-        headerLbl.fontColor = color
+        headerLbl.fontColor = auditStatusHeaderColor(from: color)
         headerLbl.position  = headerBG.position
         panel.addChild(headerLbl)
 
-        // Result text
         let mult = GameState.shared.textSizeMultiplier
-        let resultLbl = SKLabelNode(text: text)
-        resultLbl.fontName = "Menlo"
-        resultLbl.fontSize = 11 * mult
-        resultLbl.fontColor = color
-        resultLbl.horizontalAlignmentMode = .center
-        resultLbl.verticalAlignmentMode   = .top
-        resultLbl.numberOfLines = 0
-        resultLbl.preferredMaxLayoutWidth = panelW - 24
-        resultLbl.position = CGPoint(x: panelX, y: panelY + panelH / 2 - headerH - 14)
-        panel.addChild(resultLbl)
+        let bodyW = panelW - 24
+        let bodyTop = panelY + panelH / 2 - headerH - 8
+        let bodyBottom = panelY - panelH / 2 + footerH
+        let bodyH = bodyTop - bodyBottom
 
-        // Audit response (if any)
-        if let audit = auditResponse {
-            let divY = panelY + panelH / 2 - headerH - 54
-            let divider = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.3),
-                                       size: CGSize(width: panelW - 24, height: 1))
-            divider.position = CGPoint(x: panelX, y: divY)
-            panel.addChild(divider)
+        var bodyLines = ["ACTION RESULT", "", text]
+        if let audit = auditResponse, !audit.isEmpty {
+            bodyLines += ["", "────────────────", "AUDIT LOG", "", audit]
+        }
+        let bodyText = bodyLines.joined(separator: "\n")
 
-            let tagLbl = DLOFont.terminalLabel(text: "AUDIT LOG:", size: 8.5)
-            tagLbl.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.55)
-            tagLbl.horizontalAlignmentMode = .left
-            tagLbl.position = CGPoint(x: panelX - panelW / 2 + 12, y: divY - 14)
-            panel.addChild(tagLbl)
+        let bodyLbl = SKLabelNode(text: bodyText)
+        bodyLbl.fontName = "Menlo"
+        bodyLbl.fontSize = 10.5 * mult
+        bodyLbl.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.88)
+        bodyLbl.horizontalAlignmentMode = .left
+        bodyLbl.verticalAlignmentMode = .top
+        bodyLbl.numberOfLines = 0
+        bodyLbl.preferredMaxLayoutWidth = bodyW
+        bodyLbl.lineBreakMode = .byWordWrapping
 
-            let auditLbl = SKLabelNode(text: audit)
-            auditLbl.fontName = "Menlo"
-            auditLbl.fontSize = 9.5 * mult
-            auditLbl.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.80)
-            auditLbl.horizontalAlignmentMode = .left
-            auditLbl.verticalAlignmentMode   = .top
-            auditLbl.numberOfLines = 0
-            auditLbl.preferredMaxLayoutWidth = panelW - 24
-            auditLbl.position = CGPoint(x: panelX - panelW / 2 + 12, y: divY - 30)
-            panel.addChild(auditLbl)
+        let clip = SKCropNode()
+        let mask = SKSpriteNode(color: .white, size: CGSize(width: bodyW, height: bodyH))
+        mask.position = CGPoint(x: panelX, y: bodyBottom + bodyH / 2)
+        clip.maskNode = mask
+
+        let content = SKNode()
+        bodyLbl.position = CGPoint(x: panelX - bodyW / 2, y: bodyTop)
+        content.addChild(bodyLbl)
+        clip.addChild(content)
+        panel.addChild(clip)
+
+        let scrollState = ScrollableReadablePanel.ScrollState()
+        scrollState.content = content
+        scrollState.bodyLabel = bodyLbl
+        scrollState.viewportHeight = bodyH
+        scrollState.recalculateBounds()
+        resultScrollState = scrollState
+        resultScrollBodyRect = CGRect(x: panelX - bodyW / 2, y: bodyBottom, width: bodyW, height: bodyH)
+
+        if scrollState.maxScroll > 0 {
+            let hint = DLOFont.terminalLabel(text: "▲ scroll ▼", size: 7.5 * mult)
+            hint.horizontalAlignmentMode = .center
+            hint.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.35)
+            hint.position = CGPoint(x: panelX, y: bodyBottom + 10)
+            panel.addChild(hint)
         }
 
-        // NEXT CASE button anchored at panel bottom
         let btnH: CGFloat = 38
         let btnW: CGFloat = panelW - 24
         let btnX = panelX
@@ -1224,7 +1419,6 @@ final class DeskScene: SKScene {
 
         addChild(panel)
         resultPanel = panel
-        // Delay so stamp animation is visible first
         panel.run(SKAction.sequence([
             SKAction.wait(forDuration: 0.45),
             SKAction.fadeIn(withDuration: 0.2)
@@ -1236,6 +1430,9 @@ final class DeskScene: SKScene {
         resultPanel = nil
         resultContinueRect   = .zero
         resultContinueAction = nil
+        resultScrollState = nil
+        resultScrollBodyRect = .zero
+        resultScrollTouch = nil
     }
 
     // Shows a compact anomaly indicator + AUDIT LOG button in the right panel.
@@ -1575,9 +1772,9 @@ final class DeskScene: SKScene {
 
     private func updateHUD() {
         let state = GameState.shared
-        let maxScore: CGFloat = 30
-        complianceBar.size.width = max(2, min(CGFloat(state.complianceScore) / maxScore, 1.0) * 60)
-        suspicionBar.size.width  = max(2, min(CGFloat(state.suspicionScore)  / maxScore, 1.0) * 60)
+        complianceScoreLabel.text = "COMP: \(state.complianceScore)"
+        suspicionScoreLabel.text = "SUSP: \(state.suspicionScore)"
+        layoutDeskScoreLabels()
     }
 
     private func showContinueButton(action: @escaping () -> Void) {
@@ -1638,28 +1835,95 @@ final class DeskScene: SKScene {
         ]))
     }
 
-    // MARK: - Notebook Overlay
+    // MARK: - PDA Journal
 
-    private func showNotebookOverlay() {
-        guard notebookOverlay == nil else { return }
-        let built = NotebookManager.makeDeskPDAPanel(layout: layout, chapter: chapterID) { [weak self] in
-            self?.hideNotebookOverlay()
-        }
-        built.panel.zPosition = 850
-        built.panel.alpha = 0
-        addChild(built.panel)
-        notebookOverlay = built.panel
-        notebookScrollState = built.scrollState
-        built.panel.run(SKAction.fadeIn(withDuration: 0.12))
+    private func currentPDABuild() -> PDAJournalPanel.BuildResult {
+        PDAJournalPanel.BuildResult(
+            panel: pdaOverlay ?? SKNode(),
+            scrollState: pdaScrollState,
+            regions: pdaJournalRegions,
+            screen: pdaJournalScreen)
     }
 
-    private func hideNotebookOverlay() {
-        guard let overlay = notebookOverlay else { return }
-        notebookOverlay = nil
-        notebookScrollState = nil
-        notebookScrollTouch = nil
+    private func showPDAJournal() {
+        guard pdaOverlay == nil else { return }
+        let shift = PDAJournalManager.shiftNumber(from: chapterID)
+        let skipBoot = PDAJournalManager.state.bootScreenSeen
+        NSLog("[DLO PDA] desk open requested shift=%d skipBoot=%d", shift, skipBoot)
+        pdaJournalScreen = PDAJournalPanel.initialScreen(currentShift: shift, skipBoot: skipBoot)
+        rebuildPDAJournal(screen: pdaJournalScreen)
+    }
+
+    private func rebuildPDAJournal(screen: PDAJournalPanel.Screen) {
+        isRebuildingPDAJournal = true
+        defer { isRebuildingPDAJournal = false }
+
+        let priorScreen = pdaJournalScreen
+        let wasVisible = pdaOverlay?.parent != nil
+        pdaOverlay?.removeFromParent()
+        pdaScrollState = nil
+        pdaScrollTouch = nil
+
+        let panelW = layout.w * 0.78
+        let panelH = layout.h * 0.84
+        let shift = PDAJournalManager.shiftNumber(from: chapterID)
+        let built = PDAJournalPanel.build(
+            screen: screen,
+            panelSize: CGSize(width: panelW, height: panelH),
+            center: layout.center,
+            textMultiplier: GameState.shared.textSizeMultiplier,
+            currentShift: shift,
+            chapterID: chapterID,
+            fieldObjective: nil,
+            onRebuild: { [weak self] newScreen in self?.rebuildPDAJournal(screen: newScreen) },
+            onClose: { [weak self] in self?.hidePDAJournal() })
+
+        built.panel.zPosition = 850
+        addChild(built.panel)
+        pdaOverlay = built.panel
+        pdaJournalScreen = built.screen
+        pdaJournalRegions = built.regions
+        pdaScrollState = built.scrollState
+
+        if wasVisible && Self.shouldFadePDATransition(from: priorScreen, to: screen) {
+            built.panel.alpha = 0
+            built.panel.run(SKAction.fadeIn(withDuration: 0.12))
+        } else {
+            built.panel.alpha = 1
+        }
+    }
+
+    private static func shouldFadePDATransition(
+        from oldScreen: PDAJournalPanel.Screen,
+        to newScreen: PDAJournalPanel.Screen
+    ) -> Bool {
+        if case .section = oldScreen, case .section = newScreen { return false }
+        return true
+    }
+
+    private func hidePDAJournal() {
+        guard let overlay = pdaOverlay else { return }
+        NSLog("[DLO PDA] desk journal closed")
+        clearModalOverlayState()
         overlay.run(SKAction.sequence([
             SKAction.fadeOut(withDuration: 0.1),
+            SKAction.removeFromParent()
+        ]))
+    }
+
+    private func showPDAUpdateToast() {
+        pdaUpdateToastNode?.removeFromParent()
+        let toast = DLOFont.terminalLabel(text: "PDA UPDATED", size: 11 * hudTextMult)
+        toast.fontColor = SKColor(red: 0.52, green: 0.74, blue: 0.62, alpha: 1)
+        toast.position = CGPoint(x: layout.midX, y: layout.bottom + 28)
+        toast.zPosition = 900
+        toast.alpha = 0
+        addChild(toast)
+        pdaUpdateToastNode = toast
+        toast.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0.15),
+            SKAction.wait(forDuration: 1.6),
+            SKAction.fadeOut(withDuration: 0.35),
             SKAction.removeFromParent()
         ]))
     }
@@ -1705,8 +1969,9 @@ final class DeskScene: SKScene {
         divider.zPosition = 3
         overlay.addChild(divider)
 
-        let resumeY = layout.midY - panelH * 0.12
-        let exitY   = layout.midY - panelH * 0.30
+        let resumeY = layout.midY - panelH * 0.08
+        let settingsY = layout.midY - panelH * 0.24
+        let exitY   = layout.midY - panelH * 0.40
 
         let resumeLbl = DLOFont.terminalLabel(text: "> RESUME SHIFT", size: 13)
         resumeLbl.fontColor = DLOColor.terminalAmber
@@ -1715,20 +1980,27 @@ final class DeskScene: SKScene {
         resumeLbl.zPosition = 3
         overlay.addChild(resumeLbl)
 
-        let exitLbl = DLOFont.terminalLabel(text: "> EXIT TO MAIN MENU", size: 13)
+        let settingsLbl = DLOFont.terminalLabel(text: "> SETTINGS", size: 13)
+        settingsLbl.fontColor = DLOColor.teal
+        settingsLbl.horizontalAlignmentMode = .center
+        settingsLbl.position  = CGPoint(x: layout.midX, y: settingsY)
+        settingsLbl.zPosition = 3
+        overlay.addChild(settingsLbl)
+
+        let exitLbl = DLOFont.terminalLabel(text: "> SAVE & EXIT TO MENU", size: 13)
         exitLbl.fontColor = DLOColor.danger
         exitLbl.horizontalAlignmentMode = .center
         exitLbl.position  = CGPoint(x: layout.midX, y: exitY)
         exitLbl.zPosition = 3
         overlay.addChild(exitLbl)
 
-        // Store hit rects (scene coordinates) — no PauseBlocker needed
-        let hitW = max(panelW * 0.7, 150)
+        let hitW = max(panelW * 0.7, 200)
         pauseResumeRect = CGRect(x: layout.midX - hitW / 2, y: resumeY - 22,
                                  width: hitW, height: 44)
-        pauseExitRect   = CGRect(x: layout.midX - hitW / 2, y: exitY - 22,
-                                 width: hitW, height: 44)
-        NSLog("[DLO Layout] pauseResumeRect=\(pauseResumeRect) pauseExitRect=\(pauseExitRect)")
+        pauseSettingsRect = CGRect(x: layout.midX - hitW / 2, y: settingsY - 22,
+                                   width: hitW, height: 44)
+        pauseSaveExitRect = CGRect(x: layout.midX - hitW / 2, y: exitY - 22,
+                                   width: hitW, height: 44)
 
         overlay.alpha = 0
         addChild(overlay)
@@ -1740,7 +2012,8 @@ final class DeskScene: SKScene {
         guard let overlay = pauseOverlay else { return }
         pauseOverlay = nil
         pauseResumeRect = .zero
-        pauseExitRect   = .zero
+        pauseSettingsRect = .zero
+        pauseSaveExitRect = .zero
         overlay.run(SKAction.sequence([
             SKAction.fadeOut(withDuration: 0.1),
             SKAction.removeFromParent()

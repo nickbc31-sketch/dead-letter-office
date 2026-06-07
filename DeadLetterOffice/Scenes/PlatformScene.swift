@@ -6,9 +6,15 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     var levelID: String = "level_ch1"
 
     private var levelData: LevelData?
-    private var mara: MaraPlayerNode!
-    private var virtualPad: VirtualPadNode!
-    private var cameraNode: SKCameraNode!
+    private var mara: MaraPlayerNode?
+    private var virtualPad: VirtualPadNode?
+    private var cameraNode: SKCameraNode?
+    private var isLevelReady = false
+    #if DEBUG
+    var debugValidationMode = false
+    private var debugValidationElapsed: TimeInterval = 0
+    private var debugValidationComplete = false
+    #endif
     private var patrols: [DroneEnemyNode] = []
     private var securityCameras: [SecurityCameraNode] = []
     private var collectiblePickups: [SKNode] = []
@@ -20,21 +26,28 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     private var doorBarriers: [String: SKSpriteNode] = [:]  // id → blocker sprite
     private var nearbyInteractableID: String?
     private var activePanel: SKNode?
-    private var interactButton: InteractButtonNode!
+    private var interactButton: InteractButtonNode?
     private var interactWasPressed = false
     private var empWasPressed = false
     private var hackWasPressed = false
     private var nearbyHackableID: String?
+    private var hackAttemptCounts: [String: Int] = [:]
 
     // Level state
     private var isLevelComplete = false
     private var isRestartingAfterCatch = false
-    private var overlayNode: SKNode!
+    private var overlayNode: SKNode?
+    private var loadingOverlay: SKNode?
     private var isModalInputLocked = false
     private var enforcementBoundaryX: CGFloat?
     private var lastBoundaryWarning: TimeInterval = 0
 
     private var isGameplayInputFrozen: Bool { isModalInputLocked || activePanel != nil }
+
+    private func requireMara() -> MaraPlayerNode? {
+        guard isLevelReady, let mara else { return nil }
+        return mara
+    }
 
     // MARK: - Scene Entry
 
@@ -52,26 +65,110 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     private var interactButtonCamRect: CGRect = .zero
     private var panelScrollState: ScrollableReadablePanel.ScrollState?
     private var panelScrollTouch: UITouch?
+    private var panelScrollBodyRect = CGRect.zero
+    private var isPDAJournalOpen = false
+    private var pdaJournalScreen: PDAJournalPanel.Screen = .boot
+    private var pdaJournalRegions = PDAJournalPanel.HitRegions()
+    private var isRebuildingPDAJournal = false
+    private var isRebuildingHUD = false
+    private var levelBuildStarted = false
 
     override func didMove(to view: SKView) {
         SceneManager.shared.view = view
         physicsWorld.gravity = CGVector(dx: 0, dy: -700)  // tuned for jumpImpulse=285
         physicsWorld.contactDelegate = self
+        isLevelReady = false
+        installBootstrapCamera()
+        showLoadingOverlay()
 
         guard let raw = LevelData.load(id: levelID) else {
+            NSLog("[DLO Platform] FAILED level load: %@", levelID)
             SceneManager.shared.transition(to: .desk(chapterID: "ch1"), from: self)
             return
         }
         let data = raw.composed(screenWidth: size.width)
-        levelData = data
-        buildLevel(data)
+        beginLevelSetup(with: data)
+    }
+
+    override func didChangeSize(_ oldSize: CGSize) {
+        super.didChangeSize(oldSize)
+        guard isLevelReady, levelBuildStarted, levelData != nil, cameraNode != nil else { return }
+        guard size.width > 50, size.height > 50 else { return }
+        guard abs(size.width - oldSize.width) > 4 || abs(size.height - oldSize.height) > 4 else { return }
+        isLevelReady = false
+        rebuildCameraChrome()
+        validateAndActivateLevel()
+    }
+
+    /// Rebuild HUD + virtual pad together — pauses gameplay until validateAndActivateLevel().
+    private func rebuildCameraChrome() {
         buildHUD()
         buildVirtualPad()
+    }
 
-        if let track = data.ambientMusicTrack {
-            AudioManager.shared.playMusic(named: track)
-        } else {
-            AudioManager.shared.playMusic(named: "ambient_platform")
+    private func installBootstrapCamera() {
+        guard cameraNode == nil else { return }
+        let cam = SKCameraNode()
+        cam.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        addChild(cam)
+        camera = cam
+        cameraNode = cam
+    }
+
+    private func showLoadingOverlay() {
+        loadingOverlay?.removeFromParent()
+        let overlay = SKNode()
+        overlay.zPosition = 2000
+        let label = DLOFont.terminalLabel(text: "LOADING FIELD…", size: 11)
+        label.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        label.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.6)
+        overlay.addChild(label)
+        addChild(overlay)
+        loadingOverlay = overlay
+    }
+
+    private func dismissLoadingOverlay() {
+        loadingOverlay?.removeFromParent()
+        loadingOverlay = nil
+    }
+
+    private func beginLevelSetup(with data: LevelData) {
+        levelData = data
+        levelBuildStarted = false
+        isLevelReady = false
+        isRebuildingHUD = false
+
+        let finish: () -> Void = { [weak self] in
+            guard let self else { return }
+            let runOnMain = {
+                guard !self.levelBuildStarted else { return }
+                self.levelBuildStarted = true
+                self.isLevelReady = false
+                self.buildLevel(data)
+                self.rebuildCameraChrome()
+                self.dismissLoadingOverlay()
+                self.validateAndActivateLevel()
+
+                if let track = data.ambientMusicTrack {
+                    AudioManager.shared.playMusic(named: track)
+                } else {
+                    AudioManager.shared.playMusic(named: "ambient_platform")
+                }
+            }
+            if Thread.isMainThread {
+                runOnMain()
+            } else {
+                DispatchQueue.main.async(execute: runOnMain)
+            }
+        }
+
+        MaraPlayerNode.preloadAnimations(completion: finish)
+
+        // Device atlas preload can stall; never leave the field scene blank.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 6.0) { [weak self] in
+            guard let self, !self.levelBuildStarted else { return }
+            NSLog("[DLO MaraAnim] preload timeout — building level anyway")
+            finish()
         }
     }
 
@@ -90,6 +187,9 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
             buildInteriorShell(levelID: data.id, width: data.levelWidth, height: data.levelHeight)
         }
         buildPlatforms(data)
+        for building in BuildingNode.makeAll(from: data.buildingNodes ?? []) {
+            addChild(building)
+        }
 
         let spawnXY: CGPoint
         if let override = GameState.shared.consumePlatformSpawnOverride(for: levelID) {
@@ -97,20 +197,19 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         } else {
             spawnXY = CGPoint(x: data.spawnPoint[0], y: data.spawnPoint[1])
         }
-        mara = MaraPlayerNode()
-        // Feet rest on floor top (y=40); physics body is 50pt tall centred on node.
-        mara.position = CGPoint(x: spawnXY.x, y: max(spawnXY.y, MaraPlayerNode.defaultStandCenterY))
-        mara.zPosition = 50
-        addChild(mara)
+        let player = MaraPlayerNode()
+        player.position = CGPoint(x: spawnXY.x, y: MaraPlayerNode.defaultStandCenterY)
+        player.zPosition = 50
+        addChild(player)
+        mara = player
 
-        cameraNode = SKCameraNode()
-        addChild(cameraNode)
-        camera = cameraNode
-        // Start camera at the steady-state target so there is no initial rush that
-        // makes Mara appear to slide backwards while the camera catches up.
+        let cam = cameraNode ?? SKCameraNode()
+        if cam.parent == nil { addChild(cam) }
+        cameraNode = cam
+        camera = cam
         let halfW = size.width / 2
         let clampedX = max(halfW, min(spawnXY.x, CGFloat(data.levelWidth) - halfW))
-        cameraNode.position = CGPoint(x: clampedX, y: spawnXY.y + size.height * 0.25)
+        cam.position = CGPoint(x: clampedX, y: spawnXY.y + size.height * 0.25)
         updateParallaxTileWrapping()
 
         for inter in data.interactables        { buildInteractable(inter) }
@@ -121,6 +220,24 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
         for cam in data.securityCameras ?? []  { buildSecurityCamera(cam) }
         if let boundaryX = data.fieldBoundaryX { buildFieldBoundary(at: boundaryX) }
         FieldEnvironmentDecor.addToScene(self, levelID: levelID, width: data.levelWidth)
+    }
+
+    private func validateAndActivateLevel() {
+        var issues: [String] = []
+        if mara == nil { issues.append("mara") }
+        if cameraNode == nil { issues.append("camera") }
+        if virtualPad == nil { issues.append("virtualPad") }
+        if interactButton == nil { issues.append("interactButton") }
+        if overlayNode == nil { issues.append("overlay") }
+        if levelData == nil { issues.append("levelData") }
+        if issues.isEmpty {
+            isLevelReady = true
+            NSLog("[DLO Platform] level ready — %@ maraAnim=%@",
+                  levelID, MaraAnimationController.assetStatusSummary)
+        } else {
+            isLevelReady = false
+            NSLog("[DLO Platform] BLOCKED level start — missing: %@", issues.joined(separator: ", "))
+        }
     }
 
     private func buildSecurityCamera(_ spec: SecurityCameraSpec) {
@@ -175,7 +292,7 @@ final class PlatformScene: SKScene, SKPhysicsContactDelegate {
     }
 
     private func checkFieldBoundary(_ currentTime: TimeInterval) {
-        guard let boundary = enforcementBoundaryX, !isGameplayInputFrozen else { return }
+        guard let mara, let boundary = enforcementBoundaryX, !isGameplayInputFrozen else { return }
         if mara.position.x > boundary - 16 {
             mara.haltMovement()
             mara.position.x = boundary - 36
@@ -267,9 +384,9 @@ Return to authorised sector immediately.
         /// How much of each tile width overlaps its neighbour (crossfade zone).
         var overlapFraction: CGFloat {
             switch self {
-            case .far:  return 0.48
-            case .mid:  return 0.42
-            case .near: return 0.24
+            case .far:  return 0.58
+            case .mid:  return 0.48
+            case .near: return 0.30
             }
         }
 
@@ -368,13 +485,12 @@ Return to authorised sector immediately.
         let container = SKNode()
         container.name = "parallaxTiles"
 
+        let kind = ParallaxLayerKind.from(imageName: imageName)
         let texture = SKTexture(image: image)
-        texture.filteringMode = .linear
+        texture.filteringMode = kind == .far ? .nearest : .linear
 
         let texSize = texture.size()
         guard texSize.width > 0, texSize.height > 0 else { return container }
-
-        let kind = ParallaxLayerKind.from(imageName: imageName)
         let targetH = levelHeight
         let scale = targetH / texSize.height
         // Snap width to half-points so linear filtering does not drift subpixel seams.
@@ -387,8 +503,8 @@ Return to authorised sector immediately.
         let viewPad = max(size.width, levelWidth * 0.35)
         let coverageMin = -viewPad
         let firstCenterX = coverageMin + tileW * 0.5 + phaseShift
-        // Slight horizontal bleed hides 1px texture-edge sampling gaps.
-        let bleed: CGFloat = 2
+        // Horizontal bleed hides texture-edge sampling gaps at tile joins.
+        let bleed: CGFloat = kind == .far ? 6 : 4
         let tileSize = CGSize(width: tileW + bleed, height: targetH)
         let hFade = kind.horizontalFadeWidth(overlapFraction: kind.overlapFraction)
 
@@ -399,12 +515,13 @@ Return to authorised sector immediately.
         let maskTexture = SKTexture(image: maskImage)
         maskTexture.filteringMode = .linear
 
-        let tileCount = 9
+        let tileCount = 11
         for i in 0..<tileCount {
             let sprite = SKSpriteNode(texture: texture)
             sprite.size = tileSize
             sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
             sprite.blendMode = .alpha
+            if kind == .far && i % 2 == 1 { sprite.xScale = -1 }
 
             let mask = SKSpriteNode(texture: maskTexture)
             mask.size = tileSize
@@ -412,7 +529,7 @@ Return to authorised sector immediately.
             let crop = SKCropNode()
             crop.maskNode = mask
             crop.addChild(sprite)
-            let tileX = (firstCenterX + stride * CGFloat(i) * 2).rounded() / 2
+            let tileX = (firstCenterX + stride * CGFloat(i)).rounded(.toNearestOrEven)
             crop.position = CGPoint(x: tileX, y: centerY)
             crop.name = "parallaxTile"
             container.addChild(crop)
@@ -704,21 +821,16 @@ Return to authorised sector immediately.
 
         if inter.type == "information_node" || inter.type == "text_sign" {
             let beaconLabel = inter.nodeLabel ?? informationNodeBeaconLabel(for: inter)
-            let beacon = FieldInvestigationVisuals.civicNoticeBoard(label: beaconLabel)
-            beacon.position = CGPoint(x: 0, y: 0)
+            let beacon = FieldInvestigationVisuals.publicNoticeBoard(label: beaconLabel)
             node.addChild(beacon)
+        } else if inter.type == "terminal" {
+            node.addChild(FieldInvestigationVisuals.pmcaFieldTerminal())
         } else if inter.type == "cartridge" {
-            let cart = FieldInvestigationVisuals.dataCartridgePedestal()
-            node.addChild(cart)
+            node.addChild(FieldInvestigationVisuals.dataCacheUnit())
         } else if inter.type == "security_override" {
-            let port = SKSpriteNode(color: SKColor(red: 0.14, green: 0.18, blue: 0.16, alpha: 1),
-                                    size: CGSize(width: 16, height: 22))
-            port.position = CGPoint(x: 0, y: 11)
-            node.addChild(port)
-            let lbl = DLOFont.terminalLabel(text: "PDA", size: 6)
-            lbl.fontColor = SKColor(red: 0.52, green: 0.74, blue: 0.62, alpha: 0.9)
-            lbl.position = CGPoint(x: 0, y: 28)
-            node.addChild(lbl)
+            node.addChild(FieldInvestigationVisuals.networkAccessNode())
+        } else if inter.type == "cabinet" {
+            node.addChild(FieldInvestigationVisuals.maintenanceCabinet())
         }
 
         let (icon, color) = iconAndColor(for: inter.type)
@@ -729,7 +841,8 @@ Return to authorised sector immediately.
         sprite.horizontalAlignmentMode = .center
         sprite.verticalAlignmentMode = .center
         if inter.type == "information_node" || inter.type == "text_sign"
-            || inter.type == "cartridge" || inter.type == "security_override" {
+            || inter.type == "cartridge" || inter.type == "security_override"
+            || inter.type == "terminal" || inter.type == "cabinet" {
             sprite.alpha = 0
         } else if inter.type == "building_entrance" {
             if inter.buildingVisual != nil {
@@ -911,13 +1024,28 @@ Return to authorised sector immediately.
 
     private func buildNPC(_ npc: NPCData) {
         npcDataMap[npc.id] = npc
+        let floorTopY: CGFloat = 40
 
+        let node: SKNode
+        if npc.id == "haas" {
+            WorkerKHaasNode.preload()
+            node = WorkerKHaasNode(
+                position: CGPoint(x: npc.position[0], y: floorTopY),
+                displayName: npc.displayName)
+        } else {
+            node = buildPlaceholderNPC(npc, floorY: floorTopY)
+        }
+
+        addChild(node)
+        npcNodes[npc.id] = node
+    }
+
+    private func buildPlaceholderNPC(_ npc: NPCData, floorY: CGFloat) -> SKNode {
         let node = SKNode()
-        node.position = CGPoint(x: npc.position[0], y: npc.position[1])
+        node.position = CGPoint(x: npc.position[0], y: floorY)
         node.zPosition = 35
         node.name = "npc_\(npc.id)"
 
-        // Civilian silhouette — slightly lighter than guard/drone
         let coatColor = SKColor(red: 0.16, green: 0.18, blue: 0.24, alpha: 1)
 
         let legs = SKSpriteNode(color: coatColor, size: CGSize(width: 14, height: 18))
@@ -934,7 +1062,6 @@ Return to authorised sector immediately.
         head.position = CGPoint(x: 0, y: 46)
         node.addChild(head)
 
-        // Pulsing dialogue indicator above head
         let indicator = DLOFont.terminalLabel(text: "?", size: 11)
         indicator.fontColor = DLOColor.terminalAmber
         indicator.horizontalAlignmentMode = .center
@@ -946,20 +1073,27 @@ Return to authorised sector immediately.
             SKAction.fadeAlpha(to: 1.0, duration: 0.7)
         ])))
 
-        // Name tag
         let nameLbl = DLOFont.terminalLabel(text: npc.displayName, size: 7)
         nameLbl.fontColor = DLOColor.dimText
         nameLbl.horizontalAlignmentMode = .center
         nameLbl.position = CGPoint(x: 0, y: 73)
         node.addChild(nameLbl)
 
-        addChild(node)
-        npcNodes[npc.id] = node
+        return node
+    }
+
+    private func updateNPCHaasPresentation(nearbyID: String?) {
+        guard activePanel == nil else { return }
+        for (id, node) in npcNodes {
+            guard let haas = node as? WorkerKHaasNode else { continue }
+            haas.setState(nearbyID == id ? .beckon : .idle)
+        }
     }
 
     // MARK: - Ladder Proximity (distance-based — more reliable than physics alone)
 
     private func checkLadderProximity() {
+        guard let mara, let interactButton else { return }
         guard !mara.isOnLadder else {
             if nearbyInteractableID != nil {
                 interactButton.configure(for: "ladder_active")
@@ -1005,6 +1139,7 @@ Return to authorised sector immediately.
     // MARK: - NPC Proximity (distance-based, called every frame)
 
     private func checkNPCProximity() {
+        guard let mara, let interactButton else { return }
         let range: CGFloat = 75
         var closestID: String? = nil
         var closestDist: CGFloat = .infinity
@@ -1017,24 +1152,26 @@ Return to authorised sector immediately.
             }
         }
 
-        guard closestID != nearbyNPCID else { return }
-        nearbyNPCID = closestID
+        if closestID != nearbyNPCID {
+            nearbyNPCID = closestID
 
-        // Only touch the button if no interactable is already claiming it
-        if nearbyInteractableID == nil {
-            if nearbyNPCID != nil {
-                interactButton.configure(for: "npc")
-                interactButton.run(SKAction.fadeIn(withDuration: 0.2))
-            } else {
-                interactButton.run(SKAction.fadeOut(withDuration: 0.15))
+            // Only touch the button if no interactable is already claiming it
+            if nearbyInteractableID == nil {
+                if nearbyNPCID != nil {
+                    interactButton.configure(for: "npc")
+                    interactButton.run(SKAction.fadeIn(withDuration: 0.2))
+                } else {
+                    interactButton.run(SKAction.fadeOut(withDuration: 0.15))
+                }
             }
         }
+        updateNPCHaasPresentation(nearbyID: closestID)
     }
 
     // MARK: - NPC Activation
 
     private func activateNPC(id: String) {
-        guard let npc = npcDataMap[id] else { return }
+        guard let mara = requireMara(), let npc = npcDataMap[id] else { return }
 
         let alreadyTalked = npcTalkedTo.contains(id)
         let repeatable = npc.repeatable ?? false
@@ -1045,19 +1182,25 @@ Return to authorised sector immediately.
         }
 
         npcTalkedTo.insert(id)
+        (npcNodes[id] as? WorkerKHaasNode)?.setState(.worried)
 
-        if let flag = npc.setsFlag {
-            GameState.shared.setFlag(flag)
-        }
-        if id == "haas" { NotebookManager.onHaasTalked() }
-        NotebookManager.onNPCTalked(npcID: id)
+        mara.playScanObserve { [weak self] in
+            guard let self else { return }
+            if let flag = npc.setsFlag {
+                GameState.shared.setFlag(flag)
+            }
+            if id == "haas" { NotebookManager.onHaasTalked() }
+            NotebookManager.onNPCTalked(npcID: id)
+            self.notifyPDAIfUpdated()
 
-        // Build dialogue lines into one body string
-        let body = npc.dialogue.joined(separator: "\n\n")
-        showContentPanel(header: npc.displayName.uppercased(), body: body) {
-            // Swap indicator to dim "." after first conversation
-            if let indicator = self.npcNodes[id]?.childNode(withName: "npc_indicator_\(id)") {
-                indicator.run(SKAction.fadeAlpha(to: 0.2, duration: 0.3))
+            let body = npc.dialogue.joined(separator: "\n\n")
+            self.showContentPanel(header: npc.displayName.uppercased(), body: body) {
+                if let haas = self.npcNodes[id] as? WorkerKHaasNode {
+                    haas.dimDialogueIndicator()
+                    haas.setState(self.nearbyNPCID == id ? .beckon : .idle)
+                } else if let indicator = self.npcNodes[id]?.childNode(withName: "npc_indicator_\(id)") {
+                    indicator.run(SKAction.fadeAlpha(to: 0.2, duration: 0.3))
+                }
             }
         }
     }
@@ -1065,39 +1208,57 @@ Return to authorised sector immediately.
     // MARK: - HUD
 
     private func buildHUD() {
-        overlayNode = SKNode()
-        overlayNode.zPosition = 1000
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { [weak self] in self?.buildHUD() }
+            return
+        }
+        guard !isRebuildingHUD else { return }
+        guard let camNode = cameraNode, camNode.parent != nil else {
+            NSLog("[DLO Platform] buildHUD aborted — cameraNode nil or detached")
+            return
+        }
+        guard size.width > 1, size.height > 1 else {
+            NSLog("[DLO Platform] buildHUD aborted — invalid scene size %@", NSCoder.string(for: size))
+            return
+        }
+
+        isRebuildingHUD = true
+        defer { isRebuildingHUD = false }
+
+        interactButton = nil
+        overlayNode?.removeFromParent()
+        overlayNode = nil
+
+        let overlay = SKNode()
+        overlay.zPosition = 1000
 
         let cam = SceneLayout.makeCamera(scene: self)
 
-        // Interact button — purely visual, tapped via scene-level rect check
-        interactButton = InteractButtonNode()
-        interactButton.alpha = 0
-        interactButton.zPosition = 1100
-        overlayNode.addChild(interactButton)
+        let ib = InteractButtonNode()
+        ib.alpha = 0
+        ib.zPosition = 1100
+        overlay.addChild(ib)
+        interactButton = ib
 
         let textMult = GameState.shared.textSizeMultiplier
 
-        // ── Objective text — top-left, large and readable on physical iPhone ──
+        // ── Subtle shift header — detailed guidance lives in PDA journal ──
         if let obj = levelData?.objectiveText {
-            // Dark backing strip for legibility over any background
             let objBacking = SKSpriteNode(
-                color: DLOColor.terminalBG.withAlphaComponent(0.72),
-                size: CGSize(width: cam.w * 0.55, height: 44))
+                color: DLOColor.terminalBG.withAlphaComponent(0.55),
+                size: CGSize(width: cam.w * 0.38, height: 26))
             objBacking.anchorPoint = CGPoint(x: 0, y: 1)
             objBacking.position   = CGPoint(x: cam.left, y: cam.top)
             objBacking.zPosition  = 1049
-            overlayNode.addChild(objBacking)
+            overlay.addChild(objBacking)
 
-            let objLbl = DLOFont.terminalLabel(text: obj, size: 14 * textMult)
+            let objLbl = DLOFont.terminalLabel(text: obj, size: 9.5 * textMult)
             objLbl.horizontalAlignmentMode = .left
             objLbl.verticalAlignmentMode   = .top
-            objLbl.position = CGPoint(x: cam.left + 10, y: cam.top - 8)
-            objLbl.fontColor = DLOColor.terminalAmber
-            objLbl.preferredMaxLayoutWidth = cam.w * 0.52
-            objLbl.numberOfLines = 2
+            objLbl.position = CGPoint(x: cam.left + 8, y: cam.top - 6)
+            objLbl.fontColor = DLOColor.terminalAmber.withAlphaComponent(0.75)
             objLbl.zPosition = 1050
-            overlayNode.addChild(objLbl)
+            overlay.addChild(objLbl)
         }
 
         // ── Pause / Menu button — top-right ──────────────────────────────────
@@ -1112,13 +1273,13 @@ Return to authorised sector immediately.
         pauseBG.lineWidth   = 1.2
         pauseBG.position    = CGPoint(x: pauseCX, y: pauseCY)
         pauseBG.zPosition   = 1050
-        overlayNode.addChild(pauseBG)
+        overlay.addChild(pauseBG)
 
         let pauseLbl = DLOFont.terminalLabel(text: "MENU", size: 11)
         pauseLbl.horizontalAlignmentMode = .center
         pauseLbl.position  = CGPoint(x: pauseCX, y: pauseCY - 4)
         pauseLbl.zPosition = 1051
-        overlayNode.addChild(pauseLbl)
+        overlay.addChild(pauseLbl)
 
         // ── PDA / Notes button — top-right, left of MENU ────────────────────
         let notesW: CGFloat = 72
@@ -1132,14 +1293,14 @@ Return to authorised sector immediately.
         notesBG.lineWidth   = 1.2
         notesBG.position    = CGPoint(x: notesCX, y: notesCY)
         notesBG.zPosition   = 1050
-        overlayNode.addChild(notesBG)
+        overlay.addChild(notesBG)
 
         let notesLbl = DLOFont.terminalLabel(text: "PDA", size: 10 * textMult)
         notesLbl.horizontalAlignmentMode = .center
         notesLbl.fontColor = SKColor(red: 0.52, green: 0.74, blue: 0.62, alpha: 1)
         notesLbl.position  = CGPoint(x: notesCX, y: notesCY - 4)
         notesLbl.zPosition = 1051
-        overlayNode.addChild(notesLbl)
+        overlay.addChild(notesLbl)
 
         notebookButtonRect = CGRect(
             x: cam.right - pauseW - notesW - 16, y: cam.top - notesH - 8,
@@ -1149,18 +1310,27 @@ Return to authorised sector immediately.
             x: cam.right - pauseW - 8, y: cam.top - pauseH - 8,
             width: pauseW, height: pauseH)
 
-        cameraNode.addChild(overlayNode)
+        camNode.addChild(overlay)
+        overlayNode = overlay
+        NSLog("[DLO Platform] buildHUD ok — overlay children=%d", overlay.children.count)
     }
 
     private func buildVirtualPad() {
+        guard let camNode = cameraNode, camNode.parent != nil else {
+            NSLog("[DLO Platform] buildVirtualPad skipped — no camera")
+            return
+        }
+        virtualPad?.removeFromParent()
+        virtualPad = nil
+
         let cam = SceneLayout.makeCamera(scene: self)
-        virtualPad = VirtualPadNode()
-        virtualPad.position = CGPoint(x: cam.left, y: cam.bottom)
-        virtualPad.zPosition = 500
-        cameraNode.addChild(virtualPad)
-        // Must be called after addChild so layoutRightCluster can lock down jumpRectPad.
-        virtualPad.configure(screenWidth: cam.w, screenHeight: cam.h)
-        virtualPad.layoutRightCluster(x: cam.w - 175)
+        let pad = VirtualPadNode()
+        pad.position = CGPoint(x: cam.left, y: cam.bottom)
+        pad.zPosition = 500
+        camNode.addChild(pad)
+        pad.configure(screenWidth: cam.w, screenHeight: cam.h)
+        pad.layoutRightCluster(x: cam.w - 175)
+        virtualPad = pad
     }
 
     // MARK: - Game Loop
@@ -1168,15 +1338,21 @@ Return to authorised sector immediately.
     private var lastUpdateTime: TimeInterval = 0
 
     override func didSimulatePhysics() {
-        mara?.finishAirbornePhysicsStep()
+        guard isLevelReady, let mara else { return }
+        mara.finishAirbornePhysicsStep()
     }
 
     override func update(_ currentTime: TimeInterval) {
+        guard isLevelReady, !isRebuildingHUD else { return }
+        guard mara != nil, virtualPad != nil, cameraNode != nil, interactButton != nil else { return }
         guard !isGamePaused else { return }
         let delta = lastUpdateTime > 0 ? currentTime - lastUpdateTime : 1.0 / 60.0
         lastUpdateTime = currentTime
         updateMara(delta: delta)
         updateCamera()
+        #if DEBUG
+        runDebugValidation(delta: delta)
+        #endif
         if !isGameplayInputFrozen {
             updateDrones(currentTime)
             updateSecurityCameras(delta: delta)
@@ -1186,12 +1362,30 @@ Return to authorised sector immediately.
         }
     }
 
+    #if DEBUG
+    private func runDebugValidation(delta: TimeInterval) {
+        guard debugValidationMode, let mara else { return }
+        debugValidationElapsed += delta
+        if debugValidationElapsed >= 1.0, !debugValidationComplete {
+            debugValidationComplete = true
+            NSLog("[DLO Validate] platform stable @%.1fs — %@", debugValidationElapsed,
+                  MaraAnimationController.assetStatusSummary)
+        }
+        guard debugValidationElapsed < 10.0 else { return }
+        let phase = Int(debugValidationElapsed) % 4
+        var input = VirtualPadNode.Input()
+        input.right = phase == 0 || phase == 1
+        input.left = phase == 2 || phase == 3
+        mara.applyInput(input, delta: delta)
+    }
+    #endif
+
     private func updateSecurityCameras(delta: TimeInterval) {
         for camera in securityCameras { camera.update(delta: delta) }
     }
 
     private func checkSecurityCameras() {
-        guard !mara.isCrouching, !mara.isHiding else { return }
+        guard let mara, !mara.isCrouching, !mara.isHiding else { return }
         for camera in securityCameras where camera.canSee(target: mara.position) {
             maraCaught()
             return
@@ -1256,21 +1450,25 @@ Return to authorised sector immediately.
 
         // Edge-detect interact button press (right cluster)
         let interactNow = pad.currentInput.interact
-        if interactNow && !interactWasPressed && !isGameplayInputFrozen {
+        if interactNow && !interactWasPressed && !isGameplayInputFrozen && !mara.isActionAnimating {
             activateNearbyInteractable()
         }
         interactWasPressed = interactNow
 
         let empNow = pad.currentInput.emp
-        if empNow && !empWasPressed && !isGameplayInputFrozen {
-            if mara.fireStunPulse(scene: self) {
-                applyEmpPulseToNearbyDrones()
+        if empNow && !empWasPressed && !isGameplayInputFrozen && !mara.isActionAnimating {
+            if mara.canFireEMP {
+                mara.playEMPActivation(onPulse: { [weak self] in
+                    guard let self, let mara = self.mara else { return }
+                    mara.spawnEmpPulseVisual(on: self)
+                    self.applyEmpPulseToNearbyDrones()
+                })
             }
         }
         empWasPressed = empNow
 
         let hackNow = pad.currentInput.hack
-        if hackNow && !hackWasPressed && !isGameplayInputFrozen {
+        if hackNow && !hackWasPressed && !isGameplayInputFrozen && !mara.isActionAnimating {
             attemptContextualHack()
         }
         hackWasPressed = hackNow
@@ -1283,43 +1481,43 @@ Return to authorised sector immediately.
         if !isGameplayInputFrozen {
             checkLadderProximity()
             updateHackableProximity()
-            if nearbyInteractableID == nil
-                || interactableData[nearbyInteractableID!]?.type != "ladder" {
-                checkNPCProximity()
-            }
+            let isLadderNearby = nearbyInteractableID.flatMap { interactableData[$0]?.type } == "ladder"
+            if !isLadderNearby { checkNPCProximity() }
         } else {
             pad.setHackHighlight(false)
         }
 
-        // Position the interact button above Mara in camera space and track rect for scene touch
+        guard let camera = cameraNode, let interactButton else { return }
         let ibCenter = CGPoint(
-            x: mara.position.x - cameraNode.position.x,
-            y: mara.position.y - cameraNode.position.y + 52)
+            x: mara.position.x - camera.position.x,
+            y: mara.position.y - camera.position.y + 52)
         interactButton.position = ibCenter
         interactButtonCamRect = CGRect(x: ibCenter.x - 65, y: ibCenter.y - 15, width: 130, height: 30)
     }
 
     private func updateCamera() {
-        guard let data = levelData else { return }
+        guard isLevelReady, !isRebuildingHUD else { return }
+        guard let mara, let camera = cameraNode, camera.parent != nil, let data = levelData else { return }
         let targetX = max(size.width / 2,
                           min(mara.position.x, data.levelWidth - size.width / 2))
         let targetY = max(size.height / 2,
                           min(mara.position.y + 80, data.levelHeight - size.height / 2))
         let smoothed = CGPoint(
-            x: cameraNode.position.x + (targetX - cameraNode.position.x) * 0.08,
-            y: cameraNode.position.y + (targetY - cameraNode.position.y) * 0.08)
-        cameraNode.position = smoothed
+            x: camera.position.x + (targetX - camera.position.x) * 0.08,
+            y: camera.position.y + (targetY - camera.position.y) * 0.08)
+        camera.position = smoothed
 
         children
             .compactMap { $0.name?.hasPrefix("bgLayer_") == true ? $0 : nil }
             .forEach { layer in
                 let factor = CGFloat(layer.userData?["scrollFactor"] as? Double ?? 0)
-                layer.position.x = -cameraNode.position.x * factor
+                layer.position.x = -camera.position.x * factor
             }
         updateParallaxTileWrapping()
     }
 
     private func updateDrones(_ currentTime: TimeInterval) {
+        guard let mara = requireMara() else { return }
         for drone in patrols {
             drone.update(currentTime: currentTime)
             guard !drone.isStunned else { continue }
@@ -1332,7 +1530,7 @@ Return to authorised sector immediately.
     }
 
     private func checkExits() {
-        guard let data = levelData, !isLevelComplete else { return }
+        guard let mara = requireMara(), let data = levelData, !isLevelComplete else { return }
         for exit in data.exits {
             guard let xStr = exit["x"], let yStr = exit["y"],
                   let x = Double(xStr), let y = Double(yStr) else { continue }
@@ -1363,6 +1561,7 @@ Return to authorised sector immediately.
     // MARK: - Physics Contact
 
     func didBegin(_ contact: SKPhysicsContact) {
+        guard isLevelReady, let interactButton else { return }
         // Player + Pickup
         if let (_, b) = contact.bodies(catA: PhysicsCategory.player,
                                         catB: PhysicsCategory.pickup) {
@@ -1382,6 +1581,7 @@ Return to authorised sector immediately.
     }
 
     func didEnd(_ contact: SKPhysicsContact) {
+        guard isLevelReady, let interactButton else { return }
         // Player + Interactable
         if let (_, b) = contact.bodies(catA: PhysicsCategory.player,
                                         catB: PhysicsCategory.interactable) {
@@ -1409,7 +1609,7 @@ Return to authorised sector immediately.
     private func isHackableInteractable(_ inter: Interactable, id: String) -> Bool {
         inter.type == "security_override"
             || inter.hackPuzzleID != nil
-            || HackingSystem.shared.specForInteractable(id) != nil
+            || HackingSystem.shared.configForInteractable(id) != nil
     }
 
     private func securityOverride(linkedToDoorID doorID: String) -> Interactable? {
@@ -1420,6 +1620,7 @@ Return to authorised sector immediately.
 
     /// Distance-based hack targeting — independent of which interactable E-button claims.
     private func findNearbyHackTarget() -> Interactable? {
+        guard let mara = requireMara() else { return nil }
         let overrideRange: CGFloat = 100
         let doorHackZoneRange: CGFloat = 130
         var best: (CGFloat, Interactable)?
@@ -1455,6 +1656,7 @@ Return to authorised sector immediately.
     }
 
     private func updateHackableProximity() {
+        guard let virtualPad else { return }
         if let target = findNearbyHackTarget() {
             nearbyHackableID = target.id
             virtualPad.setHackHighlight(true)
@@ -1467,14 +1669,15 @@ Return to authorised sector immediately.
     }
 
     private func attemptContextualHack() {
+        guard let mara = requireMara() else { return }
         guard let inter = findNearbyHackTarget() else {
             showBriefMessage("PDA — NO SYSTEM IN RANGE")
             return
         }
 
         let requiredFlag = inter.requiredFlag
-            ?? inter.hackPuzzleID.flatMap { HackingSystem.shared.spec(for: $0)?.requiredFlag }
-            ?? HackingSystem.shared.specForInteractable(inter.id)?.requiredFlag
+            ?? inter.hackPuzzleID.flatMap { HackingSystem.shared.config(for: $0)?.requiredFlag }
+            ?? HackingSystem.shared.configForInteractable(inter.id)?.requiredFlag
 
         if let req = requiredFlag, !GameState.shared.hasFlag(req) {
             if req == "ch1_relay_credential" {
@@ -1485,14 +1688,16 @@ Return to authorised sector immediately.
             return
         }
 
-        launchPDAHack(for: inter)
+        mara.playHackConnect { [weak self] in
+            self?.launchPDAHack(for: inter)
+        }
     }
 
     private func launchPDAHack(for inter: Interactable) {
-        let spec = inter.hackPuzzleID.flatMap { HackingSystem.shared.spec(for: $0) }
-            ?? HackingSystem.shared.specForInteractable(inter.id)
+        let config = inter.hackPuzzleID.flatMap { HackingSystem.shared.config(for: $0) }
+            ?? HackingSystem.shared.configForInteractable(inter.id)
 
-        guard let spec else {
+        guard let config else {
             if inter.type == "security_override" {
                 activateSecurityOverride(inter)
             } else {
@@ -1500,50 +1705,60 @@ Return to authorised sector immediately.
             }
             return
         }
-        if let req = spec.requiredFlag, !GameState.shared.hasFlag(req) {
+        if let req = config.requiredFlag, !GameState.shared.hasFlag(req) {
             showBriefMessage("PDA DENIED — RELAY CREDENTIAL NOT LOGGED")
             return
         }
-        if let flag = spec.setsFlagOnSuccess, GameState.shared.hasFlag(flag) {
+        if let flag = config.setsFlagOnSuccess, GameState.shared.hasFlag(flag) {
             showBriefMessage("PDA — OVERRIDE ALREADY LOGGED")
             return
         }
         guard activePanel == nil else { return }
         engageModalLock()
 
-        switch spec.kind {
-        case .signalRoute:
-            guard let payload = spec.signalRoute else {
-                releaseModalLock()
-                return
+        let cam = SceneLayout.makeCamera(scene: self)
+        let panelH = config.puzzleType == .credentialInjection ? cam.h * 0.74 : cam.h * 0.62
+        let panelSize = CGSize(width: cam.w * 0.78, height: panelH)
+        let panel = PDAHackPanel.present(
+            config: config,
+            panelSize: panelSize,
+            textMultiplier: GameState.shared.textSizeMultiplier,
+            unlockedPDATags: PDAJournalManager.unlockedPDATags(),
+            onResult: { [weak self] result in
+                self?.handleHackPuzzleResult(result, config: config, interactable: inter)
+            })
+        panel.zPosition = 2500
+        activePanel = panel
+        cameraNode?.addChild(panel)
+    }
+
+    private func handleHackPuzzleResult(_ result: HackPuzzleResult,
+                                        config: HackPuzzleConfig,
+                                        interactable: Interactable) {
+        switch result {
+        case .success:
+            hackAttemptCounts[config.id] = 0
+            completePDAHack(config: config, interactable: interactable)
+        case .cancelled:
+            dismissActivePanel()
+        case .failed(let reason):
+            let attempts = (hackAttemptCounts[config.id] ?? 0) + 1
+            hackAttemptCounts[config.id] = attempts
+            dismissActivePanel()
+            if attempts >= config.maxAttempts ?? 3 {
+                GameState.shared.suspicionScore += 1
+                GameState.shared.save()
+                showBriefMessage("PMCA intrusion monitor pinged.")
+            } else {
+                let msg = config.failureMessage ?? reason
+                showBriefMessage(msg)
             }
-            let cam = SceneLayout.makeCamera(scene: self)
-            let panelSize = CGSize(width: cam.w * 0.78, height: cam.h * 0.62)
-            let built = PDAHackPanel.presentSignalRoute(
-                title: spec.title,
-                nodeLabels: payload.nodeLabels,
-                correctSequence: payload.correctSequence,
-                panelSize: panelSize,
-                textMultiplier: GameState.shared.textSizeMultiplier,
-                onSuccess: { [weak self] in
-                    self?.completePDAHack(spec: spec, interactable: inter)
-                },
-                onCancel: { [weak self] in
-                    self?.dismissActivePanel()
-                }
-            )
-            built.panel.zPosition = 2500
-            activePanel = built.panel
-            cameraNode.addChild(built.panel)
-        default:
-            releaseModalLock()
-            showBriefMessage("PDA — PUZZLE TYPE NOT IMPLEMENTED")
         }
     }
 
-    private func completePDAHack(spec: HackingPuzzleSpec, interactable: Interactable) {
+    private func completePDAHack(config: HackPuzzleConfig, interactable: Interactable) {
         dismissActivePanel()
-        if let flag = spec.setsFlagOnSuccess { GameState.shared.setFlag(flag) }
+        if let flag = config.setsFlagOnSuccess { GameState.shared.setFlag(flag) }
         if let flag = interactable.setsFlag { GameState.shared.setFlag(flag) }
         if let linkedID = interactable.linkedInteractableID,
            let door = interactableData[linkedID] {
@@ -1551,13 +1766,15 @@ Return to authorised sector immediately.
             openDoor(door)
         }
         interactableNodes[interactable.id]?.alpha = 0.35
+        PDAJournalManager.onHackSuccess(puzzleID: config.id)
         GameState.shared.save()
         AudioManager.shared.playTerminalBeep(on: self)
-        showBriefMessage("PDA — ACCESS SIGNAL ROUTED")
+        showBriefMessage(config.successMessage ?? "PDA — ACCESS GRANTED")
+        notifyPDAIfUpdated()
     }
 
     private func applyEmpPulseToNearbyDrones() {
-        // Match expanded pulse radius (120 × 2.5 scale in fireStunPulse)
+        guard let mara = requireMara() else { return }
         let range: CGFloat = 300
         for drone in patrols where mara.position.distance(to: drone.position) < range {
             drone.stun(duration: 8.0)
@@ -1565,6 +1782,7 @@ Return to authorised sector immediately.
     }
 
     private func activateNearbyInteractable() {
+        guard let mara = requireMara(), let interactButton else { return }
         if mara.isOnLadder {
             mara.detachFromLadder(standingY: mara.position.y)
             interactButton.configure(for: "ladder")
@@ -1604,12 +1822,16 @@ Return to authorised sector immediately.
         case "ladder":
             enterLadder(inter)
         case "information_node", "text_sign":
-            if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
-            NotebookManager.onInformationNodeRead(nodeID: inter.id)
-            let header = inter.nodeLabel == "RELAY" ? "CIVIC DATA UPLINK"
-                : "PUBLIC INFORMATION NODE"
-            let body = inter.displayText ?? "No data available."
-            showContentPanel(header: header, body: body) { }
+            mara.playScanObserve { [weak self] in
+                guard let self else { return }
+                if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
+                NotebookManager.onInformationNodeRead(nodeID: inter.id)
+                self.notifyPDAIfUpdated()
+                let header = inter.nodeLabel == "RELAY" ? "CIVIC DATA UPLINK"
+                    : "PUBLIC INFORMATION NODE"
+                let body = inter.displayText ?? "No data available."
+                self.showContentPanel(header: header, body: body) { }
+            }
         default:
             break
         }
@@ -1639,12 +1861,17 @@ Return to authorised sector immediately.
     }
 
     private func activateTerminal(_ inter: Interactable) {
-        if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
-        NotebookManager.onTerminalRead(terminalID: inter.id)
-        if levelID == "level_ch3" { NotebookManager.checkCh3FieldCompletion() }
+        guard let mara = requireMara() else { return }
+        mara.playTerminalInteraction { [weak self] in
+            guard let self else { return }
+            if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
+            NotebookManager.onTerminalRead(terminalID: inter.id)
+            if self.levelID == "level_ch3" { NotebookManager.checkCh3FieldCompletion() }
 
-        let body = terminalContent(for: inter.id, displayText: inter.displayText)
-        showContentPanel(header: "TERMINAL — \(inter.id.uppercased())", body: body) { }
+            let body = self.terminalContent(for: inter.id, displayText: inter.displayText)
+            self.notifyPDAIfUpdated()
+            self.showContentPanel(header: "TERMINAL — \(inter.id.uppercased())", body: body) { }
+        }
     }
 
     private func activateDoor(_ inter: Interactable) {
@@ -1657,14 +1884,19 @@ Return to authorised sector immediately.
     }
 
     private func activateCartridge(_ inter: Interactable) {
-        if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
-        NotebookManager.onCartridgeCollected(cartridgeID: inter.id)
-        if levelID == "level_ch3" { NotebookManager.checkCh3FieldCompletion() }
-        let body = inter.cartridgeData ?? "CARTRIDGE DATA CORRUPTED."
-        let node = interactableNodes[inter.id]
-        node?.alpha = 0.25
-        showContentPanel(header: "DATA CARTRIDGE", body: body) { [weak node] in
-            node?.removeFromParent()
+        guard let mara = requireMara() else { return }
+        mara.playScanObserve { [weak self] in
+            guard let self else { return }
+            if let flag = inter.setsFlag { GameState.shared.setFlag(flag) }
+            NotebookManager.onCartridgeCollected(cartridgeID: inter.id)
+            if self.levelID == "level_ch3" { NotebookManager.checkCh3FieldCompletion() }
+            self.notifyPDAIfUpdated()
+            let body = inter.cartridgeData ?? "CARTRIDGE DATA CORRUPTED."
+            let node = self.interactableNodes[inter.id]
+            node?.alpha = 0.25
+            self.showContentPanel(header: "DATA CARTRIDGE", body: body) { [weak node] in
+                node?.removeFromParent()
+            }
         }
     }
 
@@ -1839,11 +2071,36 @@ console login acknowledgement.
 
     private func dismissActivePanel(onClose: (() -> Void)? = nil) {
         activePanel?.removeFromParent()
+        clearPDAJournalState()
+        panelScrollBodyRect = .zero
+        releaseModalLock()
+        onClose?()
+    }
+
+    private func clearPDAJournalState() {
         activePanel = nil
         panelScrollState = nil
         panelScrollTouch = nil
+        isPDAJournalOpen = false
+        pdaJournalRegions = PDAJournalPanel.HitRegions()
+    }
+
+    private func reconcileStalePDAJournal() {
+        guard !isRebuildingPDAJournal else { return }
+        guard isPDAJournalOpen, let panel = activePanel, panel.parent == nil else { return }
+        NSLog("[DLO PDA] clearing stale field journal ref (node detached)")
+        clearPDAJournalState()
         releaseModalLock()
-        onClose?()
+    }
+
+    private func configurePanelScrollRects(panelSize: CGSize, hasSecondaryButton: Bool) {
+        let footerH: CGFloat = hasSecondaryButton ? 80 : 52
+        let headerH: CGFloat = panelSize.height > 300 ? 72 : 52
+        panelScrollBodyRect = CGRect(
+            x: -panelSize.width / 2 + 8,
+            y: -panelSize.height / 2 + footerH,
+            width: panelSize.width - 16,
+            height: panelSize.height - headerH - footerH)
     }
 
     private func showContentPanel(header: String, body: String,
@@ -1888,7 +2145,8 @@ console login acknowledgement.
         built.panel.zPosition = 2500
         activePanel = built.panel
         panelScrollState = built.scrollState
-        cameraNode.addChild(built.panel)
+        configurePanelScrollRects(panelSize: panelSize, hasSecondaryButton: secondaryLabel != nil)
+        cameraNode?.addChild(built.panel)
     }
 
     private func showReadablePanel(style: ScrollableReadablePanel.Style,
@@ -1917,7 +2175,8 @@ console login acknowledgement.
         built.panel.zPosition = 2500
         activePanel = built.panel
         panelScrollState = built.scrollState
-        cameraNode.addChild(built.panel)
+        configurePanelScrollRects(panelSize: panelSize, hasSecondaryButton: secondaryLabel != nil)
+        cameraNode?.addChild(built.panel)
     }
 
     // MARK: - Code Entry Panel
@@ -2028,7 +2287,7 @@ console login acknowledgement.
         panel.addChild(cancelBtn)
 
         activePanel = panel
-        cameraNode.addChild(panel)
+        cameraNode?.addChild(panel)
     }
 
     // MARK: - Brief Message Toast
@@ -2036,7 +2295,8 @@ console login acknowledgement.
     // MARK: - Ladder
 
     private func enterLadder(_ inter: Interactable) {
-        guard let extent = inter.ladderExtent, extent.count >= 2, !mara.isOnLadder else { return }
+        guard let mara = requireMara(), let interactButton,
+              let extent = inter.ladderExtent, extent.count >= 2, !mara.isOnLadder else { return }
         let bottomY = extent[0]
         let topY = extent[1]
         guard mara.position.y <= bottomY + 16 else { return }
@@ -2048,6 +2308,7 @@ console login acknowledgement.
     }
 
     private func tryEnterNearbyLadder(pad: VirtualPadNode) {
+        guard let mara = requireMara() else { return }
         guard let id = nearbyInteractableID,
               let inter = interactableData[id],
               inter.type == "ladder",
@@ -2058,21 +2319,102 @@ console login acknowledgement.
         enterLadder(inter)
     }
 
-    // MARK: - Notebook
+    // MARK: - PDA Journal
 
-    private func showNotebook() {
+    private func handlePDAButtonTap() {
+        guard let mara = requireMara(), activePanel == nil, !mara.isActionAnimating else { return }
+        if mara.pdaVisualOut {
+            mara.putAwayPDA { }
+        } else {
+            mara.ensurePDAOut { [weak self] in
+                self?.showPDAJournal()
+            }
+        }
+    }
+
+    private func showPDAJournal() {
         guard activePanel == nil else { return }
         engageModalLock()
         isGamePaused = true
+        isPDAJournalOpen = true
+        let shift = PDAJournalManager.shiftNumber(from: levelData?.chapter ?? "ch1")
+        let skipBoot = PDAJournalManager.state.bootScreenSeen
+        NSLog("[DLO PDA] field open requested shift=%d skipBoot=%d", shift, skipBoot)
+        pdaJournalScreen = PDAJournalPanel.initialScreen(currentShift: shift, skipBoot: skipBoot)
+        rebuildFieldPDAJournal(screen: pdaJournalScreen)
+    }
+
+    private func rebuildFieldPDAJournal(screen: PDAJournalPanel.Screen) {
+        isRebuildingPDAJournal = true
+        defer { isRebuildingPDAJournal = false }
+
+        let priorScreen = pdaJournalScreen
+        let wasVisible = activePanel?.parent != nil
+        activePanel?.removeFromParent()
+        panelScrollState = nil
+        panelScrollTouch = nil
+
         let cam = SceneLayout.makeCamera(scene: self)
-        let built = NotebookManager.makePDAPanel(cam: cam, chapter: levelData?.chapter) { [weak self] in
-            self?.isGamePaused = false
-            self?.dismissActivePanel()
-        }
+        let panelW = cam.w * 0.78
+        let panelH = cam.h * 0.84
+        let center = CGPoint(x: cam.midX, y: cam.midY)
+        let shift = PDAJournalManager.shiftNumber(from: levelData?.chapter ?? "ch1")
+        let built = PDAJournalPanel.build(
+            screen: screen,
+            panelSize: CGSize(width: panelW, height: panelH),
+            center: center,
+            textMultiplier: GameState.shared.textSizeMultiplier,
+            currentShift: shift,
+            chapterID: levelData?.chapter,
+            fieldObjective: levelData?.objectiveText,
+            onRebuild: { [weak self] newScreen in self?.rebuildFieldPDAJournal(screen: newScreen) },
+            onClose: { [weak self] in
+                self?.isGamePaused = false
+                self?.dismissActivePanel()
+            })
+
         built.panel.zPosition = 2500
+        if wasVisible && Self.shouldFadePDATransition(from: priorScreen, to: screen) {
+            built.panel.alpha = 0
+            built.panel.run(SKAction.fadeIn(withDuration: 0.12))
+        } else {
+            built.panel.alpha = 1
+        }
         activePanel = built.panel
+        pdaJournalScreen = built.screen
+        pdaJournalRegions = built.regions
         panelScrollState = built.scrollState
-        cameraNode.addChild(built.panel)
+        cameraNode?.addChild(built.panel)
+    }
+
+    private static func shouldFadePDATransition(
+        from oldScreen: PDAJournalPanel.Screen,
+        to newScreen: PDAJournalPanel.Screen
+    ) -> Bool {
+        if case .section = oldScreen, case .section = newScreen { return false }
+        return true
+    }
+
+    private func notifyPDAIfUpdated() {
+        if PDAJournalManager.consumeUpdateNotice() {
+            showPDAToast()
+        }
+    }
+
+    private func showPDAToast() {
+        let cam = SceneLayout.makeCamera(scene: self)
+        let lbl = DLOFont.terminalLabel(text: "PDA UPDATED", size: 10 * GameState.shared.textSizeMultiplier)
+        lbl.horizontalAlignmentMode = .center
+        lbl.fontColor = SKColor(red: 0.52, green: 0.74, blue: 0.62, alpha: 1)
+        lbl.position = CGPoint(x: cam.midX, y: cam.bottom + 36)
+        lbl.zPosition = 2000
+        overlayNode?.addChild(lbl)
+        lbl.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0.12),
+            SKAction.wait(forDuration: 1.5),
+            SKAction.fadeOut(withDuration: 0.3),
+            SKAction.removeFromParent()
+        ]))
     }
 
     private func showBriefMessage(_ text: String) {
@@ -2082,7 +2424,7 @@ console login acknowledgement.
         lbl.fontColor = DLOColor.danger
         lbl.position = CGPoint(x: cam.midX, y: cam.midY + 30)
         lbl.zPosition = 2000
-        overlayNode.addChild(lbl)
+        overlayNode?.addChild(lbl)
         lbl.run(SKAction.sequence([
             SKAction.wait(forDuration: 1.8),
             SKAction.fadeOut(withDuration: 0.4),
@@ -2100,7 +2442,7 @@ console login acknowledgement.
             let flash = SKSpriteNode(color: DLOColor.danger.withAlphaComponent(0.5), size: size)
             flash.position = .zero
             flash.zPosition = 900
-            cameraNode.addChild(flash)
+            cameraNode?.addChild(flash)
             flash.run(SKAction.sequence([
                 SKAction.wait(forDuration: 0.1),
                 SKAction.fadeOut(withDuration: 0.4),
@@ -2143,7 +2485,7 @@ console login acknowledgement.
         overlay.position = .zero
         overlay.zPosition = 999
         overlay.alpha = 0
-        cameraNode.addChild(overlay)
+        cameraNode?.addChild(overlay)
 
         overlay.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 0.8),
@@ -2178,7 +2520,7 @@ console login acknowledgement.
         overlay.position = .zero
         overlay.zPosition = 999
         overlay.alpha = 0
-        cameraNode.addChild(overlay)
+        cameraNode?.addChild(overlay)
 
         overlay.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 0.8),
@@ -2202,30 +2544,44 @@ console login acknowledgement.
     // MARK: - Scene-Level Touch Dispatch (proven DeskScene pattern)
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        reconcileStalePDAJournal()
         for touch in touches {
             let camPos = camSpacePoint(from: touch)
 
             // Pause button works regardless of game state
             if pauseButtonRect.contains(camPos) {
+                AudioManager.shared.playUIClick()
                 if isGamePaused && pauseMenuNode != nil { hidePauseMenu() }
                 else if !isGamePaused { showPauseMenu() }
                 return
             }
 
             if notebookButtonRect.contains(camPos) && activePanel == nil {
-                showNotebook()
+                handlePDAButtonTap()
                 return
             }
 
-            if activePanel != nil, panelScrollState != nil,
-               panelScrollState!.maxScroll > 0 {
-                panelScrollTouch = touch
+            if activePanel != nil {
+                if isPDAJournalOpen {
+                    if !pdaJournalRegions.shiftBar.contains(camPos),
+                       pdaJournalRegions.scrollBody.contains(camPos),
+                       panelScrollState?.maxScroll ?? 0 > 0 {
+                        panelScrollTouch = touch
+                    }
+                } else if let scrollState = panelScrollState, scrollState.maxScroll > 0,
+                          let cameraNode {
+                    let local = touch.location(in: cameraNode)
+                    if panelScrollBodyRect.contains(local) {
+                        panelScrollTouch = touch
+                    }
+                }
                 return
             }
 
             if isGamePaused || isGameplayInputFrozen { continue }
 
             // All touches forwarded to VirtualPad (interact is on the right cluster)
+            guard let virtualPad else { continue }
             virtualPad.notifyTouchBegan(touch, at: touch.location(in: virtualPad))
         }
     }
@@ -2239,7 +2595,7 @@ console login acknowledgement.
             state.applyDrag(deltaY: pos.y - prev.y)
             return
         }
-        guard !isGamePaused, !isGameplayInputFrozen else { return }
+        guard !isGamePaused, !isGameplayInputFrozen, let virtualPad else { return }
         for touch in touches {
             virtualPad.notifyTouchMoved(touch, at: touch.location(in: virtualPad))
         }
@@ -2248,20 +2604,38 @@ console login acknowledgement.
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             if touch === panelScrollTouch { panelScrollTouch = nil }
-            virtualPad.notifyTouchEnded(touch)
+            if isPDAJournalOpen, activePanel != nil, !isRebuildingPDAJournal {
+                let camPos = camSpacePoint(from: touch)
+                let shift = PDAJournalManager.shiftNumber(from: levelData?.chapter ?? "ch1")
+                guard let panel = activePanel else { continue }
+                _ = PDAJournalPanel.handleTap(
+                    at: camPos,
+                    build: PDAJournalPanel.BuildResult(
+                        panel: panel, scrollState: panelScrollState,
+                        regions: pdaJournalRegions, screen: pdaJournalScreen),
+                    currentShift: shift,
+                    onRebuild: { [weak self] screen in self?.rebuildFieldPDAJournal(screen: screen) },
+                    onClose: { [weak self] in
+                        self?.isGamePaused = false
+                        self?.dismissActivePanel()
+                    })
+            }
+            virtualPad?.notifyTouchEnded(touch)
         }
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             if touch === panelScrollTouch { panelScrollTouch = nil }
-            virtualPad.notifyTouchCancelled(touch)
+            virtualPad?.notifyTouchCancelled(touch)
         }
     }
 
     private func camSpacePoint(from touch: UITouch) -> CGPoint {
         let s = touch.location(in: self)
-        return CGPoint(x: s.x - cameraNode.position.x, y: s.y - cameraNode.position.y)
+        let cx = cameraNode?.position.x ?? 0
+        let cy = cameraNode?.position.y ?? 0
+        return CGPoint(x: s.x - cx, y: s.y - cy)
     }
 
     // MARK: - Pause Menu
@@ -2272,8 +2646,9 @@ console login acknowledgement.
         isGamePaused = true
 
         let cam = SceneLayout.makeCamera(scene: self)
-        let panelW = min(cam.w * 0.68, 380)
-        let panelH = min(cam.h * 0.82, 380)
+        let mult = GameState.shared.textSizeMultiplier
+        let panelW = min(cam.w * 0.78, 520)
+        let panelH = min(cam.h * 0.88, 420)
 
         let panel = SKNode()
         panel.zPosition = 3000
@@ -2290,45 +2665,51 @@ console login acknowledgement.
         border.fillColor   = .clear
         panel.addChild(border)
 
-        let hdr = DLOFont.titleLabel(text: "SHIFT PAUSED", size: 14)
+        let hdr = DLOFont.titleLabel(text: "SHIFT PAUSED", size: 14 * mult)
         hdr.horizontalAlignmentMode = .center
-        hdr.position = CGPoint(x: 0, y: panelH / 2 - 28)
+        hdr.position = CGPoint(x: 0, y: panelH / 2 - 28 * mult)
         panel.addChild(hdr)
 
         let div = SKSpriteNode(color: DLOColor.uiBorder.withAlphaComponent(0.4),
                                size: CGSize(width: panelW - 32, height: 1))
-        div.position = CGPoint(x: 0, y: panelH / 2 - 44)
+        div.position = CGPoint(x: 0, y: panelH / 2 - 44 * mult)
         panel.addChild(div)
 
         let btnLabels: [(String, () -> Void)] = [
             ("[ RESUME ]",                  { [weak self] in self?.hidePauseMenu() }),
             ("[ SAVE + RETURN TO MENU ]",   { [weak self] in
+                guard let self else { return }
                 GameState.shared.save()
-                self?.hidePauseMenu()
-                SceneManager.shared.transition(to: .mainMenu, from: self!) }),
+                self.hidePauseMenu()
+                SceneManager.shared.transition(to: .mainMenu, from: self) }),
             ("[ RETURN WITHOUT SAVING ]",   { [weak self] in
-                self?.hidePauseMenu()
-                SceneManager.shared.transition(to: .mainMenu, from: self!) }),
+                guard let self else { return }
+                self.hidePauseMenu()
+                SceneManager.shared.transition(to: .mainMenu, from: self) }),
             ("[ SETTINGS ]",                { [weak self] in
-                guard let self = self else { return }
+                guard let self else { return }
+                let spawn = self.mara?.position ?? CGPoint(x: 0, y: MaraPlayerNode.defaultStandCenterY)
                 GameState.shared.setSettingsReturn(
-                    .platform(levelID: self.levelID, spawn: self.mara.position))
+                    .platform(levelID: self.levelID, spawn: spawn))
                 SceneManager.shared.transition(to: .settings, from: self) }),
-            ("[ NOTEBOOK ]",                { [weak self] in
+            ("[ PDA JOURNAL ]",             { [weak self] in
                 self?.hidePauseMenu()
-                self?.showNotebook() })
+                self?.showPDAJournal() })
         ]
 
-        let btnStep: CGFloat = 52
-        let topBtnY: CGFloat = panelH / 2 - 80
-        for (i, (label, action)) in btnLabels.enumerated() {
-            let btn = PanelButtonNode(label: label, action: action)
-            btn.position = CGPoint(x: 0, y: topBtnY - CGFloat(i) * btnStep)
+        let btnWidth = panelW - 48
+        let btnSpacing: CGFloat = 10 * mult
+        var nextBtnY = panelH / 2 - 72 * mult
+        for (label, action) in btnLabels {
+            let btn = PanelButtonNode(label: label, width: btnWidth, fontSize: 11,
+                                      playsUIClick: true, action: action)
+            btn.position = CGPoint(x: 0, y: nextBtnY)
             panel.addChild(btn)
+            nextBtnY -= btn.height + btnSpacing
         }
 
         pauseMenuNode = panel
-        cameraNode.addChild(panel)
+        cameraNode?.addChild(panel)
     }
 
     private func hidePauseMenu() {

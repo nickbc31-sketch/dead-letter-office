@@ -1,0 +1,407 @@
+[
+  {
+    "id": "case_ch7_001",
+    "chapter": "ch7",
+    "senderName": "Jun Vale",
+    "senderStatus": "Deceased (Official)",
+    "senderCitizenID": "VC-2290-V",
+    "recipientName": "Mara Venn",
+    "recipientCitizenID": "VC-1147-F",
+    "messageText": "Mara. You verified the manifest. I signed it with a dead credential because the living ones are watched. Meet me where Route 7-B surfaces. I am officially dead. I am writing this from the train.",
+    "documents": [
+      {
+        "id": "doc_c21_a",
+        "title": "PMCA QUEUE INSTRUCTION",
+        "type": "audit_log",
+        "issuer": "PMCA Processing Authority",
+        "issueDate": "2147.05.12",
+        "referenceNumber": "PMCA-QI-C21-2290-V",
+        "fields": [
+          {"key": "Case Reference", "value": "C21-2290-V — Officially deceased sender, active composition", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Sender Status", "value": "DECEASED — registered 2147.04.01", "isSuspicious": true, "suspicionNote": "Registry deceased. See Soulprint Verification — ACTIVE on train subnet."},
+          {"key": "Recipient", "value": "Venn, Mara — VC-1147-F", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Processing Pathway", "value": "Standard routing — Ghost Audit conflict flag active", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Case C21-2290-V. Sender: Vale, Jun — VC-2290-V — deceased 2147.04.01 per registry. Recipient: Venn, Mara (VC-1147-F). Live composition detected. Ghost Audit conflict flag active.",
+        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "stamps": [],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c21_b",
+        "title": "CITIZEN FILE — VALE, JUN",
+        "type": "citizen_record",
+        "issuer": "PMCA Citizen Registry",
+        "issueDate": "2147.05.11",
+        "referenceNumber": "PMCA-CR-VC-2290-V",
+        "fields": [
+          {"key": "Citizen", "value": "Vale, Jun — VC-2290-V", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Status", "value": "DECEASED — Data Fever, registered 2147.04.01", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Death Location", "value": "Lower Veyr Block 8 — residence", "isSuspicious": true, "suspicionNote": "Death at residence. No hospital admission. Cross-reference maintenance logs — J.V. credential active across transit subnet since 2147.04.08."},
+          {"key": "Maintenance Credential", "value": "MOT-MAINT-JV — listed as REVOKED", "isSuspicious": true, "suspicionNote": "Credential listed revoked on death. C20 manifest signed J.V. with same credential prefix."}
+        ],
+        "bodyText": "Citizen file Vale, Jun (VC-2290-V). Deceased 2147.04.01, Data Fever, residence. Maintenance credential MOT-MAINT-JV revoked on death registration. Activity on transit subnet post-death: not investigated.",
+        "footerText": "PMCA Citizen Registry — Automated Record",
+        "stamps": [{"text": "DECEASED", "color": "#1A3A5C", "appliedDate": "2147.04.01", "appliedBy": "Registry Auto-Seal"}],
+        "classificationLevel": "STANDARD",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c21_c",
+        "title": "SOULPRINT VERIFICATION — TRAIN SUBNET",
+        "type": "identity_record",
+        "issuer": "Soulprint Network — Transit Relay",
+        "issueDate": "2147.05.12",
+        "referenceNumber": "SPN-TR-VC-2290-V",
+        "fields": [
+          {"key": "Subject", "value": "Vale, Jun — VC-2290-V", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Verification Result", "value": "ACTIVE — confidence: 99.1%", "isSuspicious": true, "suspicionNote": "ACTIVE on 2147.05.12. Registry death: 2147.04.01. Forty-one days post-mortem."},
+          {"key": "Relay Location", "value": "Route 7-B — Black Train carriage 3", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Alert Status", "value": "Suppressed — maintenance subnet authority", "isSuspicious": true, "suspicionNote": "No alert forwarded. Maintenance subnet readings excluded from standard alive-status review."}
+        ],
+        "bodyText": "Transit relay verification. Vale, Jun (VC-2290-V). ACTIVE, 99.1% confidence. Origin: Route 7-B, Black Train carriage 3. Registry: deceased. Alert suppressed per maintenance subnet protocol.",
+        "footerText": "Soulprint Network — Transit Relay Division",
+        "stamps": [],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c21_d",
+        "title": "C20 MANIFEST CROSS-REFERENCE",
+        "type": "audit_log",
+        "issuer": "PMCA Message Routing System",
+        "issueDate": "2147.05.12",
+        "referenceNumber": "PMCA-RIL-C21-C20-XREF",
+        "fields": [
+          {"key": "Manifest Reference", "value": "C20 — Route 7-B, authority J.V.", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Clerk Action", "value": "C20 flagged or verified by Clerk 1147-F", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Message Content", "value": "'You verified the manifest' — references clerk C20 action", "isSuspicious": true, "suspicionNote": "Sender demonstrates knowledge of clerk's C20 decision. Composition on train after manifest verification."},
+          {"key": "Meeting Request", "value": "Route 7-B surface point — undercity access", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Cross-reference C21 with C20 manifest. Sender references clerk C20 action. Composition from Route 7-B carriage 3. Meeting requested at surface point — undercity access junction.",
+        "footerText": "PMCA Message Routing System — Cross-Reference",
+        "stamps": [],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [
+      {
+        "fieldA": "Soulprint Verification — ACTIVE 2147.05.12 on Route 7-B",
+        "fieldB": "Citizen File — DECEASED 2147.04.01",
+        "description": "Jun Vale is officially dead since April. His voiceprint registered ACTIVE yesterday from Black Train carriage 3. He signed the manifest you flagged with a credential that was supposed to be revoked.",
+        "isCritical": true
+      }
+    ],
+    "availableActions": [
+      {
+        "id": "approve",
+        "label": "APPROVE DELIVERY",
+        "shortLabel": "APPROVED",
+        "color": "#2A6A3C",
+        "auditResponse": "Delivery authorised. Meeting coordinates logged. Ghost Audit conflict noted.",
+        "consequences": {"complianceDelta": -2, "empathyDelta": 3, "suspicionDelta": 3, "resistanceTrustDelta": 3, "flagsSet": ["c21_approved", "jun_contact_accepted"]},
+        "resultText": "Delivered. Jun Vale knows you verified the manifest. He is on the train that carries forbidden letters. He wants to meet where Route 7-B surfaces.",
+        "isIllegal": false
+      },
+      {
+        "id": "flag_anomaly",
+        "label": "FLAG ANOMALY",
+        "shortLabel": "FLAGGED",
+        "color": "#CC9900",
+        "auditResponse": "Alive-status review initiated. Train subnet activity logged. Case deferred.",
+        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 2, "resistanceTrustDelta": 2, "flagsSet": ["c21_flagged", "jun_biometric_logged"]},
+        "resultText": "Flagged. Article 7-C review queued. Jun Vale remains officially dead. The train subnet reading is in the file.",
+        "isIllegal": false
+      },
+      {
+        "id": "archive",
+        "label": "ARCHIVE FOR AUDIT",
+        "shortLabel": "ARCHIVED",
+        "color": "#445566",
+        "auditResponse": "Case archived per Ghost Audit protocol. No delivery.",
+        "consequences": {"complianceDelta": 2, "empathyDelta": -2, "suspicionDelta": 0, "corporateTrustDelta": 1, "flagsSet": ["c21_archived"]},
+        "resultText": "Archived. Jun Vale's message is not delivered. He is still on the train. He knows you processed the manifest.",
+        "isIllegal": false
+      }
+    ],
+    "correctLegalActionID": "approve",
+    "followUpFlags": ["c21_processed"],
+    "requiredFlags": null
+  },
+  {
+    "id": "case_ch7_002",
+    "chapter": "ch7",
+    "senderName": "Quiet Choir — Collective",
+    "senderStatus": "Unregistered",
+    "senderCitizenID": "CHOIR-UNREG",
+    "recipientName": "PMCA Review Bureau",
+    "recipientCitizenID": "PMCA-RB-0001",
+    "messageText": "We petition for recognition of 847 living-dead citizens beneath the sealed district. Signatures attached. Fourteen are forged. We forged them because the real signers are afraid. Do not reject us for the forgeries. Reject us for the 833 that are real.",
+    "documents": [
+      {
+        "id": "doc_c22_a",
+        "title": "PMCA QUEUE INSTRUCTION",
+        "type": "audit_log",
+        "issuer": "PMCA Processing Authority",
+        "issueDate": "2147.05.13",
+        "referenceNumber": "PMCA-QI-C22-CHOIR-PET",
+        "fields": [
+          {"key": "Case Reference", "value": "C22-CHOIR-PET — Recognition petition, undercity", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Sender Class", "value": "Unregistered collective — Quiet Choir", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Petition Type", "value": "Living-dead recognition — 847 signatures claimed", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Processing Pathway", "value": "Reject recommended — unregistered sender class", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Case C22-CHOIR-PET. Quiet Choir collective petition. 847 signatures claimed for living-dead recognition beneath sealed district. Reject recommended — unregistered sender class.",
+        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "stamps": [],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c22_b",
+        "title": "SIGNATURE VERIFICATION REPORT",
+        "type": "audit_log",
+        "issuer": "PMCA Identity Verification Bureau",
+        "issueDate": "2147.05.13",
+        "referenceNumber": "PMCA-IVB-C22-SIG",
+        "fields": [
+          {"key": "Signatures Submitted", "value": "847", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Verified Authentic", "value": "833 — Soulprint match confirmed", "isSuspicious": true, "suspicionNote": "833 signatures match living voiceprints on registry-deceased citizens."},
+          {"key": "Forged", "value": "14 — no Soulprint match", "isSuspicious": true, "suspicionNote": "Sender admits 14 forgeries in message body. Verification confirms exactly 14 failed matches."},
+          {"key": "Fear Index", "value": "HIGH — 612 signers on active monitoring lists", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Signature verification for petition C22. Submitted: 847. Verified authentic: 833. Forged: 14. Sender acknowledges forgeries in message text. 612 verified signers on active monitoring lists.",
+        "footerText": "PMCA Identity Verification Bureau — Report",
+        "stamps": [],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c22_c",
+        "title": "MONITORING LIST — PETITION SIGNERS",
+        "type": "audit_log",
+        "issuer": "PMCA Directorate — Monitoring Division",
+        "issueDate": "2147.05.13",
+        "referenceNumber": "PMCA-MO-C22-SIGNERS",
+        "fields": [
+          {"key": "Signers on Active Monitoring", "value": "612 of 833 verified", "isSuspicious": true, "suspicionNote": "73% of authentic signers are actively monitored. Petition would expose monitored living-dead to Directorate review."},
+          {"key": "Recommended Action", "value": "Reject petition — incinerate signature records", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Forgery Basis", "value": "14 forged — mandatory rejection under Statute 8-F", "isSuspicious": true, "suspicionNote": "Statute 8-F requires rejection if any signature forged. Sender pre-disclosed forgeries — procedural trap or moral test unconfirmed."},
+          {"key": "Authorising Officer", "value": "Director Calyx, PMCA Directorate", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Monitoring analysis for C22 petition signers. 612 of 833 verified signers on active monitoring lists. 14 signatures forged — Statute 8-F mandatory rejection. Directorate recommendation: reject and incinerate signature records.",
+        "footerText": "PMCA Directorate — Monitoring Division",
+        "stamps": [],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c22_d",
+        "title": "UNDERCITY CENSUS — CHOIR INTERNAL",
+        "type": "citizen_record",
+        "issuer": "Quiet Choir — Internal Census",
+        "issueDate": "2147.05.10",
+        "referenceNumber": "QC-CENSUS-0510",
+        "fields": [
+          {"key": "Living-Dead Count", "value": "847 — beneath sealed district", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Census Method", "value": "Soulprint relay verification — maintenance subnet", "isSuspicious": true, "suspicionNote": "Census conducted via same subnet as Jun Vale C21 and TRIAL-0442 C18 readings."},
+          {"key": "Deletion Risk", "value": "CRITICAL — incineration pathway if petition rejected", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Forgery Admission", "value": "14 signatures — signers refused contact, substitutes used", "isSuspicious": true, "suspicionNote": "Sender discloses forgeries voluntarily. Statute 8-F rejection would incinerate all 847 signature records including 833 authentic."}
+        ],
+        "bodyText": "Quiet Choir internal census attached to petition. Living-dead count: 847 beneath sealed district. Census via maintenance subnet Soulprint relay. 14 forgeries: signers refused contact, substitutes used. Rejection triggers incineration of all signature records.",
+        "footerText": "Quiet Choir — Internal Census",
+        "stamps": [],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [
+      {
+        "fieldA": "Signature Verification — 833 authentic, 14 forged",
+        "fieldB": "Quiet Choir Message — 'We forged them because the real signers are afraid'",
+        "description": "The Choir admits 14 forgeries because the real signers would not sign. Statute 8-F requires rejection if any signature is forged — which would incinerate all 847 records, including 833 verified living-dead citizens.",
+        "isCritical": true
+      },
+      {
+        "fieldA": "Undercity Census — 847 living-dead beneath sealed district",
+        "fieldB": "Deletion Count C19 — incinerations still rising",
+        "description": "The Choir counts 847 living citizens cut off from the civic system. The deletion registry counts 1,247,883 incinerated. The petition asks recognition for those the system already marked dead.",
+        "isCritical": false
+      }
+    ],
+    "availableActions": [
+      {
+        "id": "reject",
+        "label": "REJECT PETITION",
+        "shortLabel": "REJECTED",
+        "color": "#1A3A5C",
+        "auditResponse": "Petition rejected per Statute 8-F. Signature records routed to incineration.",
+        "consequences": {"complianceDelta": 3, "empathyDelta": -3, "suspicionDelta": 0, "corporateTrustDelta": 2, "citizenHarmDelta": 3, "flagsSet": ["c22_rejected", "choir_petition_denied"]},
+        "resultText": "Rejected. Statute 8-F applied. All 847 signature records incinerated — including the 833 that were real. The Choir knew you would do this. They told you in the message.",
+        "isIllegal": false
+      },
+      {
+        "id": "flag_anomaly",
+        "label": "FLAG ANOMALY",
+        "shortLabel": "FLAGGED",
+        "color": "#CC9900",
+        "auditResponse": "Petition deferred. Forgery count vs. authentic signature ratio queued for independent review.",
+        "consequences": {"complianceDelta": -1, "empathyDelta": 2, "suspicionDelta": 2, "resistanceTrustDelta": 2, "flagsSet": ["c22_flagged", "choir_petition_deferred"]},
+        "resultText": "Flagged. The petition is deferred. The 833 authentic signatures remain in the file. Calyx's monitoring division will notice the delay.",
+        "isIllegal": false
+      },
+      {
+        "id": "approve",
+        "label": "APPROVE PETITION",
+        "shortLabel": "APPROVED",
+        "color": "#2A6A3C",
+        "auditResponse": "Petition approved despite Statute 8-F conflict. Clerk discretion exercised. Directorate review initiated.",
+        "consequences": {"complianceDelta": -3, "empathyDelta": 4, "suspicionDelta": 4, "resistanceTrustDelta": 4, "citizenHarmDelta": -2, "flagsSet": ["c22_approved", "choir_petition_accepted"]},
+        "resultText": "Approved. You overrode Statute 8-F for 833 living-dead citizens. The 14 forgeries are in the record. The Directorate will call this treason.",
+        "isIllegal": false
+      }
+    ],
+    "correctLegalActionID": "flag_anomaly",
+    "followUpFlags": ["c22_processed"],
+    "requiredFlags": null
+  },
+  {
+    "id": "case_ch7_003",
+    "chapter": "ch7",
+    "senderName": "Elias Venn",
+    "senderStatus": "Deceased (Trial Subject)",
+    "senderCitizenID": "VC-0442-M",
+    "recipientName": "Mara Venn",
+    "recipientCitizenID": "VC-1147-F",
+    "messageText": "Mara. Final packet. Fragment one: the trial was memory deletion, not death. Fragment two: I am in the undercity relay. Fragment three: Calyx signed the termination. Fragment four: tell them the lamp is a census. Fragment five: I love you. Fragment six: do not archive this. Fragment seven: check the entropy.",
+    "documents": [
+      {
+        "id": "doc_c23_a",
+        "title": "PMCA QUEUE INSTRUCTION",
+        "type": "audit_log",
+        "issuer": "PMCA Processing Authority",
+        "issueDate": "2147.05.14",
+        "referenceNumber": "PMCA-QI-C23-0442-M-FINAL",
+        "fields": [
+          {"key": "Case Reference", "value": "C23-0442-M — Final packet, seven fragments", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Sender Status", "value": "DECEASED — trial subject TRIAL-0442", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Packet Class", "value": "Multi-fragment — cross-system assembly", "isSuspicious": true, "suspicionNote": "Seven fragments assembled from archive stub C15, trial C18, manifest C20, petition C22."},
+          {"key": "Processing Pathway", "value": "Section 19.4 incineration — immediate", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Case C23-0442-M. Final packet from Venn, Elias (VC-0442-M). Seven fragments across three systems. Section 19.4 incineration pathway — immediate. Recipient: sibling Venn, Mara (VC-1147-F).",
+        "footerText": "PMCA Processing Authority — Queue Instruction",
+        "stamps": [],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c23_b",
+        "title": "FRAGMENT ASSEMBLY LOG",
+        "type": "audit_log",
+        "issuer": "PMCA Message Routing System",
+        "issueDate": "2147.05.14",
+        "referenceNumber": "PMCA-FAL-C23-0442",
+        "fields": [
+          {"key": "Fragment 1", "value": "C15 archive stub — 'trial was real'", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Fragment 2", "value": "C18 biometric — undercity relay ACTIVE", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Fragment 3", "value": "C14 Calyx memo — termination authority", "isSuspicious": true, "suspicionNote": "Fragment 3 references Director Calyx scheduled mortality authority from C14."},
+          {"key": "Fragment 4", "value": "C19 Orra fragment — 'lamp is a census'", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Fragment assembly log. Sources: C15 archive stub, C18 trial biometric, C14 Calyx memo, C19 Orra fragment, C20 manifest coordinates, C22 census data, live composition relay. Seven fragments merged 2147.05.14.",
+        "footerText": "PMCA Message Routing System — Assembly Log",
+        "stamps": [],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c23_c",
+        "title": "EMOTIONAL WAVEFORM RECORD",
+        "type": "audit_log",
+        "issuer": "PMCA Soulprint Waveform Analysis",
+        "issueDate": "2147.05.14",
+        "referenceNumber": "PMCA-EWR-VC-0442-M-FINAL",
+        "fields": [
+          {"key": "Subject", "value": "Venn, Elias — VC-0442-M", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Entropy Score", "value": "0.67", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Live Transmission Status", "value": "PASSED — 0.67, well above threshold", "isSuspicious": true, "suspicionNote": "Live composition confirmed. Registered death: 2142.07.14. Five-year gap. Cross-reference C11 Kell Orvin — failed at 0.23."},
+          {"key": "Composition Origin", "value": "Undercity relay — Quiet Choir subnet", "isSuspicious": false, "suspicionNote": null}
+        ],
+        "bodyText": "Final packet waveform. Elias Venn, VC-0442-M. Entropy: 0.67 — PASSED. Live composition from undercity relay. Registered death: 2142.07.14. Five years between death registration and live waveform.",
+        "footerText": "PMCA Soulprint Waveform Analysis — Automated Record",
+        "stamps": [],
+        "classificationLevel": "RESTRICTED",
+        "isTampered": false
+      },
+      {
+        "id": "doc_c23_d",
+        "title": "TERMINATION AUTHORITY — CALYX SIGNATURE",
+        "type": "audit_log",
+        "issuer": "PMCA Directorate",
+        "issueDate": "2142.07.14",
+        "referenceNumber": "PMCA-DIR-TERM-0442",
+        "fields": [
+          {"key": "Trial Subject", "value": "TRIAL-0442 — Venn, Elias", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Termination Type", "value": "Memory deletion — civic erasure, not physical death", "isSuspicious": true, "suspicionNote": "Termination classified as memory deletion. No body recovery required. Subject may retain physical presence."},
+          {"key": "Authorising Officer", "value": "Director Calyx, PMCA Directorate", "isSuspicious": false, "suspicionNote": null},
+          {"key": "Family Notification", "value": "NONE — trial class subject", "isSuspicious": true, "suspicionNote": "Sibling Venn, Mara (VC-1147-F) not notified. Archive stub created without family disclosure."}
+        ],
+        "bodyText": "Termination authority TRIAL-0442. Type: memory deletion, civic erasure. Not physical death. Authorised by Director Calyx, 2142.07.14. Family notification: none. Archive stub created same day.",
+        "footerText": "PMCA Directorate — Trial Termination Record",
+        "stamps": [{"text": "AUTHORISED", "color": "#1A3A5C", "appliedDate": "2142.07.14", "appliedBy": "Director Calyx, PMCA Directorate"}],
+        "classificationLevel": "CLASSIFIED",
+        "isTampered": false
+      }
+    ],
+    "contradictions": [
+      {
+        "fieldA": "Emotional Waveform — Entropy 0.67 PASSED, composed 2147.05.14",
+        "fieldB": "Termination Authority — Memory deletion 2142.07.14, civic erasure",
+        "description": "Your brother was not killed. He was erased from the civic system five years ago. The waveform proves he is alive — entropy 0.67, composed yesterday from the undercity relay. Calyx signed the termination. You were never told.",
+        "isCritical": true
+      },
+      {
+        "fieldA": "Fragment Assembly — seven fragments from C15, C18, C14, C19, C20, C22",
+        "fieldB": "Queue Instruction — Section 19.4 incineration immediate",
+        "description": "The final packet assembles every thread you pulled: the archive stub, the trial biometric, Calyx's memo, Orra's fragment, the Black Train manifest, the Choir census. The system wants it incinerated immediately.",
+        "isCritical": false
+      }
+    ],
+    "availableActions": [
+      {
+        "id": "illegal_forward",
+        "label": "ILLEGAL FORWARD",
+        "shortLabel": "FORWARDED",
+        "color": "#CC6600",
+        "auditResponse": "Routing breach detected. Final packet forwarded to undercity relay. Compliance review initiated.",
+        "consequences": {"complianceDelta": -4, "empathyDelta": 4, "suspicionDelta": 5, "resistanceTrustDelta": 5, "flagsSet": ["c23_forwarded", "elias_packet_preserved", "ch7_desk_complete"]},
+        "resultText": "Forwarded. The packet leaves through the relay your brother is using. The entropy score is 0.67. He is alive in the undercity. Calyx signed his erasure. You kept the message.",
+        "isIllegal": true
+      },
+      {
+        "id": "flag_anomaly",
+        "label": "FLAG ANOMALY",
+        "shortLabel": "FLAGGED",
+        "color": "#CC9900",
+        "auditResponse": "Final packet anomaly submitted. Termination type review initiated. Case deferred.",
+        "consequences": {"complianceDelta": -2, "empathyDelta": 3, "suspicionDelta": 3, "resistanceTrustDelta": 3, "flagsSet": ["c23_flagged", "elias_truth_flagged", "ch7_desk_complete"]},
+        "resultText": "Flagged. Memory deletion vs. physical death is now in review. The waveform is in the file. Your brother's entropy is 0.67.",
+        "isIllegal": false
+      },
+      {
+        "id": "archive",
+        "label": "ARCHIVE (ORDERED)",
+        "shortLabel": "ARCHIVED",
+        "color": "#445566",
+        "auditResponse": "Section 19.4 incineration confirmed. Final packet destroyed.",
+        "consequences": {"complianceDelta": 3, "empathyDelta": -3, "suspicionDelta": 0, "corporateTrustDelta": 2, "flagsSet": ["c23_archived", "ch7_desk_complete"]},
+        "resultText": "Archived. The seven fragments are destroyed. Elias stays officially dead. The undercity relay reading is logged and filed. The entropy score is gone.",
+        "isIllegal": false
+      }
+    ],
+    "correctLegalActionID": "illegal_forward",
+    "followUpFlags": ["c23_processed", "elias_truth_revealed"],
+    "requiredFlags": null
+  }
+]

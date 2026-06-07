@@ -34,8 +34,11 @@ final class GameState {
     // Transient settings return (not persisted)
     var settingsReturnDestination: SettingsReturnDestination?
 
-    // Investigation notebook — unlocked entry IDs (persisted)
+    // Investigation notebook — legacy entry IDs (persisted, migrated to pdaJournal)
     var notebookUnlockedIDs: Set<String> = []
+
+    // Mara PDA investigation journal (persisted)
+    var pdaJournal: PDAJournalState = PDAJournalState()
 
     // Settings
     var subtitlesEnabled: Bool = true
@@ -95,6 +98,10 @@ final class GameState {
 
     func unlockNotebookEntry(_ id: String) {
         notebookUnlockedIDs.insert(id)
+        NotebookJournalMigration.applyIfNeeded(
+            journal: &pdaJournal,
+            legacyNotebookIDs: notebookUnlockedIDs
+        )
         save()
     }
 
@@ -119,6 +126,7 @@ final class GameState {
         activeFlags      = []
         caseDecisions    = [:]
         notebookUnlockedIDs = []
+        pdaJournal = PDAJournalState()
         // Settings (subtitlesEnabled, reducedFlashingEnabled, textSizeMultiplier,
         // musicVolume, sfxVolume) are preserved across new game starts.
     }

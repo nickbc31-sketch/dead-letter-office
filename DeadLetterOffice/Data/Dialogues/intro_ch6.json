@@ -1,0 +1,109 @@
+{
+  "id": "intro_ch6",
+  "chapter": "ch6",
+  "returnSceneHint": "level_ch6",
+  "nodes": [
+    {
+      "id": "n0",
+      "lines": [
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Route 7-B is not on the clerk maps. Jun Vale signed the manifest with a credential that expired in 2144.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "312 forbidden dead letters. Moving beneath the sealed district on an automated train.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. Your exterior movement exceeds authorised duration. Return to desk processing.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "I'm not going back to the desk.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "That will be noted.",
+          "voiceFilter": "terminal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": null,
+      "flagsSet": ["ch6_intro_complete"],
+      "nextID": null
+    },
+    {
+      "id": "n1",
+      "lines": [
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Saint Orra fragment in the buffer. Deletion count still rising. 1,247,883.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Someone lit a lamp in Orra Square. Five hours later, the fragment appeared in the train buffer.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Broadcast fragment analysis is not a clerk function.",
+          "voiceFilter": "terminal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": ["c19_processed"],
+      "flagsSet": ["ch6_c19_pause_shown"],
+      "nextID": null
+    },
+    {
+      "id": "n2",
+      "lines": [
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Lena Harrow filed the trial termination in 2142. TRIAL-0442 is still generating biometric data.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "Courier 19's coordinates match junction 9 on this route. Elias. Jun. The train. All of it connects here.",
+          "voiceFilter": "normal"
+        },
+        {
+          "speaker": "THE AUDIT VOICE",
+          "portraitAsset": "portrait_audit_voice",
+          "text": "Clerk 1147-F. Scheduled mortality date has passed. Your civic record update is overdue.",
+          "voiceFilter": "terminal"
+        },
+        {
+          "speaker": "MARA VENN",
+          "portraitAsset": "portrait_mara",
+          "text": "I'm still here.",
+          "voiceFilter": "normal"
+        }
+      ],
+      "choices": null,
+      "autoAdvance": false,
+      "flagsRequired": ["ch6_platform_complete"],
+      "flagsSet": ["ch6_outro_complete"],
+      "nextID": null
+    }
+  ]
+}
