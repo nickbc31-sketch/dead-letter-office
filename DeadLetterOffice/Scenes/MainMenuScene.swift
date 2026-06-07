@@ -15,7 +15,11 @@ final class MainMenuScene: SKScene {
     private var playStylePanel: SKNode?
     private var classicModeRect = CGRect.zero
     private var guidedModeRect  = CGRect.zero
+    private var voiceQualityHelpRect = CGRect.zero
     private var awaitingPlayStyleChoice = false
+    private var voiceHelpPanel: SKNode?
+    private var voiceHelpOkRect = CGRect.zero
+    private var awaitingVoiceHelpModal = false
 
     override func didMove(to view: SKView) {
         SceneManager.shared.view = view
@@ -39,6 +43,8 @@ final class MainMenuScene: SKScene {
         awaitingNewShiftConfirm = false
         playStylePanel = nil
         awaitingPlayStyleChoice = false
+        voiceHelpPanel = nil
+        awaitingVoiceHelpModal = false
 
         buildBackground()
         buildTitle()
@@ -299,8 +305,8 @@ final class MainMenuScene: SKScene {
     private func showPlayStyleChooser() {
         guard playStylePanel == nil else { return }
 
-        let panelW = min(layout.w * 0.72, 560)
-        let panelH = layout.h * 0.62
+        let panelW = min(layout.w * 0.76, 600)
+        let panelH = layout.h * 0.78
 
         let panel = SKNode()
         panel.zPosition = 1000
@@ -338,22 +344,52 @@ final class MainMenuScene: SKScene {
         panel.addChild(guidedLbl)
 
         let guidedSub = makeWrappedLabel(
-            text: "Field Notes can read aloud automatically. More accessible. Best for a smoother, guided experience.",
-            width: panelW * 0.82, size: 8, y: -panelH * 0.18)
+            text: FieldNotesVoiceHelp.guidedModeSummary,
+            width: panelW * 0.84, size: 8, y: -panelH * 0.16)
         panel.addChild(guidedSub)
+
+        let guidedHint = makeWrappedLabel(
+            text: FieldNotesVoiceHelp.guidedModeVoiceHint,
+            width: panelW * 0.84, size: 7, y: -panelH * 0.30)
+        guidedHint.fontColor = DLOColor.uiBorder.withAlphaComponent(0.75)
+        panel.addChild(guidedHint)
+
+        let helpLbl = DLOFont.terminalLabel(text: FieldNotesVoiceHelp.linkLabel, size: 9)
+        helpLbl.fontColor = DLOColor.teal.withAlphaComponent(0.9)
+        helpLbl.horizontalAlignmentMode = .center
+        helpLbl.position = CGPoint(x: 0, y: -panelH * 0.42)
+        panel.addChild(helpLbl)
 
         addChild(panel)
         playStylePanel = panel
 
-        let bH: CGFloat = 52
-        let bW = panelW * 0.70
+        let bH: CGFloat = 48
+        let bW = panelW * 0.72
         classicModeRect = CGRect(x: layout.center.x - bW / 2,
-                                 y: layout.center.y + panelH * 0.08 - bH / 2,
+                                 y: layout.center.y + panelH * 0.10 - bH / 2,
                                  width: bW, height: bH)
         guidedModeRect  = CGRect(x: layout.center.x - bW / 2,
-                                 y: layout.center.y - panelH * 0.14 - bH / 2,
+                                 y: layout.center.y - panelH * 0.02 - bH / 2,
                                  width: bW, height: bH)
+        voiceQualityHelpRect = CGRect(x: layout.center.x - bW / 2,
+                                      y: layout.center.y - panelH * 0.42 - 18,
+                                      width: bW, height: 36)
         awaitingPlayStyleChoice = true
+    }
+
+    private func showVoiceQualityHelp() {
+        FieldNotesVoiceHelp.showModal(
+            in: self, layout: layout,
+            panelNode: &voiceHelpPanel,
+            okRect: &voiceHelpOkRect)
+        awaitingVoiceHelpModal = true
+    }
+
+    private func dismissVoiceQualityHelp() {
+        awaitingVoiceHelpModal = false
+        voiceHelpPanel?.removeFromParent()
+        voiceHelpPanel = nil
+        voiceHelpOkRect = .zero
     }
 
     private func makeWrappedLabel(text: String, width: CGFloat, size: CGFloat, y: CGFloat) -> SKLabelNode {
@@ -413,7 +449,20 @@ final class MainMenuScene: SKScene {
             return
         }
 
+        if awaitingVoiceHelpModal {
+            if voiceHelpOkRect.contains(pos) {
+                AudioManager.shared.playUIClick()
+                dismissVoiceQualityHelp()
+            }
+            return
+        }
+
         if awaitingPlayStyleChoice {
+            if voiceQualityHelpRect.contains(pos) {
+                AudioManager.shared.playUIClick()
+                showVoiceQualityHelp()
+                return
+            }
             if classicModeRect.contains(pos) {
                 AudioManager.shared.playUIClick()
                 applyPlayStyle(guided: false)

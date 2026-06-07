@@ -10,6 +10,10 @@ final class SettingsScene: SKScene {
     private var confirmRect:   CGRect = .zero
     private var cancelledRect: CGRect = .zero
     private var awaitingConfirm = false
+    private var voiceHelpPanel: SKNode?
+    private var voiceHelpOkRect = CGRect.zero
+    private var voiceQualityHelpRect = CGRect.zero
+    private var awaitingVoiceHelpModal = false
 
     // Scene-level interactive tracking (proven DeskScene/MainMenuScene pattern)
     private struct ToggleItem {
@@ -91,6 +95,7 @@ final class SettingsScene: SKScene {
             GameState.shared.hasChosenPlayStyle = true
             GameState.shared.save()
         }
+        addFieldNotesVoiceHint(y: yPos - rowStep * 0.52)
         yPos -= rowStep
 
         addSlider(label: "MUSIC VOLUME", value: CGFloat(state.musicVolume), y: yPos) { val in
@@ -126,6 +131,48 @@ final class SettingsScene: SKScene {
         backRect = CGRect(x: layout.x(0.15) - 8, y: yPos - btnH / 2, width: btnW, height: btnH)
         buildTextButton(text: "DELETE SAVE DATA", x: layout.x(0.62), y: yPos, color: DLOColor.danger)
         deleteRect = CGRect(x: layout.x(0.62) - 8, y: yPos - btnH / 2, width: btnW, height: btnH)
+    }
+
+    private func addFieldNotesVoiceHint(y: CGFloat) {
+        let rowWidth = layout.w * 0.6
+        let hint = SKLabelNode()
+        hint.fontName = "Menlo"
+        hint.fontSize = 8
+        hint.fontColor = DLOColor.uiBorder.withAlphaComponent(0.7)
+        hint.horizontalAlignmentMode = .left
+        hint.verticalAlignmentMode = .center
+        hint.numberOfLines = 0
+        hint.preferredMaxLayoutWidth = rowWidth * 0.88
+        hint.text = FieldNotesVoiceHelp.settingsHint
+        hint.position = CGPoint(x: layout.midX - rowWidth / 2 + 10, y: y + 6)
+        addChild(hint)
+
+        let link = DLOFont.terminalLabel(text: FieldNotesVoiceHelp.linkLabel, size: 9)
+        link.fontColor = DLOColor.teal.withAlphaComponent(0.9)
+        link.horizontalAlignmentMode = .left
+        link.position = CGPoint(x: layout.midX - rowWidth / 2 + 10, y: y - 14)
+        addChild(link)
+
+        voiceQualityHelpRect = CGRect(
+            x: layout.midX - rowWidth / 2,
+            y: y - 28,
+            width: rowWidth,
+            height: 36)
+    }
+
+    private func showVoiceQualityHelp() {
+        FieldNotesVoiceHelp.showModal(
+            in: self, layout: layout,
+            panelNode: &voiceHelpPanel,
+            okRect: &voiceHelpOkRect)
+        awaitingVoiceHelpModal = true
+    }
+
+    private func dismissVoiceQualityHelp() {
+        awaitingVoiceHelpModal = false
+        voiceHelpPanel?.removeFromParent()
+        voiceHelpPanel = nil
+        voiceHelpOkRect = .zero
     }
 
     // MARK: - Toggle (scene-level touch, no isUserInteractionEnabled on node)
@@ -235,6 +282,14 @@ final class SettingsScene: SKScene {
         let wasSliding = activeSliderIndex != nil
         activeSliderIndex = nil
 
+        if awaitingVoiceHelpModal {
+            if voiceHelpOkRect.contains(pos) {
+                AudioManager.shared.playUIClick()
+                dismissVoiceQualityHelp()
+            }
+            return
+        }
+
         if awaitingConfirm {
             if confirmRect.contains(pos) {
                 AudioManager.shared.playUIClick()
@@ -266,6 +321,12 @@ final class SettingsScene: SKScene {
                 applyToggleTap(index: i)
                 return
             }
+        }
+
+        if voiceQualityHelpRect.contains(pos) {
+            AudioManager.shared.playUIClick()
+            showVoiceQualityHelp()
+            return
         }
 
         if resumeRect.contains(pos) { AudioManager.shared.playUIClick(); returnToGame() }
